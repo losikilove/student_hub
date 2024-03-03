@@ -9,12 +9,15 @@ class CustomButton extends StatelessWidget {
   final void Function()? onPressed;
   final String text;
   final CustomButtonSize size;
+  final bool isDisabled;
 
-  const CustomButton(
-      {super.key,
-      required this.onPressed,
-      required this.text,
-      this.size = CustomButtonSize.small});
+  const CustomButton({
+    super.key,
+    required this.onPressed,
+    required this.text,
+    this.size = CustomButtonSize.small,
+    this.isDisabled = false,
+  });
 
   // set up the witdh of button
   Size _setWidth(CustomButtonSize size) {
@@ -35,7 +38,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: isDisabled ? null : onPressed,
       style: ElevatedButton.styleFrom(
           backgroundColor: ColorUtil.primary, minimumSize: _setWidth(size)),
       child: Text(
