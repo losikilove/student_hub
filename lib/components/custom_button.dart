@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/text_util.dart';
 
 // set up enum for size of custom button
@@ -17,7 +18,7 @@ class CustomButton extends StatelessWidget {
 
   // set up the witdh of button
   Size _setWidth(CustomButtonSize size) {
-    const double fixedHeight = 50;
+    const double fixedHeight = 32;
 
     // size of button is fullwidth
     if (size == CustomButtonSize.large) {
@@ -33,15 +34,14 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(minimumSize: _setWidth(size)),
-        child: Text(
-          text,
-          style:
-              const TextStyle(fontSize: TextUtil.textSize, color: Colors.black),
-        ),
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+          backgroundColor: ColorUtil.primary, minimumSize: _setWidth(size)),
+      child: Text(
+        text,
+        style:
+            const TextStyle(fontSize: TextUtil.textSize, color: Colors.white),
       ),
     );
   }

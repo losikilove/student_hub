@@ -20,6 +20,7 @@ class HomeScreen extends StatelessWidget {
       body: InitialBody(
         child: Column(
           children: [
+            // Title info text
             const Center(
               child: CustomText(
                 text: 'Build your product with high-skilled student',
@@ -29,6 +30,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(
               height: SpacingUtil.largeHeight,
             ),
+            // Detail of info text
             const Center(
               child: CustomText(
                 text:
@@ -39,19 +41,22 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(
               height: SpacingUtil.mediumHeight,
             ),
-            Center(
-              child: SizedBox(
-                height: SpacingUtil.mediumHeight,
-                child: CustomButton(onPressed: onTap, text: 'Company'),
-              ),
-            ),
+            // Company button
+            CustomButton(onPressed: onTap, text: 'Company'),
             const SizedBox(
               height: SpacingUtil.smallHeight,
             ),
-            Center(
-              child: SizedBox(
-                height: SpacingUtil.mediumHeight,
-                child: CustomButton(onPressed: onTap, text: 'Student'),
+            // Student button
+            CustomButton(onPressed: onTap, text: 'Student'),
+            const SizedBox(
+              height: SpacingUtil.mediumHeight,
+            ),
+            // Detail of info text
+            const Center(
+              child: CustomText(
+                text:
+                    'StudentHub is university market place to connect high-skilled student and company on a real-world project',
+                isCenter: true,
               ),
             ),
           ],
