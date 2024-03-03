@@ -1,0 +1,1 @@
+enum EnumUser { student, company }
