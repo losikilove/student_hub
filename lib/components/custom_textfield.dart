@@ -29,11 +29,16 @@ class CustomTextfield extends StatelessWidget {
       // remove underline
       decoration: isBox
           ? const InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
               enabledBorder: OutlineInputBorder(),
               focusedBorder: OutlineInputBorder(borderSide: BorderSide()),
             )
-          : InputDecoration.collapsed(hintText: hintText),
-      textCapitalization: TextCapitalization.sentences,
+          : InputDecoration(
+              hintText: hintText,
+              filled: true,
+              fillColor: Colors.white,
+            ),
       maxLines: maxLines,
       style: TextStyle(
         fontSize: fontSize,

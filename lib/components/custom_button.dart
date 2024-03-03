@@ -21,7 +21,7 @@ class CustomButton extends StatelessWidget {
 
   // set up the witdh of button
   Size _setWidth(CustomButtonSize size) {
-    const double fixedHeight = 32;
+    const double fixedHeight = 40;
 
     // size of button is fullwidth
     if (size == CustomButtonSize.large) {
