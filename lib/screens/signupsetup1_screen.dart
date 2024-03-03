@@ -90,7 +90,7 @@ class _SignUpSetup1State extends State<SignUpSetup1> {
               children: [
                 Icon(icon),
                 Radio<EnumUser>(
-                  activeColor: Colors.black,
+                  activeColor: Color.fromARGB(236, 3, 70, 147),
                   value: user,
                   groupValue: _user,
                   onChanged: chooseUserType,
