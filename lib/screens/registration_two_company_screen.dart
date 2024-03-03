@@ -7,16 +7,16 @@ import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
-class RegistrationTwoStudentScreen extends StatefulWidget {
-  const RegistrationTwoStudentScreen({super.key});
+class RegistrationTwoCompanyScreen extends StatefulWidget {
+  const RegistrationTwoCompanyScreen({super.key});
 
   @override
-  State<RegistrationTwoStudentScreen> createState() =>
-      _RegistrationTwoStudentScreenState();
+  State<RegistrationTwoCompanyScreen> createState() =>
+      _RegistrationTwoCompanyScreenState();
 }
 
-class _RegistrationTwoStudentScreenState
-    extends State<RegistrationTwoStudentScreen> {
+class _RegistrationTwoCompanyScreenState
+    extends State<RegistrationTwoCompanyScreen> {
   final fullnameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -36,7 +36,7 @@ class _RegistrationTwoStudentScreenState
   void submit() {}
 
   // switch to student
-  void switchToCompany() {}
+  void switchToStudent() {}
 
   // get color of checkbox
   Color getColorCheckbox(Set<MaterialState> states) {
@@ -59,7 +59,7 @@ class _RegistrationTwoStudentScreenState
             // Title text
             const Center(
               child: CustomText(
-                text: 'Sign up as Student',
+                text: 'Sign up as Company',
                 isBold: true,
               ),
             ),
@@ -68,7 +68,9 @@ class _RegistrationTwoStudentScreenState
             ),
             // Fullname textfield
             CustomTextfield(
-                controller: fullnameController, hintText: 'Fullname'),
+              controller: fullnameController,
+              hintText: 'Fullname',
+            ),
             const SizedBox(
               height: SpacingUtil.smallHeight,
             ),
@@ -129,10 +131,10 @@ class _RegistrationTwoStudentScreenState
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const CustomText(text: 'Initialize a project? '),
+                const CustomText(text: 'Looking for a project? '),
                 CustomAnchor(
-                  text: 'Apply as a Company',
-                  onTap: switchToCompany,
+                  text: 'Apply as a Student',
+                  onTap: switchToStudent,
                 ),
               ],
             ),
