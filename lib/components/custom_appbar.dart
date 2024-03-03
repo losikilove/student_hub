@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:student_hub/utils/color_scheme.dart';
+import 'package:student_hub/utils/color_util.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -22,7 +22,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.iconButton = Icons.person, // initialize the icon of appbar
     this.isBack = false, // when a screen is a independent screen
   })  : preferredSize = const Size.fromHeight(kToolbarHeight),
-        backgroundColor = CustomColorScheme.darkPrimary;
+        backgroundColor = ColorUtil.darkPrimary;
 
   @override
   Widget build(BuildContext context) {

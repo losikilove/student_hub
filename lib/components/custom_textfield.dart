@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_hub/utils/text_util.dart';
 
 class CustomTextfield extends StatelessWidget {
   final TextEditingController controller;
@@ -13,7 +14,7 @@ class CustomTextfield extends StatelessWidget {
       {super.key,
       required this.controller,
       required this.hintText,
-      this.fontSize = 15,
+      this.fontSize = TextUtil.textSize,
       this.isBold = false,
       this.isBox = false,
       this.maxLines = 1,
