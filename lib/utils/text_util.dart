@@ -1,3 +1,3 @@
 class TextUtil {
-  static const double textSize = 17.0;
+  static const double textSize = 16.0;
 }
