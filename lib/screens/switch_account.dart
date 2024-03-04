@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_appbar.dart';
-import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/components/initial_body_SwitchAccount.dart';
 import 'package:student_hub/utils/color_util.dart';
+import 'package:student_hub/components/custom_listtile.dart';
 
 enum AccountType { company, student }
 
-class ExpansionPanelExample extends StatefulWidget {
-  const ExpansionPanelExample({super.key});
+class SwitchAccount extends StatefulWidget {
+  const SwitchAccount({super.key});
 
   @override
-  _ExpansionPanelExampleState createState() => _ExpansionPanelExampleState();
+  State<SwitchAccount> createState() => _SwitchAccount();
 }
 
-class _ExpansionPanelExampleState extends State<ExpansionPanelExample> {
+class _SwitchAccount extends State<SwitchAccount> {
   AccountType _selectedAccount = AccountType.student;
 
   void onPressed(){}
@@ -39,40 +40,43 @@ class _ExpansionPanelExampleState extends State<ExpansionPanelExample> {
                 
                 ExpansionPanel(
                   headerBuilder: (BuildContext context, bool isExpanded) {
-                    return ListTile(
-                      leading: Icon(Icons.person, size: 50),
-                      title: Text('Hai Pham company'),
-                      
+                    return CustomListTitle(
+                      icon: Icons.person,
+                      text: 'Hai Pham',
+                      onTap: onPressed,
+                      subtext: 'Hai Pham company',
                     );
                   },
                   body: ListTile(
-                      leading: Icon(Icons.person, size: 50),
-                      title: Text('Hai Pham student'),
-                      contentPadding: EdgeInsets.only(left: 40),
-                      onTap: onPressed,
+                    leading: Icon(Icons.person, size: 50),
+                    title: Text('Hai Pham', style: TextStyle(fontWeight: FontWeight.bold)),
+                    subtitle: Text('Hai Pham student'),
+                    contentPadding: EdgeInsets.only(left: 30),
+                    onTap: onPressed,
                   ),
-                  backgroundColor: ColorUtil.lightPrimary,
-                  
+                                 
                   isExpanded: _selectedAccount == AccountType.company,
                 ),
               ],
               
             ),
-            ListTile(
-              leading: Icon(Icons.person_2_outlined, size: 50),
-              title: Text('Profile'),
+            CustomListTitle(
+              icon: Icons.person_2_outlined,
+              text: 'Profile',
               onTap: onPressed,
-
+              subtext: null,
             ),
-            ListTile(
-              leading: Icon(Icons.settings_outlined, size: 50),
-              title: Text('Settings'),
+            CustomListTitle(
+              icon:Icons.settings_outlined,
+              text: 'Settings',
               onTap: onPressed,
+              subtext: null,
             ),
-            ListTile(
-              leading: Icon(Icons.logout_outlined, size: 50),
-              title: Text('Logout'),
+            CustomListTitle(
+              icon: Icons.logout_outlined,
+              text: 'Logout',
               onTap: onPressed,
+              subtext: null,
             ),
             // Your other widgets can go here
           ],
