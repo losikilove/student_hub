@@ -40,11 +40,11 @@ class _SwitchAccount extends State<SwitchAccount> {
                 
                 ExpansionPanel(
                   headerBuilder: (BuildContext context, bool isExpanded) {
-                    return CustomListTitle(
-                      icon: Icons.person,
-                      text: 'Hai Pham',
+                    return ListTile(
+                      leading: Icon(Icons.person, size: 50),
+                      title: Text('Hai Pham', style: TextStyle(fontWeight: FontWeight.bold)),
+                      subtitle: Text('Hai Pham company'),
                       onTap: onPressed,
-                      subtext: 'Hai Pham company',
                     );
                   },
                   body: ListTile(
@@ -54,7 +54,7 @@ class _SwitchAccount extends State<SwitchAccount> {
                     contentPadding: EdgeInsets.only(left: 30),
                     onTap: onPressed,
                   ),
-                                 
+                  backgroundColor: ColorUtil.lightPrimary,       
                   isExpanded: _selectedAccount == AccountType.company,
                 ),
               ],
