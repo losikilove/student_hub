@@ -7,14 +7,14 @@ import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 
-class SignUpSetup1 extends StatefulWidget {
-  const SignUpSetup1({super.key});
+class SignUpSetup1Screen extends StatefulWidget {
+  const SignUpSetup1Screen({super.key});
 
   @override
-  State<SignUpSetup1> createState() => _SignUpSetup1State();
+  State<SignUpSetup1Screen> createState() => _SignUpSetup1ScreenState();
 }
 
-class _SignUpSetup1State extends State<SignUpSetup1> {
+class _SignUpSetup1ScreenState extends State<SignUpSetup1Screen> {
   EnumUser? _user = EnumUser.student;
 
   void chooseUserType(EnumUser? value) {
