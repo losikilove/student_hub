@@ -9,6 +9,6 @@ import 'package:student_hub/screens/switch_account.dart';
 void main() {
   runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: SignUpSetup1(),
+    home: Dashboard(),
   ));
 }
