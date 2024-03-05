@@ -12,7 +12,12 @@ class CustomListTitle extends StatelessWidget{
   Widget build(BuildContext context){
     return Container(
       decoration: const BoxDecoration(
-        border: Border(bottom: BorderSide(color: Color.fromARGB(255, 0, 0, 0))),
+        border: Border(
+          bottom: BorderSide(
+            color: Color.fromARGB(255, 0, 0, 0), 
+            width: 2,
+          )
+        ),
       ),
       child: ListTile(
         leading: Icon(icon, size: 50),

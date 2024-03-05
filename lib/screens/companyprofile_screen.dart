@@ -80,7 +80,10 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
             ),
             chooseNumber(EnumNumberPeople.one, "It's just me"),
             const SizedBox(
-              height: SpacingUtil.largeHeight,
+              height: SpacingUtil.mediumHeight,
+            ),
+            const SizedBox(
+              height: SpacingUtil.mediumHeight,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
