@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_divider.dart';
-import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/enums/enum_user.dart';
-import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/components/custom_listtile.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 
@@ -34,53 +32,29 @@ class _SwitchAccountScreen extends State<SwitchAccountScreen> {
         right: 0.0,
         top: 0.0,
         child: Column(
+          
           children: <Widget>[
-            ExpansionPanelList(
-              materialGapSize: 0,
-              expansionCallback: (int index, bool isExpanded) {
-                setState(() {
-                  // Toggle the expansion state
-                  _selectedAccount =
-                      isExpanded ? EnumUser.company : EnumUser.student;
-                });
-              },
-              children: [
-                ExpansionPanel(
-                  headerBuilder: (BuildContext context, bool isExpanded) {
-                    return ListTile(
-                      leading: Icon(Icons.person, size: 50),
-                      title: CustomText(
-                        text: name,
-                        isBold: true,
-                      ),
-                      subtitle: CustomText(text: 'Company'),
-                      onTap: onPressed,
-                    );
-                    
-                  },
-                  body:
-                    Center(
-                      child: Column(children: [
-                        CustomDivider(), 
-                        ListTile(
-                          leading: Icon(Icons.person, size: 50),
-                          title: CustomText(
-                            text: name,
-                            isBold: true,
-                          ),
-                          subtitle: CustomText(text: 'Student'),
-                          contentPadding: EdgeInsets.only(left: 30),
-                          onTap: onPressed,
-                        ),
-                      ]),
-                  ),
-                 
-                  backgroundColor: ColorUtil.lightPrimary,
-                  isExpanded: _selectedAccount == EnumUser.company,
-                ),
-
-                
-              ],
+            Theme(
+              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+              title: Text('$name', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+              subtitle: Text('Company'),
+              children: <Widget>[
+                CustomDivider(),
+                ListTile(
+                  title: Text('$name',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                  subtitle: Text('Student'),
+                  contentPadding: EdgeInsets.only(left: 30),
+                )
+              ],             
+              ),
+            ),
+            Divider(
+              height: 20,
+              thickness: 2,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,          
             ),
             Padding(
               padding: const EdgeInsets.only(left: 18.0, right: 18.0),
