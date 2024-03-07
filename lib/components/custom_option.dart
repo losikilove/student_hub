@@ -43,7 +43,7 @@ class _CustomOptionState<T> extends State<CustomOption<T>> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
+        border: Border.all(color: Colors.grey),
         color: Colors.white,
       ),
       child: LayoutBuilder(
