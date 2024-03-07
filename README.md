@@ -9,3 +9,11 @@
 ## 2. RenderFlex
 - Reasons: overflow widgets
 - Solutions: wrap them on a SingleChildScrollView widget and then, continue to wrap all of them on Expanded widget
+
+## 3. Render setState more times
+- Reasons: a function attribute is called in setState
+- Solutions: get that function out of the setState
+
+## 4. Cannot expand the with of DropdownMenu widget which fits the defined screen
+- Reasons: that widget just provides the width attribute which makes dev defining its width
+- Solutions: wrap that widget in a LayoutBuilder widget, then set its width to constraints.maxWidth which is the maximum width of Container widget
