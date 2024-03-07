@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_appbar.dart';
+import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/enums/enum_user.dart';
@@ -35,6 +36,7 @@ class _SwitchAccountScreen extends State<SwitchAccountScreen> {
         child: Column(
           children: <Widget>[
             ExpansionPanelList(
+              materialGapSize: 0,
               expansionCallback: (int index, bool isExpanded) {
                 setState(() {
                   // Toggle the expansion state
@@ -54,26 +56,37 @@ class _SwitchAccountScreen extends State<SwitchAccountScreen> {
                       subtitle: CustomText(text: 'Company'),
                       onTap: onPressed,
                     );
+                    
                   },
-                  body: ListTile(
-                    leading: Icon(Icons.person, size: 50),
-                    title: CustomText(
-                      text: name,
-                      isBold: true,
-                    ),
-                    subtitle: CustomText(text: 'Student'),
-                    contentPadding: EdgeInsets.only(left: 30),
-                    onTap: onPressed,
+                  body:
+                    Center(
+                      child: Column(children: [
+                        CustomDivider(), 
+                        ListTile(
+                          leading: Icon(Icons.person, size: 50),
+                          title: CustomText(
+                            text: name,
+                            isBold: true,
+                          ),
+                          subtitle: CustomText(text: 'Student'),
+                          contentPadding: EdgeInsets.only(left: 30),
+                          onTap: onPressed,
+                        ),
+                      ]),
                   ),
+                 
                   backgroundColor: ColorUtil.lightPrimary,
                   isExpanded: _selectedAccount == EnumUser.company,
                 ),
+
+                
               ],
             ),
             Padding(
               padding: const EdgeInsets.only(left: 18.0, right: 18.0),
               child: Column(
                 children: [
+                  
                   CustomListTitle(
                     icon: Icons.person_2_outlined,
                     text: 'Profile',
@@ -83,18 +96,21 @@ class _SwitchAccountScreen extends State<SwitchAccountScreen> {
                     },
                     subtext: null,
                   ),
+                  CustomDivider(),
                   CustomListTitle(
                     icon: Icons.settings_outlined,
                     text: 'Settings',
                     onTap: onPressed,
                     subtext: null,
                   ),
+                  CustomDivider(),
                   CustomListTitle(
                     icon: Icons.logout_outlined,
                     text: 'Logout',
                     onTap: onPressed,
                     subtext: null,
                   ),
+                  CustomDivider(),
                 ],
               ),
             ),

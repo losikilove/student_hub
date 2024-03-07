@@ -15,13 +15,6 @@ class CustomListTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        border: Border(
-            bottom: BorderSide(
-          color: Color.fromARGB(255, 0, 0, 0),
-          width: 2,
-        )),
-      ),
       child: ListTile(
         leading: Icon(icon, size: 50),
         title: Text(text),
