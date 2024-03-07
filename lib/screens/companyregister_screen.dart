@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/models/enums/enum_numberpeople.dart';
@@ -94,7 +95,9 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
               Container(
                 alignment: Alignment.topRight,
                 child: CustomButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    NavigationUtil.toWelcomeScreen(context);
+                  },
                   text: "Continue",
                 ),
               ),

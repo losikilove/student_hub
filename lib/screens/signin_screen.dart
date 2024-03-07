@@ -3,6 +3,7 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_text.dart';
 
@@ -14,7 +15,10 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final emailController = TextEditingController();
-  void signUp() {}
+  void OnSignUp() {
+    NavigationUtil.toSignUpStepOneScreen(context);
+  }
+  void OnSignIn() {}
   void onPressed() {}
 
   @override
@@ -43,7 +47,7 @@ class _SignInScreenState extends State<SignInScreen> {
             const SizedBox(
               height: SpacingUtil.mediumHeight,
             ),
-            CustomButton(onPressed: signUp, text: 'sign in'),
+            CustomButton(onPressed: OnSignIn, text: 'sign in'),
             const SizedBox(
               height: 400,
             ),
@@ -53,7 +57,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 isCenter: true,
               ),
             ),
-            CustomButton(onPressed: signUp, text: 'sign up'),
+            CustomButton(onPressed: OnSignUp, text: 'sign up'),
           ],
         ),
       ),

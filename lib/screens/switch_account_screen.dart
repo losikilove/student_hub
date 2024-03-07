@@ -5,6 +5,7 @@ import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/enums/enum_user.dart';
 import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/components/custom_listtile.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 
 class SwitchAccountScreen extends StatefulWidget {
   const SwitchAccountScreen({super.key});
@@ -76,7 +77,10 @@ class _SwitchAccountScreen extends State<SwitchAccountScreen> {
                   CustomListTitle(
                     icon: Icons.person_2_outlined,
                     text: 'Profile',
-                    onTap: onPressed,
+                    onTap: (){
+                      NavigationUtil.toCompanyProfileScreen(context);
+                      //NavigationUtil.toCompanyRegisterScreen(context);
+                    },
                     subtext: null,
                   ),
                   CustomListTitle(

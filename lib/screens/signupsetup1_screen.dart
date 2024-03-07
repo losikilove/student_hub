@@ -3,6 +3,7 @@ import 'package:student_hub/components/custom_anchor.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/enums/enum_user.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_appbar.dart';
@@ -56,7 +57,9 @@ class _SignUpSetup1ScreenState extends State<SignUpSetup1Screen> {
               height: SpacingUtil.mediumHeight,
             ),
             CustomButton(
-              onPressed: () {},
+              onPressed: () {
+                NavigationUtil.toSignUpStepTwoAsCompanyScreen(context);
+              },
               text: 'Create account',
               size: CustomButtonSize.large,
             ),
