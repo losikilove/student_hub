@@ -5,6 +5,7 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class RegistrationTwoCompanyScreen extends StatefulWidget {
@@ -28,7 +29,6 @@ class _RegistrationTwoCompanyScreenState
   bool _isValidPassword = false;
   bool _isValidConfirmPassword = false;
 
-  void onPressed() {}
 
   // accept rules of this app
   void tickCheckBox(bool? value) {
@@ -57,7 +57,12 @@ class _RegistrationTwoCompanyScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(onPressed: onPressed, currentContext: context),
+      appBar: CustomAppbar(
+        onPressed: (){
+          NavigationUtil.toSwitchAccountScreen(context);
+        }, 
+        currentContext: context
+      ),
       body: InitialBody(
         child: Column(
           children: [
