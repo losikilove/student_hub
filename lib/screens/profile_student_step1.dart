@@ -1,12 +1,15 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:student_hub/components/add_new_language.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_option.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/mutliselect_chip.dart';
+import 'package:student_hub/models/language_model.dart';
 import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
@@ -91,19 +94,42 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
             const SizedBox(
               height: SpacingUtil.mediumHeight,
             ),
-            // techstack options
-            const CustomText(text: 'Techstack'),
-            CustomOption<String>(
-              options: techstackOptions,
-              onHelper: onGettingValueOfTechstack,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // techstack options
+                    const CustomText(
+                      text: 'Techstack',
+                      isBold: true,
+                    ),
+                    CustomOption<String>(
+                      options: techstackOptions,
+                      onHelper: onGettingValueOfTechstack,
+                    ),
+                    const SizedBox(
+                      height: SpacingUtil.mediumHeight,
+                    ),
+                    // skillset selections
+                    const CustomText(
+                      text: 'Skillset',
+                      isBold: true,
+                    ),
+                    MultiSelectChip<String>(
+                      listOf: skillsetOptions,
+                      onHelper: onGettingValuesOfSkillset,
+                    ),
+                    const SizedBox(
+                      height: SpacingUtil.mediumHeight,
+                    ),
+                    // language which add new one
+                    AddNewLanguage(
+                        onHelper: (List<LanguageModel> languages) {}),
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(
-              height: SpacingUtil.mediumHeight,
-            ),
-            // skillset selections
-            const CustomText(text: 'Skillset'),
-            MultiSelectChip<String>(
-                listOf: skillsetOptions, onHelper: onGettingValuesOfSkillset)
           ],
         ),
       ),
