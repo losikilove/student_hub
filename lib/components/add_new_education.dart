@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
-import 'package:student_hub/models/language_model.dart';
+import 'package:student_hub/models/education_model.dart';
 
-class AddNewLanguage extends StatefulWidget {
-  final void Function(List<LanguageModel> languages) onHelper;
-  const AddNewLanguage({super.key, required this.onHelper});
+class AddNewEducation extends StatefulWidget {
+  final void Function(List<EducationModel> educations) onHelper;
+  const AddNewEducation({super.key, required this.onHelper});
 
   @override
-  State<AddNewLanguage> createState() => _AddNewLanguageState();
+  State<AddNewEducation> createState() => _AddNewEducationState();
 }
 
-class _AddNewLanguageState extends State<AddNewLanguage> {
-  final List<LanguageModel> _languages = [
-    LanguageModel('English', 'Native or Bilingual'),
-    LanguageModel('French', 'B2'),
+class _AddNewEducationState extends State<AddNewEducation> {
+  final List<EducationModel> _educations = [
+    EducationModel('Le Hong Phong Highschool', 2008, 2010),
+    EducationModel('Ho Chi Minh University of Sciences', 2010, 2014),
   ];
 
-  void onCreatedNewLanguage() async {
+  void onCreatedNewEducation() async {
     // get data after submit info of dialog
-    final languageInfo = await openDialogHandleNewOne(null);
+    final educationInfo = await openDialogHandleNewOne(null);
 
     // nothing happens when nothing is committed
-    if (languageInfo == null) return;
+    if (educationInfo == null) return;
 
-    // add a new language to list of languages
+    // add a new education to list of educations
     setState(() {
-      _languages.add(languageInfo);
+      _educations.add(educationInfo);
     });
   }
 
@@ -37,52 +37,52 @@ class _AddNewLanguageState extends State<AddNewLanguage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // language title
+            // education title
             const CustomText(
-              text: 'Languages',
+              text: 'Educations',
               isBold: true,
             ),
             // add-new button
             IconButton(
-              onPressed: onCreatedNewLanguage,
+              onPressed: onCreatedNewEducation,
               icon: const Icon(Icons.add_circle_outline),
             ),
           ],
         ),
-        // show list of added languages
+        // show list of added educations
         ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
-          itemCount: _languages.length,
+          itemCount: _educations.length,
           itemBuilder: (BuildContext context, int index) {
-            // edit this language
+            // edit this education
             void onEdited() async {
-              // show alert which edits this language info
-              final edittedLanguage =
-                  await openDialogHandleNewOne(_languages[index]);
+              // show alert which edits this education info
+              final edittededucation =
+                  await openDialogHandleNewOne(_educations[index]);
 
-              // do not want to edit this language
-              if (edittedLanguage == null) return;
+              // do not want to edit this education
+              if (edittededucation == null) return;
 
-              // after editing this language
+              // after editing this education
               setState(() {
-                _languages[index].setLanguage = edittedLanguage.getLanguage;
-                _languages[index].setLevel = edittedLanguage.getLevel;
+                _educations[index].seteducation = edittededucation.geteducation;
+                _educations[index].setLevel = edittededucation.getLevel;
               });
             }
 
-            // remove this language out of list
+            // remove this education out of list
             void onRemoved() async {
-              // show alert which confirms removed this language
+              // show alert which confirms removed this education
               final decision = await openDialogWarningRemoveItem(
-                  _languages[index].getLanguage);
+                  _educations[index].geteducation);
 
-              // do not want to remove this language
+              // do not want to remove this education
               if (decision == null || decision == false) return;
 
-              // after confirm, remove this language
+              // after confirm, remove this education
               setState(() {
-                _languages.removeAt(index);
+                _educations.removeAt(index);
               });
             }
 
@@ -92,13 +92,13 @@ class _AddNewLanguageState extends State<AddNewLanguage> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: CustomText(
-                    text: _languages[index].toString(),
+                    text: _educations[index].toString(),
                     size: 14.5,
                   ),
                 ),
                 Row(
                   children: [
-                    // update this language
+                    // update this education
                     IconButton(
                       onPressed: onEdited,
                       icon: const Icon(Icons.edit_outlined),
@@ -119,52 +119,37 @@ class _AddNewLanguageState extends State<AddNewLanguage> {
   }
 
   // Dialog add-new-one pop-up
-  Future<LanguageModel?> openDialogHandleNewOne(LanguageModel? language) =>
-      showDialog<LanguageModel>(
+  Future<EducationModel?> openDialogHandleNewOne(EducationModel? education) =>
+      showDialog<EducationModel>(
         context: context,
         builder: (context) {
-          final languageController = TextEditingController(
-              text: language == null ? '' : language.getLanguage);
-          final levelController = TextEditingController(
-              text: language == null ? '' : language.getLevel);
+          final schoolNameController = TextEditingController(
+              text: education == null ? '' : education.getSchoolName);
           bool isDisabledSubmit = true;
 
           void onSubmitedToAddNewOne() {
             Navigator.of(context).pop(
-                LanguageModel(languageController.text, levelController.text));
+                EducationModel(educationController.text, levelController.text));
           }
 
           return StatefulBuilder(
             builder: (context, setState) {
               return AlertDialog(
-                title: const Text('Language'),
+                title: const Text('education'),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // fill name of language
+                    // fill school name
                     TextField(
                       onChanged: (value) {
                         setState(() {
-                          isDisabledSubmit = languageController.text.isEmpty ||
-                              levelController.text.isEmpty;
+                          isDisabledSubmit = schoolNameController.text.isEmpty;
                         });
                       },
-                      controller: languageController,
+                      controller: schoolNameController,
                       autofocus: true,
                       decoration: const InputDecoration(
-                          hintText: 'Enter your language'),
-                    ),
-                    // fill level of language
-                    TextField(
-                      onChanged: (value) {
-                        setState(() {
-                          isDisabledSubmit = languageController.text.isEmpty ||
-                              levelController.text.isEmpty;
-                        });
-                      },
-                      controller: levelController,
-                      decoration:
-                          const InputDecoration(hintText: 'Enter your level'),
+                          hintText: 'Enter your school name'),
                     ),
                   ],
                 ),
@@ -182,7 +167,7 @@ class _AddNewLanguageState extends State<AddNewLanguage> {
       );
 
   // Dialog remove-one
-  Future<bool?> openDialogWarningRemoveItem(String language) =>
+  Future<bool?> openDialogWarningRemoveItem(String education) =>
       showDialog<bool>(
         context: context,
         builder: (context) {
@@ -195,7 +180,7 @@ class _AddNewLanguageState extends State<AddNewLanguage> {
               'WARNING',
               style: TextStyle(color: Colors.red),
             ),
-            content: Text('Are you sure to remove this "$language"'),
+            content: Text('Are you sure to remove this "$education"'),
             actions: [
               CustomButton(
                 onPressed: onYes,

@@ -53,7 +53,7 @@ class _CustomOptionState<T> extends State<CustomOption<T>> {
             width: widget.isExpanded ? constraints.maxWidth : null,
             menuHeight: 250,
             initialSelection: _optionValue,
-            hintText: 'Technic?',
+            hintText: '',
             inputDecorationTheme: const InputDecorationTheme(
               enabledBorder: InputBorder.none,
               fillColor: Colors.white,
