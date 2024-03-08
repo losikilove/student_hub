@@ -90,7 +90,7 @@ class _AddNewLanguageState extends State<AddNewLanguage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.6,
                   child: CustomText(
                     text: _languages[index].toString(),
                     size: 14.5,

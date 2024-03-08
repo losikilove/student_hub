@@ -17,12 +17,14 @@ class InitialBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: ColorUtil.lightPrimary,
-      child: Padding(
-        padding:
-            EdgeInsets.only(left: left, right: right, top: top, bottom: bottom),
-        child: child,
+    return SafeArea(
+      child: Container(
+        color: ColorUtil.lightPrimary,
+        child: Padding(
+          padding: EdgeInsets.only(
+              left: left, right: right, top: top, bottom: bottom),
+          child: child,
+        ),
       ),
     );
   }

@@ -5,12 +5,14 @@ class CustomOption<T> extends StatefulWidget {
   final void Function(T? optionValue) onHelper;
   final List<T> options;
   final bool isExpanded;
+  final T? initialSelection;
 
   const CustomOption({
     super.key,
     required this.options,
     required this.onHelper,
     this.isExpanded = true,
+    this.initialSelection,
   });
 
   @override
@@ -24,7 +26,9 @@ class _CustomOptionState<T> extends State<CustomOption<T>> {
   @override
   void initState() {
     super.initState();
-    _optionValue = widget.options.first;
+    _optionValue = widget.initialSelection == null
+        ? widget.options.first
+        : widget.initialSelection!;
     _options = widget.options;
     widget.onHelper(_optionValue);
   }
@@ -41,7 +45,7 @@ class _CustomOptionState<T> extends State<CustomOption<T>> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
+      width: widget.isExpanded ? double.infinity : null,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
         color: Colors.white,

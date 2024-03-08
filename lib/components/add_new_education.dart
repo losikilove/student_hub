@@ -1,7 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:student_hub/components/custom_button.dart';
+import 'package:student_hub/components/custom_option.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/models/education_model.dart';
+import 'package:student_hub/utils/education_util.dart';
+import 'package:student_hub/utils/spacing_util.dart';
 
 class AddNewEducation extends StatefulWidget {
   final void Function(List<EducationModel> educations) onHelper;
@@ -13,8 +18,8 @@ class AddNewEducation extends StatefulWidget {
 
 class _AddNewEducationState extends State<AddNewEducation> {
   final List<EducationModel> _educations = [
-    EducationModel('Le Hong Phong Highschool', 2008, 2010),
-    EducationModel('Ho Chi Minh University of Sciences', 2010, 2014),
+    EducationModel('Le Hong Phong Highschool', '2008', '2010'),
+    EducationModel('Ho Chi Minh University of Sciences', '2010', '2014'),
   ];
 
   void onCreatedNewEducation() async {
@@ -58,16 +63,20 @@ class _AddNewEducationState extends State<AddNewEducation> {
             // edit this education
             void onEdited() async {
               // show alert which edits this education info
-              final edittededucation =
+              final edittedEducation =
                   await openDialogHandleNewOne(_educations[index]);
 
               // do not want to edit this education
-              if (edittededucation == null) return;
+              if (edittedEducation == null) return;
 
               // after editing this education
               setState(() {
-                _educations[index].seteducation = edittededucation.geteducation;
-                _educations[index].setLevel = edittededucation.getLevel;
+                _educations[index].setSchoolName =
+                    edittedEducation.getSchoolName;
+                _educations[index].setBeginningOfSchoolYear =
+                    edittedEducation.getBeginningOfSchoolYear;
+                _educations[index].setEndOfSchoolYear =
+                    edittedEducation.getEndOfSchoolYear;
               });
             }
 
@@ -75,10 +84,10 @@ class _AddNewEducationState extends State<AddNewEducation> {
             void onRemoved() async {
               // show alert which confirms removed this education
               final decision = await openDialogWarningRemoveItem(
-                  _educations[index].geteducation);
+                  _educations[index].getSchoolName);
 
               // do not want to remove this education
-              if (decision == null || decision == false) return;
+              if (decision == null) return;
 
               // after confirm, remove this education
               setState(() {
@@ -89,12 +98,23 @@ class _AddNewEducationState extends State<AddNewEducation> {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  child: CustomText(
-                    text: _educations[index].toString(),
-                    size: 14.5,
-                  ),
+                // school name
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: CustomText(
+                        text: _educations[index].getSchoolName,
+                        size: 14.5,
+                      ),
+                    ),
+                    Text(
+                      _educations[index].getSchoolYear,
+                      style: const TextStyle(
+                          fontSize: 14.5, fontStyle: FontStyle.italic),
+                    ),
+                  ],
                 ),
                 Row(
                   children: [
@@ -125,18 +145,35 @@ class _AddNewEducationState extends State<AddNewEducation> {
         builder: (context) {
           final schoolNameController = TextEditingController(
               text: education == null ? '' : education.getSchoolName);
+          final listBeginningYears = List<String>.generate(
+              EducationUtil.numberOfYears(),
+              (index) => '${DateTime.now().year - index}');
+          String selectedBeginningYear = listBeginningYears.first;
+          final listEndYears = List<String>.generate(
+              EducationUtil.numberOfYears(),
+              (index) => '${DateTime.now().year - index}');
+          String selectedEndYear = listEndYears.first;
           bool isDisabledSubmit = true;
 
           void onSubmitedToAddNewOne() {
-            Navigator.of(context).pop(
-                EducationModel(educationController.text, levelController.text));
+            Navigator.of(context).pop(EducationModel(schoolNameController.text,
+                selectedBeginningYear, selectedEndYear));
+          }
+
+          void onGettingBeginningOfYear(String? year) {
+            selectedBeginningYear = year!;
+          }
+
+          void onGettingEndOfYear(String? year) {
+            selectedEndYear = year!;
           }
 
           return StatefulBuilder(
             builder: (context, setState) {
               return AlertDialog(
-                title: const Text('education'),
+                title: const Text('Education'),
                 content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // fill school name
@@ -149,7 +186,63 @@ class _AddNewEducationState extends State<AddNewEducation> {
                       controller: schoolNameController,
                       autofocus: true,
                       decoration: const InputDecoration(
-                          hintText: 'Enter your school name'),
+                        hintText: 'Enter your school name',
+                      ),
+                    ),
+                    const SizedBox(
+                      height: SpacingUtil.smallHeight,
+                    ),
+                    // pick beginning of year up
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 100,
+                      height: MediaQuery.of(context).size.height * 0.1,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Begin: ',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                          Expanded(
+                            child: CustomOption<String>(
+                              options: listBeginningYears,
+                              onHelper: onGettingBeginningOfYear,
+                              initialSelection: education == null
+                                  ? listBeginningYears.first
+                                  : education.getBeginningOfSchoolYear,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // pick end of year up
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 100,
+                      height: MediaQuery.of(context).size.height * 0.1,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Finish: ',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                          Expanded(
+                            child: CustomOption<String>(
+                              options: listEndYears,
+                              onHelper: onGettingEndOfYear,
+                              initialSelection: education == null
+                                  ? listEndYears.first
+                                  : education.getEndOfSchoolYear,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
