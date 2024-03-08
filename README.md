@@ -1,5 +1,6 @@
 ### Student Hub
 - An application permits managing students, teachers, projects, ...
+- Version: sdk: '>=3.3.0 <4.0.0'
 
 ### Issues
 ## 1. RenderCustomMultiChildLayoutBox object was given an infinite size during layout.
@@ -17,3 +18,8 @@
 ## 4. Cannot expand the with of DropdownMenu widget which fits the defined screen
 - Reasons: that widget just provides the width attribute which makes dev defining its width
 - Solutions: wrap that widget in a LayoutBuilder widget, then set its width to constraints.maxWidth which is the maximum width of Container widget
+## 5. Wrapper expansionTile
+- Reasons: Remove line wrapper expansionTile
+- Solution: add it into theme{} and using dividerColor: Colors.transparent
+- Example:
+- Theme(data: Theme.of(context).copyWith(dividerColor: Colors.transparent),child: ExpansionTile())
