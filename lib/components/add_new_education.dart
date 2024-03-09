@@ -17,10 +17,7 @@ class AddNewEducation extends StatefulWidget {
 }
 
 class _AddNewEducationState extends State<AddNewEducation> {
-  final List<EducationModel> _educations = [
-    EducationModel('Le Hong Phong Highschool', '2008', '2010'),
-    EducationModel('Ho Chi Minh University of Sciences', '2010', '2014'),
-  ];
+  final List<EducationModel> _educations = [];
 
   void onCreatedNewEducation() async {
     // get data after submit info of dialog
@@ -33,6 +30,7 @@ class _AddNewEducationState extends State<AddNewEducation> {
     setState(() {
       _educations.add(educationInfo);
     });
+    widget.onHelper(_educations);
   }
 
   @override
@@ -78,6 +76,7 @@ class _AddNewEducationState extends State<AddNewEducation> {
                 _educations[index].setEndOfSchoolYear =
                     edittedEducation.getEndOfSchoolYear;
               });
+              widget.onHelper(_educations);
             }
 
             // remove this education out of list
@@ -93,6 +92,7 @@ class _AddNewEducationState extends State<AddNewEducation> {
               setState(() {
                 _educations.removeAt(index);
               });
+              widget.onHelper(_educations);
             }
 
             return Row(

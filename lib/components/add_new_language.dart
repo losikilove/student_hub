@@ -12,10 +12,7 @@ class AddNewLanguage extends StatefulWidget {
 }
 
 class _AddNewLanguageState extends State<AddNewLanguage> {
-  final List<LanguageModel> _languages = [
-    LanguageModel('English', 'Native or Bilingual'),
-    LanguageModel('French', 'B2'),
-  ];
+  final List<LanguageModel> _languages = [];
 
   void onCreatedNewLanguage() async {
     // get data after submit info of dialog
@@ -28,6 +25,7 @@ class _AddNewLanguageState extends State<AddNewLanguage> {
     setState(() {
       _languages.add(languageInfo);
     });
+    widget.onHelper(_languages);
   }
 
   @override
@@ -69,6 +67,7 @@ class _AddNewLanguageState extends State<AddNewLanguage> {
                 _languages[index].setLanguage = edittedLanguage.getLanguage;
                 _languages[index].setLevel = edittedLanguage.getLevel;
               });
+              widget.onHelper(_languages);
             }
 
             // remove this language out of list
@@ -84,6 +83,7 @@ class _AddNewLanguageState extends State<AddNewLanguage> {
               setState(() {
                 _languages.removeAt(index);
               });
+              widget.onHelper(_languages);
             }
 
             return Row(

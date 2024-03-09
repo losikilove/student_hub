@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:student_hub/components/add_new_education.dart';
 import 'package:student_hub/components/add_new_language.dart';
 import 'package:student_hub/components/custom_appbar.dart';
@@ -47,7 +44,7 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
     'Frontend dev',
     'Fullstack dev'
   ];
-  late String optionValue;
+  late String optionValueTechstack;
   final List<String> skillsetOptions = [
     'iOS dev',
     'C/C++',
@@ -56,15 +53,29 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
     'NodeJS',
   ];
   late List<String> selectedSkillsets;
+  late List<LanguageModel> addedNewLanguages;
+  late List<EducationModel> addedNewEducations;
 
   void onPressed() {}
 
+  // get result from the techstack
   void onGettingValueOfTechstack(String? option) {
-    optionValue = option!;
+    optionValueTechstack = option!;
   }
 
+  // get results from the skillset
   void onGettingValuesOfSkillset(List<String> selectedItems) {
     selectedSkillsets = selectedItems;
+  }
+
+  // get results from the languages
+  void onGettingValuesOfLanguage(List<LanguageModel> languages) {
+    addedNewLanguages = languages;
+  }
+
+  // get results from the educations
+  void onGettingValuesOfEducation(List<EducationModel> educations) {
+    addedNewEducations = educations;
   }
 
   @override
@@ -127,14 +138,14 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
                     ),
                     // language adding new one
                     AddNewLanguage(
-                      onHelper: (List<LanguageModel> languages) {},
+                      onHelper: onGettingValuesOfLanguage,
                     ),
                     const SizedBox(
                       height: SpacingUtil.mediumHeight,
                     ),
                     // education adding new one
                     AddNewEducation(
-                      onHelper: (List<EducationModel> educations) {},
+                      onHelper: onGettingValuesOfEducation,
                     )
                   ],
                 ),
