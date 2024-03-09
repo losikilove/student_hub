@@ -8,18 +8,29 @@ import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
+enum MainScreenIndex {
+  project(number: 0),
+  dashboard(number: 1),
+  message(number: 2),
+  notification(number: 3);
+
+  final int number;
+
+  const MainScreenIndex({required this.number});
+}
+
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final MainScreenIndex contentBody;
+
+  const MainScreen({super.key, required this.contentBody});
 
   @override
   State<MainScreen> createState() => _MainScreen();
 }
 
-void onPressed() {}
-
 class _MainScreen extends State<MainScreen> {
   final name = 'Hai';
-  int _selectedIndex = 1;
+  late int _selectedIndex = widget.contentBody.number;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
@@ -28,6 +39,8 @@ class _MainScreen extends State<MainScreen> {
     Message(),
     Notification(),
   ];
+
+  void onPressed() {}
 
   void _onItemTapped(int index) {
     setState(() {
@@ -78,6 +91,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _Dashboard extends State<Dashboard> {
+  void onPressed() {}
+
   @override
   Widget build(BuildContext context) {
     return Column(

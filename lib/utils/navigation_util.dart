@@ -125,11 +125,14 @@ class NavigationUtil {
   }
 
   // switch to main screen
-  static void toMainScreen(BuildContext currentContext) {
+  static void toMainScreen(
+      BuildContext currentContext, MainScreenIndex contentBody) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
-        builder: (context) => const MainScreen(),
+        builder: (context) => MainScreen(
+          contentBody: contentBody,
+        ),
       ),
     );
   }

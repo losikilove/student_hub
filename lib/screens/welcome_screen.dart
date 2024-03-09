@@ -3,6 +3,7 @@ import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/screens/main_screen.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
@@ -54,8 +55,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
             // switch to dashboard button
             CustomButton(
-              onPressed: (){
-                NavigationUtil.toMainScreen(context);
+              onPressed: () {
+                NavigationUtil.toMainScreen(context, MainScreenIndex.dashboard);
               },
               text: 'Get started!',
             ),
