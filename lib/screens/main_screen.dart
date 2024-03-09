@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/utils/color_util.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class MainScreen extends StatefulWidget {
@@ -36,7 +39,7 @@ class _MainScreen extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(onPressed: onPressed, currentContext: context),
-      body: Center(
+      body: InitialBody(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -77,37 +80,35 @@ class Dashboard extends StatefulWidget {
 class _Dashboard extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
-    return InitialBody(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Center(
-            child: Row(
-              children: [
-                Text(
-                  'Yours job',
-                ),
-                const SizedBox(
-                  width: 180,
-                ),
-                CustomButton(onPressed: onPressed, text: 'Post a job')
-              ],
-            ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Center(
+          child: Row(
+            children: [
+              Text(
+                'Yours job',
+              ),
+              const SizedBox(
+                width: 180,
+              ),
+              CustomButton(onPressed: onPressed, text: 'Post a job')
+            ],
           ),
-          SizedBox(
-            height: SpacingUtil.largeHeight,
-          ),
-          Center(
-            child: CustomText(text: 'Welcome, Hai!'),
-          ),
-          SizedBox(
-            height: SpacingUtil.smallHeight,
-          ),
-          Center(
-            child: CustomText(text: 'You have no jobs!'),
-          )
-        ],
-      ),
+        ),
+        SizedBox(
+          height: SpacingUtil.largeHeight,
+        ),
+        Center(
+          child: CustomText(text: 'Welcome, Hai!'),
+        ),
+        SizedBox(
+          height: SpacingUtil.smallHeight,
+        ),
+        Center(
+          child: CustomText(text: 'You have no jobs!'),
+        )
+      ],
     );
   }
 }
@@ -121,9 +122,46 @@ class Project extends StatefulWidget {
 
 class _Project extends State<Project> {
   @override
+  void initState() {
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      // when switch to main screen with chosen project, show the dialog welcome
+      showDialogWelcome();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Center();
   }
+
+  Future showDialogWelcome() => showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Center(
+            child: Text(
+              'Welcome',
+              style: TextStyle(
+                color: ColorUtil.darkPrimary,
+              ),
+            ),
+          ),
+          content: const CustomText(
+            text:
+                'Welcome to StudentHub, a marketplace to connect Student to Real-world projects',
+            isCenter: true,
+          ),
+          actions: [
+            CustomButton(
+              onPressed: () => NavigationUtil.turnBack(context),
+              text: 'Next',
+              size: CustomButtonSize.large,
+            ),
+          ],
+        );
+      });
 }
 
 class Message extends StatefulWidget {

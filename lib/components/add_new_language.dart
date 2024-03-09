@@ -94,6 +94,7 @@ class _AddNewLanguageState extends State<AddNewLanguage> {
                   child: CustomText(
                     text: _languages[index].toString(),
                     size: 14.5,
+                    isOverflow: true,
                   ),
                 ),
                 Row(

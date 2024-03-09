@@ -107,6 +107,7 @@ class _AddNewEducationState extends State<AddNewEducation> {
                       child: CustomText(
                         text: _educations[index].getSchoolName,
                         size: 14.5,
+                        isOverflow: true,
                       ),
                     ),
                     Text(

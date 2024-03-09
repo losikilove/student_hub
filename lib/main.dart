@@ -10,6 +10,6 @@ import 'package:student_hub/screens/switch_account_screen.dart';
 void main() {
   runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: ProfileStudentStep1Screen(),
+    home: MainScreen(),
   ));
 }

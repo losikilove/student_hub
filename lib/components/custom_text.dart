@@ -6,18 +6,20 @@ class CustomText extends StatelessWidget {
   final bool isBold;
   final bool isCenter;
   final double size;
+  final bool isOverflow;
   const CustomText(
       {super.key,
       required this.text,
       this.isBold = false,
       this.isCenter = false,
+      this.isOverflow = false,
       this.size = TextUtil.textSize});
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      overflow: TextOverflow.ellipsis,
+      overflow: isOverflow ? TextOverflow.ellipsis : null,
       style: TextStyle(
         fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
         fontSize: size,
