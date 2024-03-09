@@ -3,6 +3,8 @@ import 'package:student_hub/screens/companyprofile_screen.dart';
 import 'package:student_hub/screens/companyregister_screen.dart';
 import 'package:student_hub/screens/home_screen.dart';
 import 'package:student_hub/screens/main_screen.dart';
+import 'package:student_hub/screens/profile_student_step1.dart';
+import 'package:student_hub/screens/profile_student_step3_screen.dart';
 import 'package:student_hub/screens/registration_two_company_screen.dart';
 import 'package:student_hub/screens/registration_two_student_screen.dart';
 import 'package:student_hub/screens/signin_screen.dart';
@@ -96,6 +98,28 @@ class NavigationUtil {
       currentContext,
       MaterialPageRoute(
         builder: (context) => const WelcomeScreen(),
+      ),
+    );
+  }
+
+  // switch to profile student step 1 screen
+  static void toProfileStudentStep1Screen(BuildContext currentContext) {
+    Navigator.push(
+      currentContext,
+      MaterialPageRoute(
+        builder: (context) => const ProfileStudentStep1Screen(),
+      ),
+    );
+  }
+
+  // TODO: switch to profile student step 2 screen
+
+  // switch to profile student step 3 screen
+  static void toProfileStudentStep3Screen(BuildContext currentContext) {
+    Navigator.push(
+      currentContext,
+      MaterialPageRoute(
+        builder: (context) => const ProfileStudentStep3Screen(),
       ),
     );
   }
