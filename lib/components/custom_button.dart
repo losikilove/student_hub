@@ -10,6 +10,8 @@ class CustomButton extends StatelessWidget {
   final String text;
   final CustomButtonSize size;
   final bool isDisabled;
+  final Color buttonColor;
+  final Color textColor;
 
   const CustomButton({
     super.key,
@@ -17,6 +19,8 @@ class CustomButton extends StatelessWidget {
     required this.text,
     this.size = CustomButtonSize.small,
     this.isDisabled = false,
+    this.buttonColor = ColorUtil.primary,
+    this.textColor = Colors.white,
   });
 
   // set up the witdh of button
@@ -40,11 +44,15 @@ class CustomButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: isDisabled ? null : onPressed,
       style: ElevatedButton.styleFrom(
-          backgroundColor: ColorUtil.primary, minimumSize: _setWidth(size)),
+        backgroundColor: buttonColor,
+        minimumSize: _setWidth(size),
+      ),
       child: Text(
         text,
-        style:
-            const TextStyle(fontSize: TextUtil.textSize, color: Colors.white),
+        style: TextStyle(
+          fontSize: TextUtil.textSize,
+          color: textColor,
+        ),
       ),
     );
   }
