@@ -164,7 +164,7 @@ class _AddNewProject extends State<AddNewProject>{
                         ValueItem(label: 'Switf', value: 'Switf'),
                       ],
                       maxItems: 4,
-                      disabledOptions: const [ValueItem(label: '', value: '')],
+                      disabledOptions: const [ValueItem(label: 'Java', value: 'Java')],
                       selectionType: SelectionType.multi,
                       chipConfig: const ChipConfig(wrapType: WrapType.wrap),
                       dropdownHeight: 300,
@@ -336,28 +336,7 @@ class _AddNewProject extends State<AddNewProject>{
                           ),
                         ],
                       ),
-                    ),
-                    MultiSelectDropDown(
-                      controller: _multiSelectController,
-                      onOptionSelected: (options) {
-                        debugPrint(options.toString());
-                      },
-                      options: const <ValueItem>[
-                        ValueItem(label: 'IOS dev', value: 'IOS dev'),
-                        ValueItem(label: 'C++', value: 'C++'),
-                        ValueItem(label: 'Java', value: 'Java'),
-                        ValueItem(label: 'Dart', value: 'Dart'),
-                        ValueItem(label: 'Switf', value: 'Switf'),
-                      ],
-                      maxItems: 4,
-                      disabledOptions: const [ValueItem(label: '', value: '')],
-                      selectionType: SelectionType.multi,
-                      chipConfig: const ChipConfig(wrapType: WrapType.wrap),
-                      dropdownHeight: 300,
-                      optionTextStyle: const TextStyle(fontSize: 16),
-                      selectedOptionIcon: const Icon(Icons.check_circle),
-                    ),
-                     
+                    ),                     
                 ]),
               ),
               actions: [
