@@ -3,12 +3,12 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_option.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/mutliselect_chip.dart';
-import 'package:student_hub/models/project_model.dart';
+import 'package:student_hub/models/experience_model.dart';
 import 'package:student_hub/utils/education_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class AddNewProject extends StatefulWidget{
-  final void Function (List<ProjectModel> projects) onHelper;
+  final void Function (List<ExperienceModel> projects) onHelper;
   const AddNewProject({super.key, required this.onHelper});
 
   @override
@@ -17,12 +17,12 @@ class AddNewProject extends StatefulWidget{
 
 class _AddNewProject extends State<AddNewProject>{
 
-  final List<ProjectModel> _projects =[
-    ProjectModel('Intelligent Taxi Dispatching System', 
+  final List<ExperienceModel> _projects =[
+    ExperienceModel('Intelligent Taxi Dispatching System', 
     'It is developer of a super-app for ride-halling, food delivery'
     ' and digital payments services on mobile device that operates in Singapor, Malaysia,...'
     ,'9/2020', '12/2020', '4 months'),
-    ProjectModel('Intelligent Taxi Dispatching System', 
+    ExperienceModel('Intelligent Taxi Dispatching System', 
     'It is developer of a super-app for ride-halling, food delivery'
     ' and digital payments services on mobile device that operates in Singapor, Malaysia,...'
     ,'9/2020', '12/2020', '4 months'),
@@ -81,8 +81,8 @@ class _AddNewProject extends State<AddNewProject>{
     );
   }
 
-  Future<ProjectModel?> openDialogHandleNewOne(ProjectModel? project) =>
-    showDialog<ProjectModel>(
+  Future<ExperienceModel?> openDialogHandleNewOne(ExperienceModel? project) =>
+    showDialog<ExperienceModel>(
       context: context, 
       builder: (context){
         final tileProject = TextEditingController(
@@ -116,7 +116,7 @@ class _AddNewProject extends State<AddNewProject>{
         bool isDisabledSubmit = true;
         
         void onSubmitedToAddNewOne(){
-          Navigator.of(context).pop(ProjectModel(
+          Navigator.of(context).pop(ExperienceModel(
             tileProject.text, 
             descriptionProject.text,
             beginTime,
