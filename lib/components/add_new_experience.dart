@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_option.dart';
 import 'package:student_hub/components/custom_text.dart';
-import 'package:student_hub/components/mutliselect_chip.dart';
 import 'package:student_hub/models/experience_model.dart';
 import 'package:student_hub/utils/education_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
@@ -17,35 +17,29 @@ class AddNewProject extends StatefulWidget{
 
 class _AddNewProject extends State<AddNewProject>{
 
-  final List<ExperienceModel> _projects =[
+  final List<ExperienceModel> _experiences =[
     ExperienceModel('Intelligent Taxi Dispatching System', 
     'It is developer of a super-app for ride-halling, food delivery'
     ' and digital payments services on mobile device that operates in Singapor, Malaysia,...'
-    ,'9/2020', '12/2020', '4 months'),
+    ,'9/2020', '12/2020', '4 months',['C++', 'Java']),
     ExperienceModel('Intelligent Taxi Dispatching System', 
     'It is developer of a super-app for ride-halling, food delivery'
     ' and digital payments services on mobile device that operates in Singapor, Malaysia,...'
-    ,'9/2020', '12/2020', '4 months'),
+    ,'9/2020', '12/2020', '4 months',['C++', 'Java']),
   ];
 
-  final List<String> skillsetOptions = [
-    'iOS dev',
-    'C/C++',
-    'Java',
-    'ReactJS',
-    'NodeJS', 
-  ];
+  final MultiSelectController _multiSelectController = MultiSelectController();
   late  List<String> selectedSkillsets;
   void onGettingValuesOfSkillset(List<String> selectedItems) {
     selectedSkillsets = selectedItems;
   }
 
-  void onCreateNewProject() async{
-    final projectInfo = await openDialogHandleNewOne(null);
-    if (projectInfo == null) return;
+  void onCreateNewExperience() async{
+    final experienceInfo = await openDialogHandleNewOne(null);
+    if (experienceInfo == null) return;
 
     setState(() {
-      _projects.add(projectInfo);
+      _experiences.add(experienceInfo);
     });
   }
   String caculateSetMonths(String timeStart, String timeEnd){
@@ -74,9 +68,115 @@ class _AddNewProject extends State<AddNewProject>{
               text: 'Project',
               isBold: true,
             ),
-            IconButton(onPressed: onCreateNewProject, icon: const Icon(Icons.add_circle_outline))
+            IconButton(onPressed: onCreateNewExperience, icon: const Icon(Icons.add_circle_outline))
           ]
+        ),
+        ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: _experiences.length,
+          itemBuilder: (BuildContext context, int index){
+            void onEdited() async {
+              final editedExperience = 
+                await openDialogHandleNewOne(_experiences[index]);
+              if(editedExperience == null)return;
+
+              //
+              setState(() {
+                _experiences[index].setTile = 
+                  editedExperience.getTile;
+                _experiences[index].setDescription = 
+                  editedExperience.getDescription;
+                _experiences[index].setTimeStart = 
+                  editedExperience.getTimeStart;
+                _experiences[index].setTimeEnd = 
+                  editedExperience.getTimeEnd;
+                _experiences[index].setMonths = 
+                  editedExperience.getMonths;
+                _experiences[index].setSelectSkill =
+                  editedExperience.getSkills;                
+              });
+              widget.onHelper(_experiences);
+            }
+
+            // remove this education out of list
+            void onRemoved() async {
+              // show alert which confirms removed this education
+              final decision = await openDialogWarningRemoveItem(
+                  _experiences[index].getTile);
+
+              // do not want to remove this education
+              if (decision == null) return;
+
+              // after confirm, remove this education
+              setState(() {
+                _experiences.removeAt(index);
+              });
+              widget.onHelper(_experiences);
+            }
+            return Column(
+              children: [
+                Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          child: CustomText(
+                          text: _experiences[index].getTile,
+                          size: 14.5,
+                          isOverflow: true,
+                          ),
+                        ),
+                        Text(
+                          _experiences[index].getTime,
+                          style: const TextStyle(
+                              fontSize: 14.5, fontStyle: FontStyle.italic),
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      onPressed: onEdited,
+                      icon: const Icon(Icons.edit_outlined),
+                    ),
+                    // remove this one
+                    IconButton(
+                      onPressed: onRemoved,
+                      icon: const Icon(Icons.delete),
+                    ),
+
+                  ],
+                ),
+                CustomText(
+                  text: _experiences[index].getDescription
+                ),   
+                MultiSelectDropDown(
+                      controller: _multiSelectController,
+                      onOptionSelected: (options) {
+                        debugPrint(options.toString());
+                      },
+                      options: const <ValueItem>[
+                        ValueItem(label: 'IOS dev', value: 'IOS dev'),
+                        ValueItem(label: 'C++', value: 'C++'),
+                        ValueItem(label: 'Java', value: 'Java'),
+                        ValueItem(label: 'Dart', value: 'Dart'),
+                        ValueItem(label: 'Switf', value: 'Switf'),
+                      ],
+                      maxItems: 4,
+                      disabledOptions: const [ValueItem(label: '', value: '')],
+                      selectionType: SelectionType.multi,
+                      chipConfig: const ChipConfig(wrapType: WrapType.wrap),
+                      dropdownHeight: 300,
+                      optionTextStyle: const TextStyle(fontSize: 16),
+                      selectedOptionIcon: const Icon(Icons.check_circle),
+                    ),       
+              ],
+
+            );
+          }
         ) 
+
       ],
     );
   }
@@ -86,7 +186,7 @@ class _AddNewProject extends State<AddNewProject>{
       context: context, 
       builder: (context){
         final tileProject = TextEditingController(
-          text: project == null ? '' : project.getTileProject
+          text: project == null ? '' : project.getTile
         );
         final descriptionProject = TextEditingController(
           text: project == null ? '' : project.getDescription
@@ -114,14 +214,16 @@ class _AddNewProject extends State<AddNewProject>{
           + listEndYears.first;
 
         bool isDisabledSubmit = true;
-        
+        // List<String> multiSelectSkill = _multiSelectController.toString().split(' ');
+
         void onSubmitedToAddNewOne(){
           Navigator.of(context).pop(ExperienceModel(
             tileProject.text, 
             descriptionProject.text,
             beginTime,
             endTime,
-            caculateSetMonths(beginTime,endTime)));
+            '',
+            []));
         }
         void onGettingBeginningOfTime(String? time) {
           beginTime = time!;
@@ -235,15 +337,40 @@ class _AddNewProject extends State<AddNewProject>{
                         ],
                       ),
                     ),
-                    MultiSelectChip<String>(
-                      listOf: skillsetOptions,
-                      onHelper: onGettingValuesOfSkillset,
+                    MultiSelectDropDown(
+                      controller: _multiSelectController,
+                      onOptionSelected: (options) {
+                        debugPrint(options.toString());
+                      },
+                      options: const <ValueItem>[
+                        ValueItem(label: 'IOS dev', value: 'IOS dev'),
+                        ValueItem(label: 'C++', value: 'C++'),
+                        ValueItem(label: 'Java', value: 'Java'),
+                        ValueItem(label: 'Dart', value: 'Dart'),
+                        ValueItem(label: 'Switf', value: 'Switf'),
+                      ],
+                      maxItems: 4,
+                      disabledOptions: const [ValueItem(label: '', value: '')],
+                      selectionType: SelectionType.multi,
+                      chipConfig: const ChipConfig(wrapType: WrapType.wrap),
+                      dropdownHeight: 300,
+                      optionTextStyle: const TextStyle(fontSize: 16),
+                      selectedOptionIcon: const Icon(Icons.check_circle),
                     ),
+                     
                 ]),
               ),
               actions: [
                 CustomButton(
-                  onPressed: onSubmitedToAddNewOne,
+                  onPressed: (){
+                    Navigator.of(context).pop(ExperienceModel(
+                      tileProject.text, 
+                      descriptionProject.text,
+                      beginTime,
+                      endTime,
+                      '',
+                      []));
+                  },
                   text: 'SUBMIT',
                   isDisabled: isDisabledSubmit,
                 )
@@ -252,5 +379,29 @@ class _AddNewProject extends State<AddNewProject>{
           }
         );
       }
+      
     );
+    Future<bool?> openDialogWarningRemoveItem(String experience) =>
+      showDialog<bool>(
+        context: context,
+        builder: (context) {
+          void onYes() {
+            Navigator.of(context).pop(true);
+          }
+
+          return AlertDialog(
+            title: const Text(
+              'WARNING',
+              style: TextStyle(color: Colors.red),
+            ),
+            content: Text('Are you sure to remove this "$experience"'),
+            actions: [
+              CustomButton(
+                onPressed: onYes,
+                text: 'YES',
+              ),
+            ],
+          );
+        },
+      );
 }

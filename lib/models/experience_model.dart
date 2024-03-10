@@ -5,6 +5,7 @@ class ExperienceModel{
   String _setTimeStart;
   String _setTimeEnd;
   String _setMonths;
+  List<String> _skill;
   
 
   ExperienceModel(
@@ -13,27 +14,16 @@ class ExperienceModel{
     this._setTimeStart,
     this._setTimeEnd,
     this._setMonths,
+    this._skill
   );
   
-  String get getTileProject => _tile;
+  String get getTile => _tile;
   String get getDescription => _description;
   String get getTimeStart => _setTimeStart;
   String get getTimeEnd => _setTimeEnd;
-
-
-  static String caculateSetMonths(String timeStart, String timeEnd){
-    List<String> start = timeStart.split('/'); 
-    List<String> end = timeEnd.split('/'); 
-    int index;
-    if(int.parse(end[1]) > int.parse(start[1])){
-      index = 12 - (int.parse(end[1]) - int.parse(start[1])) + 1;
-      return  index.toString() + ' months';
-    }
-    else{
-      index = int.parse(end[0]) - int.parse(start[0]);
-      return  index.toString() + ' months';
-    }
-  }
+  String get getMonths => _setMonths;
+  String get getTime => '$_setTimeStart-$_setTimeEnd, $_setMonths';
+  List<String> get getSkills => _skill;
 
   set setTile(String tile){
     _tile = tile;
@@ -50,16 +40,9 @@ class ExperienceModel{
     _setTimeEnd = timeEnd;
   }
   set setMonths(String months){
-    List<String> start = _setTimeStart.split('/'); 
-    List<String> end = _setTimeEnd.split('/'); 
-    int index;
-    if(int.parse(end[1]) > int.parse(start[1])){
-      index = 12 - (int.parse(end[1]) - int.parse(start[1])) + 1;
-      _setMonths = index.toString() + ' months';
-    }
-    else{
-      index = int.parse(end[0]) - int.parse(start[0]);
-      _setMonths = index.toString() + ' months';
-    }
+    _setMonths = months;
+  }
+  set setSelectSkill(List<String> skills){
+    _skill = skills;
   }
 }
