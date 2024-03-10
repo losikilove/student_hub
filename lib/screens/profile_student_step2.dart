@@ -37,7 +37,7 @@ class _ProfileStudentStep2Screen extends
       appBar: CustomAppbar(
         onPressed: onPressed,
         currentContext: context,),
-      body: InitialBody(
+        body: InitialBody(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -62,17 +62,16 @@ class _ProfileStudentStep2Screen extends
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // add new project
                     AddNewProject(
                       onHelper: onGettingValuesOfProject,
                     ),
                     const SizedBox(
                       height: SpacingUtil.mediumHeight,
                     ),
-
-          ]),
+                  ]
+                ),
               ),
-              ),
+            ),
           ],
         ),
       ),

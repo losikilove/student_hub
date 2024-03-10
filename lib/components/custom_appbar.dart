@@ -26,35 +26,37 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
-      leadingWidth: 30.0,
-      leading: isBack
-          ? IconButton(
-              icon: const Icon(
-                Icons.keyboard_arrow_left,
-                color: Colors.white,
-              ),
-              padding: EdgeInsets.zero,
-              onPressed: () => Navigator.pop(currentContext),
-            )
-          : null,
-      backgroundColor: backgroundColor,
-      actions: [
-        IconButton(
-          onPressed: onPressed,
-          icon: Icon(
-            iconButton,
+    return SafeArea(
+      child: AppBar(
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
-        )
-      ],
+        ),
+        leadingWidth: 30.0,
+        leading: isBack
+            ? IconButton(
+                icon: const Icon(
+                  Icons.keyboard_arrow_left,
+                  color: Colors.white,
+                ),
+                padding: EdgeInsets.zero,
+                onPressed: () => Navigator.pop(currentContext),
+              )
+            : null,
+        backgroundColor: backgroundColor,
+        actions: [
+          IconButton(
+            onPressed: onPressed,
+            icon: Icon(
+              iconButton,
+              color: Colors.white,
+            ),
+          )
+        ],
+      ),
     );
   }
 }
