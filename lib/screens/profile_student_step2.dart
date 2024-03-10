@@ -1,11 +1,11 @@
 
 import 'package:flutter/material.dart';
-import 'package:student_hub/components/add_new_project.dart';
+import 'package:student_hub/components/add_new_experience.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
-import 'package:student_hub/models/project_model.dart';
+import 'package:student_hub/models/experience_model.dart';
 import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
@@ -20,13 +20,13 @@ class ProfileStudentStep2Screen extends StatefulWidget{
 class _ProfileStudentStep2Screen extends 
   State<ProfileStudentStep2Screen>{
 
-  late List<ProjectModel> addNewProject = [];
+  late List<ExperienceModel> addNewProject = [];
 
   void onPressed(){
 
   }
 
-  void onGettingValuesOfProject(List<ProjectModel> project) {
+  void onGettingValuesOfProject(List<ExperienceModel> project) {
     addNewProject = project;
   }
 

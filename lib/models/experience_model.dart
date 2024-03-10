@@ -1,23 +1,24 @@
 
-class ProjectModel{
-  String _Tile;
-  String _Description;
-  String _SetTimeStart;
-  String _SetTimeEnd;
-  String _SetMonths;
+class ExperienceModel{
+  String _tile;
+  String _description;
+  String _setTimeStart;
+  String _setTimeEnd;
+  String _setMonths;
+  
 
-  ProjectModel(
-    this._Tile,
-    this._Description,
-    this._SetTimeStart,
-    this._SetTimeEnd,
-    this._SetMonths,
+  ExperienceModel(
+    this._tile,
+    this._description,
+    this._setTimeStart,
+    this._setTimeEnd,
+    this._setMonths,
   );
   
-  String get getTileProject => _Tile;
-  String get getDescription => _Description;
-  String get getTimeStart => _SetTimeStart;
-  String get getTimeEnd => _SetTimeEnd;
+  String get getTileProject => _tile;
+  String get getDescription => _description;
+  String get getTimeStart => _setTimeStart;
+  String get getTimeEnd => _setTimeEnd;
 
 
   static String caculateSetMonths(String timeStart, String timeEnd){
@@ -35,30 +36,30 @@ class ProjectModel{
   }
 
   set setTile(String tile){
-    _Tile = tile;
+    _tile = tile;
   }
 
   set setDescription(String desciption){
-    _Description = desciption;
+    _description = desciption;
   }
 
   set setTimeStart(String timeStart){
-    _SetTimeStart = timeStart;
+    _setTimeStart = timeStart;
   }
   set setTimeEnd(String timeEnd){
-    _SetTimeEnd = timeEnd;
+    _setTimeEnd = timeEnd;
   }
   set setMonths(String months){
-    List<String> start = _SetTimeStart.split('/'); 
-    List<String> end = _SetTimeEnd.split('/'); 
+    List<String> start = _setTimeStart.split('/'); 
+    List<String> end = _setTimeEnd.split('/'); 
     int index;
     if(int.parse(end[1]) > int.parse(start[1])){
       index = 12 - (int.parse(end[1]) - int.parse(start[1])) + 1;
-      _SetMonths = index.toString() + ' months';
+      _setMonths = index.toString() + ' months';
     }
     else{
       index = int.parse(end[0]) - int.parse(start[0]);
-      _SetMonths = index.toString() + ' months';
+      _setMonths = index.toString() + ' months';
     }
   }
 }
