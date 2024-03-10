@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_option.dart';
 import 'package:student_hub/components/custom_text.dart';
+import 'package:student_hub/components/mutliselect_chip.dart';
 import 'package:student_hub/models/project_model.dart';
 import 'package:student_hub/utils/education_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
@@ -26,6 +27,18 @@ class _AddNewProject extends State<AddNewProject>{
     ' and digital payments services on mobile device that operates in Singapor, Malaysia,...'
     ,'9/2020', '12/2020', '4 months'),
   ];
+
+  final List<String> skillsetOptions = [
+    'iOS dev',
+    'C/C++',
+    'Java',
+    'ReactJS',
+    'NodeJS', 
+  ];
+  late  List<String> selectedSkillsets;
+  void onGettingValuesOfSkillset(List<String> selectedItems) {
+    selectedSkillsets = selectedItems;
+  }
 
   void onCreateNewProject() async{
     final projectInfo = await openDialogHandleNewOne(null);
@@ -120,11 +133,13 @@ class _AddNewProject extends State<AddNewProject>{
           builder: (context, setState){
             return AlertDialog(
               title: const Text('Project'),
-              content: Column(
+              content: SingleChildScrollView(
+                child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 
                 children: [
+                  
                   TextField(
                     onChanged: (value){
                       setState((){
@@ -140,10 +155,10 @@ class _AddNewProject extends State<AddNewProject>{
                   TextField(
                     onChanged: (value){
                       setState((){
-                        isDisabledSubmit = tileProject.text.isEmpty;
+                        isDisabledSubmit = descriptionProject.text.isEmpty;
                       });
                     },
-                    controller: tileProject,
+                    controller: descriptionProject,
                     autofocus: true,
                     decoration: const InputDecoration(
                       hintText: 'Enter your description'
@@ -167,11 +182,20 @@ class _AddNewProject extends State<AddNewProject>{
                           ),
                           Expanded(
                             child: CustomOption<String>(
+                              options: listBeginningMonths,
+                              onHelper: onGettingBeginningOfTime,
+                              initialSelection: project == null
+                                  ? listBeginningMonths.first
+                                  : project.getTimeStart,
+                            ),
+                          ),
+                          Expanded(
+                            child: CustomOption<String>(
                               options: listBeginningYears,
                               onHelper: onGettingBeginningOfTime,
                               initialSelection: project == null
                                   ? listBeginningYears.first
-                                  : project.getTimeStart,
+                                  : '/' + project.getTimeStart,
                             ),
                           ),
                         ],
@@ -192,24 +216,38 @@ class _AddNewProject extends State<AddNewProject>{
                           ),
                           Expanded(
                             child: CustomOption<String>(
-                              options: listBeginningYears,
+                              options: listEndMonths,
                               onHelper: onGettingEndOfTime,
                               initialSelection: project == null
-                                  ? listBeginningYears.first
+                                  ? listEndMonths.first
                                   : project.getTimeEnd,
+                            ),
+                          ),
+                          Expanded(
+                            child: CustomOption<String>(
+                              options: listEndYears,
+                              onHelper: onGettingEndOfTime,
+                              initialSelection: project == null
+                                  ? listEndYears.first
+                                  : '/' + project.getTimeEnd,
                             ),
                           ),
                         ],
                       ),
                     ),
+                    MultiSelectChip<String>(
+                      listOf: skillsetOptions,
+                      onHelper: onGettingValuesOfSkillset,
+                    ),
                 ]),
-                actions: [
-                  CustomButton(
-                    onPressed: onSubmitedToAddNewOne,
-                    text: 'SUBMIT',
-                    isDisabled: isDisabledSubmit,
-                  )
-                ],
+              ),
+              actions: [
+                CustomButton(
+                  onPressed: onSubmitedToAddNewOne,
+                  text: 'SUBMIT',
+                  isDisabled: isDisabledSubmit,
+                )
+              ],
             );
           }
         );

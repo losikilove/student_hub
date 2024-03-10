@@ -5,7 +5,6 @@ import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
-import 'package:student_hub/components/mutliselect_chip.dart';
 import 'package:student_hub/models/project_model.dart';
 import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
@@ -20,51 +19,21 @@ class ProfileStudentStep2Screen extends StatefulWidget{
 
 class _ProfileStudentStep2Screen extends 
   State<ProfileStudentStep2Screen>{
-  
-  final List<String> techstackOptions = [
-    'Backend dev',
-    'Frontend dev',
-    'Fullstack dev',
-    'Backend dev',
-    'Frontend dev',
-    'Fullstack dev',
-    'Backend dev',
-    'Frontend dev',
-    'Fullstack dev',
-    'Backend dev',
-    'Frontend dev',
-    'Fullstack dev',
-    'Backend dev',
-    'Frontend dev',
-    'Fullstack dev',
-    'Backend dev',
-    'Frontend dev',
-    'Fullstack dev',
-    'Backend dev',
-    'Frontend dev',
-    'Fullstack dev'
-  ];
 
-  late String optionValue;
-  final List<String> skillsetOptions = [
-    'iOS dev',
-    'C/C++',
-    'Java',
-    'ReactJS',
-    'NodeJS',
-  ];
-
-
-  late  List<String> selectedSkillsets;
-  late List<ProjectModel> addNewProject;
+  late List<ProjectModel> addNewProject = [ ProjectModel('Intelligent Taxi Dispatching System', 
+    'It is developer of a super-app for ride-halling, food delivery'
+    ' and digital payments services on mobile device that operates in Singapor, Malaysia,...'
+    ,'9/2020', '12/2020', '4 months'),
+    ProjectModel('Intelligent Taxi Dispatching System', 
+    'It is developer of a super-app for ride-halling, food delivery'
+    ' and digital payments services on mobile device that operates in Singapor, Malaysia,...'
+    ,'9/2020', '12/2020', '4 months'),];
 
   void onPressed(){
 
   }
-  void onGettingValuesOfSkillset(List<String> selectedItems) {
-    selectedSkillsets = selectedItems;
-  }
-  void onGettingValuesOfLanguage(List<ProjectModel> project) {
+
+  void onGettingValuesOfProject(List<ProjectModel> project) {
     addNewProject = project;
   }
 
@@ -100,30 +69,9 @@ class _ProfileStudentStep2Screen extends
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // techstack options
-                    const CustomText(
-                      text: 'Techstack',
-                      isBold: true,
-                    ),
-                    
-                    const SizedBox(
-                      height: SpacingUtil.mediumHeight,
-                    ),
-                    // skillset selections
-                    const CustomText(
-                      text: 'Skillset',
-                      isBold: true,
-                    ),
-                    MultiSelectChip<String>(
-                      listOf: skillsetOptions,
-                      onHelper: onGettingValuesOfSkillset,
-                    ),
-                    const SizedBox(
-                      height: SpacingUtil.mediumHeight,
-                    ),
-                    // language adding new one
+                    // add new project
                     AddNewProject(
-                      onHelper: onGettingValuesOfLanguage,
+                      onHelper: onGettingValuesOfProject,
                     ),
                     const SizedBox(
                       height: SpacingUtil.mediumHeight,
