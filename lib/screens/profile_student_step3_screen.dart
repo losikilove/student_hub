@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:student_hub/components/custom_appbar.dart';
@@ -65,14 +64,14 @@ class _ProfileStudentStep3ScreenState extends State<ProfileStudentStep3Screen> {
               height: SpacingUtil.mediumHeight,
             ),
             DottedBorder(
-              radius: Radius.circular(8),
+              radius:const Radius.circular(8),
               child: Container(
                 alignment: Alignment.center,
                 color: Colors.cyan.shade100,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.upload_file,
                       size: 90,
                       color: Colors.white,
@@ -99,14 +98,14 @@ class _ProfileStudentStep3ScreenState extends State<ProfileStudentStep3Screen> {
               height: SpacingUtil.mediumHeight,
             ),
             DottedBorder(
-              radius: Radius.circular(8),
+              radius:const Radius.circular(8),
               child: Container(
                 alignment: Alignment.center,
                 color: Colors.cyan.shade100,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.upload_file,
                       size: 90,
                       color: Colors.white,
