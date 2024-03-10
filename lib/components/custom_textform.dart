@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:student_hub/utils/text_util.dart';
 import 'package:student_hub/utils/textform_util.dart';
+import 'package:flutter/services.dart';
 
 // define invalid inputs of textfield
 enum InvalidationType {
@@ -24,20 +23,23 @@ class CustomTextForm extends StatefulWidget {
   final bool obscureText;
   final bool isFocus;
   final bool isBold;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormaters;
   // this function helps you handle error in a parent widget
   // for sample: handle enabling/disabling a submit button
   final void Function(String? messageError) onHelper;
 
-  const CustomTextForm({
-    super.key,
-    required this.controller,
-    required this.listErros,
-    required this.hintText,
-    required this.onHelper,
-    this.obscureText = false,
-    this.isFocus = false,
-    this.isBold = false,
-  });
+  const CustomTextForm(
+      {super.key,
+      required this.controller,
+      required this.listErros,
+      required this.hintText,
+      required this.onHelper,
+      this.obscureText = false,
+      this.isFocus = false,
+      this.isBold = false,
+      this.keyboardType,
+      this.inputFormaters});
 
   @override
   State<CustomTextForm> createState() => _CustomTextFormState();
@@ -64,7 +66,6 @@ class _CustomTextFormState extends State<CustomTextForm> {
               _messageError = InvalidationType.isBlank.message;
               widget.onHelper(_messageError);
             });
-            log(_messageError.toString());
             return;
           }
         case InvalidationType.isInvalidEmail:
@@ -111,16 +112,20 @@ class _CustomTextFormState extends State<CustomTextForm> {
         return _messageError;
       },
       onTap: () {
-        setState(() {
-          _messageError = widget.controller.text.isEmpty
-              ? InvalidationType.isBlank.message
-              : _messageError;
-          widget.onHelper(_messageError);
-        });
+        if (widget.listErros.contains(InvalidationType.isBlank)) {
+          setState(() {
+            _messageError = widget.controller.text.isEmpty
+                ? InvalidationType.isBlank.message
+                : _messageError;
+            widget.onHelper(_messageError);
+          });
+        }
       },
       onChanged: _validate,
       style: const TextStyle(fontSize: TextUtil.textSize),
       obscureText: widget.obscureText ? true : false,
+      keyboardType: widget.keyboardType,
+      inputFormatters: widget.inputFormaters,
     );
   }
 }

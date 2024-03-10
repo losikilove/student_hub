@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:student_hub/utils/text_util.dart';
 
 class CustomTextfield extends StatelessWidget {
@@ -10,6 +11,9 @@ class CustomTextfield extends StatelessWidget {
   final bool obscureText;
   final bool isBold;
   final bool isFocus;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormaters;
+
   const CustomTextfield(
       {super.key,
       required this.controller,
@@ -19,7 +23,9 @@ class CustomTextfield extends StatelessWidget {
       this.isBox = false,
       this.maxLines = 1,
       this.obscureText = false,
-      this.isFocus = false});
+      this.isFocus = false,
+      this.keyboardType,
+      this.inputFormaters});
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +51,8 @@ class CustomTextfield extends StatelessWidget {
         fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
       ),
       autofocus: isFocus,
+      keyboardType: keyboardType,
+      inputFormatters: inputFormaters,
     );
   }
 }
