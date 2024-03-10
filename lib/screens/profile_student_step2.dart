@@ -20,14 +20,7 @@ class ProfileStudentStep2Screen extends StatefulWidget{
 class _ProfileStudentStep2Screen extends 
   State<ProfileStudentStep2Screen>{
 
-  late List<ProjectModel> addNewProject = [ ProjectModel('Intelligent Taxi Dispatching System', 
-    'It is developer of a super-app for ride-halling, food delivery'
-    ' and digital payments services on mobile device that operates in Singapor, Malaysia,...'
-    ,'9/2020', '12/2020', '4 months'),
-    ProjectModel('Intelligent Taxi Dispatching System', 
-    'It is developer of a super-app for ride-halling, food delivery'
-    ' and digital payments services on mobile device that operates in Singapor, Malaysia,...'
-    ,'9/2020', '12/2020', '4 months'),];
+  late List<ProjectModel> addNewProject = [];
 
   void onPressed(){
 
