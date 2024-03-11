@@ -1,7 +1,4 @@
-import 'package:bulleted_list/bulleted_list.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 import 'package:student_hub/components/custom_button.dart';
@@ -19,7 +16,7 @@ class ProjectPostStep1Screen extends StatefulWidget {
 
 class _ProjectPostStep1ScreenState extends State<ProjectPostStep1Screen> {
   final titleController = TextEditingController();
-  bool _TitlePost = false;
+  bool _titlePost = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +46,7 @@ class _ProjectPostStep1ScreenState extends State<ProjectPostStep1Screen> {
               hintText: "write a title for your post",
               onHelper: (messageError) {
                 setState(() {
-                  _TitlePost = messageError == null ? true : false;
+                  _titlePost = messageError == null ? true : false;
                 });
               },
             ),
@@ -62,24 +59,27 @@ class _ProjectPostStep1ScreenState extends State<ProjectPostStep1Screen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                  child: Column(children: [
-                const BulletedList(
-                    style: TextStyle(fontSize: 14, color: Colors.black),
-                    bulletColor: Colors.black,
-                    listItems: [
-                      "Build responsive WorldPress site with booking/paying functionality",
-                      "Facebook ad specialist need for product launch"
-                    ]),
-                const SizedBox(
-                  height: SpacingUtil.largeHeight,
-                ),
-                Container(
+                child: Column(children: [
+                    const CustomBulletedList(
+                      listItems: [
+                        "Build responsive WorldPress site with booking/paying functionality",
+                        "Facebook ad specialist need for product launch"
+                      ]
+                    ),
+                    const SizedBox(
+                      height: SpacingUtil.largeHeight,
+                    ),
+                    Container(
                     alignment: Alignment.topRight,
                     child: CustomButton(
-                        isDisabled: !_TitlePost,
+                        isDisabled: !_titlePost,
                         onPressed: () {},
-                        text: "Next:Scope"))
-              ])),
+                        text: "Next Scope"
+                      )
+                    )
+                  ]
+                )
+              ),
             ),
           ],
         ),
