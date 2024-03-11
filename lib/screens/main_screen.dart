@@ -92,6 +92,7 @@ class Dashboard extends StatefulWidget {
 
 class _Dashboard extends State<Dashboard> {
   void onPressed() {}
+  List<bool> _selections = [true, false, false];
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +112,34 @@ class _Dashboard extends State<Dashboard> {
             ],
           ),
         ),
+        Center(
+          child: ToggleButtons(
+          constraints: const BoxConstraints(
+            minHeight: 32.0,
+            minWidth: 100,
+          ),
+          children: [
+            Text('All Projects', style: TextStyle(color: Colors.black),),
+            Text('Working', style: TextStyle(color: Colors.black)),
+            Text('Archive', style: TextStyle(color: Colors.black)),
+          ],
+          fillColor: const Color.fromARGB(255, 102, 179, 241),
+          isSelected: _selections,
+          onPressed: (index) {
+            setState(() {
+              for (int buttonIndex = 0; buttonIndex < _selections.length; buttonIndex++) {
+                if (buttonIndex == index) {
+                  _selections[buttonIndex] = true;
+                } else {
+                  _selections[buttonIndex] = false;
+                }
+              }
+            });
+            
+          },
+        ),
+        ),
+        
         SizedBox(
           height: SpacingUtil.largeHeight,
         ),
