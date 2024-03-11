@@ -18,8 +18,13 @@
 ## 4. Cannot expand the with of DropdownMenu widget which fits the defined screen
 - Reasons: that widget just provides the width attribute which makes dev defining its width
 - Solutions: wrap that widget in a LayoutBuilder widget, then set its width to constraints.maxWidth which is the maximum width of Container widget
+
 ## 5. Wrapper expansionTile
 - Reasons: Remove line wrapper expansionTile
 - Solution: add it into theme{} and using dividerColor: Colors.transparent
 - Example:
 - Theme(data: Theme.of(context).copyWith(dividerColor: Colors.transparent),child: ExpansionTile())
+
+## 6. The instance member 'X' can't be accessed in an initializer
+- Reasons:
+- Solutions: replace 'late final' on 'final' in List<> ...
