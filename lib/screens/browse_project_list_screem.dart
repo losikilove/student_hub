@@ -286,11 +286,8 @@ class _Project extends State<Project> {
             ),
           ],
         ),
-    );
-    
-  }
-
-  
+    ); 
+  } 
 }
 
 class Message extends StatefulWidget {
