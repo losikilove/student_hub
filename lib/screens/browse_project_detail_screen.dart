@@ -9,16 +9,17 @@ import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
-class ProjectDetailScreen extends StatefulWidget {
+class BrowseProjectDetailScreen extends StatefulWidget {
   // TODO: require a project-model attribute
 
-  const ProjectDetailScreen({super.key});
+  const BrowseProjectDetailScreen({super.key});
 
   @override
-  State<ProjectDetailScreen> createState() => _ProjectDetailScreenState();
+  State<BrowseProjectDetailScreen> createState() =>
+      _BrowseProjectDetailScreenState();
 }
 
-class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
+class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
   void onPressed() {}
 
   // apply this project
