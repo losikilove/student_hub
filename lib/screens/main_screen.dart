@@ -7,7 +7,8 @@ import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
-
+import 'package:student_hub/components/custom_bulleted_list.dart';
+import 'package:student_hub/components/custom_divider.dart';
 enum MainScreenIndex {
   project(number: 0),
   dashboard(number: 1),
@@ -31,8 +32,6 @@ class MainScreen extends StatefulWidget {
 class _MainScreen extends State<MainScreen> {
   final name = 'Hai';
   late int _selectedIndex = widget.contentBody.number;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     Project(),
     Dashboard(),
@@ -140,16 +139,16 @@ class _Dashboard extends State<Dashboard> {
         ),
         ),
         
-        SizedBox(
+        const SizedBox(
           height: SpacingUtil.largeHeight,
         ),
-        Center(
+        const Center(
           child: CustomText(text: 'Welcome, Hai!'),
         ),
-        SizedBox(
+        const SizedBox(
           height: SpacingUtil.smallHeight,
         ),
-        Center(
+        const Center(
           child: CustomText(text: 'You have no jobs!'),
         )
       ],
@@ -175,10 +174,182 @@ class _Project extends State<Project> {
     });
   }
 
+  final List<String> suggestion = ["reactjs","flutter","education app"];
   @override
   Widget build(BuildContext context) {
-    return Center();
-  }
+    return SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: SearchAnchor(
+                    builder: (BuildContext context, SearchController controller)
+                    {
+                      return SearchBar(
+                        autoFocus: true,
+                        controller: controller,
+                        padding: const MaterialStatePropertyAll<EdgeInsets>(
+                          EdgeInsets.symmetric(horizontal: 16.0)),
+                          onTap: () {
+                          controller.openView();
+                        },
+                        onChanged: (_) {
+                          controller.openView();
+                        },
+                        leading: const Icon(Icons.search),
+                      );
+                    }
+                  ,suggestionsBuilder:(context, controller) {
+                    return List<ListTile>.generate(3, (index) {
+                        final String item = suggestion[index];
+                      return ListTile(
+                        title: CustomText(text: item),
+                        onTap: (){
+                          setState(() {
+                            controller.closeView(item);
+                           } 
+                          );
+                        }
+                      ); 
+                     }
+                    );
+                   },
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding:const EdgeInsets.all(1.0),
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFF2DAAD4), // Màu nền của nút
+                    ),
+                    child:IconButton(
+                      onPressed: (){},
+                        icon:const Icon(Icons.favorite,
+                        color: Colors.white,
+                      )
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: SpacingUtil.smallHeight,
+            ),
+            const CustomDivider(),
+            Row(
+              children: [
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment:CrossAxisAlignment.start,
+                    children: [
+                      CustomText(text: "Created 3 days ago"),
+                      Text("Senior Frontend developer(Fintech)",
+                      style: TextStyle(
+                        color:Color.fromARGB(255, 3, 230, 11),
+                        fontSize: 16
+                        ),
+                      ),
+                      CustomText(text: "Time: 1-3 months, 6 students needed"),
+                      SizedBox(
+                        height: SpacingUtil.mediumHeight,
+                      ),
+                      CustomText(text: "Student are looking for"),
+                      CustomBulletedList(
+                        listItems: ["Clear expectation about your project or deliverables"]
+                      ),
+                      CustomText(text: "Less than 5"),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: (){},
+                    icon:const Icon(Icons.favorite_border_outlined,
+                    color: Color.fromARGB(255, 0, 78, 212),
+                    size: 30,
+                  )
+                ),
+              ],
+            ),
+            const CustomDivider(),
+            Row(
+              children: [
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment:CrossAxisAlignment.start,
+                    children: [
+                      CustomText(text: "Created 5 days ago"),
+                      Text("Senior Frontend developer(Fintech)",
+                      style: TextStyle(
+                        color:Color.fromARGB(255, 3, 230, 11),
+                        fontSize: 16
+                        ),
+                      ),
+                      CustomText(text: "Time: 6 months, 4 students needed"),
+                      SizedBox(
+                        height: SpacingUtil.mediumHeight,
+                      ),
+                      CustomText(text: "Student are looking for"),
+                      CustomBulletedList(
+                        listItems: ["Clear expectation about your project or deliverables"]
+                      ),
+                      CustomText(text: "Less than 5"),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: (){},
+                    icon:const Icon(Icons.favorite_border_outlined,
+                    color: Color.fromARGB(255, 0, 78, 212),
+                    size: 30,
+                  )
+                ),
+              ],
+            ),
+            const CustomDivider(),
+            Row(
+              children: [
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment:CrossAxisAlignment.start,
+                    children: [
+                      CustomText(text: "Created 5 days ago"),
+                      Text("Senior Frontend developer(Fintech)",
+                      style: TextStyle(
+                        color:Color.fromARGB(255, 3, 230, 11),
+                        fontSize: 16
+                        ),
+                      ),
+                      CustomText(text: "Time: 6 months, 4 students needed"),
+                      SizedBox(
+                        height: SpacingUtil.mediumHeight,
+                      ),
+                      CustomText(text: "Student are looking for"),
+                      CustomBulletedList(
+                        listItems: ["Clear expectation about your project or deliverables"]
+                      ),
+                      CustomText(text: "Less than 5"),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: (){},
+                    icon:const Icon(Icons.favorite_border_outlined,
+                    color: Color.fromARGB(255, 0, 78, 212),
+                    size: 30,
+                  )
+                ),
+              ],
+            ),
+          ],
+        ),
+    ); 
+  } 
 
   Future showDialogWelcome() => showDialog(
       context: context,
