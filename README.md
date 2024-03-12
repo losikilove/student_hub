@@ -28,3 +28,7 @@
 ## 6. The instance member 'X' can't be accessed in an initializer
 - Reasons:
 - Solutions: replace 'late final' on 'final' in List<> ...
+
+## 7. Individual setState for a subwidget which is wrapped in a widget
+- Reasons: cannot show changeable states on subwidget
+- Solutions: wrap that subwiget on a StatefulBuilder widget, then handle its states into that widget
