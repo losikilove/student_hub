@@ -38,6 +38,9 @@ class _ProjectPostStep1ScreenState extends State<ProjectPostStep1Screen> {
             const CustomText(
                 text:
                     "This helps your post stand out to the right students. It's the first thing they will see, so make it impressive"),
+            const SizedBox(
+              height: SpacingUtil.mediumHeight,
+            ),
             CustomTextForm(
               controller: titleController,
               listErros: const <InvalidationType>[
