@@ -101,9 +101,9 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final List<ProjectModel> _projects = [
     ProjectModel('Senior frontend developer (Fintech)', 'Created 3 days ago',
-        ['Clear expectation about your project'], 0, 8, 2),
+        ['Clear expectation about your project'],false ,0, 8, 2),
     ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
-        ['Clear expectation about your'], 0, 8, 2)
+        ['Clear expectation about your'], false,0, 8, 2)
   ];
 
   @override
@@ -194,7 +194,60 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
         void onSeenDetail() {}
 
         // handle actions of this project
-        void onOpenedActionMenu() {}
+        void onOpenedActionMenu(){
+          showModalBottomSheet<void>(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(0)),
+            ),            
+            context: context,
+            builder: (BuildContext context) { 
+              return Container(
+                height: 320,
+                
+                color: const Color.fromARGB(255, 255, 255, 255),
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                     TextButton(
+                        onPressed: onPressed,
+                        child: Text('View proposel',),
+                        style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
+                      ),
+                      TextButton(
+                        onPressed: onPressed,
+                        child: Text('View message'),
+                        style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
+                      ),
+                      TextButton(
+                        onPressed: onPressed,
+                        child: Text('View hired'),
+                        style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
+                      ),
+                      CustomDivider(),
+                       TextButton(
+                        onPressed: onPressed,
+                        child: Text('View job posting'),
+                        style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
+                      ),
+                       TextButton(
+                        onPressed: onPressed,
+                        child: Text('Edit posting'),
+                        style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
+                      ),
+                       TextButton(
+                        onPressed: onPressed,
+                        child: Text('Reomve posting'),
+                        style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        }
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

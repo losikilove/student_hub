@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/initial_body.dart';
-import 'package:student_hub/models/enums/enum_user.dart';
 import 'package:student_hub/components/custom_listtile.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 
@@ -14,7 +13,7 @@ class SwitchAccountScreen extends StatefulWidget {
 }
 
 class _SwitchAccountScreen extends State<SwitchAccountScreen> {
-  EnumUser _selectedAccount = EnumUser.student;
+  
   final String name = 'Hai Pham';
 
   void onPressed() {}
