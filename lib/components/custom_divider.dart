@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 
-class CustomDivider extends StatelessWidget{
-  const CustomDivider({super.key});
+class CustomDivider extends StatelessWidget {
+  final bool isFullWidth;
+
+  const CustomDivider({super.key, this.isFullWidth = false});
   @override
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context) {
     return Center(
       child: Divider(
         height: 20,
         thickness: 2,
-        indent: 40,
-        endIndent: 35,
-        color: Colors.black,          
-
+        indent: isFullWidth ? 0 : 40,
+        endIndent: isFullWidth ? 0 : 35,
+        color: Colors.black,
       ),
-      
     );
   }
 }

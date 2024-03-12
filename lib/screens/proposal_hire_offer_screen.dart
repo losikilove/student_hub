@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
+import 'package:student_hub/components/custom_tabbar.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/candidate_model.dart';
@@ -20,11 +21,11 @@ class ProposalHireOfferScreen extends StatefulWidget {
 
 class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
     with SingleTickerProviderStateMixin {
-  late final List<_TabView> _tabViews = [
-    _TabView(tab: const Tab(text: 'Proposal'), widget: _proposalContent()),
-    _TabView(tab: const Tab(text: 'Detail'), widget: _detailContent()),
-    _TabView(tab: const Tab(text: 'Message'), widget: _messageContent()),
-    _TabView(tab: const Tab(text: 'Hired'), widget: _hiredContent())
+  late final List<TabView> tabViews = [
+    TabView(tab: const Tab(text: 'Proposal'), widget: _proposalContent()),
+    TabView(tab: const Tab(text: 'Detail'), widget: _detailContent()),
+    TabView(tab: const Tab(text: 'Message'), widget: _messageContent()),
+    TabView(tab: const Tab(text: 'Hired'), widget: _hiredContent())
   ];
   late TabController _tabController;
   final List<CandidateModel> _candidates = [
@@ -52,7 +53,7 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
     super.initState();
 
     // initial the tab controller
-    _tabController = TabController(vsync: this, length: _tabViews.length);
+    _tabController = TabController(vsync: this, length: tabViews.length);
   }
 
   @override
@@ -85,21 +86,9 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
               height: SpacingUtil.smallHeight,
             ),
             // tabbar
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                  color: Colors.grey,
-                ),
-              ),
-              child: TabBar(
-                indicatorSize: TabBarIndicatorSize.tab,
-                indicator: const BoxDecoration(color: ColorUtil.darkPrimary),
-                controller: _tabController,
-                tabs: _tabViews.map((e) => e.tab).toList(),
-                labelColor: Colors.white,
-                indicatorColor: ColorUtil.darkPrimary,
-              ),
+            CustomTabBar(
+              tabController: _tabController,
+              tabs: tabViews.map((e) => e.tab).toList(),
             ),
             const SizedBox(
               height: SpacingUtil.smallHeight,
@@ -108,7 +97,7 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
             Expanded(
               child: TabBarView(
                 controller: _tabController,
-                children: _tabViews.map((e) => e.widget).toList(),
+                children: tabViews.map((e) => e.widget).toList(),
               ),
             ),
           ],
@@ -227,15 +216,14 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
                     CustomButton(
                       onPressed: onMessaged,
                       text: 'Message',
-                      buttonColor: ColorUtil.darkPrimary,
+                      buttonColor: ColorUtil.primary,
                     ),
                     // hired button
                     CustomButton(
                       onPressed: onHired,
                       text: hireText,
-                      buttonColor: candidate.isHired
-                          ? ColorUtil.primary
-                          : ColorUtil.darkPrimary,
+                      buttonColor: ColorUtil.darkPrimary,
+                      isDisabled: candidate.isHired,
                     ),
                   ],
                 ),
@@ -262,11 +250,4 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
   Widget _hiredContent() {
     return Center();
   }
-}
-
-class _TabView {
-  final Tab tab;
-  final Widget widget;
-
-  const _TabView({required this.tab, required this.widget});
 }
