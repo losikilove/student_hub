@@ -201,48 +201,104 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
             ),            
             context: context,
             builder: (BuildContext context) { 
-              return Container(
-                height: 320,
-                
-                color: const Color.fromARGB(255, 255, 255, 255),
-                child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                     TextButton(
-                        onPressed: onPressed,
-                        child: Text('View proposel',),
-                        style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
+              return ConstrainedBox(
+                constraints: new BoxConstraints(
+                  minHeight: 145,
+                  maxHeight: double.maxFinite,
+                ),
+                child: ListView(
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextButton(
+                            onPressed: onPressed,
+                            child: Text('View proposel', style: TextStyle(color: Colors.black),),
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.fromLTRB(30, 0, 250, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              minimumSize: Size(0, 15, )
+                            ),                        
+                          ),
+                          TextButton(
+                            onPressed: onPressed,
+                            child: Text('View message', style: TextStyle(color: Colors.black),),
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.fromLTRB(30, 0, 250, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              minimumSize: Size(0, 15)
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: onPressed,
+                            child: Text('View hired', style: TextStyle(color: Colors.black),),
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.fromLTRB(30, 0, 250, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              minimumSize: Size(0, 15,)
+                            ),
+                          ),
+                          CustomDivider(isFullWidth: true),
+                            TextButton(
+                            onPressed: onPressed,
+                            child: Text('View job posting', style: TextStyle(color: Colors.black),),
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.fromLTRB(30, 0, 250, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              minimumSize: Size(0, 15,)
+                            ),
+                          ),
+                            TextButton(
+                            onPressed: onPressed,
+                            child: Text('Edit posting', style: TextStyle(color: Colors.black),),
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.fromLTRB(30, 0, 250, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              minimumSize: Size(0, 15,)
+                            ),
+                          ),
+                            TextButton(
+                            onPressed: onPressed,
+                            child: Text('Reomve posting', style: TextStyle(color: Colors.black),),
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.fromLTRB(30, 0, 250, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,//tap target
+                              minimumSize: Size(0, 15,)//size
+                            ),
+                          ),
+                        ],
                       ),
-                      TextButton(
-                        onPressed: onPressed,
-                        child: Text('View message'),
-                        style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
-                      ),
-                      TextButton(
-                        onPressed: onPressed,
-                        child: Text('View hired'),
-                        style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
-                      ),
-                      CustomDivider(),
-                       TextButton(
-                        onPressed: onPressed,
-                        child: Text('View job posting'),
-                        style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
-                      ),
-                       TextButton(
-                        onPressed: onPressed,
-                        child: Text('Edit posting'),
-                        style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
-                      ),
-                       TextButton(
-                        onPressed: onPressed,
-                        child: Text('Reomve posting'),
-                        style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
-                      ),
-                    ],
-                  ),
+                    ),
+                    
+                    Builder(
+                      builder: (context){
+                        if(!_projects[index].isCompelte)
+                          return Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomDivider(isFullWidth: true,),              
+                                TextButton(
+                                  onPressed: onPressed,
+                                  child: Text('Start working this project', style: TextStyle(color: Colors.black),),
+                                  style: TextButton.styleFrom(
+                                    padding: EdgeInsets.fromLTRB(30, 0, 50, 0),
+                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,//tap target
+                                    minimumSize: Size(200, 15,)//size
+                                  ),
+                                )
+                                
+                              ]),
+                          );
+                        return Container(
+                          height: 0,
+                        );  
+                      }
+                    )
+                  ],
                 ),
               );
             },
