@@ -8,7 +8,7 @@ import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/candidate_model.dart';
 import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
-
+import 'package:student_hub/components/custom_bulleted_list.dart';
 class ProposalHireOfferScreen extends StatefulWidget {
   //TODO: get data of project
 
@@ -235,10 +235,70 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
       },
     );
   }
-
+  
+  Widget _projectRequirement(
+      IconData icon, String title, String detailRequirement) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Icon(
+          icon,
+          size: 35,
+        ),
+        const SizedBox(
+          width: 15,
+        ),
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomText(text: title),
+              CustomBulletedList(
+                listItems: [detailRequirement],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
   // detail content
   Widget _detailContent() {
-    return Center();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const CustomText(
+          text: 'Student are looking for',
+        ),
+        const CustomBulletedList(
+          listItems: [
+           'Clear expectation about your project or deliverables',
+           'The skills required for your project',
+           'Detail about your project'
+          ],
+        ),
+        const CustomDivider(),
+            // scope of project
+        _projectRequirement(Icons.alarm, 'Project scope', '3 to 6 months'),
+        const SizedBox(
+          height: SpacingUtil.smallHeight,
+        ),
+            // Required students
+        _projectRequirement(
+          Icons.people_outline, 'Required students', '6 students'),
+        SizedBox(
+          height: SpacingUtil.largeHeight,
+        ),
+        Container(
+          alignment:Alignment.topRight ,
+          child: CustomButton(
+            onPressed: (){}, 
+            text: "Post job"
+          ),
+        )
+     ],
+    );
   }
 
   // message content
