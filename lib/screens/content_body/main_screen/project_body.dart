@@ -4,10 +4,10 @@ import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/components/add_new_projectitem.dart';
 import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
-import 'package:student_hub/components/custom_bulleted_list.dart';
 import 'package:student_hub/components/custom_divider.dart';
 
 class ProjectBody extends StatefulWidget {
@@ -82,110 +82,28 @@ class _ProjectBody extends State<ProjectBody> {
                 height: SpacingUtil.smallHeight,
               ),
               const CustomDivider(),
-              Row(
-                children: [
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(text: "Created 3 days ago"),
-                        Text(
-                          "Senior Frontend developer(Fintech)",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 3, 230, 11),
-                              fontSize: 16),
-                        ),
-                        CustomText(text: "Time: 1-3 months, 6 students needed"),
-                        SizedBox(
-                          height: SpacingUtil.mediumHeight,
-                        ),
-                        CustomText(text: "Student are looking for"),
-                        CustomBulletedList(listItems: [
-                          "Clear expectation about your project or deliverables"
-                        ]),
-                        CustomText(text: "Less than 5"),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.favorite_border_outlined,
-                        color: Color.fromARGB(255, 0, 78, 212),
-                        size: 30,
-                      )),
-                ],
+              const ProjectItem(
+                timeCreated: "Created 5 days ago",
+                projectName: "Senior Frontend developer(Fintech)",
+                timeAndRequiredNumberStudent: "Time: 6 months, 4 students needed",
+                studentBenefit: ["Clear expectation about your project or deliverables"],
+                proposal: "Less than 5",
               ),
-              const CustomDivider(),
-              Row(
-                children: [
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(text: "Created 5 days ago"),
-                        Text(
-                          "Senior Frontend developer(Fintech)",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 3, 230, 11),
-                              fontSize: 16),
-                        ),
-                        CustomText(text: "Time: 6 months, 4 students needed"),
-                        SizedBox(
-                          height: SpacingUtil.mediumHeight,
-                        ),
-                        CustomText(text: "Student are looking for"),
-                        CustomBulletedList(listItems: [
-                          "Clear expectation about your project or deliverables"
-                        ]),
-                        CustomText(text: "Less than 5"),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.favorite_border_outlined,
-                        color: Color.fromARGB(255, 0, 78, 212),
-                        size: 30,
-                      )),
-                ],
+              const ProjectItem(
+                timeCreated: "Created 5 days ago",
+                projectName: "Senior Frontend developer(Fintech)",
+                timeAndRequiredNumberStudent: "Time: 6 months, 4 students needed",
+                studentBenefit: ["Clear expectation about your project or deliverables"],
+                proposal: "Less than 5",
               ),
-              const CustomDivider(),
-              Row(
-                children: [
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(text: "Created 5 days ago"),
-                        Text(
-                          "Senior Frontend developer(Fintech)",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 3, 230, 11),
-                              fontSize: 16),
-                        ),
-                        CustomText(text: "Time: 6 months, 4 students needed"),
-                        SizedBox(
-                          height: SpacingUtil.mediumHeight,
-                        ),
-                        CustomText(text: "Student are looking for"),
-                        CustomBulletedList(listItems: [
-                          "Clear expectation about your project or deliverables"
-                        ]),
-                        CustomText(text: "Less than 5"),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.favorite_border_outlined,
-                        color: Color.fromARGB(255, 0, 78, 212),
-                        size: 30,
-                      )),
-                ],
+              const ProjectItem(
+                timeCreated: "Created 5 days ago",
+                projectName: "Senior Frontend developer(Fintech)",
+                timeAndRequiredNumberStudent: "Time: 6 months, 4 students needed",
+                studentBenefit: ["Clear expectation about your project or deliverables"],
+                proposal: "Less than 5",
               ),
+             
             ],
           ),
         ),
@@ -214,7 +132,7 @@ class _ProjectBody extends State<ProjectBody> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.cancel),
+                        icon: const Icon(Icons.cancel),
                         onPressed: () {
                           Navigator.pop(context);
                         },
