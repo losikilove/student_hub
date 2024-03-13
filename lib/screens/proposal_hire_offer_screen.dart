@@ -78,9 +78,12 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // title of project
-            CustomText(
-              text: 'Title of project',
-              isBold: true,
+            const Text("Title of job",
+              style: TextStyle(
+                color:Colors.green, 
+                fontSize:17,
+                fontWeight: FontWeight.bold
+              ),
             ),
             const SizedBox(
               height: SpacingUtil.smallHeight,
