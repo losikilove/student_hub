@@ -28,9 +28,9 @@ class _DashboardBody extends State<DashboardBody>
   late TabController _tabController;
   final List<ProjectModel> _projects = [
     ProjectModel('Senior frontend developer (Fintech)', 'Created 3 days ago',
-        ['Clear expectation about your project'], false, 0, 8, 2),
+        ['Clear expectation about your project'], true, false,0, 8, 2),
     ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
-        ['Clear expectation about your'], false, 0, 8, 2)
+        ['Clear expectation about your'], false, false,0, 8, 2)
   ];
 
   @override

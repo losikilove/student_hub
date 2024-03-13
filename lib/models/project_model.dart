@@ -3,6 +3,7 @@ class ProjectModel {
   final String _timeCreating;
   final List<String> _wishes;
   final bool isCompelte;
+  final bool like;
   int _numberProposals;
   int _numberMessages;
   int _numberHires;
@@ -12,9 +13,20 @@ class ProjectModel {
     this._timeCreating,
     this._wishes,
     this.isCompelte,
-    this._numberProposals, 
-    this._numberMessages, 
-    this._numberHires);
+    this.like,
+    this._numberProposals,
+    this._numberMessages,
+    this._numberHires,
+  );
+  ProjectModel.origin():
+    this._title = '',
+    this._timeCreating = '',
+    this._wishes = [],
+    this.isCompelte = false,
+    this.like = false,
+    this._numberProposals = 0,
+    this._numberMessages = 0,
+    this._numberHires =  0;
 
   String get title => _title;
   String get timeCreating => _timeCreating;
