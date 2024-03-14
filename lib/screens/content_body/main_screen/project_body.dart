@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
@@ -9,6 +7,7 @@ import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/listview_project_items.dart';
+import 'package:student_hub/models/enums/enum_projectlenght.dart';
 import 'package:student_hub/models/project_model.dart';
 import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
@@ -277,6 +276,12 @@ class ProjectBodySearchPart extends StatefulWidget {
 class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
   late final TextEditingController _searchController;
 
+  EnumProjectLenght? _enumProjectLenght = EnumProjectLenght.less_than_one_month;
+  void changeProjectLength(EnumProjectLenght? value){
+    setState(() {
+      _enumProjectLenght = value;
+    });
+  }
   @override
   void initState() {
     super.initState();
@@ -294,7 +299,91 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
 
   void onPressed() {}
 
-  void onOpenedFilter() {}
+  void onOpenedFilter(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context){
+       return  SingleChildScrollView(
+              
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.cancel),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
+                  CustomText(text: "Filter by"),
+                  CustomDivider(),
+                  CustomText(text: 'Project length'),
+                  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    chooseLenght(EnumProjectLenght.less_than_one_month, "Less than one month"),
+                    chooseLenght(EnumProjectLenght.one_to_three_month, "1 to 3 months"),
+                    chooseLenght(EnumProjectLenght.three_to_six_month, "3 to 6 months"),
+                    chooseLenght(EnumProjectLenght.more_than_six_month, "more than 6 months"),
+                  ]),
+                  CustomText(text: 'Student needed'),
+                  const SizedBox(
+                    width: 200,
+                    height: 25,
+                    child: TextField(
+                      style: TextStyle(fontSize: 15, color: Colors.black),
+                      decoration: InputDecoration(border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(0)),
+                      )),
+                      textAlign: TextAlign.center,
+                    ), 
+                  ),
+                  CustomText(text: 'Proposal less than'),
+                  const SizedBox(
+                    width: 200,
+                    height: 25,
+                    child: TextField(
+                      style: TextStyle(fontSize: 15, color: Colors.black),
+                      decoration: InputDecoration(border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(0)),
+                      )),
+                      textAlign: TextAlign.center,
+                    ), 
+                  ),
+                  const SizedBox(
+                    height: SpacingUtil.smallHeight,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomButton(onPressed: onPressed, text: 'clear filter'),
+                      const SizedBox( width: SpacingUtil.smallHeight,),
+                      CustomButton(onPressed: onPressed, text: 'Apply')
+                    ],
+                  )
+                ],
+              ),
+           
+        );
+      
+      });
+  }
+  Widget chooseLenght(EnumProjectLenght projectLenght, String text){
+    return Row(
+      children: [
+        Radio(
+          activeColor: const Color.fromARGB(236, 3, 70, 147),
+          value: projectLenght,
+          groupValue: _enumProjectLenght,
+          onChanged: changeProjectLength),
+        CustomText(text: text, size: 15,)
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -324,7 +413,7 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                 ),
                 // filter list
                 IconButton(
-                  onPressed: onOpenedFilter,
+                  onPressed: (){onOpenedFilter(context);},
                   icon: const Icon(
                     Icons.filter_list,
                     size: 35,
