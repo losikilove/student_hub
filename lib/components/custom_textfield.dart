@@ -13,6 +13,7 @@ class CustomTextfield extends StatelessWidget {
   final bool isFocus;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormaters;
+  final IconData? prefixIcon;
 
   const CustomTextfield(
       {super.key,
@@ -25,7 +26,8 @@ class CustomTextfield extends StatelessWidget {
       this.obscureText = false,
       this.isFocus = false,
       this.keyboardType,
-      this.inputFormaters});
+      this.inputFormaters,
+      this.prefixIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +36,15 @@ class CustomTextfield extends StatelessWidget {
       obscureText: obscureText,
       // remove underline
       decoration: isBox
-          ? const InputDecoration(
+          ? InputDecoration(
+              prefixIcon: Icon(prefixIcon),
               filled: true,
               fillColor: Colors.white,
-              enabledBorder: OutlineInputBorder(),
-              focusedBorder: OutlineInputBorder(borderSide: BorderSide()),
+              enabledBorder: const OutlineInputBorder(),
+              focusedBorder: const OutlineInputBorder(borderSide: BorderSide()),
             )
           : InputDecoration(
+              prefixIcon: Icon(prefixIcon),
               hintText: hintText,
               filled: true,
               fillColor: Colors.white,

@@ -1,15 +1,29 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/widgets.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
+import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/add_new_projectitem.dart';
+import 'package:student_hub/components/listview_project_items.dart';
 import 'package:student_hub/models/project_model.dart';
 import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_divider.dart';
+
+enum ProjectBodyType {
+  main(nameRoute: ''),
+  search(nameRoute: 'search');
+
+  final String nameRoute;
+
+  const ProjectBodyType({required this.nameRoute});
+}
 
 class ProjectBody extends StatefulWidget {
   const ProjectBody({super.key});
@@ -19,21 +33,6 @@ class ProjectBody extends StatefulWidget {
 }
 
 class _ProjectBody extends State<ProjectBody> {
-
-  final List<ProjectModel> _projects = [
-    ProjectModel('Senior frontend developer (Fintech)', 'Created 3 days ago',
-        ['Clear expectation about your project'], true, false,0, 8, 2),
-    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
-        ['Clear expectation about your'], false, false,0, 8, 2),
-    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
-    ['Clear expectation about your'], false, false,0, 8, 2),
-    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
-    ['Clear expectation about your'], false, false,0, 8, 2),
-    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
-    ['Clear expectation about your'], false, false,0, 8, 2),
-    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
-    ['Clear expectation about your'], false, false,0, 8, 2),
-  ];
   @override
   void initState() {
     super.initState();
@@ -43,9 +42,83 @@ class _ProjectBody extends State<ProjectBody> {
     });
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Navigator(
+      onGenerateRoute: (settings) {
+        // if search part, switch to it
+        if (settings.name == ProjectBodyType.search.nameRoute) {
+          final searchArgs = settings.arguments as List<dynamic>;
+          return MaterialPageRoute(
+            builder: (_) => ProjectBodySearchPart(
+              search: searchArgs[0] as String,
+              projects: searchArgs[1] as List<ProjectModel>,
+            ),
+          );
+        }
+
+        // have no one, switch to main part
+        return MaterialPageRoute(builder: (_) => const ProjectBodyMainPart());
+      },
+    );
+  }
+
+  Future showDialogWelcome() => showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Center(
+            child: Text(
+              'Welcome',
+              style: TextStyle(
+                color: ColorUtil.darkPrimary,
+              ),
+            ),
+          ),
+          content: const CustomText(
+            text:
+                'Welcome to StudentHub, a marketplace to connect Student to Real-world projects',
+            isCenter: true,
+          ),
+          actions: [
+            CustomButton(
+              onPressed: () => NavigationUtil.turnBack(context),
+              text: 'Next',
+              size: CustomButtonSize.large,
+            ),
+          ],
+        );
+      });
+}
+
+// Main part of this body
+class ProjectBodyMainPart extends StatefulWidget {
+  const ProjectBodyMainPart({super.key});
+
+  @override
+  State<ProjectBodyMainPart> createState() => _ProjectBodyMainPartState();
+}
+
+class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
   String searchItem = "Search for project";
-  void onPressed() {}
+  final List<ProjectModel> _projects = [
+    ProjectModel('Senior frontend developer (Fintech)', 'Created 3 days ago',
+        ['Clear expectation about your project'], true, false, 0, 8, 2),
+    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
+        ['Clear expectation about your'], false, false, 0, 8, 2),
+    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
+        ['Clear expectation about your'], false, false, 0, 8, 2),
+    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
+        ['Clear expectation about your'], false, false, 0, 8, 2),
+    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
+        ['Clear expectation about your'], false, false, 0, 8, 2),
+    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
+        ['Clear expectation about your'], false, false, 0, 8, 2),
+  ];
   final List<String> suggestion = ["reactjs", "flutter", "education app"];
+
+  void onPressed() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,12 +127,12 @@ class _ProjectBody extends State<ProjectBody> {
         currentContext: context,
       ),
       body: InitialBody(
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                      child: ElevatedButton.icon(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
                     onPressed: () {
                       _showBottomSheet(context);
                     },
@@ -70,65 +143,36 @@ class _ProjectBody extends State<ProjectBody> {
                     style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.black,
                         alignment: Alignment.centerLeft),
-                  )),
-                  const SizedBox(
-                    width: 32,
                   ),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      padding: const EdgeInsets.all(0.2),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xFF2DAAD4), // Màu nền của nút
-                      ),
-                      child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.favorite,
-                            color: Colors.white,
-                          )),
+                ),
+                const SizedBox(
+                  width: 32,
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.all(0.2),
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFF2DAAD4), // Màu nền của nút
                     ),
+                    child: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.favorite,
+                          color: Colors.white,
+                        )),
                   ),
-                ],
-              ),
-              const SizedBox(
-                height: SpacingUtil.smallHeight,
-              ),
-              const CustomDivider(),
-              Expanded(
-                child: ListView.builder(
-                    itemCount: _projects.length,
-                    itemBuilder: (context, index) {
-                      final project = _projects[index];
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: () {},
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ProjectItem(
-                                  project: project, )
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: SpacingUtil.smallHeight,
-                          ),
-                          const CustomDivider(
-                            isFullWidth: true,
-                          ),
-                          const SizedBox(
-                            height: SpacingUtil.mediumHeight,
-                          ),
-                        ],
-                      );
-                }),
-              )
-            ],
-          ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: SpacingUtil.smallHeight,
+            ),
+            const CustomDivider(),
+            ListViewProjectItems(projects: _projects),
+          ],
+        ),
       ),
     );
   }
@@ -161,11 +205,19 @@ class _ProjectBody extends State<ProjectBody> {
                       ),
                     ],
                   ),
-                  const TextField(
-                    decoration: InputDecoration(
+                  TextField(
+                    decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.search),
                       hintText: 'Search for project',
                     ),
+                    onSubmitted: (s) {
+                      // switch to content search
+                      Navigator.pushNamed(
+                        context,
+                        ProjectBodyType.search.nameRoute,
+                        arguments: [s, _projects],
+                      );
+                    },
                   ),
                   ListTile(
                     title: const CustomText(text: 'ReactJS'),
@@ -204,31 +256,83 @@ class _ProjectBody extends State<ProjectBody> {
       },
     );
   }
+}
 
-  Future showDialogWelcome() => showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Center(
-            child: Text(
-              'Welcome',
-              style: TextStyle(
-                color: ColorUtil.darkPrimary,
-              ),
-            ),
-          ),
-          content: const CustomText(
-            text:
-                'Welcome to StudentHub, a marketplace to connect Student to Real-world projects',
-            isCenter: true,
-          ),
-          actions: [
-            CustomButton(
-              onPressed: () => NavigationUtil.turnBack(context),
-              text: 'Next',
-              size: CustomButtonSize.large,
-            ),
-          ],
-        );
-      });
+// Search part of this body
+class ProjectBodySearchPart extends StatefulWidget {
+  final String search;
+  final List<ProjectModel> projects;
+  const ProjectBodySearchPart(
+      {super.key, required this.search, required this.projects});
+
+  @override
+  State<ProjectBodySearchPart> createState() => _ProjectBodySearchPartState();
+}
+
+class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
+  late final TextEditingController _searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    // initialize the search controller
+    _searchController = TextEditingController(text: widget.search);
   }
+
+  @override
+  void dispose() {
+    // dispose the search controller
+    _searchController.dispose();
+
+    super.dispose();
+  }
+
+  void onPressed() {}
+
+  void onOpenedFilter() {}
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomAppbar(
+        title: 'Project search',
+        isBack: true,
+        onPressed: onPressed,
+        currentContext: context,
+      ),
+      body: InitialBody(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // search bar
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  child: CustomTextfield(
+                    prefixIcon: Icons.search,
+                    controller: _searchController,
+                    hintText: 'Search for projects',
+                  ),
+                ),
+                // filter list
+                IconButton(
+                  onPressed: onOpenedFilter,
+                  icon: const Icon(
+                    Icons.filter_list,
+                    size: 35,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: SpacingUtil.smallHeight),
+            // filter list of projects
+            ListViewProjectItems(projects: widget.projects),
+          ],
+        ),
+      ),
+    );
+  }
+}
