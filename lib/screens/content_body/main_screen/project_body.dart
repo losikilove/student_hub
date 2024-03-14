@@ -5,6 +5,7 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/add_new_projectitem.dart';
+import 'package:student_hub/models/project_model.dart';
 import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
@@ -18,6 +19,21 @@ class ProjectBody extends StatefulWidget {
 }
 
 class _ProjectBody extends State<ProjectBody> {
+
+  final List<ProjectModel> _projects = [
+    ProjectModel('Senior frontend developer (Fintech)', 'Created 3 days ago',
+        ['Clear expectation about your project'], true, false,0, 8, 2),
+    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
+        ['Clear expectation about your'], false, false,0, 8, 2),
+    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
+    ['Clear expectation about your'], false, false,0, 8, 2),
+    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
+    ['Clear expectation about your'], false, false,0, 8, 2),
+    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
+    ['Clear expectation about your'], false, false,0, 8, 2),
+    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
+    ['Clear expectation about your'], false, false,0, 8, 2),
+  ];
   @override
   void initState() {
     super.initState();
@@ -30,7 +46,6 @@ class _ProjectBody extends State<ProjectBody> {
   String searchItem = "Search for project";
   void onPressed() {}
   final List<String> suggestion = ["reactjs", "flutter", "education app"];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +54,6 @@ class _ProjectBody extends State<ProjectBody> {
         currentContext: context,
       ),
       body: InitialBody(
-        child: SingleChildScrollView(
           child: Column(
             children: [
               Row(
@@ -82,31 +96,39 @@ class _ProjectBody extends State<ProjectBody> {
                 height: SpacingUtil.smallHeight,
               ),
               const CustomDivider(),
-              const ProjectItem(
-                timeCreated: "Created 5 days ago",
-                projectName: "Senior Frontend developer(Fintech)",
-                timeAndRequiredNumberStudent: "Time: 6 months, 4 students needed",
-                studentBenefit: ["Clear expectation about your project or deliverables"],
-                proposal: "Less than 5",
-              ),
-              const ProjectItem(
-                timeCreated: "Created 5 days ago",
-                projectName: "Senior Frontend developer(Fintech)",
-                timeAndRequiredNumberStudent: "Time: 6 months, 4 students needed",
-                studentBenefit: ["Clear expectation about your project or deliverables"],
-                proposal: "Less than 5",
-              ),
-              const ProjectItem(
-                timeCreated: "Created 5 days ago",
-                projectName: "Senior Frontend developer(Fintech)",
-                timeAndRequiredNumberStudent: "Time: 6 months, 4 students needed",
-                studentBenefit: ["Clear expectation about your project or deliverables"],
-                proposal: "Less than 5",
-              ),
-             
+              Expanded(
+                child: ListView.builder(
+                    itemCount: _projects.length,
+                    itemBuilder: (context, index) {
+                      final project = _projects[index];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () {},
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ProjectItem(
+                                  project: project, )
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: SpacingUtil.smallHeight,
+                          ),
+                          const CustomDivider(
+                            isFullWidth: true,
+                          ),
+                          const SizedBox(
+                            height: SpacingUtil.mediumHeight,
+                          ),
+                        ],
+                      );
+                }),
+              )
             ],
           ),
-        ),
       ),
     );
   }
