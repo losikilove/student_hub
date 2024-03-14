@@ -8,7 +8,6 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
-import 'package:student_hub/components/add_new_projectitem.dart';
 import 'package:student_hub/components/listview_project_items.dart';
 import 'package:student_hub/models/project_model.dart';
 import 'package:student_hub/utils/color_util.dart';
@@ -18,7 +17,8 @@ import 'package:student_hub/components/custom_divider.dart';
 
 enum ProjectBodyType {
   main(nameRoute: ''),
-  search(nameRoute: 'search');
+  search(nameRoute: 'search'),
+  favorite(nameRoute: 'favorite');
 
   final String nameRoute;
 
@@ -56,7 +56,6 @@ class _ProjectBody extends State<ProjectBody> {
             ),
           );
         }
-
         // have no one, switch to main part
         return MaterialPageRoute(builder: (_) => const ProjectBodyMainPart());
       },
@@ -157,7 +156,13 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
                       color: Color(0xFF2DAAD4), // Màu nền của nút
                     ),
                     child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          List<ProjectModel> favorite = _projects.where((projectModel) => projectModel.like).toList();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder:(context) =>ProjectBodyFavoritePart(projects: favorite))
+                          );
+                        },
                         icon: const Icon(
                           Icons.favorite,
                           color: Colors.white,
@@ -336,3 +341,37 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
     );
   }
 }
+
+//Favorite part of this body
+class ProjectBodyFavoritePart extends StatefulWidget{
+  final List<ProjectModel> projects;
+  const ProjectBodyFavoritePart({
+    super.key,
+    required this.projects,});
+  @override
+  State<ProjectBodyFavoritePart> createState() => _ProjectBodyFavoritePart();
+}
+
+class _ProjectBodyFavoritePart extends State<ProjectBodyFavoritePart>{
+  void onPressed() {}
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: CustomAppbar(
+        title: 'Saved projects',
+        isBack: true,
+        onPressed: onPressed,
+        currentContext: context,
+      ),
+      body: InitialBody(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListViewProjectItems(projects: widget.projects),
+          ],
+        ) 
+      ),
+    );
+  }
+}
+  
