@@ -46,8 +46,8 @@ class _ProjectItem extends State<ProjectItem> {
             },
             icon: Icon(
               widget.project.like
-                  ? Icons.favorite
-                  : Icons.favorite_border_outlined,
+                  ? Icons.favorite_border_outlined
+                  : Icons.favorite,
               color: Color.fromARGB(255, 0, 78, 212),
               size: 30,
             )),
