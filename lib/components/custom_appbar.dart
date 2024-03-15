@@ -7,7 +7,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   final String title;
   final Color backgroundColor;
-  final IconData iconButton;
+  final IconData? iconButton;
   final void Function()? onPressed;
   // 'isBack' is called when you want to back to the previous screen
   // and then, 'isBack' should follow with the context of current screen
