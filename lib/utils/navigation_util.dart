@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:student_hub/screens/browse_project_detail_screen.dart';
 import 'package:student_hub/screens/companyprofile_screen.dart';
 import 'package:student_hub/screens/companyregister_screen.dart';
 import 'package:student_hub/screens/home_screen.dart';
 import 'package:student_hub/screens/main_screen.dart';
 import 'package:student_hub/screens/profile_student_step1_screen.dart';
+import 'package:student_hub/screens/profile_student_step2_screen.dart';
 import 'package:student_hub/screens/profile_student_step3_screen.dart';
+import 'package:student_hub/screens/project_post_step1_screen.dart';
+import 'package:student_hub/screens/project_post_step2_screen.dart';
+import 'package:student_hub/screens/project_post_step3_screen.dart';
+import 'package:student_hub/screens/project_post_step4_screen.dart';
+import 'package:student_hub/screens/proposal_hire_offer_screen.dart';
 import 'package:student_hub/screens/registration_two_company_screen.dart';
 import 'package:student_hub/screens/registration_two_student_screen.dart';
 import 'package:student_hub/screens/signin_screen.dart';
@@ -112,7 +119,15 @@ class NavigationUtil {
     );
   }
 
-  // TODO: switch to profile student step 2 screen
+  // switch to profile student step 2 screen
+  static void toProfileStudentStep2Screen(BuildContext currentContext) {
+    Navigator.push(
+      currentContext,
+      MaterialPageRoute(
+        builder: (context) => const ProfileStudentStep2Screen(),
+      ),
+    );
+  }
 
   // switch to profile student step 3 screen
   static void toProfileStudentStep3Screen(BuildContext currentContext) {
@@ -133,6 +148,66 @@ class NavigationUtil {
         builder: (context) => MainScreen(
           contentBody: contentBody,
         ),
+      ),
+    );
+  }
+
+  // switch to project-post-step1 screen
+  static void toProjectPostStep1Screen(BuildContext currentContext) {
+    Navigator.push(
+      currentContext,
+      MaterialPageRoute(
+        builder: (context) => const ProjectPostStep1Screen(),
+      ),
+    );
+  }
+
+  // switch to project-post-step2 screen
+  static void toProjectPostStep2Screen(BuildContext currentContext) {
+    Navigator.push(
+      currentContext,
+      MaterialPageRoute(
+        builder: (context) => const ProjectPostStep2Screen(),
+      ),
+    );
+  }
+
+  // switch to project-post-step3 screen
+  static void toProjectPostStep3Screen(BuildContext currentContext) {
+    Navigator.push(
+      currentContext,
+      MaterialPageRoute(
+        builder: (context) => const ProjectPostStep3Screen(),
+      ),
+    );
+  }
+
+  // switch to project-post-step4 screen
+  static void toProjectPostStep4Screen(BuildContext currentContext) {
+    Navigator.push(
+      currentContext,
+      MaterialPageRoute(
+        builder: (context) => const ProjectPostStep4Screen(),
+      ),
+    );
+  }
+
+  // switch to browse-project-detail screen
+  static void toBrowseProjectDetailScreen(BuildContext currentContext) {
+    Navigator.push(
+      currentContext,
+      MaterialPageRoute(
+        builder: (context) => const BrowseProjectDetailScreen(),
+      ),
+    );
+  }
+
+  // switch to proposal-hire-offer screen
+  static void toProposalHireOfferScreen(BuildContext currentContext) {
+    Navigator.push(
+      currentContext,
+      MaterialPageRoute(
+        builder: (context) => const ProposalHireOfferScreen(),
       ),
     );
   }
