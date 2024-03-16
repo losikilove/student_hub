@@ -28,6 +28,7 @@ class CustomTextForm extends StatefulWidget {
   // this function helps you handle error in a parent widget
   // for sample: handle enabling/disabling a submit button
   final void Function(String? messageError) onHelper;
+  final void Function(String text)? onChanged;
 
   const CustomTextForm(
       {super.key,
@@ -39,7 +40,8 @@ class CustomTextForm extends StatefulWidget {
       this.isFocus = false,
       this.isBold = false,
       this.keyboardType,
-      this.inputFormaters});
+      this.inputFormaters,
+      this.onChanged});
 
   @override
   State<CustomTextForm> createState() => _CustomTextFormState();
@@ -50,6 +52,9 @@ class _CustomTextFormState extends State<CustomTextForm> {
 
   // check validation
   void _validate(String value) {
+    // when the wdiget parent call this function
+    widget.onChanged!(value);
+
     if (widget.listErros.isEmpty) {
       setState(() {
         _messageError = null;

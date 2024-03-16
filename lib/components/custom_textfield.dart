@@ -14,6 +14,7 @@ class CustomTextfield extends StatelessWidget {
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormaters;
   final IconData? prefixIcon;
+  final void Function(String text)? onChanged;
 
   const CustomTextfield(
       {super.key,
@@ -27,7 +28,8 @@ class CustomTextfield extends StatelessWidget {
       this.isFocus = false,
       this.keyboardType,
       this.inputFormaters,
-      this.prefixIcon});
+      this.prefixIcon,
+      this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -37,14 +39,14 @@ class CustomTextfield extends StatelessWidget {
       // remove underline
       decoration: isBox
           ? InputDecoration(
-              prefixIcon: Icon(prefixIcon),
+              prefixIcon: prefixIcon == null ? null : Icon(prefixIcon),
               filled: true,
               fillColor: Colors.white,
               enabledBorder: const OutlineInputBorder(),
               focusedBorder: const OutlineInputBorder(borderSide: BorderSide()),
             )
           : InputDecoration(
-              prefixIcon: Icon(prefixIcon),
+              prefixIcon: prefixIcon == null ? null : Icon(prefixIcon),
               hintText: hintText,
               filled: true,
               fillColor: Colors.white,
@@ -57,6 +59,7 @@ class CustomTextfield extends StatelessWidget {
       autofocus: isFocus,
       keyboardType: keyboardType,
       inputFormatters: inputFormaters,
+      onChanged: onChanged,
     );
   }
 }
