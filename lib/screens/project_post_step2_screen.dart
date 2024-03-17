@@ -5,6 +5,7 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 enum ProjectDuration {
@@ -124,7 +125,9 @@ class _ProjectPostStep2ScreenState extends State<ProjectPostStep2Screen> {
             Align(
               alignment: Alignment.topRight,
               child: CustomButton(
-                onPressed: onGoneToNextScreen,
+                onPressed: (){
+                  NavigationUtil.toPostProjectStep3(context);
+                },
                 text: 'Next: Description',
                 isDisabled: _isDisabledNextButton,
               ),

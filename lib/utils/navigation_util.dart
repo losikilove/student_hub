@@ -211,4 +211,39 @@ class NavigationUtil {
       ),
     );
   }
+
+  //post a job
+   static void toPostProjectStep1(BuildContext currentContext) {
+    Navigator.push(
+      currentContext,
+      MaterialPageRoute(
+        builder: (context) => const ProjectPostStep1Screen(),
+      ),
+    );
+  }
+  static void toPostProjectStep2(BuildContext currentContext) {
+    Navigator.push(
+      currentContext,
+      MaterialPageRoute(
+        builder: (context) => const ProjectPostStep2Screen(),
+      ),
+    );
+  }
+  static void toPostProjectStep3(BuildContext currentContext) {
+    Navigator.push(
+      currentContext,
+      MaterialPageRoute(
+        builder: (context) => const ProjectPostStep3Screen(),
+      ),
+    );
+  }
+  static void toPostProjectStep4(BuildContext currentContext) {
+    Navigator.push(
+      currentContext,
+      MaterialPageRoute(
+        builder: (context) => const ProjectPostStep4Screen(),
+      ),
+    );
+  }
+
 }
