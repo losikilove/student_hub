@@ -9,14 +9,14 @@ import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/utils/text_util.dart';
-class DashboardBody extends StatefulWidget {
-  const DashboardBody({super.key});
+class DashboardBodyStudent extends StatefulWidget {
+  const DashboardBodyStudent({super.key});
 
   @override
-  State<DashboardBody> createState() => _DashboardBody();
+  State<DashboardBodyStudent> createState() => _DashboardBodyStudent();
 }
 
-class _DashboardBody extends State<DashboardBody>
+class _DashboardBodyStudent extends State<DashboardBodyStudent>
     with SingleTickerProviderStateMixin {
   late final List<TabView> _tabViews = [
     TabView(
