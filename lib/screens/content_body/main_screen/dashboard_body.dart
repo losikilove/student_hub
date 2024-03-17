@@ -9,7 +9,7 @@ import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/utils/text_util.dart';
-
+import 'package:student_hub/models/project_model.dart';
 class DashboardBody extends StatefulWidget {
   const DashboardBody({super.key});
 
@@ -21,9 +21,9 @@ class _DashboardBody extends State<DashboardBody>
     with SingleTickerProviderStateMixin {
   late final List<TabView> _tabViews = [
     TabView(
-        tab: const Tab(text: 'All projects'), widget: _allProjectsContent()),
-    TabView(tab: const Tab(text: 'Working'), widget: _workingContent()),
-    TabView(tab: const Tab(text: 'Archived'), widget: _archievedContent())
+        tab: const Tab(text: 'All projects'), widget: _companyAllProjectContent()),
+    TabView(tab: const Tab(text: 'Working'), widget: _companyWorkingContent()),
+    TabView(tab: const Tab(text: 'Archived'), widget: _companyArchievedContent())
   ];
   late TabController _tabController;
   final List<ProjectModel> _projects = [
@@ -94,18 +94,18 @@ class _DashboardBody extends State<DashboardBody>
 
   // widgets contain content of tab
   // all projects content
-  Widget _allProjectsContent() {
+  Widget _companyAllProjectContent() {
     if (_projects.isEmpty) {
-      return Column(
+      return const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Center(
+          Center(
             child: CustomText(text: 'Welcome, Hai!'),
           ),
-          const SizedBox(
+          SizedBox(
             height: SpacingUtil.smallHeight,
           ),
-          const Center(
+          Center(
             child: CustomText(text: 'You have no jobs!'),
           ),
         ],
@@ -123,13 +123,13 @@ class _DashboardBody extends State<DashboardBody>
         // handle actions of this project
         void onOpenedActionMenu() {
           showModalBottomSheet<void>(
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(top: Radius.circular(0)),
             ),
             context: context,
             builder: (BuildContext context) {
               return ConstrainedBox(
-                constraints: new BoxConstraints(
+                constraints: const BoxConstraints(
                   minHeight: 145,
                   maxHeight: double.maxFinite,
                 ),
@@ -379,13 +379,55 @@ class _DashboardBody extends State<DashboardBody>
     );
   }
 
-  // working content
-  Widget _workingContent() {
+  // company working content
+  Widget _companyWorkingContent() {
     return const Center();
   }
 
-  // archievedContent
-  Widget _archievedContent() {
+   Widget _studentWorkingContent() {
+    if (_projects.isEmpty) {
+      return const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: CustomText(text: 'Welcome, Hai!'),
+          ),
+          SizedBox(
+            height: SpacingUtil.smallHeight,
+          ),
+          Center(
+            child: CustomText(text: 'You have no jobs!'),
+          ),
+        ],
+      );
+    }
+    return ListView.builder(
+        itemCount: _projects.length,
+        itemBuilder: (context, index) {
+        final project = _projects[index];
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              project.title,
+              style: const TextStyle(
+                color: Color.fromARGB(255, 3, 230, 11), fontSize: 16),
+            ),
+            const CustomText(text: "Time: 6 months, 4 students needed"),
+            const SizedBox(
+              height: SpacingUtil.mediumHeight,
+            ),
+            const CustomText(text: "Student are looking for"),
+            CustomBulletedList(listItems: project.wishes),
+            const CustomDivider(),
+          ],
+        );
+      }
+    );
+  }
+
+  // companyArchievedContent
+  Widget _companyArchievedContent() {
     return const Center();
   }
 }
