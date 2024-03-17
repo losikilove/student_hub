@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
+import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class ProjectPostStep3Screen extends StatefulWidget
@@ -17,6 +19,7 @@ class _ProjectPostStep3ScreenState extends State<ProjectPostStep3Screen>{
 
   void onPressed(){}
 
+  bool _isDisabledNextButton = true;
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -56,7 +59,17 @@ class _ProjectPostStep3ScreenState extends State<ProjectPostStep3Screen>{
                   borderRadius: BorderRadius.circular(10),
                 ),
               )
-            )
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: CustomButton(
+                onPressed: (){
+                  NavigationUtil.toPostProjectStep4(context);
+                },
+                text: 'Preview your post',
+                isDisabled: _isDisabledNextButton,
+              ),
+            ),
             
           ],
         ),

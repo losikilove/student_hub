@@ -5,6 +5,7 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class ProjectPostStep1Screen extends StatefulWidget {
@@ -73,7 +74,9 @@ class _ProjectPostStep1ScreenState extends State<ProjectPostStep1Screen> {
                     alignment: Alignment.topRight,
                     child: CustomButton(
                         isDisabled: !_titlePost,
-                        onPressed: () {},
+                        onPressed: () {
+                          NavigationUtil.toPostProjectStep2(context);
+                        },
                         text: "Next Scope"
                       )
                     )
