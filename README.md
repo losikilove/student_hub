@@ -32,3 +32,20 @@
 ## 7. Individual setState for a subwidget which is wrapped in a widget
 - Reasons: cannot show changeable states on subwidget
 - Solutions: wrap that subwiget on a StatefulBuilder widget, then handle its states into that widget
+## 8. Use Dash chat 2
+- Enable multidex.
+Open project/app/build.gradle and add the following lines.
+```
+defaultConfig {
+    ...
+
+    multiDexEnabled true
+}
+```
+```
+dependencies {
+    ...
+
+    implementation 'com.android.support:multidex:1.0.3'
+}
+```
