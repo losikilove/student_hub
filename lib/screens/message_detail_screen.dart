@@ -72,15 +72,17 @@ class _MessageBodyPartChatState extends State<MessageBodyPartChat> {
           currentUserContainerColor: ColorUtil.primary,
           containerColor: Color.fromARGB(255, 255, 255, 255),
           messageTextBuilder:(message, previousMessage, nextMessage) {
-            if(message.text == 'showSchedule'){
-               var appointment = message.customProperties!['appointment'];
-                return Card(
-                  child: ListTile(
+            if (message.customProperties != null &&
+              message.customProperties!.containsKey('appointment')) {
+              // Build a custom widget to display the appointment details
+              var appointment = message.customProperties!['appointment'];
+              return Card(
+                child: ListTile(
                   leading: Icon(Icons.calendar_today),
                   title: Text('Appointment'),
                   subtitle: Text('${appointment['description']} on ${appointment['date']} at ${appointment['time']}'),
-              ),
-            );
+                ),
+              );
             }
             else{
               
