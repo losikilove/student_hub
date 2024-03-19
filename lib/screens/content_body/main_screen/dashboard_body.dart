@@ -9,7 +9,7 @@ import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/utils/text_util.dart';
-import 'package:student_hub/models/project_model.dart';
+
 class DashboardBody extends StatefulWidget {
   const DashboardBody({super.key});
 
