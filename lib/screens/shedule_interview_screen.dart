@@ -5,7 +5,6 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/components/initial_body.dart';
-import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 class ScheduleInterview extends StatefulWidget {
   const ScheduleInterview({super.key});
@@ -150,12 +149,12 @@ class _ScheduleInterviewState extends State<ScheduleInterview> {
                   children: [
                     CustomButton(onPressed: (){}, 
                       text: "Cancel",
-                      buttonColor: Color.fromARGB(255, 65, 172, 215),
+                      buttonColor: Color.fromARGB(255, 62, 114, 225),
                     ),
                     CustomButton(onPressed: (){}, 
                       text: "Send Invite",
                       isDisabled: !isChooseTitle||!isEnd||!isStart,
-                      buttonColor: Color.fromARGB(255, 65, 172, 215),
+                      buttonColor: Color.fromARGB(255, 62, 114, 225),
                     ),
                 ],)
               ],
