@@ -17,8 +17,8 @@ import 'package:student_hub/screens/signupsetup1_screen.dart';
 import 'package:student_hub/screens/switch_account_screen.dart';
 
 void main() {
-  runApp( MaterialApp(
+  runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: JoinButton(),
+    home: JoinButton(onPressed: null, id_room: 'jxhf-dsac-sthj'),
   ));
 }
