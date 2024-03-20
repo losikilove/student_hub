@@ -138,8 +138,9 @@ class _MeetingPickerState extends State<MeetingPicker> {
                 }
 
                 // return the meeting-picker bottom sheet
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
+                return Container(
+                  padding: EdgeInsets.only(left:6,right:6,top:14),
+                  height:400,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
