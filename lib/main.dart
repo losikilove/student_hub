@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:student_hub/components/join_meeting.dart';
 import 'package:student_hub/screens/browse_project_detail_screen.dart';
 import 'package:student_hub/screens/content_body/main_screen/message_body.dart';
+import 'package:student_hub/screens/home_screen.dart';
 import 'package:student_hub/screens/main_screen.dart';
 import 'package:student_hub/screens/companyprofile_screen.dart';
-import 'package:student_hub/screens/meeting_screen.dart';
 import 'package:student_hub/screens/message_detail_screen.dart';
 import 'package:student_hub/screens/profile_student_step1_screen.dart';
 import 'package:student_hub/screens/profile_student_step2_screen.dart';
@@ -17,8 +16,8 @@ import 'package:student_hub/screens/signupsetup1_screen.dart';
 import 'package:student_hub/screens/switch_account_screen.dart';
 
 void main() {
-  runApp( MaterialApp(
+  runApp(  MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: JoinButton(),
+    home: HomeScreen(),
   ));
 }
