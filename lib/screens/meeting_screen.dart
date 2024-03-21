@@ -1,11 +1,11 @@
 
 import 'package:flutter/material.dart';
-import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:agora_uikit/agora_uikit.dart';
-
-const appId  = '10d071544ef044f199f30a46de11a7e8';
-const token = '007eJxTYDgRlP7tQ3z90V2XGaU3fT6fvD1Q+wHnFsG498EFUbdaVi9QYDBLtUwytDQyNbdMTTOxNEizNEqzTE02NTRIMbA0Njcxe870J7UhkJGh4tFsRkYGCATxORjKEvPy0jMyDRkYAIEwIxk=';
-const channel = 'vannghi';
+import 'package:student_hub/components/custom_appbar.dart';
+import 'package:student_hub/utils/spacing_util.dart';
+const appId = '';
+const token = '0066e9b192579ef490f92f9ec510d093746IABCEjOJopDj3EGGEWuzXAIOubp5vr/YXL4+9mMQRiEj1npKVfgAAAAAEABt1X4ozpv9ZQEAAQBeWPxl';
+const channel ='';
 
 class MeetingScreen extends StatefulWidget {
   const MeetingScreen({super.key});
@@ -15,21 +15,23 @@ class MeetingScreen extends StatefulWidget {
 }
 
 class _MeetingScreenState extends State<MeetingScreen> {
-  int? _remoteUid;
-  late RtcEngine _engine;
-  bool _localUserJoined = false;
-
   final AgoraClient client = AgoraClient( 
-  agoraConnectionData: AgoraConnectionData( 
-    appId: "10d071544ef044f199f30a46de11a7e8", 
-    channelName: "vannghi1", 
-    tempToken: token, 
-  ), 
-  enabledPermission: [ 
-    Permission.camera, 
-    Permission.microphone, 
-  ], 
-);
+    agoraConnectionData: AgoraConnectionData( 
+      appId: "6e9b192579ef490f92f9ec510d093746", 
+      channelName: "vannghi", 
+      tempToken: token,
+      uid: 0,
+      rtmEnabled: true,
+    ), 
+  
+  
+    enabledPermission: [ 
+      Permission.camera, 
+      Permission.microphone, 
+    ],
+
+  );
+
   @override
   void initState(){
     super.initState();
@@ -38,31 +40,29 @@ class _MeetingScreenState extends State<MeetingScreen> {
   }
 
   void initForAgora() async { 
-  await client.initialize(); 
+    await client.initialize();
+     
 } 
-@override
-  void dispose() {
-    super.dispose();
-
-    _dispose();
-  }
-
-  Future<void> _dispose() async {
-    await _engine.leaveChannel();
-    await _engine.release();
-  }
-
   // Create UI with local view and remote view
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Agora Video Call'),
+      appBar: CustomAppbar(onPressed: (){},
+        currentContext: context,
+        title: 'Luis',
       ),
+
       body: SafeArea( 
-        child: Stack( 
-          children: [ 
-            AgoraVideoViewer(client: client),  
+        child: Column( 
+          children: [
+            Center(
+              child: Icon(Icons.people, size: 300,),
+            ),
+            SizedBox(height: SpacingUtil.largeHeight,),
+            Center(
+              child: Icon(Icons.people, size: 300,),
+            ),
+            SizedBox(height: SpacingUtil.largeHeight,),
             AgoraVideoButtons(client: client), 
           ], 
         ),
@@ -70,21 +70,4 @@ class _MeetingScreenState extends State<MeetingScreen> {
     );
   }
 
-  // Display remote user's video
-  Widget _remoteVideo() {
-    if (_remoteUid != null) {
-      return AgoraVideoView(
-        controller: VideoViewController.remote(
-          rtcEngine: _engine,
-          canvas: VideoCanvas(uid: _remoteUid),
-          connection: const RtcConnection(channelId: channel),
-        ),
-      );
-    } else {
-      return const Text(
-        'Please wait for remote user to join',
-        textAlign: TextAlign.center,
-      );
-    }
-  }
 }
