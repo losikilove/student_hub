@@ -9,6 +9,7 @@ class InterviewModel {
   DateTime _dateInterview;
   TimeOfDay _startTime;
   TimeOfDay _endTime;
+  bool _isCanceled;
 
   InterviewModel(
     this.id,
@@ -17,7 +18,8 @@ class InterviewModel {
     this._dateInterview,
     this._startTime,
     this._endTime,
-  ) : _duration = InterviewUtil.calculateTheDiffTimes(_startTime, _endTime);
+  )   : _duration = InterviewUtil.calculateTheDiffTimes(_startTime, _endTime),
+        _isCanceled = false;
 
   // getter
   String get getInterviewId => id!;
@@ -27,6 +29,7 @@ class InterviewModel {
   TimeOfDay get getStartTime => _startTime;
   TimeOfDay get getEndTime => _endTime;
   double get getDuration => _duration;
+  bool get isCanceled => _isCanceled;
 
   // setter
   set setTitle(String title) {
@@ -45,5 +48,9 @@ class InterviewModel {
   set setEndTime(TimeOfDay endTime) {
     _endTime = endTime;
     _duration = InterviewUtil.calculateTheDiffTimes(_startTime, _endTime);
+  }
+
+  void cancelMeeting() {
+    _isCanceled = true;
   }
 }
