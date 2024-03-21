@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:student_hub/components/custom_appbar.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:agora_uikit/agora_uikit.dart';
 
 const appId  = '6e9b192579ef490f92f9ec510d093746';
 const token = '007eJxTYFD1+aVeYCMyxeLlyvqEO856+5QqE+aU/7b9lmN8IznH1VmBwSzVMsnQ0sjU3DI1zcTSIM3SKM0yNdnU0CDFwNLY3MTs1uvfqQ2BjAzXfCwYGRkgEMRnZyhLzMtLz8hkYAAAZ4QgTQ==';
@@ -18,6 +18,18 @@ class _MeetingScreenState extends State<MeetingScreen> {
   int? _remoteUid;
   late RtcEngine _engine;
   bool _localUserJoined = false;
+
+  final AgoraClient client = AgoraClient( 
+  agoraConnectionData: AgoraConnectionData( 
+    appId: "6e9b192579ef490f92f9ec510d093746", 
+    channelName: "vannghi", 
+    tempToken: token, 
+  ), 
+  enabledPermission: [ 
+    Permission.camera, 
+    Permission.microphone, 
+  ], 
+);
   @override
   void initState(){
     super.initState();
@@ -25,52 +37,9 @@ class _MeetingScreenState extends State<MeetingScreen> {
     
   }
 
-  Future<void> initForAgora() async {
-    _engine = createAgoraRtcEngine();
-    await _engine.initialize(const RtcEngineContext(
-      appId: appId,
-      channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
-    ));
-
-    _engine.registerEventHandler(
-      RtcEngineEventHandler(
-        onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
-          debugPrint("local user ${connection.localUid} joined");
-          setState(() {
-            _localUserJoined = true;
-          });
-        },
-        onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
-          debugPrint("remote user $remoteUid joined");
-          setState(() {
-            _remoteUid = remoteUid;
-          });
-        },
-        onUserOffline: (RtcConnection connection, int remoteUid,
-            UserOfflineReasonType reason) {
-          debugPrint("remote user $remoteUid left channel");
-          setState(() {
-            _remoteUid = null;
-          });
-        },
-        onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
-          debugPrint(
-              '[onTokenPrivilegeWillExpire] connection: ${connection.toJson()}, token: $token');
-        },
-      ),
-    );
-
-    await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
-    await _engine.enableVideo();
-    await _engine.startPreview();
-
-    await _engine.joinChannel(
-      token: token,
-      channelId: channel,
-      uid: 0,
-      options: const ChannelMediaOptions(),
-    );
-  }
+  void initForAgora() async { 
+  await client.initialize(); 
+} 
 @override
   void dispose() {
     super.dispose();
@@ -90,30 +59,14 @@ class _MeetingScreenState extends State<MeetingScreen> {
       appBar: AppBar(
         title: const Text('Agora Video Call'),
       ),
-      body: Stack(
-        children: [
-          Center(
-            child: _remoteVideo(),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: SizedBox(
-              width: 100,
-              height: 150,
-              child: Center(
-                child: _localUserJoined
-                    ? AgoraVideoView(
-                        controller: VideoViewController(
-                          rtcEngine: _engine,
-                          canvas: const VideoCanvas(uid: 0),
-                        ),
-                      )
-                    : const CircularProgressIndicator(),
-              ),
-            ),
-          ),
-        ],
-      ),
+      body: SafeArea( 
+        child: Stack( 
+          children: [ 
+            AgoraVideoViewer(client: client),  
+            AgoraVideoButtons(client: client), 
+          ], 
+        ),
+      ) 
     );
   }
 
