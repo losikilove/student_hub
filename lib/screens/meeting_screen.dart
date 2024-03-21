@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:agora_uikit/agora_uikit.dart';
 
-const appId  = '6e9b192579ef490f92f9ec510d093746';
-const token = '007eJxTYFD1+aVeYCMyxeLlyvqEO856+5QqE+aU/7b9lmN8IznH1VmBwSzVMsnQ0sjU3DI1zcTSIM3SKM0yNdnU0CDFwNLY3MTs1uvfqQ2BjAzXfCwYGRkgEMRnZyhLzMtLz8hkYAAAZ4QgTQ==';
+const appId  = '10d071544ef044f199f30a46de11a7e8';
+const token = '007eJxTYDgRlP7tQ3z90V2XGaU3fT6fvD1Q+wHnFsG498EFUbdaVi9QYDBLtUwytDQyNbdMTTOxNEizNEqzTE02NTRIMbA0Njcxe870J7UhkJGh4tFsRkYGCATxORjKEvPy0jMyDRkYAIEwIxk=';
 const channel = 'vannghi';
 
 class MeetingScreen extends StatefulWidget {
@@ -21,8 +21,8 @@ class _MeetingScreenState extends State<MeetingScreen> {
 
   final AgoraClient client = AgoraClient( 
   agoraConnectionData: AgoraConnectionData( 
-    appId: "6e9b192579ef490f92f9ec510d093746", 
-    channelName: "vannghi", 
+    appId: "10d071544ef044f199f30a46de11a7e8", 
+    channelName: "vannghi1", 
     tempToken: token, 
   ), 
   enabledPermission: [ 
