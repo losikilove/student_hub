@@ -1,106 +1,127 @@
-import 'dart:developer';
-
-import 'package:dash_chat_2/dash_chat_2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textform.dart';
-import 'package:student_hub/components/interview_card.dart';
 import 'package:student_hub/models/interview_model.dart';
 import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/interview_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
-class MessageDetailScreen extends StatefulWidget {
-  const MessageDetailScreen({super.key});
+class InterviewCard extends StatefulWidget {
+  final InterviewModel interviewInfo;
+  final void Function() onJoined;
+
+  const InterviewCard(
+      {super.key, required this.interviewInfo, required this.onJoined});
 
   @override
-  State<MessageDetailScreen> createState() => _MessageDetailScreenState();
+  State<InterviewCard> createState() => _InterviewCardState();
 }
 
-class _MessageDetailScreenState extends State<MessageDetailScreen> {
-  final optionOfMinute = 2;
-  final optionOfHour = 24;
-  final ChatUser _currentUser =
-      ChatUser(id: '1', firstName: 'phat', lastName: 'bo');
-  final ChatUser _anotherUser =
-      ChatUser(id: '2', firstName: 'nhat', lastName: 'bo');
-  final List<ChatMessage> _message = <ChatMessage>[];
-  final List<ChatUser> _typing = <ChatUser>[];
+class _InterviewCardState extends State<InterviewCard> {
+  void onOpenedMoreActions() async {
+    final isRescheduledInterview = await showMoreActionsBottomSheet();
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  // show the more actions bottom-sheet
-  void onOpenedMoreAction() async {
-    // open more actions bottom
-    // which can cancel or create a meeting
-    final isCreatedNewInterview = await showMoreActionsBottomSheet();
-
-    // have no creating new Interview
-    if (isCreatedNewInterview == null || isCreatedNewInterview == false) {
+    // have no clue
+    if (isRescheduledInterview == null) {
       return;
     }
 
-    // show options Interview
-    showInterviewBottomSheet();
+    // cancel the meeting interview
+    if (isRescheduledInterview == false) {
+      // showing the dialog warning the canceled meeting
+      // and waiting for its response
+      final isCanceledMeeting = await openDialogWarningCanceledMeeting();
+
+      // have no clue
+      if (isCanceledMeeting == null) {
+        return;
+      }
+
+      // cancel the meeting
+      setState(() {
+        widget.interviewInfo.cancelMeeting();
+      });
+      return;
+    }
+
+    // re-schedule the meeting interview
+    showUpdatingMeetingInterview();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: CustomAppbar(
-          title: 'chat',
-          onPressed: onOpenedMoreAction,
-          currentContext: context,
-          iconButton: Icons.calendar_month,
-          isBack: true,
-        ),
-        body: Container(
-          color: ColorUtil.lightPrimary,
-          child: DashChat(
-            typingUsers: _typing,
-            currentUser: _currentUser,
-            onSend: (ChatMessage message) {
-              setState(() {
-                _message.insert(0, message);
-              });
-            },
-            messages: _message,
-            inputOptions: const InputOptions(
-              cursorStyle: CursorStyle(color: ColorUtil.primary),
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // title of interview
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  child: CustomText(
+                    text: widget.interviewInfo.getTitle,
+                    isBold: true,
+                    size: 17.0,
+                    isOverflow: true,
+                  ),
+                ),
+                // duration of interview
+                CustomText(
+                  text: 'in ${widget.interviewInfo.getDuration} hours',
+                  isItalic: true,
+                )
+              ],
             ),
-            messageOptions: MessageOptions(
-              currentUserContainerColor: ColorUtil.primary,
-              containerColor: const Color.fromARGB(255, 255, 255, 255),
-              messageTextBuilder: (message, previousMessage, nextMessage) {
-                // if message is an interview, show box-interview
-                if (message.customProperties != null &&
-                    message.customProperties!.containsKey('interview')) {
-                  InterviewModel invitation =
-                      message.customProperties!['interview'];
-
-                  return InterviewCard(
-                    interviewInfo: invitation,
-                    onJoined: () {},
-                  );
-                } else {
-                  return Text(
-                    message.text,
-                    style: const TextStyle(
-                      color: Colors.black,
+            // date interview
+            CustomText(
+                text:
+                    'Day: ${_dateForm(widget.interviewInfo.getDateInterview)}'),
+            // start time to end time interview
+            CustomText(
+              text:
+                  'Start: ${_timeForm(widget.interviewInfo.getStartTime)} - End: ${_timeForm(widget.interviewInfo.getEndTime)}',
+            ),
+            // if the meeting canceled, show the canceling text
+            // else show buttons
+            widget.interviewInfo.isCanceled
+                // cenceled the meeting text
+                ? const Align(
+                    alignment: Alignment.centerRight,
+                    child: CustomText(
+                      text: 'The meeting has canceled',
+                      textColor: Colors.red,
+                      isItalic: true,
                     ),
-                  );
-                }
-              },
-            ),
-          ),
-        ));
+                  )
+                // buttons
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      // join button
+                      CustomButton(
+                        onPressed: widget.onJoined,
+                        text: 'Join',
+                      ),
+                      // more actions button
+                      IconButton(
+                        onPressed: onOpenedMoreActions,
+                        icon: const Icon(
+                          Icons.keyboard_control,
+                        ),
+                      ),
+                    ],
+                  ),
+          ],
+        ),
+      ),
+    );
   }
 
   // show more actions bottom sheet
@@ -125,7 +146,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // create new Interview button
+                      // reschedule interview button
                       TextButton(
                         onPressed: () {
                           // create new a Interview
@@ -135,24 +156,24 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                           minimumSize: const Size.fromHeight(30),
                         ),
                         child: const Text(
-                          'Schedule on interview',
+                          'Re-schedule the meeting',
                           style: TextStyle(color: Colors.black),
                         ),
                       ),
                       const CustomDivider(
                         isFullWidth: true,
                       ),
-                      // cancel button
+                      // cancel interview button
                       TextButton(
                         onPressed: () {
-                          // have no clue
+                          // cancel the interview
                           Navigator.of(context).pop(false);
                         },
                         style: TextButton.styleFrom(
                           minimumSize: const Size.fromHeight(30),
                         ),
                         child: const Text(
-                          'Cancel',
+                          'Cancel the meeting',
                           style: TextStyle(color: Colors.red),
                         ),
                       ),
@@ -165,38 +186,50 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
         },
       );
 
-  // show Interview bottom sheet
-  Future showInterviewBottomSheet() {
-    final titleController = TextEditingController(text: 'new meeting');
-    DateTime selectedDate = DateTime.now();
-    TimeOfDay selectedStartTime = const TimeOfDay(hour: 0, minute: 0);
-    TimeOfDay selectedEndTime = const TimeOfDay(hour: 0, minute: 0);
-    double duration =
-        InterviewUtil.calculateTheDiffTimes(selectedStartTime, selectedEndTime);
+  // determine to cancel or keep the meeting alert dialog
+  Future<bool?> openDialogWarningCanceledMeeting() => showDialog<bool>(
+        context: context,
+        builder: (context) {
+          void onYes() {
+            Navigator.of(context).pop(true);
+          }
 
-    // send invite interview to student
-    void onSentInvititation() {
-      ChatMessage invitation = ChatMessage(
-          user: _currentUser,
-          createdAt: DateTime.now(),
-          text: 'showInvitation',
-          customProperties: {
-            'interview': InterviewModel(
-              null,
-              [_currentUser, _anotherUser],
-              titleController.text,
-              selectedDate,
-              selectedStartTime,
-              selectedEndTime,
+          return AlertDialog(
+            title: const Text(
+              'WARNING',
+              style: TextStyle(color: Colors.red),
             ),
-          });
+            content: const Text('Are you sure to cancel this meeting'),
+            actions: [
+              CustomButton(
+                onPressed: onYes,
+                text: 'YES',
+              ),
+            ],
+          );
+        },
+      );
 
-      // save the interview meeting info into messages
+  // show Interview bottom sheet
+  Future showUpdatingMeetingInterview() {
+    final titleController =
+        TextEditingController(text: widget.interviewInfo.getTitle);
+    DateTime selectedDate = widget.interviewInfo.getDateInterview;
+    TimeOfDay selectedStartTime = widget.interviewInfo.getStartTime;
+    TimeOfDay selectedEndTime = widget.interviewInfo.getEndTime;
+    double duration = widget.interviewInfo.getDuration;
+
+    // update meeting
+    void onUpdatedMeeting() {
+      // edit the values of meeting
       setState(() {
-        _message.insert(0, invitation);
+        widget.interviewInfo.setTitle = titleController.text;
+        widget.interviewInfo.setDateInterview = selectedDate;
+        widget.interviewInfo.setStartTime = selectedStartTime;
+        widget.interviewInfo.setEndTime = selectedEndTime;
       });
 
-      // out of this Interview bottom sheet
+      // out of this updating
       Navigator.of(context).pop();
     }
 
@@ -217,7 +250,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                   children: [
                     // title of Interview-sheet
                     const CustomText(
-                      text: "Schedule for a video interview",
+                      text: "Re-schedule for the video interview",
                       isBold: true,
                       size: 20,
                     ),
@@ -234,7 +267,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                       listErros: const <InvalidationType>[
                         InvalidationType.isBlank
                       ],
-                      hintText: "Enter title",
+                      hintText: "Title of interview",
                       onHelper: ((messageError) {}),
                     ),
                     const SizedBox(
@@ -257,6 +290,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                 await InterviewUtil.selectDate(context);
                             setModalState(() {
                               selectedDate = selectedDateTime!;
+                              duration = widget.interviewInfo.getDuration;
                             });
                           },
                           style: ElevatedButton.styleFrom(
@@ -285,7 +319,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                 await InterviewUtil.selectTime(context);
                             setModalState(() {
                               selectedStartTime = selectedTime!;
-                              // update the duration
                               duration = InterviewUtil.calculateTheDiffTimes(
                                   selectedStartTime, selectedEndTime);
                             });
@@ -312,7 +345,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                 await InterviewUtil.selectTime(context);
                             setModalState(() {
                               selectedEndTime = selectedTime!;
-                              // update the duration
                               duration = InterviewUtil.calculateTheDiffTimes(
                                   selectedStartTime, selectedEndTime);
                             });
@@ -326,6 +358,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                     const SizedBox(
                       height: 12,
                     ),
+                    // duration text
                     CustomText(
                       text: "Duration: $duration hours",
                       isItalic: true,
@@ -347,11 +380,11 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                         ),
                         // button send invite
                         CustomButton(
-                          onPressed: onSentInvititation,
-                          text: "Send Invite",
+                          onPressed: onUpdatedMeeting,
+                          text: "Update",
+                          buttonColor: ColorUtil.darkPrimary,
                           // when the duration is less than 0, disable this button
                           isDisabled: duration <= 0,
-                          buttonColor: ColorUtil.darkPrimary,
                         ),
                       ],
                     )
@@ -363,5 +396,13 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
         );
       },
     );
+  }
+
+  String _dateForm(DateTime date) {
+    return '${date.day}-${date.month}-${date.year}';
+  }
+
+  String _timeForm(TimeOfDay time) {
+    return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
   }
 }
