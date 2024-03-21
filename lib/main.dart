@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:student_hub/components/meeting_picker.dart';
 import 'package:student_hub/screens/browse_project_detail_screen.dart';
 import 'package:student_hub/screens/content_body/main_screen/message_body.dart';
 import 'package:student_hub/screens/home_screen.dart';
@@ -20,7 +19,7 @@ void main() {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MeetingPicker(),
+      home: MessageDetailScreen(),
     ),
   );
 }
