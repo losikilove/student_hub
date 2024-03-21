@@ -28,14 +28,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
       ChatUser(id: '1', firstName: 'phat', lastName: 'bo');
   final ChatUser _anotherUser =
       ChatUser(id: '2', firstName: 'nhat', lastName: 'bo');
-
   final List<ChatMessage> _message = <ChatMessage>[];
   final List<ChatUser> _typing = <ChatUser>[];
-  getData(ChatMessage message) async {
-    setState(() {
-      _message.insert(0, message);
-    });
-  }
 
   @override
   void initState() {
@@ -53,7 +47,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
       return;
     }
 
-    // creating new Interview
+    // show options Interview
     showInterviewBottomSheet();
   }
 
@@ -73,7 +67,9 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             typingUsers: _typing,
             currentUser: _currentUser,
             onSend: (ChatMessage message) {
-              getData(message);
+              setState(() {
+                _message.insert(0, message);
+              });
             },
             messages: _message,
             inputOptions: const InputOptions(
@@ -171,16 +167,15 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
 
   // show Interview bottom sheet
   Future showInterviewBottomSheet() {
-    final titleController = TextEditingController();
+    final titleController = TextEditingController(text: 'new meeting');
     DateTime selectedDate = DateTime.now();
     TimeOfDay selectedStartTime = const TimeOfDay(hour: 0, minute: 0);
     TimeOfDay selectedEndTime = const TimeOfDay(hour: 0, minute: 0);
-    bool isEnteredTitle = false,
-        isSelectedStartTime = false,
-        isSelectedEndTime = false;
+    double duration =
+        InterviewUtil.calculateTheDiffTimes(selectedStartTime, selectedEndTime);
 
     // send invite interview to student
-    void onSentInvite() {
+    void onSentInvititation() {
       ChatMessage invitation = ChatMessage(
           user: _currentUser,
           createdAt: DateTime.now(),
@@ -196,10 +191,12 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             ),
           });
 
+      // save the interview meeting info into messages
       setState(() {
         _message.insert(0, invitation);
       });
 
+      // out of this Interview bottom sheet
       Navigator.of(context).pop();
     }
 
@@ -237,11 +234,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                       listErros: const <InvalidationType>[
                         InvalidationType.isBlank
                       ],
-                      hintText: "Title of interview",
-                      onHelper: ((messageError) {
-                        // enable the create-Interview button
-                        isEnteredTitle = messageError == null ? true : false;
-                      }),
+                      hintText: "Enter title",
+                      onHelper: ((messageError) {}),
                     ),
                     const SizedBox(
                       height: 10,
@@ -259,7 +253,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                         // Select date to organize a Interview
                         ElevatedButton(
                           onPressed: () async {
-                            final selectedDateTime = await selectDate();
+                            final selectedDateTime =
+                                await InterviewUtil.selectDate(context);
                             setModalState(() {
                               selectedDate = selectedDateTime!;
                             });
@@ -286,11 +281,13 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                         ),
                         CustomButton(
                           onPressed: () async {
-                            final selectedTime = await selectTime(context);
+                            final selectedTime =
+                                await InterviewUtil.selectTime(context);
                             setModalState(() {
                               selectedStartTime = selectedTime!;
-                              // enable the create-Interview button
-                              isSelectedStartTime = true;
+                              // update the duration
+                              duration = InterviewUtil.calculateTheDiffTimes(
+                                  selectedStartTime, selectedEndTime);
                             });
                           },
                           text:
@@ -311,11 +308,13 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                         ),
                         CustomButton(
                           onPressed: () async {
-                            final selectedTime = await selectTime(context);
+                            final selectedTime =
+                                await InterviewUtil.selectTime(context);
                             setModalState(() {
                               selectedEndTime = selectedTime!;
-                              // enable the create-Interview button
-                              isSelectedEndTime = true;
+                              // update the duration
+                              duration = InterviewUtil.calculateTheDiffTimes(
+                                  selectedStartTime, selectedEndTime);
                             });
                           },
                           text:
@@ -328,10 +327,10 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                       height: 12,
                     ),
                     CustomText(
-                      text:
-                          "Duration: ${InterviewUtil.calculateTheDiffTimes(selectedStartTime, selectedEndTime)} hours",
+                      text: "Duration: $duration hours",
                       isItalic: true,
                       size: 15,
+                      textColor: InterviewUtil.chooseColorByDuration(duration),
                     ),
                     const SizedBox(
                       height: SpacingUtil.smallHeight,
@@ -348,12 +347,10 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                         ),
                         // button send invite
                         CustomButton(
-                          onPressed: onSentInvite,
+                          onPressed: onSentInvititation,
                           text: "Send Invite",
-                          // handle button
-                          isDisabled: !isEnteredTitle ||
-                              !isSelectedStartTime ||
-                              !isSelectedEndTime,
+                          // when the duration is less than 0, disable this button
+                          isDisabled: duration <= 0,
                           buttonColor: ColorUtil.darkPrimary,
                         ),
                       ],
@@ -366,98 +363,5 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
         );
       },
     );
-  }
-
-  // show date-picker
-  Future<DateTime?> selectDate() async {
-    final dateTime = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-
-    return dateTime!;
-  }
-
-  // show time-picker
-  Future<TimeOfDay?> selectTime(BuildContext context) async {
-    int? selectedHour;
-    int? selectedMinute;
-    int initialMinuteIndex = 0; // Chỉ mục ban đầu của phút
-
-    final timeOfday = await showModalBottomSheet<TimeOfDay?>(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          height: 250.0,
-          child: Column(
-            children: [
-              Container(
-                alignment: Alignment.topRight,
-                child: TextButton(
-                  onPressed: () {
-                    if (selectedHour != null && selectedMinute != null) {
-                      final timeOfDay = TimeOfDay(
-                          hour: selectedHour!, minute: selectedMinute!);
-                      // pop picked time
-                      Navigator.of(context).pop(timeOfDay);
-                    }
-                  },
-                  child: const Text('Done'),
-                ),
-              ),
-              Expanded(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: CupertinoPicker.builder(
-                        itemExtent: 32.0,
-                        onSelectedItemChanged: (int index) {
-                          selectedHour = index;
-                          selectedMinute = initialMinuteIndex *
-                              InterviewUtil.minuteBetweenInterview;
-                        },
-                        childCount: optionOfHour,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Center(
-                            child: Text('$index'),
-                          );
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: CupertinoPicker.builder(
-                        itemExtent: 32.0,
-                        onSelectedItemChanged: (int index) {
-                          initialMinuteIndex = index;
-                          selectedMinute =
-                              index * InterviewUtil.minuteBetweenInterview;
-                        },
-                        childCount: optionOfMinute,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Center(
-                            child: Text(
-                                '${index * InterviewUtil.minuteBetweenInterview}'),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-
-    return timeOfday;
-  }
-
-  Future<void> getChatResponse(ChatMessage message) async {
-    setState(() {
-      _message.insert(0, message);
-    });
   }
 }
