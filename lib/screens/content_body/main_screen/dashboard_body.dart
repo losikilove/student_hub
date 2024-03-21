@@ -21,8 +21,8 @@ class _DashboardBody extends State<DashboardBody>
     with SingleTickerProviderStateMixin {
   late final List<TabView> _tabViews = [
     TabView(
-        tab: const Tab(text: 'All projects'), widget: _companyAllProjectContent()),
-    TabView(tab: const Tab(text: 'Working'), widget: _companyWorkingContent()),
+        tab: const Tab(text: 'All projects'), widget: _studentAllProjectContent()),
+    TabView(tab: const Tab(text: 'Working'), widget: _studentWorkingContent()),
     TabView(tab: const Tab(text: 'Archived'), widget: _companyArchievedContent())
   ];
   late TabController _tabController;
@@ -384,7 +384,7 @@ class _DashboardBody extends State<DashboardBody>
     return const Center();
   }
 
-   Widget _studentWorkingContent() {
+  Widget _studentWorkingContent() {
     if (_projects.isEmpty) {
       return const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -411,7 +411,7 @@ class _DashboardBody extends State<DashboardBody>
             Text(
               project.title,
               style: const TextStyle(
-                color: Color.fromARGB(255, 3, 230, 11), fontSize: 16),
+                color: Color.fromARGB(255, 6, 194, 13), fontSize: 16),
             ),
             const CustomText(text: "Time: 6 months, 4 students needed"),
             const SizedBox(
@@ -430,4 +430,81 @@ class _DashboardBody extends State<DashboardBody>
   Widget _companyArchievedContent() {
     return const Center();
   }
+
+  Widget _studentAllProjectContent() {
+   
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Card(
+            shape: Border.all(),
+            child:Container(
+              width: 400,
+              height: 50, 
+              decoration: BoxDecoration(
+                color: Colors.white
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(10), 
+                child: CustomText(text: "Active proposal(1)",isBold: true,)
+            )
+          )
+        ),
+        SizedBox(
+          height: SpacingUtil.mediumHeight,
+        ),
+        Card(
+            shape: Border.all(),
+            child:Container(
+              width: 400,
+              height: 450, 
+              decoration: BoxDecoration(
+                color: Colors.white
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(10), 
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children:[
+                    CustomText(text: "Submitted proposal(1)",isBold: true,),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    Container(
+                      height: 350,
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: ListView.builder(
+                        itemCount: _projects.length,
+                        itemBuilder: (context, index) {
+                        final project = _projects[index];
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              project.title,
+                              style: const TextStyle(
+                              color: Color.fromARGB(255, 6, 194, 13), fontSize: 16),
+                              ),
+                            const CustomText(text: "Submited 3 days ago"),
+                            const SizedBox(
+                            height: SpacingUtil.mediumHeight,
+                            ),
+                            const CustomText(text: "Student are looking for"),
+                            CustomBulletedList(listItems: project.wishes),
+                            const CustomDivider(),
+                            ],
+                          );
+                        }
+                      ),
+                    ) 
+                  ]
+              )  
+            )
+          )
+        ),
+      ],
+    );
+  }
+
+
 }
