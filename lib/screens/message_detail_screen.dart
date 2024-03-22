@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:dash_chat_2/dash_chat_2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
@@ -55,7 +52,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CustomAppbar(
-          title: 'chat',
+          title: 'Luis Pham',
           onPressed: onOpenedMoreAction,
           currentContext: context,
           iconButton: Icons.calendar_month,
@@ -167,12 +164,13 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
 
   // show Interview bottom sheet
   Future showInterviewBottomSheet() {
-    final titleController = TextEditingController(text: 'new meeting');
+    final titleController = TextEditingController();
     DateTime selectedDate = DateTime.now();
     TimeOfDay selectedStartTime = const TimeOfDay(hour: 0, minute: 0);
     TimeOfDay selectedEndTime = const TimeOfDay(hour: 0, minute: 0);
     double duration =
         InterviewUtil.calculateTheDiffTimes(selectedStartTime, selectedEndTime);
+    bool isValidTitle = false;
 
     // send invite interview to student
     void onSentInvititation() {
@@ -208,9 +206,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
           builder: (BuildContext context, StateSetter setModalState) {
             // return the Interview-picker bottom sheet
             return Container(
-              padding: const EdgeInsets.only(
-                  left: 10, right: 10, top: 20, bottom: 8),
-              height: 400,
+              padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
+              height: 450,
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,7 +232,13 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                         InvalidationType.isBlank
                       ],
                       hintText: "Enter title",
-                      onHelper: ((messageError) {}),
+                      onHelper: ((messageError) {
+                        // a title is valid when the message error is null
+                        // that means have no error
+                        setModalState(() {
+                          isValidTitle = messageError == null ? true : false;
+                        });
+                      }),
                     ),
                     const SizedBox(
                       height: 10,
@@ -349,8 +352,9 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                         CustomButton(
                           onPressed: onSentInvititation,
                           text: "Send Invite",
-                          // when the duration is less than 0, disable this button
-                          isDisabled: duration <= 0,
+                          // when the duration is less than 0 or the title is not valid
+                          // disable this button
+                          isDisabled: duration <= 0 || !isValidTitle,
                           buttonColor: ColorUtil.darkPrimary,
                         ),
                       ],

@@ -218,6 +218,7 @@ class _InterviewCardState extends State<InterviewCard> {
     TimeOfDay selectedStartTime = widget.interviewInfo.getStartTime;
     TimeOfDay selectedEndTime = widget.interviewInfo.getEndTime;
     double duration = widget.interviewInfo.getDuration;
+    bool isValidTitle = true;
 
     // update meeting
     void onUpdatedMeeting() {
@@ -241,9 +242,8 @@ class _InterviewCardState extends State<InterviewCard> {
           builder: (BuildContext context, StateSetter setModalState) {
             // return the Interview-picker bottom sheet
             return Container(
-              padding: const EdgeInsets.only(
-                  left: 10, right: 10, top: 20, bottom: 8),
-              height: 400,
+              padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
+              height: 450,
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,7 +268,13 @@ class _InterviewCardState extends State<InterviewCard> {
                         InvalidationType.isBlank
                       ],
                       hintText: "Title of interview",
-                      onHelper: ((messageError) {}),
+                      onHelper: ((messageError) {
+                        // a title is valid when the message error is null
+                        // that means have no error
+                        setModalState(() {
+                          isValidTitle = messageError == null ? true : false;
+                        });
+                      }),
                     ),
                     const SizedBox(
                       height: 10,
@@ -383,8 +389,9 @@ class _InterviewCardState extends State<InterviewCard> {
                           onPressed: onUpdatedMeeting,
                           text: "Update",
                           buttonColor: ColorUtil.darkPrimary,
-                          // when the duration is less than 0, disable this button
-                          isDisabled: duration <= 0,
+                          // when the duration is less than 0 or the title is not valid
+                          // disable this button
+                          isDisabled: duration <= 0 || !isValidTitle,
                         ),
                       ],
                     )

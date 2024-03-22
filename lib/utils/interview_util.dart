@@ -106,6 +106,6 @@ class InterviewUtil {
 
   // choose color by duration
   static Color chooseColorByDuration(double duration) {
-    return duration < 0 ? Colors.red : Colors.black;
+    return duration <= 0 ? Colors.red : Colors.black;
   }
 }
