@@ -7,6 +7,7 @@ import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/utils/color_util.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class BrowseProjectDetailScreen extends StatefulWidget {
@@ -23,7 +24,9 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
   void onPressed() {}
 
   // apply this project
-  void onAppliedNow() {}
+  void onAppliedNow() {
+    NavigationUtil.toSubmitProposal(context);
+  }
 
   // save this project
   void onSaved() {}

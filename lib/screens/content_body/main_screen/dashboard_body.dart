@@ -5,6 +5,7 @@ import 'package:student_hub/components/custom_tabbar.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/project_model.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 import 'package:student_hub/components/custom_divider.dart';
@@ -66,7 +67,9 @@ class _DashboardBody extends State<DashboardBody>
                   const Text(
                     'Yours job',
                   ),
-                  CustomButton(onPressed: onPressed, text: 'Post a job')
+                  CustomButton(onPressed: (){
+                    NavigationUtil.toPostProjectStep1(context);
+                  }, text: 'Post a job')
                 ],
               ),
             ),
@@ -118,7 +121,9 @@ class _DashboardBody extends State<DashboardBody>
         final project = _projects[index];
 
         // see detail of this project
-        void onSeenDetail() {}
+        void onSeenDetail() {
+          NavigationUtil.toSendHireOffer(context);
+        }
 
         // handle actions of this project
         void onOpenedActionMenu() {

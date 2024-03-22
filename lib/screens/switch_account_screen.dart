@@ -64,8 +64,8 @@ class _SwitchAccountScreen extends State<SwitchAccountScreen> {
                     icon: Icons.person_2_outlined,
                     text: 'Profile',
                     onTap: (){
-                      NavigationUtil.toCompanyProfileScreen(context);
-                      //NavigationUtil.toCompanyRegisterScreen(context);
+                      // NavigationUtil.toCompanyProfileScreen(context);
+                      NavigationUtil.toCompanyRegisterScreen(context);
                     },
                     subtext: null,
                   ),

@@ -9,6 +9,7 @@ import 'package:student_hub/components/interview_card.dart';
 import 'package:student_hub/models/interview_model.dart';
 import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/interview_util.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class MessageDetailScreen extends StatefulWidget {
@@ -84,7 +85,9 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
 
                   return InterviewCard(
                     interviewInfo: invitation,
-                    onJoined: () {},
+                    onJoined: () {
+                      NavigationUtil.toJoinMeetingScreen(context);
+                    },
                   );
                 } else {
                   return Text(

@@ -4,6 +4,8 @@ import 'package:student_hub/screens/companyprofile_screen.dart';
 import 'package:student_hub/screens/companyregister_screen.dart';
 import 'package:student_hub/screens/home_screen.dart';
 import 'package:student_hub/screens/main_screen.dart';
+import 'package:student_hub/screens/meeting_screen.dart';
+import 'package:student_hub/screens/message_detail_screen.dart';
 import 'package:student_hub/screens/profile_student_step1_screen.dart';
 import 'package:student_hub/screens/profile_student_step2_screen.dart';
 import 'package:student_hub/screens/profile_student_step3_screen.dart';
@@ -16,6 +18,7 @@ import 'package:student_hub/screens/registration_two_company_screen.dart';
 import 'package:student_hub/screens/registration_two_student_screen.dart';
 import 'package:student_hub/screens/signin_screen.dart';
 import 'package:student_hub/screens/signupsetup1_screen.dart';
+import 'package:student_hub/screens/student_submit_proposal_screen.dart';
 import 'package:student_hub/screens/switch_account_screen.dart';
 import 'package:student_hub/screens/welcome_screen.dart';
 
@@ -213,7 +216,7 @@ class NavigationUtil {
   }
 
   //post a job
-   static void toPostProjectStep1(BuildContext currentContext) {
+  static void toPostProjectStep1(BuildContext currentContext) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
@@ -221,6 +224,7 @@ class NavigationUtil {
       ),
     );
   }
+
   static void toPostProjectStep2(BuildContext currentContext) {
     Navigator.push(
       currentContext,
@@ -229,6 +233,7 @@ class NavigationUtil {
       ),
     );
   }
+
   static void toPostProjectStep3(BuildContext currentContext) {
     Navigator.push(
       currentContext,
@@ -237,6 +242,7 @@ class NavigationUtil {
       ),
     );
   }
+
   static void toPostProjectStep4(BuildContext currentContext) {
     Navigator.push(
       currentContext,
@@ -246,4 +252,30 @@ class NavigationUtil {
     );
   }
 
+  //Manage project flow
+  static void toSendHireOffer(BuildContext currentContext) {
+    Navigator.push(
+      currentContext,
+      MaterialPageRoute(builder: (context) => const ProposalHireOfferScreen()),
+    );
+  }
+
+  //Student submit proposal
+  static void toSubmitProposal(BuildContext currentContext) {
+    Navigator.push(
+        currentContext,
+        MaterialPageRoute(
+            builder: (context) => const StudentSubmitProposalScreen()));
+  }
+
+  //Chat
+  static void toMessageDetail(BuildContext currentContext) {
+    Navigator.push(currentContext,
+        MaterialPageRoute(
+          builder: (context) => const MessageDetailScreen()));
+  }
+  static void toJoinMeetingScreen(BuildContext currentContext){
+    Navigator.push(currentContext,
+      MaterialPageRoute(builder: (context) => const MeetingScreen(),));
+  }
 }

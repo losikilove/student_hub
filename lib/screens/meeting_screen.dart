@@ -63,7 +63,11 @@ class _MeetingScreenState extends State<MeetingScreen> {
               child: Icon(Icons.people, size: 300,),
             ),
             SizedBox(height: SpacingUtil.largeHeight,),
-            AgoraVideoButtons(client: client), 
+            AgoraVideoButtons(client: client,
+            enabledButtons: [
+              BuiltInButtons.callEnd,
+              BuiltInButtons.toggleCamera,
+              BuiltInButtons.toggleMic],), 
           ], 
         ),
       ) 

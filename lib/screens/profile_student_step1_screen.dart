@@ -10,6 +10,7 @@ import 'package:student_hub/components/mutliselect_chip.dart';
 import 'package:student_hub/models/education_model.dart';
 import 'package:student_hub/models/language_model.dart';
 import 'package:student_hub/utils/color_util.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class ProfileStudentStep1Screen extends StatefulWidget {
@@ -160,7 +161,9 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
         color: ColorUtil.lightPrimary,
         child: CustomButton(
           size: CustomButtonSize.small,
-          onPressed: onPressed,
+          onPressed: (){
+            NavigationUtil.toProfileStudentStep2Screen(context);
+          },
           text: 'Next',
         ),
       ),

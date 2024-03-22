@@ -67,7 +67,6 @@ class _ProjectPostStep3ScreenState extends State<ProjectPostStep3Screen>{
                   NavigationUtil.toPostProjectStep4(context);
                 },
                 text: 'Preview your post',
-                isDisabled: _isDisabledNextButton,
               ),
             ),
             

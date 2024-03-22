@@ -7,6 +7,7 @@ import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/experience_model.dart';
 import 'package:student_hub/utils/color_util.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class ProfileStudentStep2Screen extends StatefulWidget{
@@ -81,7 +82,9 @@ class _ProfileStudentStep2Screen extends
         color: ColorUtil.lightPrimary,
         child: CustomButton(
           size: CustomButtonSize.small,
-          onPressed: onPressed,
+          onPressed: (){
+            NavigationUtil.toProfileStudentStep3Screen(context);
+          },
           text: 'Next',
         ),
       ),

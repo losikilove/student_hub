@@ -5,6 +5,7 @@ import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/screens/main_screen.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:file_picker/file_picker.dart';
 
@@ -127,7 +128,10 @@ class _ProfileStudentStep3ScreenState extends State<ProfileStudentStep3Screen> {
             Container(
               alignment: Alignment.topRight,
               child: CustomButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, 
+                  MaterialPageRoute(builder: (context)=>const MainScreen(contentBody: MainScreenIndex.project)));
+                },
                 text: "Continue",
               ),
             ),

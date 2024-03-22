@@ -8,6 +8,7 @@ import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/chat_model.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class MessageBody extends StatefulWidget {
@@ -85,7 +86,9 @@ class _MessageBody extends State<MessageBody> {
 
   Widget _buildChatBlock(ChatModel chat) {
     // switch to the chat box
-    void onSwitchedToChatBox() {}
+    void onSwitchedToChatBox() {
+      NavigationUtil.toMessageDetail(context);
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
