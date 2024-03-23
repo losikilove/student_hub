@@ -2,7 +2,7 @@
 - An application permits managing students, teachers, projects, ...
 - Version: sdk: '>=3.3.0 <4.0.0'
 
-# Videos demo
+# Demo videos
 ## Phasing 1
 Demo video: https://www.youtube.com/watch?v=D1ZxhoNYnho
 
