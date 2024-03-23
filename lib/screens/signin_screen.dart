@@ -16,11 +16,11 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final emailController = TextEditingController();
-  void OnSignUp() {
+  void onSignUp() {
     NavigationUtil.toSignUpStepOneScreen(context);
   }
 
-  void OnSignIn() {}
+  void onSignIn() {}
   void onPressed() {}
 
   @override
@@ -48,7 +48,10 @@ class _SignInScreenState extends State<SignInScreen> {
           const SizedBox(
             height: SpacingUtil.mediumHeight,
           ),
-
+          const SizedBox(
+            height: SpacingUtil.mediumHeight,
+          ),
+          CustomButton(onPressed: onSignIn, text: 'sign in'),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -59,7 +62,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     isCenter: true,
                   ),
                 ),
-                CustomButton(onPressed: OnSignUp, text: 'sign up'),
+                CustomButton(onPressed: onSignUp, text: 'sign up'),
               ],
             ),
           )
