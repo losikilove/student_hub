@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_textfield.dart';
@@ -18,6 +19,7 @@ class _SignInScreenState extends State<SignInScreen> {
   void OnSignUp() {
     NavigationUtil.toSignUpStepOneScreen(context);
   }
+
   void OnSignIn() {}
   void onPressed() {}
 
@@ -26,40 +28,42 @@ class _SignInScreenState extends State<SignInScreen> {
     return Scaffold(
       appBar: CustomAppbar(onPressed: onPressed, currentContext: context),
       body: InitialBody(
-        child: Column(
-          children: [
-            const Center(
-                child: CustomText(
-              text: 'Log in with StudentHub',
-              isBold: true,
-            )),
-            const SizedBox(
-              height: SpacingUtil.largeHeight,
-            ),
-            CustomTextfield(controller: emailController, hintText: 'email'),
-            const SizedBox(
-              height: SpacingUtil.mediumHeight,
-            ),
-            CustomTextfield(
-                controller: emailController,
-                hintText: 'password',
-                obscureText: true),
-            const SizedBox(
-              height: SpacingUtil.mediumHeight,
-            ),
-            CustomButton(onPressed: OnSignIn, text: 'sign in'),
-            const SizedBox(
-              height: 400,
-            ),
-            const Center(
+        child: Column(children: [
+          const Center(
               child: CustomText(
-                text: '__Don\'t have an Student Hub account?__',
-                isCenter: true,
-              ),
+            text: 'Log in with StudentHub',
+            isBold: true,
+          )),
+          const SizedBox(
+            height: SpacingUtil.largeHeight,
+          ),
+          CustomTextfield(controller: emailController, hintText: 'email'),
+          const SizedBox(
+            height: SpacingUtil.mediumHeight,
+          ),
+          CustomTextfield(
+              controller: emailController,
+              hintText: 'password',
+              obscureText: true),
+          const SizedBox(
+            height: SpacingUtil.mediumHeight,
+          ),
+
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                const Center(
+                  child: CustomText(
+                    text: '__Don\'t have an Student Hub account?__',
+                    isCenter: true,
+                  ),
+                ),
+                CustomButton(onPressed: OnSignUp, text: 'sign up'),
+              ],
             ),
-            CustomButton(onPressed: OnSignUp, text: 'sign up'),
-          ],
-        ),
+          )
+        ]),
       ),
     );
   }

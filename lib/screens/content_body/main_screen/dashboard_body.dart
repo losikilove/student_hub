@@ -21,10 +21,12 @@ class DashboardBody extends StatefulWidget {
 class _DashboardBody extends State<DashboardBody>
     with SingleTickerProviderStateMixin {
   late final List<TabView> _tabViews = [
-    TabView(
-        tab: const Tab(text: 'All projects'), widget: _studentAllProjectContent()),
+    TabView(tab: const Tab(text: 'All projects'), widget: _studentAllProjectContent()),
     TabView(tab: const Tab(text: 'Working'), widget: _studentWorkingContent()),
-    TabView(tab: const Tab(text: 'Archived'), widget: _companyArchievedContent())
+    TabView(tab: const Tab(text: 'Archived'), widget: _studentArchievedContent()),
+    // TabView(tab: const Tab(text: 'All projects'), widget: _companyAllProjectContent()),
+    // TabView(tab: const Tab(text: 'Working'), widget: _companyWorkingContent()),
+    // TabView(tab: const Tab(text: 'Archived'), widget: _companyArchievedContent())
   ];
   late TabController _tabController;
   final List<ProjectModel> _projects = [
@@ -388,53 +390,12 @@ class _DashboardBody extends State<DashboardBody>
   Widget _companyWorkingContent() {
     return const Center();
   }
-
-  Widget _studentWorkingContent() {
-    if (_projects.isEmpty) {
-      return const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: CustomText(text: 'Welcome, Hai!'),
-          ),
-          SizedBox(
-            height: SpacingUtil.smallHeight,
-          ),
-          Center(
-            child: CustomText(text: 'You have no jobs!'),
-          ),
-        ],
-      );
-    }
-    return ListView.builder(
-        itemCount: _projects.length,
-        itemBuilder: (context, index) {
-        final project = _projects[index];
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              project.title,
-              style: const TextStyle(
-                color: Color.fromARGB(255, 6, 194, 13), fontSize: 16),
-            ),
-            const CustomText(text: "Time: 6 months, 4 students needed"),
-            const SizedBox(
-              height: SpacingUtil.mediumHeight,
-            ),
-            const CustomText(text: "Student are looking for"),
-            CustomBulletedList(listItems: project.wishes),
-            const CustomDivider(),
-          ],
-        );
-      }
-    );
-  }
-
-  // companyArchievedContent
+   // companyArchievedContent
   Widget _companyArchievedContent() {
     return const Center();
   }
+
+  
 
   Widget _studentAllProjectContent() {
    
@@ -511,5 +472,49 @@ class _DashboardBody extends State<DashboardBody>
     );
   }
 
+  Widget _studentWorkingContent() {
+    if (_projects.isEmpty) {
+      return const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: CustomText(text: 'Welcome, Hai!'),
+          ),
+          SizedBox(
+            height: SpacingUtil.smallHeight,
+          ),
+          Center(
+            child: CustomText(text: 'You have no jobs!'),
+          ),
+        ],
+      );
+    }
+    return ListView.builder(
+        itemCount: _projects.length,
+        itemBuilder: (context, index) {
+        final project = _projects[index];
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              project.title,
+              style: const TextStyle(
+                color: Color.fromARGB(255, 6, 194, 13), fontSize: 16),
+            ),
+            const CustomText(text: "Time: 6 months, 4 students needed"),
+            const SizedBox(
+              height: SpacingUtil.mediumHeight,
+            ),
+            const CustomText(text: "Student are looking for"),
+            CustomBulletedList(listItems: project.wishes),
+            const CustomDivider(),
+          ],
+        );
+      }
+    );
+  }
 
+  Widget _studentArchievedContent(){
+    return const Center();
+  }
 }
