@@ -16,6 +16,16 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+
+    super.dispose();
+  }
+
   void onSignUp() {
     NavigationUtil.toSignUpStepOneScreen(context);
   }
@@ -35,23 +45,27 @@ class _SignInScreenState extends State<SignInScreen> {
             isBold: true,
           )),
           const SizedBox(
-            height: SpacingUtil.largeHeight,
+            height: SpacingUtil.mediumHeight,
           ),
-          CustomTextfield(controller: emailController, hintText: 'email'),
+          CustomTextfield(
+            controller: emailController,
+            hintText: 'email',
+          ),
           const SizedBox(
             height: SpacingUtil.mediumHeight,
           ),
           CustomTextfield(
-              controller: emailController,
+              controller: passwordController,
               hintText: 'password',
               obscureText: true),
           const SizedBox(
             height: SpacingUtil.mediumHeight,
           ),
-          const SizedBox(
-            height: SpacingUtil.mediumHeight,
+          CustomButton(
+            onPressed: onSignIn,
+            text: 'sign in',
+            size: CustomButtonSize.medium,
           ),
-          CustomButton(onPressed: onSignIn, text: 'sign in'),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
