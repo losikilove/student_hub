@@ -28,6 +28,8 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: AppBar(
+        // turn off the automatic imply leading
+        automaticallyImplyLeading: false,
         title: Text(
           title,
           style: const TextStyle(

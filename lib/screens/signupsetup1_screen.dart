@@ -24,6 +24,11 @@ class _SignUpSetup1ScreenState extends State<SignUpSetup1Screen> {
     });
   }
 
+  // back to sigin in screen
+  void backToSigin() {
+    NavigationUtil.toSignInScreen(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +63,11 @@ class _SignUpSetup1ScreenState extends State<SignUpSetup1Screen> {
             ),
             CustomButton(
               onPressed: () {
-                NavigationUtil.toSignUpStepTwoAsCompanyScreen(context);
+                if (_user == EnumUser.company) {
+                  NavigationUtil.toSignUpStepTwoAsCompanyScreen(context);
+                } else if (_user == EnumUser.student) {
+                  NavigationUtil.toSignUpStepTwoAsStudentScreen(context);
+                }
               },
               text: 'Create account',
               size: CustomButtonSize.large,
@@ -70,7 +79,7 @@ class _SignUpSetup1ScreenState extends State<SignUpSetup1Screen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const CustomText(text: 'Already have an account? '),
-                CustomAnchor(text: "Log in", onTap: () {})
+                CustomAnchor(text: "Log in", onTap: backToSigin)
               ],
             ),
           ],

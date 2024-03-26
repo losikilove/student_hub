@@ -29,7 +29,6 @@ class _RegistrationTwoCompanyScreenState
   bool _isValidPassword = false;
   bool _isValidConfirmPassword = false;
 
-
   // accept rules of this app
   void tickCheckBox(bool? value) {
     setState(() {
@@ -58,11 +57,10 @@ class _RegistrationTwoCompanyScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        onPressed: (){
-          NavigationUtil.toSwitchAccountScreen(context);
-        }, 
-        currentContext: context
-      ),
+          onPressed: () {
+            NavigationUtil.toSwitchAccountScreen(context);
+          },
+          currentContext: context),
       body: InitialBody(
         child: Column(
           children: [
@@ -168,8 +166,9 @@ class _RegistrationTwoCompanyScreenState
                             onChanged: tickCheckBox,
                           ),
                           const CustomText(
-                              text:
-                                  'Yes, I understand and agree to StudentHub'),
+                            text: 'Yes, I understand and agree to StudentHub',
+                            size: 15,
+                          ),
                         ],
                       ),
                       const SizedBox(

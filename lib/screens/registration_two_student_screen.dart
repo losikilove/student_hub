@@ -5,6 +5,10 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/components/popup_notification.dart';
+import 'package:student_hub/services/auth_service.dart';
+import 'package:student_hub/utils/api_util.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class RegistrationTwoStudentScreen extends StatefulWidget {
@@ -38,7 +42,48 @@ class _RegistrationTwoStudentScreenState
   }
 
   // create a student account
-  void submit() {}
+  void submit() async {
+    // confimed password and password do not match
+    if (confirmPasswordController.text != passwordController.text) {
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: 'Confirm password does not match to Password',
+        textSubmit: 'OK',
+        submit: null,
+      );
+    }
+
+    // get response from the server
+    final response = await AuthService.signin(
+        fullname: fullnameController.text,
+        email: emailController.text,
+        password: passwordController.text,
+        roles: ['student']);
+
+    // validate the response
+    if (response.statusCode == StatusCode.ok.code) {
+      // the response is ok
+      popupNotification(
+        context: context,
+        type: NotificationType.success,
+        content: 'Back to sign in',
+        textSubmit: 'OK',
+        submit: () {
+          NavigationUtil.toSignInScreen(context);
+        },
+      );
+    } else {
+      // the reponse got an error
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: 'Something went wrong',
+        textSubmit: 'OK',
+        submit: null,
+      );
+    }
+  }
 
   // switch to student
   void switchToCompany() {}
@@ -163,8 +208,9 @@ class _RegistrationTwoStudentScreenState
                             onChanged: tickCheckBox,
                           ),
                           const CustomText(
-                              text:
-                                  'Yes, I understand and agree to StudentHub'),
+                            text: 'Yes, I understand and agree to StudentHub',
+                            size: 15,
+                          ),
                         ],
                       ),
                       const SizedBox(
