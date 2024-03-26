@@ -9,5 +9,6 @@ enum StatusCode {
 
 class ApiUtil {
   static const port = 4400;
-  static const url = 'http://localhost:$port';
+  static const domain = '10.0.2.2';
+  static const baseUrl = 'http://$domain:$port';
 }

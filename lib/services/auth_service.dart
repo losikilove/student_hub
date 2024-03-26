@@ -10,7 +10,7 @@ class AuthService {
     required String password,
     required List<String> roles,
   }) {
-    const String url = '${ApiUtil.url}/auth/sign-up';
+    const String url = '${ApiUtil.baseUrl}/auth/sign-up';
 
     return http.post(
       Uri.parse(url),
@@ -20,7 +20,7 @@ class AuthService {
       body: jsonEncode(<String, dynamic>{
         'email': email,
         'password': password,
-        'fullname': fullname,
+        'fullName': fullname,
         'roles': roles,
       }),
     );

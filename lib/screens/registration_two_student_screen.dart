@@ -78,7 +78,7 @@ class _RegistrationTwoStudentScreenState
       popupNotification(
         context: context,
         type: NotificationType.error,
-        content: 'Something went wrong',
+        content: response.body,
         textSubmit: 'OK',
         submit: null,
       );
