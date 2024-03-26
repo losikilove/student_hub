@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_anchor.dart';
 import 'package:student_hub/components/custom_appbar.dart';
@@ -52,6 +55,7 @@ class _RegistrationTwoStudentScreenState
         textSubmit: 'OK',
         submit: null,
       );
+      return;
     }
 
     // get response from the server
@@ -60,6 +64,11 @@ class _RegistrationTwoStudentScreenState
         email: emailController.text,
         password: passwordController.text,
         roles: ['student']);
+
+    // stringify the body of response
+    Map<String, dynamic> body = json.decode(response.body);
+
+    log(response.statusCode.toString());
 
     // validate the response
     if (response.statusCode == StatusCode.ok.code) {
@@ -73,12 +82,21 @@ class _RegistrationTwoStudentScreenState
           NavigationUtil.toSignInScreen(context);
         },
       );
+    } else if (response.statusCode == StatusCode.error.code) {
+      // the reponse got an error
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: body['errorDetails'][0].toString(),
+        textSubmit: 'OK',
+        submit: null,
+      );
     } else {
       // the reponse got an error
       popupNotification(
         context: context,
         type: NotificationType.error,
-        content: response.body,
+        content: 'Something went wrong',
         textSubmit: 'OK',
         submit: null,
       );
