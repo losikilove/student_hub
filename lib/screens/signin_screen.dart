@@ -1,9 +1,16 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/models/user_model.dart';
+import 'package:student_hub/services/auth_service.dart';
+import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_text.dart';
@@ -30,7 +37,23 @@ class _SignInScreenState extends State<SignInScreen> {
     NavigationUtil.toSignUpStepOneScreen(context);
   }
 
-  void onSignIn() {}
+  void onSignIn() async {
+    // get response from the server
+    final response = await AuthService.signin(
+        email: emailController.text, password: passwordController.text);
+
+    // stringify the body of response
+    Map<String, dynamic> body = json.decode(response.body);
+
+    // validate the response
+    if (response.statusCode == StatusCode.ok.code) {
+      // response is ok
+      final token = body['result']['token'];
+      // save the token
+      Provider.of<UserModel>(context, listen: false).signin(token);
+    }
+  }
+
   void onPressed() {}
 
   @override

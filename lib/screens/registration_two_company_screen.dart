@@ -56,7 +56,7 @@ class _RegistrationTwoCompanyScreenState
     }
 
     // get response from the server
-    final response = await AuthService.signin(
+    final response = await AuthService.signup(
         fullname: fullnameController.text,
         email: emailController.text,
         password: passwordController.text,

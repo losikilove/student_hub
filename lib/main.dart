@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:student_hub/models/user_model.dart';
 import 'package:student_hub/screens/browse_project_detail_screen.dart';
 import 'package:student_hub/screens/companyregister_screen.dart';
 import 'package:student_hub/screens/content_body/main_screen/message_body.dart';
@@ -20,14 +22,16 @@ import 'package:student_hub/screens/switch_account_screen.dart';
 
 void main() {
   runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      // home: HomeScreen(),
-      home: SignInScreen(),
-      // home: CompanyProfileScreen(),
-      // home: ProfileStudentStep1Screen(),
-      // home: MainScreen(contentBody: MainScreenIndex.project,),
-
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (context) => UserModel())],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        // home: HomeScreen(),
+        home: SignInScreen(),
+        // home: CompanyProfileScreen(),
+        // home: ProfileStudentStep1Screen(),
+        // home: MainScreen(contentBody: MainScreenIndex.project,),,)
+      ),
     ),
   );
 }

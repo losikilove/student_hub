@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_anchor.dart';
 import 'package:student_hub/components/custom_appbar.dart';
@@ -59,7 +57,7 @@ class _RegistrationTwoStudentScreenState
     }
 
     // get response from the server
-    final response = await AuthService.signin(
+    final response = await AuthService.signup(
         fullname: fullnameController.text,
         email: emailController.text,
         password: passwordController.text,
@@ -67,8 +65,6 @@ class _RegistrationTwoStudentScreenState
 
     // stringify the body of response
     Map<String, dynamic> body = json.decode(response.body);
-
-    log(response.statusCode.toString());
 
     // validate the response
     if (response.statusCode == StatusCode.ok.code) {
