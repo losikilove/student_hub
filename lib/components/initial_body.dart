@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:student_hub/utils/color_util.dart';
 
 class InitialBody extends StatelessWidget {
   final Widget child;
@@ -19,7 +18,7 @@ class InitialBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        color: ColorUtil.lightPrimary,
+        color: Theme.of(context).colorScheme.background,
         child: Padding(
           padding: EdgeInsets.only(
               left: left, right: right, top: top, bottom: bottom),

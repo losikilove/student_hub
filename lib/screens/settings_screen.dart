@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_option.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
-import 'package:student_hub/utils/color_util.dart';
+import 'package:student_hub/theme/theme_provider.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -23,6 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void onChangedDarkTheme(bool value) {
     setState(() {
       isActivedDarkTheme = value;
+      Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
     });
   }
 
@@ -68,7 +70,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 Switch(
                   value: isActivedDarkTheme,
-                  activeColor: ColorUtil.darkPrimary,
+                  inactiveThumbColor: Theme.of(context).colorScheme.onPrimary,
                   onChanged: onChangedDarkTheme,
                 ),
               ],

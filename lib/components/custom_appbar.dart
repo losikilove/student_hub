@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:student_hub/utils/color_util.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   final Size preferredSize;
 
   final String title;
-  final Color backgroundColor;
   final IconData? iconButton;
   final void Function()? onPressed;
   // 'isBack' is called when you want to back to the previous screen
@@ -21,8 +19,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.title = 'StudentHub',
     this.iconButton = Icons.person, // initialize the icon of appbar
     this.isBack = false, // when a screen is a independent screen
-  })  : preferredSize = const Size.fromHeight(kToolbarHeight),
-        backgroundColor = ColorUtil.darkPrimary;
+  }) : preferredSize = const Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +45,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
                 onPressed: () => Navigator.pop(currentContext),
               )
             : null,
-        backgroundColor: backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         actions: [
           IconButton(
             onPressed: onPressed,

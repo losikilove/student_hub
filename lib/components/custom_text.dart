@@ -8,7 +8,7 @@ class CustomText extends StatelessWidget {
   final bool isCenter;
   final double size;
   final bool isOverflow;
-  final Color textColor;
+  final Color? textColor;
   const CustomText(
       {super.key,
       required this.text,
@@ -17,7 +17,7 @@ class CustomText extends StatelessWidget {
       this.isCenter = false,
       this.isOverflow = false,
       this.size = TextUtil.textSize,
-      this.textColor = Colors.black});
+      this.textColor});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class CustomText extends StatelessWidget {
         fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
         fontSize: size,
         fontStyle: isItalic ? FontStyle.italic : FontStyle.normal,
-        color: textColor,
+        color: textColor ?? Theme.of(context).colorScheme.onPrimary,
       ),
       textAlign: isCenter ? TextAlign.center : TextAlign.left,
     );

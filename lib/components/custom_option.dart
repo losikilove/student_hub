@@ -48,7 +48,6 @@ class _CustomOptionState<T> extends State<CustomOption<T>> {
       width: widget.isExpanded ? double.infinity : null,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
-        color: Colors.white,
       ),
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
@@ -58,11 +57,11 @@ class _CustomOptionState<T> extends State<CustomOption<T>> {
             menuHeight: 250,
             initialSelection: _optionValue,
             hintText: '',
-            inputDecorationTheme: const InputDecorationTheme(
+            inputDecorationTheme: InputDecorationTheme(
               enabledBorder: InputBorder.none,
-              fillColor: Colors.white,
+              fillColor: Theme.of(context).colorScheme.onSecondary,
               filled: true,
-              contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
             ),
             onSelected: onSelected,
             // set up elements of options
