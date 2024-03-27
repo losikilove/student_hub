@@ -104,7 +104,7 @@ class _CustomTextFormState extends State<CustomTextForm> {
       decoration: InputDecoration(
         hintText: widget.hintText,
         filled: true,
-        fillColor: Colors.white,
+        fillColor: Theme.of(context).colorScheme.onSecondary,
         errorText: _messageError,
       ),
       controller: widget.controller,

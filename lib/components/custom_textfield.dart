@@ -49,7 +49,7 @@ class CustomTextfield extends StatelessWidget {
               prefixIcon: prefixIcon == null ? null : Icon(prefixIcon),
               hintText: hintText,
               filled: true,
-              fillColor: Colors.white,
+              fillColor: Theme.of(context).colorScheme.onSecondary,
             ),
       maxLines: maxLines,
       style: TextStyle(

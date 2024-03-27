@@ -102,7 +102,7 @@ class _SignUpSetup1ScreenState extends State<SignUpSetup1Screen> {
               children: [
                 Icon(icon),
                 Radio<EnumUser>(
-                  activeColor: Color.fromARGB(236, 3, 70, 147),
+                  activeColor: Theme.of(context).colorScheme.onPrimary,
                   value: user,
                   groupValue: _user,
                   onChanged: chooseUserType,
