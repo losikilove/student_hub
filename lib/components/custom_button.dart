@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/text_util.dart';
 
 // set up enum for size of custom button
@@ -10,7 +9,7 @@ class CustomButton extends StatelessWidget {
   final String text;
   final CustomButtonSize size;
   final bool isDisabled;
-  final Color buttonColor;
+  final Color? buttonColor;
   final Color textColor;
 
   const CustomButton({
@@ -19,7 +18,7 @@ class CustomButton extends StatelessWidget {
     required this.text,
     this.size = CustomButtonSize.small,
     this.isDisabled = false,
-    this.buttonColor = ColorUtil.primary,
+    this.buttonColor,
     this.textColor = Colors.white,
   });
 
@@ -44,7 +43,7 @@ class CustomButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: isDisabled ? null : onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: buttonColor,
+        backgroundColor: buttonColor ?? Theme.of(context).colorScheme.primary,
         minimumSize: _setWidth(size),
       ),
       child: Text(
