@@ -41,7 +41,7 @@ class CustomTextfield extends StatelessWidget {
           ? InputDecoration(
               prefixIcon: prefixIcon == null ? null : Icon(prefixIcon),
               filled: true,
-              fillColor: Colors.white,
+              fillColor: Theme.of(context).colorScheme.onSecondary,
               enabledBorder: const OutlineInputBorder(),
               focusedBorder: const OutlineInputBorder(borderSide: BorderSide()),
             )

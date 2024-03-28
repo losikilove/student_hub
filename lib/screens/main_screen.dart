@@ -47,28 +47,32 @@ class _MainScreen extends State<MainScreen> {
     return Scaffold(
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.list_outlined),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            icon: const Icon(Icons.list_outlined),
             label: 'Project',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard_outlined),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            icon: const Icon(Icons.dashboard_outlined),
             label: 'Dashboard',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.message_outlined),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            icon: const Icon(Icons.message_outlined),
             label: 'Message',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            icon: const Icon(Icons.notifications),
             label: 'Arlets',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 52, 145, 231),
+        selectedItemColor: Theme.of(context).colorScheme.onPrimary,
         onTap: _onItemTapped,
-        unselectedItemColor: const Color.fromARGB(255, 0, 0, 0),
+        unselectedItemColor: Theme.of(context).colorScheme.background,
       ),
     );
   }

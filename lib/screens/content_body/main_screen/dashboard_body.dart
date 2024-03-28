@@ -21,28 +21,27 @@ class DashboardBody extends StatefulWidget {
 class _DashboardBody extends State<DashboardBody>
     with SingleTickerProviderStateMixin {
   late final List<TabView> _tabViews = [
-    TabView(tab: const Tab(text: 'All projects'), widget: _studentAllProjectContent()),
-    TabView(tab: const Tab(text: 'Working'), widget: _studentWorkingContent()),
-    TabView(tab: const Tab(text: 'Archived'), widget: _studentArchievedContent()),
-    // TabView(tab: const Tab(text: 'All projects'), widget: _companyAllProjectContent()),
-    // TabView(tab: const Tab(text: 'Working'), widget: _companyWorkingContent()),
-    // TabView(tab: const Tab(text: 'Archived'), widget: _companyArchievedContent())
+    // TabView(
+    //     tab: const Tab(text: 'All projects'),
+    //     widget: _studentAllProjectContent()),
+    // TabView(tab: const Tab(text: 'Working'), widget: _studentWorkingContent()),
+    // TabView(
+    //     tab: const Tab(text: 'Archived'), widget: _studentArchievedContent()),
+    TabView(
+        tab: const Tab(text: 'All projects'),
+        widget: _companyAllProjectContent()),
+    TabView(tab: const Tab(text: 'Working'), widget: _companyWorkingContent()),
+    TabView(
+        tab: const Tab(text: 'Archived'), widget: _companyArchievedContent())
   ];
-  late TabController _tabController;
+  late final TabController _tabController =
+      TabController(vsync: this, length: _tabViews.length);
   final List<ProjectModel> _projects = [
     ProjectModel('Senior frontend developer (Fintech)', 'Created 3 days ago',
-        ['Clear expectation about your project'], true, false,0, 8, 2),
+        ['Clear expectation about your project'], true, false, 0, 8, 2),
     ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
-        ['Clear expectation about your'], false, false,0, 8, 2)
+        ['Clear expectation about your'], false, false, 0, 8, 2)
   ];
-
-  @override
-  void initState() {
-    super.initState();
-
-    // initial the tab controller
-    _tabController = TabController(vsync: this, length: _tabViews.length);
-  }
 
   @override
   void dispose() {
@@ -63,15 +62,17 @@ class _DashboardBody extends State<DashboardBody>
           children: [
             Center(
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
                     'Yours job',
                   ),
-                  CustomButton(onPressed: (){
-                    NavigationUtil.toPostProjectStep1(context);
-                  }, text: 'Post a job')
+                  CustomButton(
+                      onPressed: () {
+                        NavigationUtil.toPostProjectStep1(context);
+                      },
+                      text: 'Post a job')
                 ],
               ),
             ),
@@ -150,87 +151,91 @@ class _DashboardBody extends State<DashboardBody>
                         children: [
                           TextButton(
                             onPressed: onPressed,
-                            child: Text(
-                              'View proposel',
-                              style: TextStyle(color: Colors.black),
-                            ),
                             style: TextButton.styleFrom(
-                                padding: EdgeInsets.fromLTRB(30, 0, 250, 0),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                minimumSize: Size(
-                                  0,
-                                  15,
-                                )),
+                              padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              minimumSize: const Size(
+                                0,
+                                15,
+                              ),
+                            ),
+                            child: const CustomText(
+                              text: 'View proposel',
+                              size: TextUtil.smallTextSize,
+                            ),
                           ),
                           TextButton(
                             onPressed: onPressed,
-                            child: Text(
-                              'View message',
-                              style: TextStyle(color: Colors.black),
-                            ),
                             style: TextButton.styleFrom(
-                                padding: EdgeInsets.fromLTRB(30, 0, 250, 0),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                minimumSize: Size(0, 15)),
+                              padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              minimumSize: const Size(0, 15),
+                            ),
+                            child: const CustomText(
+                              text: 'View message',
+                              size: TextUtil.smallTextSize,
+                            ),
                           ),
                           TextButton(
                             onPressed: onPressed,
-                            child: Text(
-                              'View hired',
-                              style: TextStyle(color: Colors.black),
-                            ),
                             style: TextButton.styleFrom(
-                                padding: EdgeInsets.fromLTRB(30, 0, 250, 0),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                minimumSize: Size(
-                                  0,
-                                  15,
-                                )),
+                              padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              minimumSize: const Size(
+                                0,
+                                15,
+                              ),
+                            ),
+                            child: const CustomText(
+                              text: 'View hired',
+                              size: TextUtil.smallTextSize,
+                            ),
                           ),
-                          CustomDivider(isFullWidth: true),
+                          const CustomDivider(isFullWidth: true),
                           TextButton(
                             onPressed: onPressed,
-                            child: Text(
-                              'View job posting',
-                              style: TextStyle(color: Colors.black),
-                            ),
                             style: TextButton.styleFrom(
-                                padding: EdgeInsets.fromLTRB(30, 0, 250, 0),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                minimumSize: Size(
-                                  0,
-                                  15,
-                                )),
-                          ),
-                          TextButton(
-                            onPressed: onPressed,
-                            child: Text(
-                              'Edit posting',
-                              style: TextStyle(color: Colors.black),
+                              padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              minimumSize: const Size(
+                                0,
+                                15,
+                              ),
                             ),
-                            style: TextButton.styleFrom(
-                                padding: EdgeInsets.fromLTRB(30, 0, 250, 0),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                minimumSize: Size(
-                                  0,
-                                  15,
-                                )),
+                            child: const CustomText(
+                              text: 'View job posting',
+                              size: TextUtil.smallTextSize,
+                            ),
                           ),
                           TextButton(
                             onPressed: onPressed,
-                            child: Text(
-                              'Remove posting',
-                              style: TextStyle(color: Colors.black),
-                            ),
                             style: TextButton.styleFrom(
-                                padding: EdgeInsets.fromLTRB(30, 0, 250, 0),
-                                tapTargetSize: MaterialTapTargetSize
-                                    .shrinkWrap, //tap target
-                                minimumSize: Size(
-                                  0,
-                                  15,
-                                ) //size
-                                ),
+                              padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              minimumSize: const Size(
+                                0,
+                                15,
+                              ),
+                            ),
+                            child: const CustomText(
+                              text: 'Edit posting',
+                              size: TextUtil.smallTextSize,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: onPressed,
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              minimumSize: const Size(
+                                0,
+                                15,
+                              ),
+                            ),
+                            child: const CustomText(
+                              text: 'Remove posting',
+                              size: TextUtil.smallTextSize,
+                            ),
                           ),
                         ],
                       ),
@@ -390,84 +395,84 @@ class _DashboardBody extends State<DashboardBody>
   Widget _companyWorkingContent() {
     return const Center();
   }
-   // companyArchievedContent
+
+  // companyArchievedContent
   Widget _companyArchievedContent() {
     return const Center();
   }
 
-  
-
   Widget _studentAllProjectContent() {
-   
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Card(
             shape: Border.all(),
-            child:Container(
-              width: 400,
-              height: 50, 
-              decoration: BoxDecoration(
-                color: Colors.white
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(10), 
-                child: CustomText(text: "Active proposal(1)",isBold: true,)
-            )
-          )
-        ),
+            child: Container(
+                width: 400,
+                height: 50,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onSecondary),
+                child: const Padding(
+                    padding: EdgeInsets.all(10),
+                    child: CustomText(
+                      text: "Active proposal(1)",
+                      isBold: true,
+                    )))),
         SizedBox(
           height: SpacingUtil.mediumHeight,
         ),
         Card(
             shape: Border.all(),
-            child:Container(
-              width: 400,
-              height: 450, 
-              decoration: BoxDecoration(
-                color: Colors.white
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(10), 
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children:[
-                    CustomText(text: "Submitted proposal(1)",isBold: true,),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Container(
-                      height: 350,
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                      child: ListView.builder(
-                        itemCount: _projects.length,
-                        itemBuilder: (context, index) {
-                        final project = _projects[index];
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              project.title,
-                              style: const TextStyle(
-                              color: Color.fromARGB(255, 6, 194, 13), fontSize: 16),
-                              ),
-                            const CustomText(text: "Submited 3 days ago"),
-                            const SizedBox(
-                            height: SpacingUtil.mediumHeight,
-                            ),
-                            const CustomText(text: "Student are looking for"),
-                            CustomBulletedList(listItems: project.wishes),
-                            const CustomDivider(),
-                            ],
-                          );
-                        }
-                      ),
-                    ) 
-                  ]
-              )  
-            )
-          )
-        ),
+            child: Container(
+                width: 400,
+                height: 450,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onSecondary),
+                child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            text: "Submitted proposal(1)",
+                            isBold: true,
+                          ),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          Container(
+                            height: 350,
+                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            child: ListView.builder(
+                                itemCount: _projects.length,
+                                itemBuilder: (context, index) {
+                                  final project = _projects[index];
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        project.title,
+                                        style: const TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 6, 194, 13),
+                                            fontSize: 16),
+                                      ),
+                                      const CustomText(
+                                          text: "Submited 3 days ago"),
+                                      const SizedBox(
+                                        height: SpacingUtil.mediumHeight,
+                                      ),
+                                      const CustomText(
+                                          text: "Student are looking for"),
+                                      CustomBulletedList(
+                                          listItems: project.wishes),
+                                      const CustomDivider(),
+                                    ],
+                                  );
+                                }),
+                          )
+                        ])))),
       ],
     );
   }
@@ -492,29 +497,28 @@ class _DashboardBody extends State<DashboardBody>
     return ListView.builder(
         itemCount: _projects.length,
         itemBuilder: (context, index) {
-        final project = _projects[index];
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              project.title,
-              style: const TextStyle(
-                color: Color.fromARGB(255, 6, 194, 13), fontSize: 16),
-            ),
-            const CustomText(text: "Time: 6 months, 4 students needed"),
-            const SizedBox(
-              height: SpacingUtil.mediumHeight,
-            ),
-            const CustomText(text: "Student are looking for"),
-            CustomBulletedList(listItems: project.wishes),
-            const CustomDivider(),
-          ],
-        );
-      }
-    );
+          final project = _projects[index];
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                project.title,
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 6, 194, 13), fontSize: 16),
+              ),
+              const CustomText(text: "Time: 6 months, 4 students needed"),
+              const SizedBox(
+                height: SpacingUtil.mediumHeight,
+              ),
+              const CustomText(text: "Student are looking for"),
+              CustomBulletedList(listItems: project.wishes),
+              const CustomDivider(),
+            ],
+          );
+        });
   }
 
-  Widget _studentArchievedContent(){
+  Widget _studentArchievedContent() {
     return const Center();
   }
 }

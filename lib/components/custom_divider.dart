@@ -12,7 +12,7 @@ class CustomDivider extends StatelessWidget {
         thickness: 2,
         indent: isFullWidth ? 0 : 40,
         endIndent: isFullWidth ? 0 : 35,
-        color: Colors.black,
+        color: Theme.of(context).colorScheme.onPrimary,
       ),
     );
   }

@@ -4,7 +4,6 @@ import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/models/interview_model.dart';
-import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/interview_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
@@ -155,9 +154,10 @@ class _InterviewCardState extends State<InterviewCard> {
                         style: TextButton.styleFrom(
                           minimumSize: const Size.fromHeight(30),
                         ),
-                        child: const Text(
+                        child: Text(
                           'Re-schedule the meeting',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary),
                         ),
                       ),
                       const CustomDivider(
@@ -300,7 +300,8 @@ class _InterviewCardState extends State<InterviewCard> {
                             });
                           },
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: ColorUtil.darkPrimary),
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary),
                           child: Text(
                             '${selectedDate.day}-${selectedDate.month}-${selectedDate.year}',
                             style: const TextStyle(
@@ -331,7 +332,6 @@ class _InterviewCardState extends State<InterviewCard> {
                           },
                           text:
                               '${selectedStartTime.hour.toString().padLeft(2, '0')}:${selectedStartTime.minute.toString().padLeft(2, '0')}',
-                          buttonColor: ColorUtil.darkPrimary,
                         ),
                       ],
                     ),
@@ -357,7 +357,6 @@ class _InterviewCardState extends State<InterviewCard> {
                           },
                           text:
                               '${selectedEndTime.hour.toString().padLeft(2, '0')}:${selectedEndTime.minute.toString().padLeft(2, '0')}',
-                          buttonColor: ColorUtil.darkPrimary,
                         ),
                       ],
                     ),
@@ -388,7 +387,6 @@ class _InterviewCardState extends State<InterviewCard> {
                         CustomButton(
                           onPressed: onUpdatedMeeting,
                           text: "Update",
-                          buttonColor: ColorUtil.darkPrimary,
                           // when the duration is less than 0 or the title is not valid
                           // disable this button
                           isDisabled: duration <= 0 || !isValidTitle,

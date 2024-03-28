@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
-import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
@@ -82,7 +80,7 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
       bottomNavigationBar: BottomAppBar(
         height: 70,
         elevation: 0,
-        color: ColorUtil.lightPrimary,
+        color: Theme.of(context).colorScheme.background,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -90,7 +88,7 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
               size: CustomButtonSize.small,
               onPressed: onAppliedNow,
               text: 'Apply Now',
-              buttonColor: ColorUtil.darkPrimary,
+              buttonColor: Theme.of(context).colorScheme.secondary,
             ),
             CustomButton(
               size: CustomButtonSize.small,

@@ -65,24 +65,27 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                 text: "Company name",
                 isBold: true,
               ),
+              CustomTextfield(
+                controller: companyNameController,
+                hintText: "",
+              ),
               const SizedBox(
                 height: SpacingUtil.smallHeight,
               ),
-              CustomTextfield(controller: companyNameController, hintText: ""),
               const CustomText(
-                text: "website",
+                text: "Website",
                 isBold: true,
               ),
+              CustomTextfield(
+                controller: websiteController,
+                hintText: "",
+              ),
               const SizedBox(
                 height: SpacingUtil.smallHeight,
               ),
-              CustomTextfield(controller: websiteController, hintText: ""),
               const CustomText(
                 text: "Description",
                 isBold: true,
-              ),
-              const SizedBox(
-                height: SpacingUtil.smallHeight,
               ),
               CustomTextfield(
                 controller: descriptionController,
@@ -113,7 +116,7 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
     return Row(
       children: [
         Radio<EnumNumberPeople>(
-          activeColor: const Color.fromARGB(236, 3, 70, 147),
+          activeColor: Theme.of(context).colorScheme.onPrimary,
           value: numberpeople,
           groupValue: _numberPeople,
           onChanged: changeNumberPeople,

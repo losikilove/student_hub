@@ -38,33 +38,33 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
                 child:
                     CustomText(text: "Welcome to Student Hub", isBold: true)),
             const SizedBox(
-              height: SpacingUtil.smallHeight,
-            ),
-            const SizedBox(
-              height: SpacingUtil.smallHeight,
+              height: SpacingUtil.mediumHeight,
             ),
             const CustomText(
               text: "Company name",
               isBold: true,
             ),
+            CustomTextfield(
+              controller: companyNameController,
+              hintText: "",
+            ),
             const SizedBox(
               height: SpacingUtil.smallHeight,
             ),
-            CustomTextfield(controller: companyNameController, hintText: ""),
             const CustomText(
-              text: "website",
+              text: "Website",
               isBold: true,
             ),
+            CustomTextfield(
+              controller: websiteController,
+              hintText: "",
+            ),
             const SizedBox(
               height: SpacingUtil.smallHeight,
             ),
-            CustomTextfield(controller: websiteController, hintText: ""),
             const CustomText(
               text: "Description",
               isBold: true,
-            ),
-            const SizedBox(
-              height: SpacingUtil.smallHeight,
             ),
             CustomTextfield(
               controller: descriptionController,
@@ -72,24 +72,27 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
               maxLines: 2,
             ),
             const SizedBox(
-              height: SpacingUtil.largeHeight,
+              height: SpacingUtil.mediumHeight,
             ),
-            const CustomText(text: "How many people are in your company ?"),
-            const SizedBox(
-              height: SpacingUtil.smallHeight,
+            const CustomText(
+              text: "How many people are there in your company ?",
             ),
             chooseNumber(EnumNumberPeople.one, "It's just me"),
             const SizedBox(
-              height: SpacingUtil.mediumHeight,
-            ),
-            const SizedBox(
-              height: SpacingUtil.mediumHeight,
+              height: SpacingUtil.largeHeight,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                CustomButton(onPressed: () {}, text: "Edit"),
-                CustomButton(onPressed: () {}, text: "Cancel"),
+                CustomButton(
+                  onPressed: () {},
+                  text: "Edit",
+                  buttonColor: Theme.of(context).colorScheme.secondary,
+                ),
+                CustomButton(
+                  onPressed: () {},
+                  text: "Cancel",
+                ),
               ],
             )
           ],
@@ -102,7 +105,7 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
     return Row(
       children: [
         Radio<EnumNumberPeople>(
-          activeColor: const Color.fromARGB(236, 3, 70, 147),
+          activeColor: Theme.of(context).colorScheme.onPrimary,
           value: numberpeople,
           groupValue: _numberPeople,
           onChanged: changeNumberPeople,

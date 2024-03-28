@@ -1,7 +1,4 @@
-import 'package:dash_chat_2/dash_chat_2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_text.dart';
@@ -154,5 +151,3 @@ class _MessageBody extends State<MessageBody> {
     );
   }
 }
-
-

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
@@ -99,7 +98,7 @@ class _StudentSubmitProposalScreenState
                   text: 'Submit proposal',
                   // when have no describe, disable the submit button
                   isDisabled: _isDisabledSubmission,
-                  buttonColor: ColorUtil.darkPrimary,
+                  buttonColor: Theme.of(context).colorScheme.secondary,
                 ),
               ],
             ),

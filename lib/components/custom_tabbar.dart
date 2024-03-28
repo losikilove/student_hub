@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:student_hub/utils/color_util.dart';
 
 class TabView {
   final Tab tab;
@@ -23,18 +22,19 @@ class CustomTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.primary,
         border: Border.all(
           color: Colors.grey,
         ),
       ),
       child: TabBar(
         indicatorSize: TabBarIndicatorSize.tab,
-        indicator: const BoxDecoration(color: ColorUtil.darkPrimary),
+        indicator:
+            BoxDecoration(color: Theme.of(context).colorScheme.secondary),
         controller: tabController,
         tabs: tabs,
         labelColor: Colors.white,
-        indicatorColor: ColorUtil.darkPrimary,
+        indicatorColor: Theme.of(context).colorScheme.secondary,
       ),
     );
   }

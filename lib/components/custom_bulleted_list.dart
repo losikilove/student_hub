@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 class CustomBulletedList extends StatelessWidget {
   final List<String> listItems;
   final double textSize;
-  final Color textColor;
-  final Color bulletColor;
+  final Color? textColor;
+  final Color? bulletColor;
 
   const CustomBulletedList({
     super.key,
     required this.listItems,
     this.textSize = 14.0,
-    this.textColor = Colors.black,
-    this.bulletColor = Colors.black,
+    this.textColor,
+    this.bulletColor,
   });
 
   @override
@@ -20,9 +20,9 @@ class CustomBulletedList extends StatelessWidget {
     return BulletedList(
       style: TextStyle(
         fontSize: textSize,
-        color: textColor,
+        color: Theme.of(context).colorScheme.onPrimary,
       ),
-      bulletColor: bulletColor,
+      bulletColor: bulletColor ?? Theme.of(context).colorScheme.onPrimary,
       listItems: listItems,
     );
   }

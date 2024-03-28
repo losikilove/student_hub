@@ -7,7 +7,6 @@ import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/components/interview_card.dart';
 import 'package:student_hub/models/interview_model.dart';
-import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/interview_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
@@ -60,7 +59,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
           isBack: true,
         ),
         body: Container(
-          color: ColorUtil.lightPrimary,
+          color: Theme.of(context).colorScheme.background,
           child: DashChat(
             typingUsers: _typing,
             currentUser: _currentUser,
@@ -71,11 +70,12 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             },
             messages: _message,
             inputOptions: const InputOptions(
-              cursorStyle: CursorStyle(color: ColorUtil.primary),
+              inputTextStyle: TextStyle(color: Colors.black),
+              cursorStyle: CursorStyle(color: Colors.black),
             ),
             messageOptions: MessageOptions(
-              currentUserContainerColor: ColorUtil.primary,
-              containerColor: const Color.fromARGB(255, 255, 255, 255),
+              currentUserContainerColor: Theme.of(context).colorScheme.primary,
+              containerColor: Theme.of(context).colorScheme.primary,
               messageTextBuilder: (message, previousMessage, nextMessage) {
                 // if message is an interview, show box-interview
                 if (message.customProperties != null &&
@@ -92,8 +92,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                 } else {
                   return Text(
                     message.text,
-                    style: const TextStyle(
-                      color: Colors.black,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                   );
                 }
@@ -134,9 +134,10 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                         style: TextButton.styleFrom(
                           minimumSize: const Size.fromHeight(30),
                         ),
-                        child: const Text(
+                        child: Text(
                           'Schedule on interview',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary),
                         ),
                       ),
                       const CustomDivider(
@@ -266,7 +267,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                             });
                           },
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: ColorUtil.darkPrimary),
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary),
                           child: Text(
                             '${selectedDate.day}-${selectedDate.month}-${selectedDate.year}',
                             style: const TextStyle(
@@ -298,7 +300,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                           },
                           text:
                               '${selectedStartTime.hour.toString().padLeft(2, '0')}:${selectedStartTime.minute.toString().padLeft(2, '0')}',
-                          buttonColor: ColorUtil.darkPrimary,
                         ),
                       ],
                     ),
@@ -325,7 +326,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                           },
                           text:
                               '${selectedEndTime.hour.toString().padLeft(2, '0')}:${selectedEndTime.minute.toString().padLeft(2, '0')}',
-                          buttonColor: ColorUtil.darkPrimary,
                         ),
                       ],
                     ),
@@ -358,7 +358,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                           // when the duration is less than 0 or the title is not valid
                           // disable this button
                           isDisabled: duration <= 0 || !isValidTitle,
-                          buttonColor: ColorUtil.darkPrimary,
+                          buttonColor: Theme.of(context).colorScheme.secondary,
                         ),
                       ],
                     )
