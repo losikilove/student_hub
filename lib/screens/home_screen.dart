@@ -3,18 +3,29 @@ import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
-  void onTap() {}
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  void onPressed() {}
+
+  // switch to signin screen
+  void onSwitchToSigninScreen() {
+    NavigationUtil.toSignInScreen(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        onPressed: onTap,
+        onPressed: onPressed,
         currentContext: context,
       ),
       body: InitialBody(
@@ -42,12 +53,12 @@ class HomeScreen extends StatelessWidget {
               height: SpacingUtil.mediumHeight,
             ),
             // Company button
-            CustomButton(onPressed: onTap, text: 'Company'),
+            CustomButton(onPressed: onSwitchToSigninScreen, text: 'Company'),
             const SizedBox(
               height: SpacingUtil.smallHeight,
             ),
             // Student button
-            CustomButton(onPressed: onTap, text: 'Student'),
+            CustomButton(onPressed: onSwitchToSigninScreen, text: 'Student'),
             const SizedBox(
               height: SpacingUtil.mediumHeight,
             ),
