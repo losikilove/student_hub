@@ -14,23 +14,13 @@ class StudentModel extends AccountModel {
       required this.resume,
       required this.transcript});
 
-  factory StudentModel.fromJson(Map<String, dynamic> json) {
-    return switch (json) {
-      {
-        'id': int id,
-        'fullname': String fullname,
-        'techStackId': dynamic techStackId,
-        'resume': dynamic resume,
-        'transcript': dynamic transcript,
-      } =>
-        StudentModel(
-          id: id,
-          fullname: fullname,
-          techStackId: techStackId,
-          resume: resume,
-          transcript: transcript,
-        ),
-      _ => throw const FormatException('Failed to load student model.'),
-    };
+  factory StudentModel.fromJson(Map<String, dynamic> jsonStudent) {
+    return StudentModel(
+      id: jsonStudent['id'],
+      fullname: jsonStudent['fullname'],
+      techStackId: jsonStudent['techStackId'],
+      resume: jsonStudent['resume'],
+      transcript: jsonStudent['transcript'],
+    );
   }
 }

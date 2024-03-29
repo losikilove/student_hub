@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_anchor.dart';
@@ -65,8 +64,8 @@ class _RegistrationTwoStudentScreenState
       role: 0,
     );
 
-    // stringify the body of response
-    Map<String, dynamic> body = json.decode(response.body);
+    // decode the response to get the body of response
+    final body = ApiUtil.getBody(response);
 
     // validate the response
     if (response.statusCode == StatusCode.ok.code) {

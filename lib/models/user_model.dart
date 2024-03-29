@@ -1,26 +1,22 @@
-import 'dart:convert';
-import 'package:student_hub/models/account_model.dart';
 import 'package:student_hub/models/company_model.dart';
 import 'package:student_hub/models/student_model.dart';
 
 class UserModel {
-  final String userId;
-  List<AccountModel> roles;
+  final int userId;
+  StudentModel? student;
+  CompanyModel? company;
 
-  UserModel({required this.userId, required this.roles});
+  UserModel({required this.userId, this.student, this.company});
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return switch (json) {
-      {
-        'user': String userId,
-        'student': String jsonStudent,
-        'company': String jsonCompany
-      } =>
-        UserModel(userId: userId, roles: [
-          StudentModel.fromJson(jsonDecode(jsonStudent)),
-          CompanyModel.fromJson(jsonDecode(jsonCompany)),
-        ]),
-      _ => throw const FormatException('Failed to load user model.'),
-    };
+  factory UserModel.fromJson(Map<String, dynamic> jsonUser) {
+    return UserModel(
+      userId: jsonUser['id'],
+      student: jsonUser['student'] == null
+          ? null
+          : StudentModel.fromJson(jsonUser['student']),
+      company: jsonUser['company'] == null
+          ? null
+          : CompanyModel.fromJson(jsonUser['company']),
+    );
   }
 }

@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_hub/components/custom_button.dart';
@@ -23,6 +20,8 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool _isFilledEmail = false;
+  bool _isFilledPassword = false;
 
   @override
   void dispose() {
@@ -41,13 +40,13 @@ class _SignInScreenState extends State<SignInScreen> {
     final response = await AuthService.signin(
         email: emailController.text, password: passwordController.text);
 
-    // stringify the body of response
-    Map<String, dynamic> body = json.decode(response.body);
-
     // validate the response
     if (response.statusCode == StatusCode.ok.code) {
+      // decode the response to get the result of response-body
+      final result = ApiUtil.getResult(response);
+
       // response is ok
-      final token = body['result']['token'];
+      final token = result['token'];
       // save the token
       Provider.of<UserProvider>(context, listen: false).signin(token);
     }
@@ -72,21 +71,35 @@ class _SignInScreenState extends State<SignInScreen> {
           CustomTextfield(
             controller: emailController,
             hintText: 'email',
+            onChanged: (String text) {
+              // disable/enable the sign-in button
+              setState(() {
+                _isFilledEmail = text.trim().isNotEmpty;
+              });
+            },
           ),
           const SizedBox(
             height: SpacingUtil.mediumHeight,
           ),
           CustomTextfield(
-              controller: passwordController,
-              hintText: 'password',
-              obscureText: true),
+            controller: passwordController,
+            hintText: 'password',
+            obscureText: true,
+            onChanged: (String text) {
+              // disable/enable the sign-in button
+              setState(() {
+                _isFilledPassword = text.trim().isNotEmpty;
+              });
+            },
+          ),
           const SizedBox(
             height: SpacingUtil.mediumHeight,
           ),
           CustomButton(
             onPressed: onSignIn,
             text: 'sign in',
-            size: CustomButtonSize.medium,
+            size: CustomButtonSize.large,
+            isDisabled: !_isFilledEmail || !_isFilledPassword,
           ),
           Expanded(
             child: Column(

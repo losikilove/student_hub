@@ -1,6 +1,6 @@
 import 'package:student_hub/models/enums/enum_user.dart';
 
-class AccountModel {
+abstract class AccountModel {
   final int id;
   String fullname;
   EnumUser role;

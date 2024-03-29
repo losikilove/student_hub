@@ -8,17 +8,10 @@ class CompanyModel extends AccountModel {
     super.role = EnumUser.company,
   });
 
-  factory CompanyModel.fromJson(Map<String, dynamic> json) {
-    return switch (json) {
-      {
-        'id': int id,
-        'fullname': String fullname,
-      } =>
-        CompanyModel(
-          id: id,
-          fullname: fullname,
-        ),
-      _ => throw const FormatException('Failed to load company model.'),
-    };
+  factory CompanyModel.fromJson(Map<String, dynamic> jsonCompany) {
+    return CompanyModel(
+      id: jsonCompany['id'],
+      fullname: jsonCompany['fullname'],
+    );
   }
 }
