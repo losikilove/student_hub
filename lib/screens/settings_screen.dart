@@ -4,7 +4,7 @@ import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_option.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
-import 'package:student_hub/theme/theme_provider.dart';
+import 'package:student_hub/providers/theme_provider.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class SettingsScreen extends StatefulWidget {

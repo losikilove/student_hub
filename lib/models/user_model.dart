@@ -1,20 +1,26 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:student_hub/models/account_model.dart';
+import 'package:student_hub/models/company_model.dart';
+import 'package:student_hub/models/student_model.dart';
 
-class UserModel extends ChangeNotifier {
-  String? _token;
+class UserModel {
+  final String userId;
+  List<AccountModel> roles;
 
-  // get token of user
-  String? get token => _token;
+  UserModel({required this.userId, required this.roles});
 
-  // sign in
-  void signin(String token) {
-    _token = token;
-    notifyListeners();
-  }
-
-  // sign out
-  void signout() {
-    _token = null;
-    notifyListeners();
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return switch (json) {
+      {
+        'user': String userId,
+        'student': String jsonStudent,
+        'company': String jsonCompany
+      } =>
+        UserModel(userId: userId, roles: [
+          StudentModel.fromJson(jsonDecode(jsonStudent)),
+          CompanyModel.fromJson(jsonDecode(jsonCompany)),
+        ]),
+      _ => throw const FormatException('Failed to load user model.'),
+    };
   }
 }

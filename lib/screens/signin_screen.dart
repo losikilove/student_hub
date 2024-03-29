@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,7 +7,7 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
-import 'package:student_hub/models/user_model.dart';
+import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/services/auth_service.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
@@ -48,7 +49,7 @@ class _SignInScreenState extends State<SignInScreen> {
       // response is ok
       final token = body['result']['token'];
       // save the token
-      Provider.of<UserModel>(context, listen: false).signin(token);
+      Provider.of<UserProvider>(context, listen: false).signin(token);
     }
   }
 

@@ -60,7 +60,7 @@ class _RegistrationTwoCompanyScreenState
         fullname: fullnameController.text,
         email: emailController.text,
         password: passwordController.text,
-        roles: ['company']);
+        role: 1);
 
     // stringify the body of response
     Map<String, dynamic> body = json.decode(response.body);
