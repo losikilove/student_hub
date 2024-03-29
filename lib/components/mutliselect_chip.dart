@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
-import 'package:student_hub/utils/color_util.dart';
 
 class MultiSelectChip<T> extends StatefulWidget {
   final List<T> listOf;
@@ -45,15 +44,18 @@ class _MultiSelectChipState<T> extends State<MultiSelectChip<T>> {
   @override
   Widget build(BuildContext context) {
     return MultiSelectDropDown<T>(
+      fieldBackgroundColor: Theme.of(context).colorScheme.onSecondary,
+      optionsBackgroundColor: Theme.of(context).colorScheme.onSecondary,
+      dropdownBackgroundColor: Theme.of(context).colorScheme.onSecondary,
       borderRadius: 0.0,
       hint: 'Choose skills',
       onOptionSelected: onOptionSelected,
       options: _options,
       selectionType: SelectionType.multi,
       dropdownHeight: 250,
-      chipConfig: const ChipConfig(
+      chipConfig: ChipConfig(
         wrapType: WrapType.wrap,
-        backgroundColor: ColorUtil.primary,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
       ),
       selectedOptionIcon: const Icon(Icons.check),
     );

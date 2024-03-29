@@ -64,7 +64,6 @@ class _ProjectBody extends State<ProjectBody> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.onSecondary,
           title: Center(
             child: Text(
               'Welcome',

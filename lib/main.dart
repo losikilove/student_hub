@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_hub/models/user_model.dart';
-import 'package:student_hub/screens/companyregister_screen.dart';
-import 'package:student_hub/screens/main_screen.dart';
-import 'package:student_hub/screens/message_detail_screen.dart';
-import 'package:student_hub/screens/welcome_screen.dart';
+import 'package:student_hub/screens/profile_student_step3_screen.dart';
 import 'package:student_hub/theme/theme_provider.dart';
 
 void main() {
@@ -26,7 +23,7 @@ class StudentHubApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const MainScreen(contentBody: MainScreenIndex.project),
+      home: const ProfileStudentStep3Screen(),
       theme: Provider.of<ThemeProvider>(context).themeData,
     );
   }

@@ -61,55 +61,46 @@ class _ProfileStudentStep3ScreenState extends State<ProfileStudentStep3Screen> {
               height: SpacingUtil.mediumHeight,
             ),
             const CustomText(text: "Resume/CV (*)"),
-            const SizedBox(
-              height: SpacingUtil.mediumHeight,
-            ),
             DottedBorder(
-              radius:const Radius.circular(8),
+              radius: const Radius.circular(8),
+              color: Theme.of(context).colorScheme.onPrimary,
               child: Container(
                 alignment: Alignment.center,
-                color: Colors.cyan.shade100,
+                color: Colors.transparent,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(
                       Icons.upload_file,
                       size: 90,
-                      color: Colors.white,
                     ),
-                    // CustomText(text: "Drag on",isBold: true,),
                     CustomButton(
                       onPressed: () {
                         pickFile(context);
                       },
                       text: "choose file to up",
+                      buttonColor: Theme.of(context).colorScheme.secondary,
                     )
                   ],
                 ),
               ),
             ),
             const SizedBox(
-              height: SpacingUtil.smallHeight,
-            ),
-            const SizedBox(
-              height: SpacingUtil.smallHeight,
-            ),
-            const CustomText(text: "Transcript (*)"),
-            const SizedBox(
               height: SpacingUtil.mediumHeight,
             ),
+            const CustomText(text: "Transcript (*)"),
             DottedBorder(
-              radius:const Radius.circular(8),
+              radius: const Radius.circular(8),
+              color: Theme.of(context).colorScheme.onPrimary,
               child: Container(
                 alignment: Alignment.center,
-                color: Colors.cyan.shade100,
+                color: Colors.transparent,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(
                       Icons.upload_file,
                       size: 90,
-                      color: Colors.white,
                     ),
                     // CustomText(text: "Drag on",isBold: true,),
                     CustomButton(
@@ -117,6 +108,7 @@ class _ProfileStudentStep3ScreenState extends State<ProfileStudentStep3Screen> {
                         pickFile(context);
                       },
                       text: "choose file to up",
+                      buttonColor: Theme.of(context).colorScheme.secondary,
                     )
                   ],
                 ),
@@ -129,8 +121,11 @@ class _ProfileStudentStep3ScreenState extends State<ProfileStudentStep3Screen> {
               alignment: Alignment.topRight,
               child: CustomButton(
                 onPressed: () {
-                  Navigator.push(context, 
-                  MaterialPageRoute(builder: (context)=>const MainScreen(contentBody: MainScreenIndex.project)));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MainScreen(
+                              contentBody: MainScreenIndex.project)));
                 },
                 text: "Continue",
               ),

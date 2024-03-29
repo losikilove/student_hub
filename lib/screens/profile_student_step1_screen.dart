@@ -9,7 +9,6 @@ import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/mutliselect_chip.dart';
 import 'package:student_hub/models/education_model.dart';
 import 'package:student_hub/models/language_model.dart';
-import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
@@ -158,10 +157,10 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
       bottomNavigationBar: BottomAppBar(
         height: 60,
         elevation: 0,
-        color: ColorUtil.lightPrimary,
+        color: Theme.of(context).colorScheme.background,
         child: CustomButton(
           size: CustomButtonSize.small,
-          onPressed: (){
+          onPressed: () {
             NavigationUtil.toProfileStudentStep2Screen(context);
           },
           text: 'Next',
