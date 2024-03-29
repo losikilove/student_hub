@@ -35,6 +35,7 @@ class CustomTextfield extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      cursorColor: Theme.of(context).colorScheme.onPrimary,
       obscureText: obscureText,
       // remove underline
       decoration: isBox

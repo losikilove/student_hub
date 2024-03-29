@@ -6,9 +6,9 @@ import 'package:student_hub/components/custom_tabbar.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/candidate_model.dart';
-import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
+
 class ProposalHireOfferScreen extends StatefulWidget {
   //TODO: get data of project
 
@@ -78,12 +78,12 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // title of project
-            const Text("Title of job",
+            const Text(
+              "Title of job",
               style: TextStyle(
-                color:Colors.green, 
-                fontSize:17,
-                fontWeight: FontWeight.bold
-              ),
+                  color: Colors.green,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: SpacingUtil.smallHeight,
@@ -152,7 +152,7 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
                         CustomButton(
                           onPressed: _onSent,
                           text: 'Send',
-                          buttonColor: ColorUtil.darkPrimary,
+                          buttonColor: Theme.of(context).colorScheme.secondary,
                         ),
                       ],
                     );
@@ -219,13 +219,12 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
                     CustomButton(
                       onPressed: onMessaged,
                       text: 'Message',
-                      buttonColor: ColorUtil.primary,
                     ),
                     // hired button
                     CustomButton(
                       onPressed: onHired,
                       text: hireText,
-                      buttonColor: ColorUtil.darkPrimary,
+                      buttonColor: Theme.of(context).colorScheme.secondary,
                       isDisabled: candidate.isHired,
                     ),
                   ],
@@ -238,7 +237,7 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
       },
     );
   }
-  
+
   Widget _projectRequirement(
       IconData icon, String title, String detailRequirement) {
     return Row(
@@ -266,6 +265,7 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
       ],
     );
   }
+
   // detail content
   Widget _detailContent() {
     return Column(
@@ -276,31 +276,28 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
         ),
         const CustomBulletedList(
           listItems: [
-           'Clear expectation about your project or deliverables',
-           'The skills required for your project',
-           'Detail about your project'
+            'Clear expectation about your project or deliverables',
+            'The skills required for your project',
+            'Detail about your project'
           ],
         ),
         const CustomDivider(),
-            // scope of project
+        // scope of project
         _projectRequirement(Icons.alarm, 'Project scope', '3 to 6 months'),
         const SizedBox(
           height: SpacingUtil.smallHeight,
         ),
-            // Required students
+        // Required students
         _projectRequirement(
-          Icons.people_outline, 'Required students', '6 students'),
+            Icons.people_outline, 'Required students', '6 students'),
         SizedBox(
           height: SpacingUtil.largeHeight,
         ),
         Container(
-          alignment:Alignment.topRight ,
-          child: CustomButton(
-            onPressed: (){}, 
-            text: "Post job"
-          ),
+          alignment: Alignment.topRight,
+          child: CustomButton(onPressed: () {}, text: "Post job"),
         )
-     ],
+      ],
     );
   }
 

@@ -237,6 +237,22 @@ class _DashboardBody extends State<DashboardBody>
                               size: TextUtil.smallTextSize,
                             ),
                           ),
+                          const CustomDivider(isFullWidth: true),
+                          TextButton(
+                            onPressed: onPressed,
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              minimumSize: const Size(
+                                0,
+                                15,
+                              ),
+                            ),
+                            child: const CustomText(
+                              text: 'Start working',
+                              size: TextUtil.smallTextSize,
+                            ),
+                          ),
                         ],
                       ),
                     ),

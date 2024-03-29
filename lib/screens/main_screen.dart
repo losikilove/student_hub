@@ -70,7 +70,7 @@ class _MainScreen extends State<MainScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Theme.of(context).colorScheme.onPrimary,
+        selectedItemColor: Theme.of(context).colorScheme.onBackground,
         onTap: _onItemTapped,
         unselectedItemColor: Theme.of(context).colorScheme.background,
       ),
