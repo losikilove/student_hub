@@ -20,6 +20,6 @@ ThemeData darkMode = ThemeData(
     secondary: Colors.black,
     onBackground: Colors.white, // immutable
     onPrimary: Colors.white, // for text color
-    onSecondary: Colors.black, // for background of option
+    onSecondary: Colors.black45, // for background of option
   ),
 );

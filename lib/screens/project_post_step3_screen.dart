@@ -3,27 +3,30 @@ import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
+import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
-class ProjectPostStep3Screen extends StatefulWidget
-{
+class ProjectPostStep3Screen extends StatefulWidget {
   const ProjectPostStep3Screen({super.key});
 
   @override
   State<ProjectPostStep3Screen> createState() => _ProjectPostStep3ScreenState();
 }
 
-class _ProjectPostStep3ScreenState extends State<ProjectPostStep3Screen>{
+class _ProjectPostStep3ScreenState extends State<ProjectPostStep3Screen> {
+  final _descriptionController = TextEditingController();
 
-  void onPressed(){}
+  void onPressed() {}
 
-  bool _isDisabledNextButton = true;
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(onPressed: onPressed, currentContext: context,),
+      appBar: CustomAppbar(
+        onPressed: onPressed,
+        currentContext: context,
+      ),
       body: InitialBody(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,42 +41,38 @@ class _ProjectPostStep3ScreenState extends State<ProjectPostStep3Screen>{
             const CustomText(
               text: 'Student are looking for',
             ),
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CustomBulletedList(listItems: [
-                    'Clear expectation about your project or deliverables',
-                    'The skills required for your project',
-                    'Detail about your project',
-                  ]          
-                  )
-                ],
-              ),
+            const Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CustomBulletedList(listItems: [
+                  'Clear expectation about your project or deliverables',
+                  'The skills required for your project',
+                  'Detail about your project',
+                ])
+              ],
             ),
-            TextField(
+            const SizedBox(
+              height: SpacingUtil.smallHeight,
+            ),
+            const CustomText(text: 'Describe your project:'),
+            CustomTextfield(
+              controller: _descriptionController,
+              hintText: 'describe',
+              isBox: true,
               maxLines: 5,
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              )
             ),
             Align(
               alignment: Alignment.topRight,
               child: CustomButton(
-                onPressed: (){
+                onPressed: () {
                   NavigationUtil.toPostProjectStep4(context);
                 },
                 text: 'Preview your post',
               ),
             ),
-            
           ],
         ),
       ),
     );
   }
-    
 }

@@ -81,6 +81,7 @@ class _ProjectPostStep2ScreenState extends State<ProjectPostStep2Screen> {
               contentPadding: const EdgeInsets.only(),
               title: CustomText(text: ProjectDuration.oneToThreeMonths.text),
               leading: Radio<ProjectDuration>(
+                activeColor: Theme.of(context).colorScheme.onPrimary,
                 value: ProjectDuration.oneToThreeMonths,
                 groupValue: _projectDuration,
                 onChanged: onSelectedDuration,
@@ -91,6 +92,7 @@ class _ProjectPostStep2ScreenState extends State<ProjectPostStep2Screen> {
               contentPadding: const EdgeInsets.only(),
               title: CustomText(text: ProjectDuration.threeToSixMonths.text),
               leading: Radio<ProjectDuration>(
+                activeColor: Theme.of(context).colorScheme.onPrimary,
                 value: ProjectDuration.threeToSixMonths,
                 groupValue: _projectDuration,
                 onChanged: onSelectedDuration,
@@ -125,7 +127,7 @@ class _ProjectPostStep2ScreenState extends State<ProjectPostStep2Screen> {
             Align(
               alignment: Alignment.topRight,
               child: CustomButton(
-                onPressed: (){
+                onPressed: () {
                   NavigationUtil.toPostProjectStep3(context);
                 },
                 text: 'Next: Description',
