@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/models/company_model.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_button.dart';
@@ -19,13 +20,16 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
   final companyNameController = TextEditingController();
   final websiteController = TextEditingController();
   final descriptionController = TextEditingController();
+
   EnumNumberPeople? _numberPeople = EnumNumberPeople.one;
   void changeNumberPeople(EnumNumberPeople? value) {
     setState(() {
       _numberPeople = value;
     });
   }
+  void createProfile(){
 
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,6 +103,7 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                 alignment: Alignment.topRight,
                 child: CustomButton(
                   onPressed: () {
+                    createProfile();
                     NavigationUtil.toWelcomeScreen(context);
                   },
                   text: "Continue",
