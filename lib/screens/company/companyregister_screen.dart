@@ -8,6 +8,13 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/models/enums/enum_numberpeople.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 
+enum _data{
+  company,
+  size,
+  Website,
+  description,
+}
+
 class CompanyRegisterScreen extends StatefulWidget {
   const CompanyRegisterScreen({super.key});
 
@@ -24,6 +31,10 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
     setState(() {
       _numberPeople = value;
     });
+  }
+
+  void createProfile(){
+
   }
 
   @override
@@ -99,6 +110,7 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                 alignment: Alignment.topRight,
                 child: CustomButton(
                   onPressed: () {
+                    createProfile();
                     NavigationUtil.toWelcomeScreen(context);
                   },
                   text: "Continue",

@@ -85,7 +85,9 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 CustomButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    
+                  },
                   text: "Edit",
                   buttonColor: Theme.of(context).colorScheme.secondary,
                 ),
