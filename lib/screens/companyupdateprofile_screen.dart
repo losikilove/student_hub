@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
-import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
-import 'package:student_hub/components/custom_button.dart';
+import 'package:provider/provider.dart';
 import 'package:student_hub/models/enums/enum_numberpeople.dart';
 import 'package:student_hub/components/custom_appbar.dart';
-
-class CompanyRegisterScreen extends StatefulWidget {
-  const CompanyRegisterScreen({super.key});
+import 'package:student_hub/components/popup_notification.dart';
+import 'package:student_hub/providers/user_provider.dart';
+class CompanyProfileUpdateScreen extends StatefulWidget {
+  final String id;
+  const CompanyProfileUpdateScreen({super.key,required this.id});
 
   @override
-  State<CompanyRegisterScreen> createState() => _CompanyRegisterScreenState();
+  State<CompanyProfileUpdateScreen> createState() => _CompanyProfileUpdateScreenState();
 }
 
-class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
+class _CompanyProfileUpdateScreenState extends State<CompanyProfileUpdateScreen> {
+
   final companyNameController = TextEditingController();
   final websiteController = TextEditingController();
   final descriptionController = TextEditingController();
-
   EnumNumberPeople? _numberPeople = EnumNumberPeople.one;
   void changeNumberPeople(EnumNumberPeople? value) {
     setState(() {
@@ -27,7 +29,33 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
     });
   }
 
-  void createProfile() {}
+  void onUpdate(){
+    Provider.of<UserProvider>(context, listen: false).updateProfileCompany(
+        companyName: companyNameController.text, 
+        website: websiteController.text, 
+        description:  descriptionController.text, 
+        companyId:widget.id,
+      ).then((success) {
+      if (success) {
+        popupNotification(
+          context: context, 
+          type: NotificationType.success, 
+          content: "Updated successfully", 
+          textSubmit: "Ok", 
+          submit: null
+        );
+      } else {
+        popupNotification(
+          context: context, 
+          type: NotificationType.error, 
+          content: "Failed to update", 
+          textSubmit: "Ok", 
+          submit: null
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,27 +69,7 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                   child:
                       CustomText(text: "Welcome to Student Hub", isBold: true)),
               const SizedBox(
-                height: SpacingUtil.smallHeight,
-              ),
-              const CustomText(
-                  text:
-                      "Tell us about your company and you will be on your way connect with high-skilled student"),
-              const SizedBox(
-                height: SpacingUtil.smallHeight,
-              ),
-              const CustomText(text: "How many people are in your company ?"),
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                chooseNumber(EnumNumberPeople.one, "It's just me"),
-                chooseNumber(EnumNumberPeople.two_to_nine, "2-9 employees"),
-                chooseNumber(
-                    EnumNumberPeople.ten_to_nightynine, "10-99 employees"),
-                chooseNumber(
-                    EnumNumberPeople.hundred_to_thousand, "100-1000 employees"),
-                chooseNumber(EnumNumberPeople.more_than_thousand,
-                    "more than 1000 emoployees"),
-              ]),
-              const SizedBox(
-                height: SpacingUtil.smallHeight,
+                height: SpacingUtil.mediumHeight,
               ),
               const CustomText(
                 text: "Company name",
@@ -97,17 +105,27 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
               const SizedBox(
                 height: SpacingUtil.mediumHeight,
               ),
-              Container(
-                alignment: Alignment.topRight,
-                child: CustomButton(
-                  onPressed: () {
-                    createProfile();
-                    NavigationUtil.toWelcomeScreen(context);
-                  },
-                  text: "Continue",
-                ),
+              const CustomText(
+                text: "How many people are there in your company ?",
               ),
-              const SizedBox(height: SpacingUtil.mediumHeight)
+              chooseNumber(EnumNumberPeople.one, "It's just me"),
+              const SizedBox(
+                height: SpacingUtil.largeHeight,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CustomButton(
+                    onPressed: onUpdate,
+                    text: "Edit",
+                    buttonColor: Theme.of(context).colorScheme.secondary,
+                  ),
+                  CustomButton(
+                    onPressed: () {},
+                    text: "Cancel",
+                  ),
+                ],
+              )
             ],
           ),
         ),

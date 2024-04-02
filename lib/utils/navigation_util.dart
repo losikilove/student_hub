@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:student_hub/screens/browse_project_detail_screen.dart';
 import 'package:student_hub/screens/change_password_screen.dart';
-import 'package:student_hub/screens/companyprofile_screen.dart';
+import 'package:student_hub/screens/companyupdateprofile_screen.dart';
 import 'package:student_hub/screens/companyregister_screen.dart';
 import 'package:student_hub/screens/home_screen.dart';
 import 'package:student_hub/screens/main_screen.dart';
@@ -85,11 +85,11 @@ class NavigationUtil {
   }
 
   // switch to profile input a.k.a company-profile screen
-  static void toCompanyProfileScreen(BuildContext currentContext) {
+  static void toCompanyUpdateProfileScreen(BuildContext currentContext,String companyid) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
-        builder: (context) => const CompanyProfileScreen(),
+        builder: (context) => CompanyProfileUpdateScreen(id:companyid),
       ),
     );
   }

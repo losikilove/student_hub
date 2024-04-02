@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:student_hub/models/user_model.dart';
 import 'package:student_hub/services/auth_service.dart';
 import 'package:student_hub/utils/api_util.dart';
-
+import 'package:student_hub/services/profile_service.dart';
+import 'package:student_hub/models/company_model.dart';
 class UserProvider with ChangeNotifier {
   String? _token;
   UserModel? _user;
@@ -27,7 +28,35 @@ class UserProvider with ChangeNotifier {
 
     notifyListeners();
   }
+  Future<bool> updateProfileCompany({
+    required String companyName,
+    required String website,
+    required String description,
+    required String companyId, 
+    }) async {
+    final response = await ProfileService.updateCompanyProfile(
+      companyName: companyName,
+      id: companyId, 
+      website: website, 
+      description: description, 
+      token: _token!
+    );
 
+    if (response.statusCode == 200) {
+      CompanyModel newCompanyProfile = CompanyModel(
+        companyName:companyName, 
+        website: website,
+        id: int.parse(companyId),
+        size: _user!.company?.size ?? 0,
+        description: description,
+      );
+      _user?.company = newCompanyProfile;
+      notifyListeners();
+      return true;
+    } else {
+      return false;
+    }
+  }
   // sign out
   void signout() {
     _token = null;
