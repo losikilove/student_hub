@@ -84,7 +84,7 @@ class NavigationUtil {
     );
   }
 
-  // switch to profile input a.k.a company-profile screen
+  // switch to profile input a.k.a company-update-profile screen
   static void toCompanyUpdateProfileScreen(BuildContext currentContext,String companyid) {
     Navigator.push(
       currentContext,
