@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:student_hub/providers/user_provider.dart';
 import 'dart:convert';
 
 import 'package:student_hub/utils/api_util.dart';
@@ -15,9 +18,7 @@ class AuthService {
 
     return http.post(
       Uri.parse(url),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+      headers: ApiUtil.headers,
       body: jsonEncode(<String, dynamic>{
         'email': email,
         'password': password,
@@ -29,10 +30,25 @@ class AuthService {
   static Future<http.Response> me({required String token}) {
     const String url = '$_baseUrl/me';
 
-    return http.get(Uri.parse(url), headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $token',
-    });
+    return http.get(
+      Uri.parse(url),
+      headers: ApiUtil.getHeadersWithToken(token),
+    );
+  }
+
+  // sign out
+  static Future<http.Response> signout({
+    required String token,
+    required BuildContext context,
+  }) {
+    const String url = '$_baseUrl/logout';
+
+    Provider.of<UserProvider>(context, listen: false).signout();
+
+    return http.post(
+      Uri.parse(url),
+      headers: ApiUtil.getHeadersWithToken(token),
+    );
   }
 
   // sign up
@@ -46,9 +62,7 @@ class AuthService {
 
     return http.post(
       Uri.parse(url),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+      headers: ApiUtil.headers,
       body: jsonEncode(<String, dynamic>{
         'email': email,
         'password': password,

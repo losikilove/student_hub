@@ -1,96 +1,250 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
-import 'package:student_hub/components/custom_textfield.dart';
+import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/components/popup_notification.dart';
+import 'package:student_hub/providers/user_provider.dart';
+import 'package:student_hub/services/auth_service.dart';
+import 'package:student_hub/services/user_service.dart';
+import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
-class ChangPasswordScreen extends StatefulWidget {
-  const ChangPasswordScreen({super.key});
+import 'package:student_hub/utils/text_util.dart';
+
+class ChangePasswordScreen extends StatefulWidget {
+  const ChangePasswordScreen({super.key});
 
   @override
-  State<ChangPasswordScreen> createState() => _ChangPasswordScreenState();
+  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
 }
 
-class _ChangPasswordScreenState extends State<ChangPasswordScreen> {
+class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final oldPasswordController = TextEditingController();
   bool _isFilledOldPassword = false;
   final newPasswordController = TextEditingController();
   bool _isFilledNewPassword = false;
   final confirmNewPasswordController = TextEditingController();
   bool _isFilledConfirmPassword = false;
-  void onCanceledProposal() {
-    // back to the previous screen
-    NavigationUtil.turnBack(context);
+
+  @override
+  void dispose() {
+    oldPasswordController.dispose();
+    newPasswordController.dispose();
+    confirmNewPasswordController.dispose();
+
+    super.dispose();
   }
+
+  // submit new password
+  void onSubmit() async {
+    // confirm changed password
+    final isConfirmed = await _showDialogConfirmChangePassword();
+
+    if (isConfirmed == null || isConfirmed == false) {
+      return;
+    }
+
+    // when new password and confirm password do not match,
+    // show popup error
+    if (newPasswordController.text != confirmNewPasswordController.text) {
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: 'New password and confirm password do not match',
+        textSubmit: 'Ok',
+        submit: null,
+      );
+      return;
+    }
+
+    // get token
+    final token = Provider.of<UserProvider>(context, listen: false).token;
+
+    // get response when PUT change password
+    final response = await UserService.changePassword(
+      token: token!,
+      oldPassword: oldPasswordController.text,
+      newPassword: newPasswordController.text,
+    );
+
+    if (response.statusCode == StatusCode.ok.code) {
+      // change password success
+      // then back to login screen
+      await popupNotification(
+        context: context,
+        type: NotificationType.success,
+        content: 'Changed password success. Back to login',
+        textSubmit: 'Ok',
+        submit: () {
+          // expire token
+          AuthService.signout(token: token, context: context);
+
+          // back to login screen
+          NavigationUtil.toSignInScreen(context);
+        },
+      );
+
+      // expire token
+      AuthService.signout(token: token, context: context);
+
+      // auto back to login screen
+      NavigationUtil.toSignInScreen(context);
+    } else if (response.statusCode == StatusCode.forbidden.code) {
+      // wrong old password or duplicate passwords
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: 'Wrong old password or New password is old password',
+        textSubmit: 'Ok',
+        submit: null,
+      );
+    } else {
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: 'Something went wrong',
+        textSubmit: 'Ok',
+        submit: null,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
-      appBar: CustomAppbar(onPressed: (){}, 
+      appBar: CustomAppbar(
+        onPressed: () {},
         currentContext: context,
         isBack: true,
       ),
       body: InitialBody(
-        child: Column(
-          children: [
-            const Center(
-              child:CustomText(text:'Change password',
-                isBold: true,size:30,
-              )
-            ),
-            const SizedBox(
-              height: SpacingUtil.mediumHeight,
-            ),
-            CustomTextfield(
-              controller: oldPasswordController,
-              hintText: 'old password',
-              obscureText: true,
-              onChanged: (String text) { 
-              setState(() {
-                 _isFilledOldPassword = text.trim().isNotEmpty;
-               });
-             },
-            ),
-            const SizedBox(
-              height: SpacingUtil.mediumHeight,
-            ),
-            CustomTextfield(
-              controller: newPasswordController,
-              hintText: 'new password',
-              obscureText: true,
-              onChanged: (String text) { 
-              setState(() {
-                 _isFilledNewPassword = text.trim().isNotEmpty;
-               });
-             },
-            ),
-            const SizedBox(
-              height: SpacingUtil.mediumHeight,
-            ),
-            CustomTextfield(
-              controller: confirmNewPasswordController,
-              hintText: 'confirm password',
-              obscureText: true,
-              onChanged: (String text) { 
-              setState(() {
-                 _isFilledConfirmPassword = text.trim().isNotEmpty;
-               });
-             },
-            ),
-            const SizedBox(
-              height: SpacingUtil.mediumHeight,
-            ),
-            CustomButton(
-              onPressed:(){},
-              isDisabled: !_isFilledOldPassword || !_isFilledConfirmPassword|| !_isFilledNewPassword,
-              size:CustomButtonSize.large,
-              text: "Update password"
-            )
-          ],
-        )
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Center(
+                  child: CustomText(
+                text: 'Change password',
+                isBold: true,
+                size: 30,
+              )),
+              const SizedBox(
+                height: SpacingUtil.mediumHeight,
+              ),
+              // old password area
+              const CustomText(
+                text: 'Old password',
+                size: TextUtil.smallTextSize,
+                isBold: true,
+              ),
+              CustomTextForm(
+                controller: oldPasswordController,
+                listErros: const [
+                  InvalidationType.isBlank,
+                  InvalidationType.isInvalidPassword,
+                ],
+                hintText: 'Enter old password',
+                onHelper: (String? errorMessage) {
+                  setState(() {
+                    _isFilledOldPassword = errorMessage == null ? true : false;
+                  });
+                },
+                obscureText: true,
+              ),
+              const SizedBox(
+                height: SpacingUtil.smallHeight,
+              ),
+              // new password area
+              const CustomText(
+                text: 'New password',
+                size: TextUtil.smallTextSize,
+                isBold: true,
+              ),
+              CustomTextForm(
+                controller: newPasswordController,
+                listErros: const [
+                  InvalidationType.isBlank,
+                  InvalidationType.isInvalidPassword,
+                ],
+                hintText: 'Enter new password',
+                onHelper: (String? errorMessage) {
+                  setState(() {
+                    _isFilledNewPassword = errorMessage == null ? true : false;
+                  });
+                },
+                obscureText: true,
+              ),
+              const SizedBox(
+                height: SpacingUtil.smallHeight,
+              ),
+              // confirm password area
+              const CustomText(
+                text: 'Confirm password',
+                size: TextUtil.smallTextSize,
+                isBold: true,
+              ),
+              CustomTextForm(
+                controller: confirmNewPasswordController,
+                listErros: const [
+                  InvalidationType.isBlank,
+                  InvalidationType.isInvalidPassword,
+                ],
+                hintText: 'Enter confirm password',
+                onHelper: (String? errorMessage) {
+                  setState(() {
+                    _isFilledConfirmPassword =
+                        errorMessage == null ? true : false;
+                  });
+                },
+                obscureText: true,
+              ),
+              const SizedBox(
+                height: SpacingUtil.mediumHeight,
+              ),
+              // update button
+              CustomButton(
+                onPressed: onSubmit,
+                isDisabled: !_isFilledOldPassword ||
+                    !_isFilledConfirmPassword ||
+                    !_isFilledNewPassword,
+                size: CustomButtonSize.large,
+                text: "Submit",
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
+
+  Future<bool?> _showDialogConfirmChangePassword() => showDialog<bool?>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            'WARNING',
+            style: TextStyle(color: Colors.red),
+          ),
+          content: const CustomText(
+            text: 'Are you sure to change your password?',
+          ),
+          actions: [
+            CustomButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              text: 'Yes',
+            ),
+            CustomButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              text: 'No',
+            ),
+          ],
+        );
+      });
 }

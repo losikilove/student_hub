@@ -21,7 +21,7 @@ class UserModel {
   factory UserModel.fromJson(Map<String, dynamic> jsonUser) {
     return UserModel(
       userId: jsonUser['id'],
-      priorityRole: EnumUser.toRole(jsonUser['roles'][0]),
+      priorityRole: EnumUser.toRole(int.parse(jsonUser['roles'][0])),
       fullname: jsonUser['fullname'],
       student: jsonUser['student'] == null
           ? null

@@ -64,12 +64,17 @@ class _RegistrationTwoCompanyScreenState
     final body = ApiUtil.getBody(response);
 
     // validate the response
-    if (response.statusCode == StatusCode.ok.code) {
+    if (response.statusCode == StatusCode.created.code) {
+      // get the result about verified email
+      final result = body['result']; // type string
+
       // the response is ok
       popupNotification(
         context: context,
         type: NotificationType.success,
-        content: 'Back to sign in',
+        // show a content about verified email
+        // content: 'Back to sign in',
+        content: result,
         textSubmit: 'OK',
         submit: () {
           NavigationUtil.toSignInScreen(context);

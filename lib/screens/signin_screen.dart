@@ -41,7 +41,7 @@ class _SignInScreenState extends State<SignInScreen> {
         email: emailController.text, password: passwordController.text);
 
     // validate the response
-    if (response.statusCode == StatusCode.ok.code) {
+    if (response.statusCode == StatusCode.created.code) {
       // decode the response to get the result of response-body
       final result = ApiUtil.getResult(response);
 

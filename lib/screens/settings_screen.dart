@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_hub/components/custom_appbar.dart';
+import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_option.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/providers/theme_provider.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -15,17 +17,18 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool isActivedDarkTheme = false;
-
   void onPressed() {}
 
   void onGotLanguage(String? selectedLanguage) {}
 
+  // change theme
   void onChangedDarkTheme(bool value) {
-    setState(() {
-      isActivedDarkTheme = value;
-      Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-    });
+    Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+  }
+
+  // switch to change password screen
+  void onSwitchedToChangePasswordScreen() {
+    NavigationUtil.toChangePasswordScreen(context);
   }
 
   @override
@@ -69,11 +72,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   width: SpacingUtil.smallHeight,
                 ),
                 Switch(
-                  value: isActivedDarkTheme,
+                  value:
+                      Provider.of<ThemeProvider>(context, listen: false).isDark,
                   inactiveThumbColor: Theme.of(context).colorScheme.onPrimary,
                   onChanged: onChangedDarkTheme,
                 ),
               ],
+            ),
+            const SizedBox(
+              height: SpacingUtil.mediumHeight,
+            ),
+            // change-password button
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const CustomText(
+                  text: 'Change password:',
+                  isBold: true,
+                ),
+                const SizedBox(
+                  width: SpacingUtil.smallHeight,
+                ),
+                CustomButton(
+                  onPressed: onSwitchedToChangePasswordScreen,
+                  text: 'Change password',
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: SpacingUtil.mediumHeight,
             ),
           ],
         ),

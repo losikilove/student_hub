@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_hub/providers/user_provider.dart';
-import 'package:student_hub/screens/home_screen.dart';
+import 'package:student_hub/screens/change_password_screen.dart';
 import 'package:student_hub/screens/signin_screen.dart';
 import 'package:student_hub/providers/theme_provider.dart';
+import 'package:student_hub/screens/switch_account_screen.dart';
 
 void main() {
   runApp(
@@ -24,7 +25,7 @@ class StudentHubApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
+      home: const SwitchAccountScreen(),
       theme: Provider.of<ThemeProvider>(context).themeData,
     );
   }

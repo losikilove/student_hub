@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_hub/screens/browse_project_detail_screen.dart';
+import 'package:student_hub/screens/change_password_screen.dart';
 import 'package:student_hub/screens/companyprofile_screen.dart';
 import 'package:student_hub/screens/companyregister_screen.dart';
 import 'package:student_hub/screens/home_screen.dart';
@@ -16,6 +17,7 @@ import 'package:student_hub/screens/project_post_step4_screen.dart';
 import 'package:student_hub/screens/proposal_hire_offer_screen.dart';
 import 'package:student_hub/screens/registration_two_company_screen.dart';
 import 'package:student_hub/screens/registration_two_student_screen.dart';
+import 'package:student_hub/screens/settings_screen.dart';
 import 'package:student_hub/screens/signin_screen.dart';
 import 'package:student_hub/screens/signupsetup1_screen.dart';
 import 'package:student_hub/screens/student_submit_proposal_screen.dart';
@@ -271,11 +273,33 @@ class NavigationUtil {
   //Chat
   static void toMessageDetail(BuildContext currentContext) {
     Navigator.push(currentContext,
-        MaterialPageRoute(
-          builder: (context) => const MessageDetailScreen()));
+        MaterialPageRoute(builder: (context) => const MessageDetailScreen()));
   }
-  static void toJoinMeetingScreen(BuildContext currentContext){
-    Navigator.push(currentContext,
-      MaterialPageRoute(builder: (context) => const MeetingScreen(),));
+
+  // meeting screen
+  static void toJoinMeetingScreen(BuildContext currentContext) {
+    Navigator.push(
+        currentContext,
+        MaterialPageRoute(
+          builder: (context) => const MeetingScreen(),
+        ));
+  }
+
+  // setting screen
+  static void toSettingScreen(BuildContext currentContext) {
+    Navigator.push(
+        currentContext,
+        MaterialPageRoute(
+          builder: (context) => const SettingsScreen(),
+        ));
+  }
+
+  // change password screen
+  static void toChangePasswordScreen(BuildContext currentContext) {
+    Navigator.push(
+        currentContext,
+        MaterialPageRoute(
+          builder: (context) => const ChangePasswordScreen(),
+        ));
   }
 }
