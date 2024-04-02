@@ -66,7 +66,7 @@ class AuthService {
       body: jsonEncode(<String, dynamic>{
         'email': email,
         'password': password,
-        'fullName': fullname,
+        'fullname': fullname,
         'role': role,
       }),
     );

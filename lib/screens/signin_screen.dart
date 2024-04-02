@@ -5,7 +5,9 @@ import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/popup_notification.dart';
+import 'package:student_hub/models/enums/enum_user.dart';
 import 'package:student_hub/providers/user_provider.dart';
+import 'package:student_hub/screens/main_screen.dart';
 import 'package:student_hub/services/auth_service.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
@@ -32,6 +34,27 @@ class _SignInScreenState extends State<SignInScreen> {
     super.dispose();
   }
 
+  // switch to create profile or main screen after login successful
+  void switchToCreateProfileOrMain() {
+    final user = Provider.of<UserProvider>(context, listen: false).user;
+
+    // handle company role
+    if (user!.priorityRole == EnumUser.company && user.company == null) {
+      NavigationUtil.toCompanyRegisterScreen(context);
+      return;
+    }
+
+    // handle student role
+    if (user.priorityRole == EnumUser.student && user.student == null) {
+      NavigationUtil.toProfileStudentStep1Screen(context);
+      return;
+    }
+
+    // go to main screen
+    NavigationUtil.toMainScreen(context, MainScreenIndex.dashboard);
+    return;
+  }
+
   // sign up
   void onSignUp() {
     NavigationUtil.toSignUpStepOneScreen(context);
@@ -55,6 +78,9 @@ class _SignInScreenState extends State<SignInScreen> {
       final token = result['token'];
       // save the token
       Provider.of<UserProvider>(context, listen: false).signin(token);
+
+      // switch to create profile or main screeen
+      switchToCreateProfileOrMain();
     } else if (response.statusCode == StatusCode.notFound.code) {
       // the user is not found
       final errorDetails = body['errorDetails'];
@@ -137,7 +163,7 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
           CustomButton(
             onPressed: onSignIn,
-            text: 'sign in',
+            text: 'Sign in',
             size: CustomButtonSize.large,
             isDisabled: !_isFilledEmail || !_isFilledPassword,
           ),
@@ -151,7 +177,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     isCenter: true,
                   ),
                 ),
-                CustomButton(onPressed: onSignUp, text: 'sign up'),
+                CustomButton(onPressed: onSignUp, text: 'Sign up'),
               ],
             ),
           )

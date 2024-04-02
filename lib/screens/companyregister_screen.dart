@@ -27,9 +27,8 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
       _numberPeople = value;
     });
   }
-  void createProfile(){
 
-  }
+  void createProfile() {}
   @override
   Widget build(BuildContext context) {
     return Scaffold(

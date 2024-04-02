@@ -102,7 +102,9 @@ class _RegistrationTwoCompanyScreenState
   }
 
   // switch to student
-  void switchToStudent() {}
+  void onSwitchedToLogin() {
+    NavigationUtil.toSignInScreen(context);
+  }
 
   // get color of checkbox
   Color getColorCheckbox(Set<MaterialState> states) {
@@ -119,10 +121,11 @@ class _RegistrationTwoCompanyScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-          onPressed: () {
-            NavigationUtil.toSwitchAccountScreen(context);
-          },
-          currentContext: context),
+        onPressed: () {
+          NavigationUtil.toSwitchAccountScreen(context);
+        },
+        currentContext: context,
+      ),
       body: InitialBody(
         child: Column(
           children: [
@@ -258,7 +261,7 @@ class _RegistrationTwoCompanyScreenState
                           const CustomText(text: 'Looking for a project? '),
                           CustomAnchor(
                             text: 'Apply as a Student',
-                            onTap: switchToStudent,
+                            onTap: onSwitchedToLogin,
                           ),
                         ],
                       ),
