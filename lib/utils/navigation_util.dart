@@ -85,11 +85,11 @@ class NavigationUtil {
   }
 
   // switch to profile input a.k.a company-update-profile screen
-  static void toCompanyUpdateProfileScreen(BuildContext currentContext,String companyid) {
+  static void toCompanyUpdateProfileScreen(BuildContext currentContext) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
-        builder: (context) => CompanyProfileUpdateScreen(id:companyid),
+        builder: (context) =>const CompanyProfileUpdateScreen(),
       ),
     );
   }

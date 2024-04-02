@@ -10,8 +10,7 @@ import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/providers/user_provider.dart';
 class CompanyProfileUpdateScreen extends StatefulWidget {
-  final String id;
-  const CompanyProfileUpdateScreen({super.key,required this.id});
+  const CompanyProfileUpdateScreen({super.key});
 
   @override
   State<CompanyProfileUpdateScreen> createState() => _CompanyProfileUpdateScreenState();
@@ -34,7 +33,6 @@ class _CompanyProfileUpdateScreenState extends State<CompanyProfileUpdateScreen>
         companyName: companyNameController.text, 
         website: websiteController.text, 
         description:  descriptionController.text, 
-        companyId:widget.id,
       ).then((success) {
       if (success) {
         popupNotification(

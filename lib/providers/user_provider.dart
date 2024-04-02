@@ -32,11 +32,10 @@ class UserProvider with ChangeNotifier {
     required String companyName,
     required String website,
     required String description,
-    required String companyId, 
     }) async {
     final response = await ProfileService.updateCompanyProfile(
       companyName: companyName,
-      id: companyId, 
+      id: _user?.company?.id.toString() ?? '',
       website: website, 
       description: description, 
       token: _token!
@@ -46,7 +45,7 @@ class UserProvider with ChangeNotifier {
       CompanyModel newCompanyProfile = CompanyModel(
         companyName:companyName, 
         website: website,
-        id: int.parse(companyId),
+        id: _user?.company?.id ?? 0,
         size: _user!.company?.size ?? 0,
         description: description,
       );
