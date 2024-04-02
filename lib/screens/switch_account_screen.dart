@@ -21,7 +21,17 @@ class _SwitchAccountScreen extends State<SwitchAccountScreen> {
 
   // switch to company-register-screen
   void onSwitchedToProfileScreen() {
-    NavigationUtil.toCompanyRegisterScreen(context);
+    final user = Provider.of<UserProvider>(context, listen: false).user;
+
+    // if have no info of company
+    // switch to company-register-screen
+    // else switch to view-company-profile
+    if (user?.company == null) {
+      NavigationUtil.toCompanyRegisterScreen(context);
+    } else {
+      // TODO: switch to view-company-profile
+      NavigationUtil.toCompanyUpdateProfileScreen(context);
+    }
   }
 
   // switch to setting screen

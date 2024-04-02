@@ -89,7 +89,7 @@ class NavigationUtil {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
-        builder: (context) =>const CompanyProfileUpdateScreen(),
+        builder: (context) => const CompanyUpdateProfileScreen(),
       ),
     );
   }

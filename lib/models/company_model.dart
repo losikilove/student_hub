@@ -1,10 +1,11 @@
 import 'package:student_hub/models/account_model.dart';
+import 'package:student_hub/models/enums/enum_numberpeople.dart';
 import 'package:student_hub/models/enums/enum_user.dart';
 
 class CompanyModel extends AccountModel {
   String companyName;
   String website;
-  int size;
+  EnumNumberPeople size;
   String description;
 
   CompanyModel({
@@ -21,7 +22,7 @@ class CompanyModel extends AccountModel {
       id: jsonCompany['id'],
       companyName: jsonCompany['companyName'],
       website: jsonCompany['website'],
-      size: jsonCompany['size'],
+      size: EnumNumberPeople.toNumberPeople(jsonCompany['size']),
       description: jsonCompany['description'],
     );
   }

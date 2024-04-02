@@ -4,7 +4,6 @@ import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/popup_notification.dart';
-import 'package:student_hub/models/company_model.dart';
 import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/services/profile_service.dart';
 import 'package:student_hub/utils/api_util.dart';
@@ -61,7 +60,16 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
     if (response.statusCode == StatusCode.created.code) {
       // created company profile successfully
       // save the company-profile to app state
-      final user = Provider.of<UserProvider>(context, listen: false).user;
+      final result = ApiUtil.getResult(response);
+
+      Provider.of<UserProvider>(context, listen: false)
+          .saveCompanyAfterCreatedCompanyProfile(
+        id: result['id'],
+        companyName: result['companyName'],
+        website: result['website'],
+        description: result['description'],
+        size: EnumNumberPeople.toNumberPeople(result['size']),
+      );
 
       // then switch to the welcome screen
       await popupNotification(
@@ -111,14 +119,15 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
               ),
               const CustomText(text: "How many people are in your company ?"),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                chooseNumber(EnumNumberPeople.one, "It's just me"),
-                chooseNumber(EnumNumberPeople.two_to_nine, "2-9 employees"),
-                chooseNumber(
-                    EnumNumberPeople.ten_to_nightynine, "10-99 employees"),
-                chooseNumber(
-                    EnumNumberPeople.hundred_to_thousand, "100-1000 employees"),
+                chooseNumber(EnumNumberPeople.one, EnumNumberPeople.one.name),
+                chooseNumber(EnumNumberPeople.two_to_nine,
+                    EnumNumberPeople.two_to_nine.name),
+                chooseNumber(EnumNumberPeople.ten_to_nightynine,
+                    EnumNumberPeople.ten_to_nightynine.name),
+                chooseNumber(EnumNumberPeople.hundred_to_thousand,
+                    EnumNumberPeople.hundred_to_thousand.name),
                 chooseNumber(EnumNumberPeople.more_than_thousand,
-                    "more than 1000 emoployees"),
+                    EnumNumberPeople.more_than_thousand.name),
               ]),
               const SizedBox(
                 height: SpacingUtil.smallHeight,

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:student_hub/models/enums/enum_numberpeople.dart';
 import 'package:student_hub/models/user_model.dart';
 import 'package:student_hub/services/auth_service.dart';
 import 'package:student_hub/utils/api_util.dart';
-import 'package:student_hub/services/profile_service.dart';
 import 'package:student_hub/models/company_model.dart';
+
 class UserProvider with ChangeNotifier {
-  String? _token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzgsImZ1bGxuYW1lIjoiUGhhdCBCZWF1IiwiZW1haWwiOiJucXBoYXQyMEB2cC5maXR1cy5lZHUudm4iLCJyb2xlcyI6WyIxIl0sImlhdCI6MTcxMjA0NzM1NCwiZXhwIjoxNzEzMjU2OTU0fQ.fNwU7cyfvPe8t327OuiOcoovyXmhjLAAICRPvhLo9TI';
+  String? _token;
   UserModel? _user;
 
   // get token of user
@@ -29,34 +29,39 @@ class UserProvider with ChangeNotifier {
 
     notifyListeners();
   }
-  Future<bool> updateProfileCompany({
+
+  // create company profile
+  void saveCompanyAfterCreatedCompanyProfile({
+    required int id,
     required String companyName,
     required String website,
     required String description,
-    }) async {
-    final response = await ProfileService.updateCompanyProfile(
+    required EnumNumberPeople size,
+  }) async {
+    _user?.company = CompanyModel(
+      id: id,
       companyName: companyName,
-      id: _user?.company?.id.toString() ?? '',
-      website: website, 
-      description: description, 
-      token: _token!
+      website: website,
+      size: size,
+      description: description,
     );
-
-    if (response.statusCode == 200) {
-      CompanyModel newCompanyProfile = CompanyModel(
-        companyName:companyName, 
-        website: website,
-        id: _user?.company?.id ?? 0,
-        size: _user!.company?.size ?? 0,
-        description: description,
-      );
-      _user?.company = newCompanyProfile;
-      notifyListeners();
-      return true;
-    } else {
-      return false;
-    }
   }
+
+  // update company profile
+  void saveCompanyWhenUpdatedProfileCompany({
+    required String companyName,
+    required String website,
+    required String description,
+  }) async {
+    _user?.company = CompanyModel(
+      id: _user!.company!.id,
+      companyName: companyName,
+      website: website,
+      size: _user!.company!.size,
+      description: description,
+    );
+  }
+
   // sign out
   void signout() async {
     // call API logout
