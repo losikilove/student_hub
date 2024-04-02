@@ -4,6 +4,7 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/services/auth_service.dart';
 import 'package:student_hub/utils/api_util.dart';
@@ -31,14 +32,19 @@ class _SignInScreenState extends State<SignInScreen> {
     super.dispose();
   }
 
+  // sign up
   void onSignUp() {
     NavigationUtil.toSignUpStepOneScreen(context);
   }
 
+  // sign in
   void onSignIn() async {
     // get response from the server
     final response = await AuthService.signin(
         email: emailController.text, password: passwordController.text);
+
+    // decode the response to get the body
+    final body = ApiUtil.getBody(response);
 
     // validate the response
     if (response.statusCode == StatusCode.created.code) {
@@ -49,6 +55,40 @@ class _SignInScreenState extends State<SignInScreen> {
       final token = result['token'];
       // save the token
       Provider.of<UserProvider>(context, listen: false).signin(token);
+    } else if (response.statusCode == StatusCode.notFound.code) {
+      // the user is not found
+      final errorDetails = body['errorDetails'];
+
+      // show popup error message
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: errorDetails.toString(),
+        textSubmit: 'Ok',
+        submit: null,
+      );
+    } else if (response.statusCode == StatusCode.unprocessableEntity.code) {
+      // incorrect password
+      final errorDetails = body['errorDetails'];
+
+      // show popup error message
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: errorDetails.toString(),
+        textSubmit: 'Ok',
+        submit: null,
+      );
+    } else {
+      // others
+      // show popup error message
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: 'Something went wrong',
+        textSubmit: 'Ok',
+        submit: null,
+      );
     }
   }
 

@@ -25,7 +25,7 @@ class StudentHubApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const SwitchAccountScreen(),
+      home: const SignInScreen(),
       theme: Provider.of<ThemeProvider>(context).themeData,
     );
   }

@@ -6,7 +6,9 @@ enum StatusCode {
   ok(code: 200),
   created(code: 201),
   error(code: 400),
-  forbidden(code: 403);
+  forbidden(code: 403),
+  notFound(code: 404),
+  unprocessableEntity(code: 422);
 
   final int code;
 
