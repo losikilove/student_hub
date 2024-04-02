@@ -5,7 +5,8 @@ import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/services/profile_service.dart';
 import 'package:student_hub/models/company_model.dart';
 class UserProvider with ChangeNotifier {
-  String? _token;
+  String? _token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzgsImZ1bGxuYW1lIjoiUGhhdCBCZWF1IiwiZW1haWwiOiJucXBoYXQyMEB2cC5maXR1cy5lZHUudm4iLCJyb2xlcyI6WyIxIl0sImlhdCI6MTcxMjA0NzM1NCwiZXhwIjoxNzEzMjU2OTU0fQ.fNwU7cyfvPe8t327OuiOcoovyXmhjLAAICRPvhLo9TI';
   UserModel? _user;
 
   // get token of user
@@ -57,7 +58,11 @@ class UserProvider with ChangeNotifier {
     }
   }
   // sign out
-  void signout() {
+  void signout() async {
+    // call API logout
+    await AuthService.signout(token: _token!);
+
+    // set null for whole attributes
     _token = null;
     _user = null;
     notifyListeners();

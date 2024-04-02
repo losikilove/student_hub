@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
-import 'package:student_hub/providers/user_provider.dart';
 import 'dart:convert';
 
 import 'package:student_hub/utils/api_util.dart';
@@ -39,11 +36,8 @@ class AuthService {
   // sign out
   static Future<http.Response> signout({
     required String token,
-    required BuildContext context,
   }) {
     const String url = '$_baseUrl/logout';
-
-    Provider.of<UserProvider>(context, listen: false).signout();
 
     return http.post(
       Uri.parse(url),

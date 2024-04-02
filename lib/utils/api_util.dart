@@ -1,11 +1,17 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:provider/provider.dart';
+import 'package:student_hub/components/popup_notification.dart';
+import 'package:student_hub/providers/user_provider.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 
 enum StatusCode {
   ok(code: 200),
   created(code: 201),
   error(code: 400),
+  unauthorized(code: 401),
   forbidden(code: 403),
   notFound(code: 404),
   unprocessableEntity(code: 422);
@@ -42,5 +48,39 @@ class ApiUtil {
   // in case want to get body of response
   static Map<String, dynamic> getBody(Response response) {
     return json.decode(response.body);
+  }
+
+  // handle expired token
+  static void handleExpiredToken({required BuildContext context}) async {
+    // expired token
+    // then switch to the sign in screen
+    await popupNotification(
+      context: context,
+      type: NotificationType.error,
+      content: 'Sign in timed out! Back to sign in',
+      textSubmit: 'Sign in',
+      submit: () {
+        // expire token
+        Provider.of<UserProvider>(context, listen: false).signout();
+        // then switch to the sign in screen
+        NavigationUtil.toSignInScreen(context);
+      },
+    );
+
+    // auto switch to the sign in screen
+    // after expire token
+    Provider.of<UserProvider>(context, listen: false).signout();
+    NavigationUtil.toSignInScreen(context);
+  }
+
+  // handle other cases which concern status code
+  static void handleOtherStatusCode({required BuildContext context}) {
+    popupNotification(
+      context: context,
+      type: NotificationType.error,
+      content: 'Something went wrong',
+      textSubmit: 'Ok',
+      submit: null,
+    );
   }
 }

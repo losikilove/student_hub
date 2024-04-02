@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/components/popup_notification.dart';
+import 'package:student_hub/models/company_model.dart';
+import 'package:student_hub/providers/user_provider.dart';
+import 'package:student_hub/services/profile_service.dart';
+import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_button.dart';
@@ -19,15 +25,69 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
   final companyNameController = TextEditingController();
   final websiteController = TextEditingController();
   final descriptionController = TextEditingController();
-
   EnumNumberPeople? _numberPeople = EnumNumberPeople.one;
-  void changeNumberPeople(EnumNumberPeople? value) {
+
+  @override
+  void dispose() {
+    companyNameController.dispose();
+    websiteController.dispose();
+    descriptionController.dispose();
+
+    super.dispose();
+  }
+
+  // change size of company
+  void onChangedNumberPeople(EnumNumberPeople? value) {
     setState(() {
       _numberPeople = value;
     });
   }
 
-  void createProfile() {}
+  // create profile
+  void onCreatedProfile() async {
+    // get token which is an app state
+    final token = Provider.of<UserProvider>(context, listen: false).token;
+
+    // get response of API POST create-company-profile
+    final response = await ProfileService.createCompanyProfile(
+      companyName: companyNameController.text,
+      size: _numberPeople!.value,
+      website: websiteController.text,
+      description: descriptionController.text,
+      token: token!,
+    );
+
+    // handle the response
+    if (response.statusCode == StatusCode.created.code) {
+      // created company profile successfully
+      // save the company-profile to app state
+      final user = Provider.of<UserProvider>(context, listen: false).user;
+
+      // then switch to the welcome screen
+      await popupNotification(
+        context: context,
+        type: NotificationType.success,
+        content: 'Created your company profile successfully',
+        textSubmit: 'Ok',
+        submit: () {
+          NavigationUtil.toWelcomeScreen(context);
+        },
+      );
+
+      // auto switch to the welcome screen
+      NavigationUtil.toWelcomeScreen(context);
+      return;
+    } else if (response.statusCode == StatusCode.unauthorized.code) {
+      // expire token
+      ApiUtil.handleExpiredToken(context: context);
+      return;
+    } else {
+      // others
+      ApiUtil.handleOtherStatusCode(context: context);
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,10 +160,7 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
               Container(
                 alignment: Alignment.topRight,
                 child: CustomButton(
-                  onPressed: () {
-                    createProfile();
-                    NavigationUtil.toWelcomeScreen(context);
-                  },
+                  onPressed: onCreatedProfile,
                   text: "Continue",
                 ),
               ),
@@ -122,7 +179,7 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
           activeColor: Theme.of(context).colorScheme.onPrimary,
           value: numberpeople,
           groupValue: _numberPeople,
-          onChanged: changeNumberPeople,
+          onChanged: onChangedNumberPeople,
         ),
         CustomText(text: text)
       ],

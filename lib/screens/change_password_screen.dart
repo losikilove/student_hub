@@ -7,7 +7,6 @@ import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/providers/user_provider.dart';
-import 'package:student_hub/services/auth_service.dart';
 import 'package:student_hub/services/user_service.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
@@ -80,17 +79,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         textSubmit: 'Ok',
         submit: () {
           // expire token
-          AuthService.signout(token: token, context: context);
+          Provider.of<UserProvider>(context, listen: false).signout();
 
           // back to login screen
           NavigationUtil.toSignInScreen(context);
         },
       );
 
-      // expire token
-      AuthService.signout(token: token, context: context);
-
       // auto back to login screen
+      // after expire token
+      Provider.of<UserProvider>(context, listen: false).signout();
       NavigationUtil.toSignInScreen(context);
     } else if (response.statusCode == StatusCode.forbidden.code) {
       // wrong old password or duplicate passwords
@@ -101,14 +99,13 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         textSubmit: 'Ok',
         submit: null,
       );
+    } else if (response.statusCode == StatusCode.unauthorized.code) {
+      // expire token
+      ApiUtil.handleExpiredToken(context: context);
+      return;
     } else {
-      popupNotification(
-        context: context,
-        type: NotificationType.error,
-        content: 'Something went wrong',
-        textSubmit: 'Ok',
-        submit: null,
-      );
+      ApiUtil.handleOtherStatusCode(context: context);
+      return;
     }
   }
 

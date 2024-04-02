@@ -5,7 +5,6 @@ import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/custom_listtile.dart';
 import 'package:student_hub/providers/user_provider.dart';
-import 'package:student_hub/services/auth_service.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 
 class SwitchAccountScreen extends StatefulWidget {
@@ -33,8 +32,7 @@ class _SwitchAccountScreen extends State<SwitchAccountScreen> {
   // switch to sign in screen
   void onLogout() async {
     // expire token
-    final token = Provider.of<UserProvider>(context, listen: false).token;
-    await AuthService.signout(token: token!, context: context);
+    Provider.of<UserProvider>(context, listen: false).signout();
 
     NavigationUtil.toSignInScreen(context);
   }
