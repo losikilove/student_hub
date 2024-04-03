@@ -16,7 +16,7 @@ import 'package:student_hub/components/custom_divider.dart';
 enum ProjectBodyType {
   main(nameRoute: ''),
   search(nameRoute: 'search'),
-  favorite(nameRoute: 'favorite');
+  saved(nameRoute: 'saved');
 
   final String nameRoute;
 
@@ -158,14 +158,14 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
                     ),
                     child: IconButton(
                         onPressed: () {
-                          List<ProjectModel> favorite = _projects
+                          List<ProjectModel> saved = _projects
                               .where((projectModel) => projectModel.like)
                               .toList();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ProjectBodyFavoritePart(
-                                      projects: favorite)));
+                                  builder: (context) =>
+                                      ProjectBodySavedPart(projects: saved)));
                         },
                         icon: const Icon(
                           Icons.favorite,
@@ -476,18 +476,18 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
   }
 }
 
-//Favorite part of this body
-class ProjectBodyFavoritePart extends StatefulWidget {
+//saved part of this body
+class ProjectBodySavedPart extends StatefulWidget {
   final List<ProjectModel> projects;
-  const ProjectBodyFavoritePart({
+  const ProjectBodySavedPart({
     super.key,
     required this.projects,
   });
   @override
-  State<ProjectBodyFavoritePart> createState() => _ProjectBodyFavoritePart();
+  State<ProjectBodySavedPart> createState() => _ProjectBodySavedPart();
 }
 
-class _ProjectBodyFavoritePart extends State<ProjectBodyFavoritePart> {
+class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
   void onPressed() {}
   @override
   Widget build(BuildContext context) {
