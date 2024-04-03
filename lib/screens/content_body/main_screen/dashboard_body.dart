@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_tabbar.dart';
 import 'package:student_hub/components/custom_text.dart';
@@ -245,12 +244,296 @@ class _DashboardBody extends State<DashboardBody>
 
   // company working content
   Widget _companyWorkingContent() {
-    return const Center();
+    List<ProjectModel> projectWorking =
+        _projects.where((projectModel) => !projectModel.isCompelte).toList();
+    if (_projects.isEmpty) {
+      return const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: CustomText(text: 'Welcome, Hai!'),
+          ),
+          SizedBox(
+            height: SpacingUtil.smallHeight,
+          ),
+          Center(
+            child: CustomText(text: 'You have no jobs!'),
+          ),
+        ],
+      );
+    }
+
+    return ListView.builder(
+      itemCount: projectWorking.length,
+      itemBuilder: (context, index) {
+        final project = projectWorking[index];
+
+        // see detail of this project
+        void onSeenDetail() {
+          NavigationUtil.toSendHireOffer(context);
+        }
+
+        // handle actions of this project
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: onSeenDetail,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // title of this project
+                          CustomText(
+                            text: project.title,
+                            isBold: true,
+                          ),
+                          // time-creating of this project
+                          CustomText(
+                            text: project.timeCreating,
+                            isItalic: true,
+                          )
+                        ],
+                      ),
+                      // icon button seeing detail of this project
+                      IconButton(
+                        onPressed: () {
+                          onOpenedActionMenu(project);
+                        },
+                        icon: const Icon(
+                          Icons.playlist_add_circle_outlined,
+                          size: 30,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: SpacingUtil.smallHeight,
+                  ),
+                  // wishes of this project
+                  const CustomText(text: 'Student are looking for'),
+                  CustomBulletedList(listItems: project.wishes),
+                  // parameters of this project
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // number of proposals
+                      Column(
+                        children: [
+                          CustomText(
+                            text: project.numberProposals.toString(),
+                            size: TextUtil.smallTextSize,
+                          ),
+                          const CustomText(
+                            text: 'Proposals',
+                            size: TextUtil.smallTextSize,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        width: SpacingUtil.largeHeight,
+                      ),
+                      // number of messages
+                      Column(
+                        children: [
+                          CustomText(
+                            text: project.numberMessages.toString(),
+                            size: TextUtil.smallTextSize,
+                          ),
+                          const CustomText(
+                            text: 'Messages',
+                            size: TextUtil.smallTextSize,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        width: SpacingUtil.largeHeight,
+                      ),
+                      // number of hires
+                      Column(
+                        children: [
+                          CustomText(
+                            text: project.numberHires.toString(),
+                            size: TextUtil.smallTextSize,
+                          ),
+                          const CustomText(
+                            text: 'Hired',
+                            size: TextUtil.smallTextSize,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: SpacingUtil.smallHeight,
+            ),
+            const CustomDivider(
+              isFullWidth: true,
+            ),
+            const SizedBox(
+              height: SpacingUtil.mediumHeight,
+            ),
+          ],
+        );
+      },
+    );
   }
 
   // companyArchievedContent
   Widget _companyArchievedContent() {
-    return const Center();
+    List<ProjectModel> projectArchieved =
+        _projects.where((projectModel) => projectModel.isCompelte).toList();
+    if (_projects.isEmpty) {
+      return const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: CustomText(text: 'Welcome, Hai!'),
+          ),
+          SizedBox(
+            height: SpacingUtil.smallHeight,
+          ),
+          Center(
+            child: CustomText(text: 'You have no jobs!'),
+          ),
+        ],
+      );
+    }
+
+    return ListView.builder(
+      itemCount: projectArchieved.length,
+      itemBuilder: (context, index) {
+        final project = projectArchieved[index];
+
+        // see detail of this project
+        void onSeenDetail() {
+          NavigationUtil.toSendHireOffer(context);
+        }
+
+        // handle actions of this project
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: onSeenDetail,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // title of this project
+                          CustomText(
+                            text: project.title,
+                            isBold: true,
+                          ),
+                          // time-creating of this project
+                          CustomText(
+                            text: project.timeCreating,
+                            isItalic: true,
+                          )
+                        ],
+                      ),
+                      // icon button seeing detail of this project
+                      IconButton(
+                        onPressed: () {
+                          onOpenedActionMenu(project);
+                        },
+                        icon: const Icon(
+                          Icons.playlist_add_circle_outlined,
+                          size: 30,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: SpacingUtil.smallHeight,
+                  ),
+                  // wishes of this project
+                  const CustomText(text: 'Student are looking for'),
+                  CustomBulletedList(listItems: project.wishes),
+                  // parameters of this project
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // number of proposals
+                      Column(
+                        children: [
+                          CustomText(
+                            text: project.numberProposals.toString(),
+                            size: TextUtil.smallTextSize,
+                          ),
+                          const CustomText(
+                            text: 'Proposals',
+                            size: TextUtil.smallTextSize,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        width: SpacingUtil.largeHeight,
+                      ),
+                      // number of messages
+                      Column(
+                        children: [
+                          CustomText(
+                            text: project.numberMessages.toString(),
+                            size: TextUtil.smallTextSize,
+                          ),
+                          const CustomText(
+                            text: 'Messages',
+                            size: TextUtil.smallTextSize,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        width: SpacingUtil.largeHeight,
+                      ),
+                      // number of hires
+                      Column(
+                        children: [
+                          CustomText(
+                            text: project.numberHires.toString(),
+                            size: TextUtil.smallTextSize,
+                          ),
+                          const CustomText(
+                            text: 'Hired',
+                            size: TextUtil.smallTextSize,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: SpacingUtil.smallHeight,
+            ),
+            const CustomDivider(
+              isFullWidth: true,
+            ),
+            const SizedBox(
+              height: SpacingUtil.mediumHeight,
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Widget _studentAllProjectContent() {
@@ -520,22 +803,6 @@ class _DashboardBody extends State<DashboardBody>
                       ),
                       child: const CustomText(
                         text: 'Remove posting',
-                        size: TextUtil.smallTextSize,
-                      ),
-                    ),
-                    const CustomDivider(isFullWidth: true),
-                    TextButton(
-                      onPressed: onPressed,
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        minimumSize: const Size(
-                          0,
-                          15,
-                        ),
-                      ),
-                      child: const CustomText(
-                        text: 'Start working',
                         size: TextUtil.smallTextSize,
                       ),
                     ),
