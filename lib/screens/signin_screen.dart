@@ -36,7 +36,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
   // switch to create profile or main screen after login successful
   void switchToCreateProfileOrMain() {
-    // TODO:
     final user = Provider.of<UserProvider>(context, listen: false).user;
 
     // handle company role

@@ -31,4 +31,9 @@ class UserModel {
           : CompanyModel.fromJson(jsonUser['company']),
     );
   }
+
+  void switchToRestRole() {
+    priorityRole =
+        priorityRole == EnumUser.company ? EnumUser.student : EnumUser.company;
+  }
 }

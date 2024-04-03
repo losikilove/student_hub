@@ -83,21 +83,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               height: SpacingUtil.mediumHeight,
             ),
             // change-password button
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const CustomText(
-                  text: 'Change password:',
-                  isBold: true,
-                ),
-                const SizedBox(
-                  width: SpacingUtil.smallHeight,
-                ),
-                CustomButton(
-                  onPressed: onSwitchedToChangePasswordScreen,
-                  text: 'Change password',
-                ),
-              ],
+            CustomButton(
+              onPressed: onSwitchedToChangePasswordScreen,
+              text: 'Change password',
             ),
             const SizedBox(
               height: SpacingUtil.mediumHeight,
