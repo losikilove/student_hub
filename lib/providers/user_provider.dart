@@ -30,6 +30,12 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // switch to rest role
+  void changeToRestRole() {
+    _user!.changeToRestRole();
+    notifyListeners();
+  }
+
   // create company profile
   void saveCompanyAfterCreatedCompanyProfile({
     required int id,
@@ -45,6 +51,8 @@ class UserProvider with ChangeNotifier {
       size: size,
       description: description,
     );
+
+    notifyListeners();
   }
 
   // update company profile
@@ -60,6 +68,8 @@ class UserProvider with ChangeNotifier {
       size: _user!.company!.size,
       description: description,
     );
+
+    notifyListeners();
   }
 
   // sign out

@@ -37,69 +37,67 @@ class _CompanyViewProfileScreenState extends State<CompanyViewProfileScreen> {
           alignment: Alignment.center,
           child: Consumer<UserProvider>(
             builder: (context, userProvider, child) {
-              return Expanded(
-                child: Column(
-                  children: [
-                    // title of screen
-                    const CustomText(
-                      text: 'Your company profile',
-                      isBold: true,
-                      size: 30,
-                    ),
-                    const SizedBox(
-                      height: SpacingUtil.mediumHeight,
-                    ),
-                    // name of company
-                    const CustomText(
-                      text: 'Company',
-                      size: 18,
-                    ),
-                    CustomText(
-                      text: userProvider.user!.company!.companyName,
-                      size: 22,
-                      isBold: true,
-                    ),
-                    const SizedBox(
-                      height: SpacingUtil.smallHeight,
-                    ),
-                    // website of company
-                    const CustomText(
-                      text: 'Website',
-                      size: 18,
-                    ),
-                    CustomText(
-                      text: userProvider.user!.company!.website,
-                      isBold: true,
-                      size: 18,
-                    ),
-                    const SizedBox(
-                      height: SpacingUtil.smallHeight,
-                    ),
-                    // size of company
-                    const CustomText(
-                      text: 'Size',
-                      size: 18,
-                    ),
-                    CustomText(
-                      text: userProvider.user!.company!.size.name,
-                      isBold: true,
-                      size: 18,
-                    ),
-                    const SizedBox(
-                      height: SpacingUtil.smallHeight,
-                    ),
-                    // description of company
-                    const CustomText(
-                      text: 'About us',
-                      size: 18,
-                    ),
-                    CustomText(
-                      text: userProvider.user!.company!.description,
-                      isBold: true,
-                      size: 18,
-                    ),
-                  ],
-                ),
+              return Column(
+                children: [
+                  // title of screen
+                  const CustomText(
+                    text: 'Your company profile',
+                    isBold: true,
+                    size: 30,
+                  ),
+                  const SizedBox(
+                    height: SpacingUtil.mediumHeight,
+                  ),
+                  // name of company
+                  const CustomText(
+                    text: 'Company',
+                    size: 18,
+                  ),
+                  CustomText(
+                    text: userProvider.user!.company!.companyName,
+                    size: 22,
+                    isBold: true,
+                  ),
+                  const SizedBox(
+                    height: SpacingUtil.smallHeight,
+                  ),
+                  // website of company
+                  const CustomText(
+                    text: 'Website',
+                    size: 18,
+                  ),
+                  CustomText(
+                    text: userProvider.user!.company!.website,
+                    isBold: true,
+                    size: 18,
+                  ),
+                  const SizedBox(
+                    height: SpacingUtil.smallHeight,
+                  ),
+                  // size of company
+                  const CustomText(
+                    text: 'Size',
+                    size: 18,
+                  ),
+                  CustomText(
+                    text: userProvider.user!.company!.size.name,
+                    isBold: true,
+                    size: 18,
+                  ),
+                  const SizedBox(
+                    height: SpacingUtil.smallHeight,
+                  ),
+                  // description of company
+                  const CustomText(
+                    text: 'About us',
+                    size: 18,
+                  ),
+                  CustomText(
+                    text: userProvider.user!.company!.description,
+                    isBold: true,
+                    size: 18,
+                  ),
+                ],
               );
             },
           ),

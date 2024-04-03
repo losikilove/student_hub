@@ -32,8 +32,36 @@ class UserModel {
     );
   }
 
-  void switchToRestRole() {
-    priorityRole =
-        priorityRole == EnumUser.company ? EnumUser.student : EnumUser.company;
+  void changeToRestRole() {
+    priorityRole = getEnumRestRole;
+  }
+
+  EnumUser get getEnumRestRole =>
+      priorityRole == EnumUser.company ? EnumUser.student : EnumUser.company;
+
+  bool isNullPriorityRole() {
+    if (priorityRole == EnumUser.student && student == null) {
+      return true;
+    }
+
+    if (priorityRole == EnumUser.company && company == null) {
+      return true;
+    }
+
+    return false;
+  }
+
+  bool isNullRestRole() {
+    final restRole = getEnumRestRole;
+
+    if (restRole == EnumUser.student && student == null) {
+      return true;
+    }
+
+    if (restRole == EnumUser.company && company == null) {
+      return true;
+    }
+
+    return false;
   }
 }

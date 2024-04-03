@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:student_hub/components/circle_progress.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/popup_notification.dart';
-import 'package:student_hub/models/enums/enum_user.dart';
 import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/screens/main_screen.dart';
 import 'package:student_hub/services/auth_service.dart';
@@ -13,6 +13,7 @@ import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_text.dart';
+import 'package:student_hub/utils/user_util.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -36,24 +37,16 @@ class _SignInScreenState extends State<SignInScreen> {
 
   // switch to create profile or main screen after login successful
   void switchToCreateProfileOrMain() {
-    final user = Provider.of<UserProvider>(context, listen: false).user;
-
     // handle company role
-    if (user!.priorityRole == EnumUser.company && user.company == null) {
-      NavigationUtil.toCompanyRegisterScreen(context);
-      return;
-    }
-
-    // handle student role
-    if (user.priorityRole == EnumUser.student && user.student == null) {
-      NavigationUtil.toProfileStudentStep1Screen(context);
-      return;
+    if (Provider.of<UserProvider>(context, listen: false)
+            .user!
+            .isNullPriorityRole() ==
+        true) {
+      UserUtil.switchToCreateProfile(context);
     }
 
     // go to main screen
     NavigationUtil.toMainScreen(context, MainScreenIndex.dashboard);
-
-    return;
   }
 
   // sign up
@@ -63,6 +56,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
   // sign in
   void onSignIn() async {
+    // loading in progress
+    showCircleProgress(context: context);
+
     // get response from the server
     final response = await AuthService.signin(
         email: emailController.text, password: passwordController.text);
@@ -80,9 +76,15 @@ class _SignInScreenState extends State<SignInScreen> {
       // save the token
       Provider.of<UserProvider>(context, listen: false).signin(token);
 
+      // pop the loading progress
+      Navigator.of(context).pop();
+
       // switch to create profile or main screeen
       switchToCreateProfileOrMain();
     } else if (response.statusCode == StatusCode.notFound.code) {
+      // pop the loading progress
+      Navigator.of(context).pop();
+
       // the user is not found
       final errorDetails = body['errorDetails'];
 
@@ -95,6 +97,9 @@ class _SignInScreenState extends State<SignInScreen> {
         submit: null,
       );
     } else if (response.statusCode == StatusCode.unprocessableEntity.code) {
+      // pop the loading progress
+      Navigator.of(context).pop();
+
       // incorrect password
       final errorDetails = body['errorDetails'];
 
@@ -107,6 +112,9 @@ class _SignInScreenState extends State<SignInScreen> {
         submit: null,
       );
     } else {
+      // pop the loading progress
+      Navigator.of(context).pop();
+
       // others
       // show popup error message
       popupNotification(
