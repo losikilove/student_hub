@@ -83,6 +83,12 @@ class _CompanyUpdateProfileScreenState
     // handle the response
     if (response.statusCode == StatusCode.ok.code) {
       // update successfully
+      userProvider.saveCompanyWhenUpdatedProfileCompany(
+        companyName: companyNameController.text,
+        website: websiteController.text,
+        description: descriptionController.text,
+      );
+
       // then show popup success and switch user to settings screen
       await popupNotification(
         context: context,
