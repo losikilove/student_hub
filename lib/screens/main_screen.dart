@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/screens/content_body/main_screen/dashboard_body.dart';
 import 'package:student_hub/screens/content_body/main_screen/message_body.dart';
 import 'package:student_hub/screens/content_body/main_screen/notification_body.dart';
@@ -45,6 +46,7 @@ class _MainScreen extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppbar(onPressed: onPressed, currentContext: context),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[

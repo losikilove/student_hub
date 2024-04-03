@@ -119,10 +119,6 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(
-        onPressed: onPressed,
-        currentContext: context,
-      ),
       body: InitialBody(
         child: Column(
           children: [

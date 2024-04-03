@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textfield.dart';
@@ -51,7 +50,6 @@ class _MessageBody extends State<MessageBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(onPressed: onPressed, currentContext: context),
       body: InitialBody(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

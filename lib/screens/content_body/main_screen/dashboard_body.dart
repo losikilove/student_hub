@@ -55,7 +55,6 @@ class _DashboardBody extends State<DashboardBody>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(onPressed: onPressed, currentContext: context),
       body: InitialBody(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,171 +128,6 @@ class _DashboardBody extends State<DashboardBody>
         }
 
         // handle actions of this project
-        void onOpenedActionMenu() {
-          showModalBottomSheet<void>(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(0)),
-            ),
-            context: context,
-            builder: (BuildContext context) {
-              return ConstrainedBox(
-                constraints: const BoxConstraints(
-                  minHeight: 145,
-                  maxHeight: double.maxFinite,
-                ),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextButton(
-                            onPressed: onPressed,
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              minimumSize: const Size(
-                                0,
-                                15,
-                              ),
-                            ),
-                            child: const CustomText(
-                              text: 'View proposel',
-                              size: TextUtil.smallTextSize,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: onPressed,
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              minimumSize: const Size(0, 15),
-                            ),
-                            child: const CustomText(
-                              text: 'View message',
-                              size: TextUtil.smallTextSize,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: onPressed,
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              minimumSize: const Size(
-                                0,
-                                15,
-                              ),
-                            ),
-                            child: const CustomText(
-                              text: 'View hired',
-                              size: TextUtil.smallTextSize,
-                            ),
-                          ),
-                          const CustomDivider(isFullWidth: true),
-                          TextButton(
-                            onPressed: onPressed,
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              minimumSize: const Size(
-                                0,
-                                15,
-                              ),
-                            ),
-                            child: const CustomText(
-                              text: 'View job posting',
-                              size: TextUtil.smallTextSize,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: onPressed,
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              minimumSize: const Size(
-                                0,
-                                15,
-                              ),
-                            ),
-                            child: const CustomText(
-                              text: 'Edit posting',
-                              size: TextUtil.smallTextSize,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: onPressed,
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              minimumSize: const Size(
-                                0,
-                                15,
-                              ),
-                            ),
-                            child: const CustomText(
-                              text: 'Remove posting',
-                              size: TextUtil.smallTextSize,
-                            ),
-                          ),
-                          const CustomDivider(isFullWidth: true),
-                          TextButton(
-                            onPressed: onPressed,
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              minimumSize: const Size(
-                                0,
-                                15,
-                              ),
-                            ),
-                            child: const CustomText(
-                              text: 'Start working',
-                              size: TextUtil.smallTextSize,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Builder(builder: (context) {
-                      if (!_projects[index].isCompelte)
-                        return Container(
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomDivider(
-                                  isFullWidth: true,
-                                ),
-                                TextButton(
-                                  onPressed: onPressed,
-                                  child: Text(
-                                    'Start working this project',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  style: TextButton.styleFrom(
-                                      padding:
-                                          EdgeInsets.fromLTRB(30, 0, 50, 0),
-                                      tapTargetSize: MaterialTapTargetSize
-                                          .shrinkWrap, //tap target
-                                      minimumSize: Size(
-                                        200,
-                                        15,
-                                      ) //size
-                                      ),
-                                )
-                              ]),
-                        );
-                      return Container(
-                        height: 0,
-                      );
-                    })
-                  ],
-                ),
-              );
-            },
-          );
-        }
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -324,7 +158,9 @@ class _DashboardBody extends State<DashboardBody>
                       ),
                       // icon button seeing detail of this project
                       IconButton(
-                        onPressed: onOpenedActionMenu,
+                        onPressed: () {
+                          onOpenedActionMenu(project);
+                        },
                         icon: const Icon(
                           Icons.playlist_add_circle_outlined,
                           size: 30,
@@ -494,6 +330,8 @@ class _DashboardBody extends State<DashboardBody>
   }
 
   Widget _studentWorkingContent() {
+    List<ProjectModel> projectWorking =
+        _projects.where((projectModel) => !projectModel.isCompelte).toList();
     if (_projects.isEmpty) {
       return const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -511,9 +349,9 @@ class _DashboardBody extends State<DashboardBody>
       );
     }
     return ListView.builder(
-        itemCount: _projects.length,
+        itemCount: projectWorking.length,
         itemBuilder: (context, index) {
-          final project = _projects[index];
+          final project = projectWorking[index];
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -535,6 +373,210 @@ class _DashboardBody extends State<DashboardBody>
   }
 
   Widget _studentArchievedContent() {
-    return const Center();
+    List<ProjectModel> projectArchieved =
+        _projects.where((projectModel) => projectModel.isCompelte).toList();
+    if (_projects.isEmpty) {
+      return const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: CustomText(text: 'Welcome, Hai!'),
+          ),
+          SizedBox(
+            height: SpacingUtil.smallHeight,
+          ),
+          Center(
+            child: CustomText(text: 'You have no jobs!'),
+          ),
+        ],
+      );
+    }
+    return ListView.builder(
+        itemCount: projectArchieved.length,
+        itemBuilder: (context, index) {
+          final project = projectArchieved[index];
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                project.title,
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 6, 194, 13), fontSize: 16),
+              ),
+              const CustomText(text: "Time: 6 months, 4 students needed"),
+              const SizedBox(
+                height: SpacingUtil.mediumHeight,
+              ),
+              const CustomText(text: "Student are looking for"),
+              CustomBulletedList(listItems: project.wishes),
+              const CustomDivider(),
+            ],
+          );
+        });
+  }
+
+  void onOpenedActionMenu(ProjectModel project) {
+    showModalBottomSheet<void>(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(0)),
+      ),
+      context: context,
+      builder: (BuildContext context) {
+        return ConstrainedBox(
+          constraints: const BoxConstraints(
+            minHeight: 145,
+            maxHeight: double.maxFinite,
+          ),
+          child: ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              Align(
+                alignment: Alignment.centerRight,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextButton(
+                      onPressed: onPressed,
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        minimumSize: const Size(
+                          0,
+                          15,
+                        ),
+                      ),
+                      child: const CustomText(
+                        text: 'View proposel',
+                        size: TextUtil.smallTextSize,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: onPressed,
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        minimumSize: const Size(0, 15),
+                      ),
+                      child: const CustomText(
+                        text: 'View message',
+                        size: TextUtil.smallTextSize,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: onPressed,
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        minimumSize: const Size(
+                          0,
+                          15,
+                        ),
+                      ),
+                      child: const CustomText(
+                        text: 'View hired',
+                        size: TextUtil.smallTextSize,
+                      ),
+                    ),
+                    const CustomDivider(isFullWidth: true),
+                    TextButton(
+                      onPressed: onPressed,
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        minimumSize: const Size(
+                          0,
+                          15,
+                        ),
+                      ),
+                      child: const CustomText(
+                        text: 'View job posting',
+                        size: TextUtil.smallTextSize,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: onPressed,
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        minimumSize: const Size(
+                          0,
+                          15,
+                        ),
+                      ),
+                      child: const CustomText(
+                        text: 'Edit posting',
+                        size: TextUtil.smallTextSize,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: onPressed,
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        minimumSize: const Size(
+                          0,
+                          15,
+                        ),
+                      ),
+                      child: const CustomText(
+                        text: 'Remove posting',
+                        size: TextUtil.smallTextSize,
+                      ),
+                    ),
+                    const CustomDivider(isFullWidth: true),
+                    TextButton(
+                      onPressed: onPressed,
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 250, 0),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        minimumSize: const Size(
+                          0,
+                          15,
+                        ),
+                      ),
+                      child: const CustomText(
+                        text: 'Start working',
+                        size: TextUtil.smallTextSize,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Builder(builder: (context) {
+                if (!project.isCompelte)
+                  return Container(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomDivider(
+                            isFullWidth: true,
+                          ),
+                          TextButton(
+                            onPressed: onPressed,
+                            child: Text(
+                              'Start working this project',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            style: TextButton.styleFrom(
+                                padding: EdgeInsets.fromLTRB(30, 0, 50, 0),
+                                tapTargetSize: MaterialTapTargetSize
+                                    .shrinkWrap, //tap target
+                                minimumSize: Size(
+                                  200,
+                                  15,
+                                ) //size
+                                ),
+                          )
+                        ]),
+                  );
+                return Container(
+                  height: 0,
+                );
+              })
+            ],
+          ),
+        );
+      },
+    );
   }
 }
