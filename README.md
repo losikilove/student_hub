@@ -54,4 +54,6 @@ dependencies {
 }
 ```
 
-## 9. 
+## 9. Cannot use async to get API in initState
+- Reasons: wrong syntax of initState
+- Solutions: use the FutureBuild widget to get API and show it up
