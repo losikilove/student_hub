@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:student_hub/screens/browse_project_detail_screen.dart';
 import 'package:student_hub/screens/change_password_screen.dart';
+import 'package:student_hub/screens/company_view_profile_screen.dart';
 import 'package:student_hub/screens/companyupdateprofile_screen.dart';
 import 'package:student_hub/screens/companyregister_screen.dart';
 import 'package:student_hub/screens/home_screen.dart';
@@ -300,6 +301,15 @@ class NavigationUtil {
         currentContext,
         MaterialPageRoute(
           builder: (context) => const ChangePasswordScreen(),
+        ));
+  }
+
+  // view-company-profile screen
+  static void toCompanyViewProfileScreen(BuildContext currentContext) {
+    Navigator.push(
+        currentContext,
+        MaterialPageRoute(
+          builder: (context) => const CompanyViewProfileScreen(),
         ));
   }
 }

@@ -123,11 +123,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Center(
-                  child: CustomText(
-                text: 'Change password',
-                isBold: true,
-                size: 30,
-              )),
+                child: CustomText(
+                  text: 'Change password',
+                  isBold: true,
+                  size: 30,
+                ),
+              ),
               const SizedBox(
                 height: SpacingUtil.mediumHeight,
               ),

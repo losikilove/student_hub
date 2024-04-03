@@ -53,17 +53,18 @@ class _ProjectPostStep4ScreenState extends State<ProjectPostStep4Screen> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-          height: 70,
-          elevation: 0,
-          color: Theme.of(context).colorScheme.background,
-          child: Container(
-            alignment: Alignment.topRight,
-            child: CustomButton(
-              size: CustomButtonSize.small,
-              onPressed: () {},
-              text: 'Save',
-            ),
-          )),
+        height: 70,
+        elevation: 0,
+        color: Theme.of(context).colorScheme.background,
+        child: Container(
+          alignment: Alignment.topRight,
+          child: CustomButton(
+            size: CustomButtonSize.small,
+            onPressed: () {},
+            text: 'Save',
+          ),
+        ),
+      ),
     );
   }
 

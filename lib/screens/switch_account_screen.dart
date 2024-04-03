@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_hub/components/custom_appbar.dart';
+import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
+import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/custom_listtile.dart';
 import 'package:student_hub/providers/user_provider.dart';
@@ -29,8 +31,8 @@ class _SwitchAccountScreen extends State<SwitchAccountScreen> {
     if (user?.company == null) {
       NavigationUtil.toCompanyRegisterScreen(context);
     } else {
-      // TODO: switch to view-company-profile
-      NavigationUtil.toCompanyUpdateProfileScreen(context);
+      // switch to view-company-profile
+      NavigationUtil.toCompanyViewProfileScreen(context);
     }
   }
 
@@ -41,6 +43,14 @@ class _SwitchAccountScreen extends State<SwitchAccountScreen> {
 
   // switch to sign in screen
   void onLogout() async {
+    // confirm that logging out
+    final isConfirmed = await _showDialogConfirmLogout();
+
+    // do not want to log out
+    if (isConfirmed == false || isConfirmed == null) {
+      return;
+    }
+
     // expire token
     Provider.of<UserProvider>(context, listen: false).signout();
 
@@ -123,4 +133,32 @@ class _SwitchAccountScreen extends State<SwitchAccountScreen> {
       ),
     );
   }
+
+  Future<bool?> _showDialogConfirmLogout() => showDialog<bool?>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            'WARNING',
+            style: TextStyle(color: Colors.red),
+          ),
+          content: const CustomText(
+            text: 'Are you sure to log out?',
+          ),
+          actions: [
+            CustomButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              text: 'Yes',
+            ),
+            CustomButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              text: 'No',
+            ),
+          ],
+        );
+      });
 }
