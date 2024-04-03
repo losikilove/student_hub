@@ -9,6 +9,10 @@ import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/mutliselect_chip.dart';
 import 'package:student_hub/models/education_model.dart';
 import 'package:student_hub/models/language_model.dart';
+import 'package:student_hub/models/skill_set_model.dart';
+import 'package:student_hub/models/tech_stack_model.dart';
+import 'package:student_hub/services/skill_set_service.dart';
+import 'package:student_hub/services/tech_stack_service.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
@@ -21,50 +25,34 @@ class ProfileStudentStep1Screen extends StatefulWidget {
 }
 
 class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
-  final List<String> techstackOptions = [
-    'Backend dev',
-    'Frontend dev',
-    'Fullstack dev',
-    'Backend dev',
-    'Frontend dev',
-    'Fullstack dev',
-    'Backend dev',
-    'Frontend dev',
-    'Fullstack dev',
-    'Backend dev',
-    'Frontend dev',
-    'Fullstack dev',
-    'Backend dev',
-    'Frontend dev',
-    'Fullstack dev',
-    'Backend dev',
-    'Frontend dev',
-    'Fullstack dev',
-    'Backend dev',
-    'Frontend dev',
-    'Fullstack dev'
-  ];
-  late String optionValueTechstack;
-  final List<String> skillsetOptions = [
-    'iOS dev',
-    'C/C++',
-    'Java',
-    'ReactJS',
-    'NodeJS',
-  ];
-  late List<String> selectedSkillsets;
+  late TechStackModel optionValueTechstack;
+  late List<SkillSetModel> selectedSkillsets;
   late List<LanguageModel> addedNewLanguages;
   late List<EducationModel> addedNewEducations;
+
+  // initialize tech stack
+  Future<List<TechStackModel>> initializeTechStack() async {
+    final responseTechStack = await TechStackService.getAllTeckStack();
+
+    return TechStackModel.fromResponse(responseTechStack);
+  }
+
+  // initialize skill set
+  Future<List<SkillSetModel>> initializeSkillSet() async {
+    final responseTechStack = await SkillSetService.getAllSkillSet();
+
+    return SkillSetModel.fromResponse(responseTechStack);
+  }
 
   void onPressed() {}
 
   // get result from the techstack
-  void onGettingValueOfTechstack(String? option) {
+  void onGettingValueOfTechstack(TechStackModel? option) {
     optionValueTechstack = option!;
   }
 
   // get results from the skillset
-  void onGettingValuesOfSkillset(List<String> selectedItems) {
+  void onGettingValuesOfSkillset(List<SkillSetModel> selectedItems) {
     selectedSkillsets = selectedItems;
   }
 
@@ -117,9 +105,22 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
                       text: 'Techstack',
                       isBold: true,
                     ),
-                    CustomOption<String>(
-                      options: techstackOptions,
-                      onHelper: onGettingValueOfTechstack,
+                    FutureBuilder<List<TechStackModel>>(
+                      future: initializeTechStack(),
+                      builder: (context, snapshot) {
+                        Widget child;
+
+                        if (snapshot.hasData) {
+                          child = CustomOption<TechStackModel>(
+                            options: snapshot.data!,
+                            onHelper: onGettingValueOfTechstack,
+                          );
+                        } else {
+                          child = const CircularProgressIndicator();
+                        }
+
+                        return child;
+                      },
                     ),
                     const SizedBox(
                       height: SpacingUtil.mediumHeight,
@@ -129,9 +130,22 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
                       text: 'Skillset',
                       isBold: true,
                     ),
-                    MultiSelectChip<String>(
-                      listOf: skillsetOptions,
-                      onHelper: onGettingValuesOfSkillset,
+                    FutureBuilder<List<SkillSetModel>>(
+                      future: initializeSkillSet(),
+                      builder: (context, snapshot) {
+                        Widget child;
+
+                        if (snapshot.hasData) {
+                          child = MultiSelectChip<SkillSetModel>(
+                            listOf: snapshot.data!,
+                            onHelper: onGettingValuesOfSkillset,
+                          );
+                        } else {
+                          child = const CircularProgressIndicator();
+                        }
+
+                        return child;
+                      },
                     ),
                     const SizedBox(
                       height: SpacingUtil.mediumHeight,
