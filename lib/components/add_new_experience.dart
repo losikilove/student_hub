@@ -1,52 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_option.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/mutliselect_chip.dart';
 import 'package:student_hub/models/experience_model.dart';
+import 'package:student_hub/models/skill_set_model.dart';
 import 'package:student_hub/utils/education_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class AddNewExperience extends StatefulWidget {
   final void Function(List<ExperienceModel> projects) onHelper;
-  const AddNewExperience({super.key, required this.onHelper});
+  final List<SkillSetModel> skills;
+  const AddNewExperience(
+      {super.key, required this.skills, required this.onHelper});
 
   @override
   State<AddNewExperience> createState() => _AddNewExperienceState();
 }
 
 class _AddNewExperienceState extends State<AddNewExperience> {
-  final List<ExperienceModel> _experiences = [
-    ExperienceModel(
-        'Intelligent Taxi Dispatching System',
-        'It is developer of a super-app for ride-halling, food delivery'
-            ' and digital payments services on mobile device that operates in Singapor, Malaysia,...',
-        '9/2020',
-        '12/2020',
-        '4 months',
-        ['C++', 'Java']),
-    ExperienceModel(
-        'Intelligent Taxi Dispatching System',
-        'It is developer of a super-app for ride-halling, food delivery'
-            ' and digital payments services on mobile device that operates in Singapor, Malaysia,...',
-        '9/2020',
-        '12/2020',
-        '4 months',
-        ['C++', 'Java']),
-  ];
-  final List<String> skillsetOptions = [
-    'iOS dev',
-    'C/C++',
-    'Java',
-    'ReactJS',
-    'NodeJS',
-  ];
-  late List<String> selectedSkillsets;
-
-  void onGettingValuesOfSkillset(List<String> selectedItems) {
-    selectedSkillsets = selectedItems;
-  }
+  final List<ExperienceModel> _experiences = [];
 
   void onCreateNewExperience() async {
     final experienceInfo = await openDialogHandleNewOne(null);
@@ -55,19 +30,6 @@ class _AddNewExperienceState extends State<AddNewExperience> {
     setState(() {
       _experiences.add(experienceInfo);
     });
-  }
-
-  String caculateSetMonths(String timeStart, String timeEnd) {
-    List<String> start = timeStart.split('/');
-    List<String> end = timeEnd.split('/');
-    int index;
-    if (int.parse(end[1]) > int.parse(start[1])) {
-      index = 12 - (int.parse(end[1]) - int.parse(start[1])) + 1;
-      return index.toString() + ' months';
-    } else {
-      index = int.parse(end[0]) - int.parse(start[0]);
-      return index.toString() + ' months';
-    }
   }
 
   @override
@@ -84,94 +46,114 @@ class _AddNewExperienceState extends State<AddNewExperience> {
               onPressed: onCreateNewExperience,
               icon: const Icon(Icons.add_circle_outline))
         ]),
-        ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: _experiences.length,
-            itemBuilder: (BuildContext context, int index) {
-              void onEdited() async {
-                final editedExperience =
-                    await openDialogHandleNewOne(_experiences[index]);
-                if (editedExperience == null) return;
+        Expanded(
+          child: SingleChildScrollView(
+            child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: _experiences.length,
+                itemBuilder: (BuildContext context, int index) {
+                  ExperienceModel currentExperience = _experiences[index];
 
-                //
-                setState(() {
-                  _experiences[index].setTile = editedExperience.getTile;
-                  _experiences[index].setDescription =
-                      editedExperience.getDescription;
-                  _experiences[index].setTimeStart =
-                      editedExperience.getTimeStart;
-                  _experiences[index].setTimeEnd = editedExperience.getTimeEnd;
-                  _experiences[index].setMonths = editedExperience.getMonths;
-                  _experiences[index].setSelectSkill =
-                      editedExperience.getSkills;
-                });
-                widget.onHelper(_experiences);
-              }
+                  void onEdited() async {
+                    final editedExperience =
+                        await openDialogHandleNewOne(currentExperience);
+                    if (editedExperience == null) return;
 
-              // remove this education out of list
-              void onRemoved() async {
-                // show alert which confirms removed this education
-                final decision = await openDialogWarningRemoveItem(
-                    _experiences[index].getTile);
+                    setState(() {
+                      currentExperience.setTile = editedExperience.getTile;
+                      currentExperience.setDescription =
+                          editedExperience.getDescription;
+                      currentExperience.setYearStart =
+                          editedExperience.getYearStart;
+                      currentExperience.setYearEnd =
+                          editedExperience.getYearEnd;
+                      currentExperience.setMonthStart =
+                          editedExperience.getMonthStart;
+                      currentExperience.setMonthEnd =
+                          editedExperience.getMonthEnd;
+                    });
+                    widget.onHelper(_experiences);
+                  }
 
-                // do not want to remove this education
-                if (decision == null) return;
+                  // remove this education out of list
+                  void onRemoved() async {
+                    // show alert which confirms removed this education
+                    final decision = await openDialogWarningRemoveItem(
+                        currentExperience.getTile);
 
-                // after confirm, remove this education
-                setState(() {
-                  _experiences.removeAt(index);
-                });
-                widget.onHelper(_experiences);
-              }
+                    // do not want to remove this education
+                    if (decision == null) return;
 
-              return Column(
-                children: [
-                  Row(
+                    // after confirm, remove this education
+                    setState(() {
+                      _experiences.removeAt(index);
+                    });
+                    widget.onHelper(_experiences);
+                  }
+
+                  // get values from skillset list
+                  void onGettingValuesOfSkillset(List<SkillSetModel> skills) {
+                    currentExperience.setSkills = skills;
+                  }
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.6,
-                            child: CustomText(
-                              text: _experiences[index].getTile,
-                              size: 14.5,
-                              isOverflow: true,
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.6,
+                                child: CustomText(
+                                  text: currentExperience.getTile,
+                                  size: 14.5,
+                                  isOverflow: true,
+                                ),
+                              ),
+                              Text(
+                                currentExperience.getDuration,
+                                style: const TextStyle(
+                                    fontSize: 14.5,
+                                    fontStyle: FontStyle.italic),
+                              ),
+                            ],
                           ),
-                          Text(
-                            _experiences[index].getTime,
-                            style: const TextStyle(
-                                fontSize: 14.5, fontStyle: FontStyle.italic),
+                          Row(
+                            children: [
+                              // update this education
+                              IconButton(
+                                onPressed: onEdited,
+                                icon: const Icon(Icons.edit_outlined),
+                              ),
+                              // remove this one
+                              IconButton(
+                                onPressed: onRemoved,
+                                icon: const Icon(Icons.delete),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                      IconButton(
-                        onPressed: onEdited,
-                        icon: const Icon(Icons.edit_outlined),
+                      CustomText(text: currentExperience.getDescription),
+                      MultiSelectChip<SkillSetModel>(
+                        listOf: widget.skills,
+                        onHelper: onGettingValuesOfSkillset,
                       ),
-                      // remove this one
-                      IconButton(
-                        onPressed: onRemoved,
-                        icon: const Icon(Icons.delete),
+                      const SizedBox(
+                        height: SpacingUtil.smallHeight,
+                      ),
+                      const CustomDivider(
+                        isFullWidth: true,
                       ),
                     ],
-                  ),
-                  CustomText(text: _experiences[index].getDescription),
-                  MultiSelectChip(
-                    listOf: skillsetOptions,
-                    onHelper: onGettingValuesOfSkillset,
-                  ),
-                  const SizedBox(
-                    height: SpacingUtil.smallHeight,
-                  ),
-                  const CustomDivider(
-                    isFullWidth: true,
-                  ),
-                ],
-              );
-            })
+                  );
+                }),
+          ),
+        )
       ],
     );
   }
@@ -185,37 +167,49 @@ class _AddNewExperienceState extends State<AddNewExperience> {
             final descriptionProject = TextEditingController(
                 text: project == null ? '' : project.getDescription);
             //months
-            final listBeginningMonths =
-                List<String>.generate(12, (index) => '${index + 1}');
-            final listEndMonths =
-                List<String>.generate(12, (index) => '${index + 1}');
+            final listMonths = List<int>.generate(12, (index) => index + 1);
             //years
-            final listBeginningYears = List<String>.generate(
-                EducationUtil.numberOfYears(),
-                (index) => '${DateTime.now().year - index}');
-            final listEndYears = List<String>.generate(
-                EducationUtil.numberOfYears(),
-                (index) => '${DateTime.now().year - index}');
-            //selectime
+            final listYears = List<int>.generate(EducationUtil.numberOfYears(),
+                (index) => DateTime.now().year - index);
 
-            String beginTime =
-                listBeginningMonths.first + '/' + listBeginningYears.first;
-            String endTime = listEndMonths.first + '/' + listEndYears.first;
+            //selec time
+            int beginMonth =
+                project == null ? listMonths.first : project.getMonthStart;
+            int endMonth =
+                project == null ? listMonths.first : project.getMonthEnd;
+            int beginYear =
+                project == null ? listYears.first : project.getYearStart;
+            int endYear =
+                project == null ? listYears.first : project.getYearEnd;
 
-            bool isDisabledSubmit = true;
-            // List<String> multiSelectSkill = _multiSelectController.toString().split(' ');
+            // flags mange the button
+            bool isFilledTitle = tileProject.text.isNotEmpty;
+            bool isFilledDescription = descriptionProject.text.isNotEmpty;
 
             void onSubmitedToAddNewOne() {
-              Navigator.of(context).pop(ExperienceModel(tileProject.text,
-                  descriptionProject.text, beginTime, endTime, '', []));
+              Navigator.of(context).pop(ExperienceModel(
+                  tileProject.text,
+                  descriptionProject.text,
+                  beginYear,
+                  endYear,
+                  beginMonth,
+                  endMonth, []));
             }
 
-            void onGettingBeginningOfTime(String? time) {
-              beginTime = time!;
+            void onGettingBeginningOfMonth(int? time) {
+              beginMonth = time!;
             }
 
-            void onGettingEndOfTime(String? time) {
-              endTime = time!;
+            void onGettingBeginningOfYear(int? time) {
+              beginYear = time!;
+            }
+
+            void onGettingEndOfMonth(int? time) {
+              endMonth = time!;
+            }
+
+            void onGettingEndOfYear(int? time) {
+              endYear = time!;
             }
 
             return StatefulBuilder(builder: (context, setState) {
@@ -229,7 +223,7 @@ class _AddNewExperienceState extends State<AddNewExperience> {
                         TextField(
                           onChanged: (value) {
                             setState(() {
-                              isDisabledSubmit = tileProject.text.isEmpty;
+                              isFilledTitle = value.isNotEmpty;
                             });
                           },
                           controller: tileProject,
@@ -240,8 +234,7 @@ class _AddNewExperienceState extends State<AddNewExperience> {
                         TextField(
                           onChanged: (value) {
                             setState(() {
-                              isDisabledSubmit =
-                                  descriptionProject.text.isEmpty;
+                              isFilledDescription = value.isNotEmpty;
                             });
                           },
                           controller: descriptionProject,
@@ -266,21 +259,17 @@ class _AddNewExperienceState extends State<AddNewExperience> {
                                 ),
                               ),
                               Expanded(
-                                child: CustomOption<String>(
-                                  options: listBeginningMonths,
-                                  onHelper: onGettingBeginningOfTime,
-                                  initialSelection: project == null
-                                      ? listBeginningMonths.first
-                                      : project.getTimeStart,
+                                child: CustomOption<int>(
+                                  options: listMonths,
+                                  onHelper: onGettingBeginningOfMonth,
+                                  initialSelection: beginMonth,
                                 ),
                               ),
                               Expanded(
-                                child: CustomOption<String>(
-                                  options: listBeginningYears,
-                                  onHelper: onGettingBeginningOfTime,
-                                  initialSelection: project == null
-                                      ? listBeginningYears.first
-                                      : '/' + project.getTimeStart,
+                                child: CustomOption<int>(
+                                  options: listYears,
+                                  onHelper: onGettingBeginningOfYear,
+                                  initialSelection: beginYear,
                                 ),
                               ),
                             ],
@@ -300,21 +289,17 @@ class _AddNewExperienceState extends State<AddNewExperience> {
                                 ),
                               ),
                               Expanded(
-                                child: CustomOption<String>(
-                                  options: listEndMonths,
-                                  onHelper: onGettingEndOfTime,
-                                  initialSelection: project == null
-                                      ? listEndMonths.first
-                                      : project.getTimeEnd,
+                                child: CustomOption<int>(
+                                  options: listMonths,
+                                  onHelper: onGettingEndOfMonth,
+                                  initialSelection: endMonth,
                                 ),
                               ),
                               Expanded(
-                                child: CustomOption<String>(
-                                  options: listEndYears,
-                                  onHelper: onGettingEndOfTime,
-                                  initialSelection: project == null
-                                      ? listEndYears.first
-                                      : '/' + project.getTimeEnd,
+                                child: CustomOption<int>(
+                                  options: listYears,
+                                  onHelper: onGettingEndOfYear,
+                                  initialSelection: endYear,
                                 ),
                               ),
                             ],
@@ -324,16 +309,9 @@ class _AddNewExperienceState extends State<AddNewExperience> {
                 ),
                 actions: [
                   CustomButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(ExperienceModel(
-                          tileProject.text,
-                          descriptionProject.text,
-                          beginTime,
-                          endTime,
-                          '', []));
-                    },
+                    onPressed: onSubmitedToAddNewOne,
                     text: 'SUBMIT',
-                    isDisabled: isDisabledSubmit,
+                    isDisabled: !isFilledTitle || !isFilledDescription,
                   )
                 ],
               );

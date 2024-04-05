@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:student_hub/components/add_new_experience.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
+import 'package:student_hub/components/custom_future_builder.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/experience_model.dart';
+import 'package:student_hub/models/skill_set_model.dart';
+import 'package:student_hub/services/skill_set_service.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
@@ -23,6 +27,13 @@ class _ProfileStudentStep2Screen extends State<ProfileStudentStep2Screen> {
 
   void onGettingValuesOfProject(List<ExperienceModel> project) {
     addNewProject = project;
+  }
+
+  // initialize skill set
+  Future<List<SkillSetModel>> initializeSkillSet() async {
+    final responseTechStack = await SkillSetService.getAllSkillSet();
+
+    return SkillSetModel.fromResponse(responseTechStack);
   }
 
   @override
@@ -53,19 +64,20 @@ class _ProfileStudentStep2Screen extends State<ProfileStudentStep2Screen> {
             const SizedBox(
               height: SpacingUtil.mediumHeight,
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AddNewExperience(
-                        onHelper: onGettingValuesOfProject,
-                      ),
-                      const SizedBox(
-                        height: SpacingUtil.mediumHeight,
-                      ),
-                    ]),
+            CustomFutureBuilder<List<SkillSetModel>>(
+              future: initializeSkillSet(),
+              widgetWithData: (snapshot) => Expanded(
+                child: AddNewExperience(
+                  skills: snapshot.data!,
+                  onHelper: onGettingValuesOfProject,
+                ),
               ),
+              widgetWithError: (snapshot) {
+                return const CustomText(
+                  text: 'Sorry, something went wrong',
+                  textColor: Colors.red,
+                );
+              },
             ),
           ],
         ),

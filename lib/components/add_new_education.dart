@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:student_hub/components/custom_button.dart';
@@ -149,12 +148,16 @@ class _AddNewEducationState extends State<AddNewEducation> {
           final listBeginningYears = List<String>.generate(
               EducationUtil.numberOfYears(),
               (index) => '${DateTime.now().year - index}');
-          String selectedBeginningYear = listBeginningYears.first;
+          String selectedBeginningYear = education == null
+              ? listBeginningYears.first
+              : education.getBeginningOfSchoolYear;
           final listEndYears = List<String>.generate(
               EducationUtil.numberOfYears(),
               (index) => '${DateTime.now().year - index}');
-          String selectedEndYear = listEndYears.first;
-          bool isDisabledSubmit = true;
+          String selectedEndYear = education == null
+              ? listEndYears.first
+              : education.getEndOfSchoolYear;
+          bool isDisabledSubmit = schoolNameController.text.isEmpty;
 
           void onSubmitedToAddNewOne() {
             Navigator.of(context).pop(EducationModel(schoolNameController.text,
@@ -211,9 +214,7 @@ class _AddNewEducationState extends State<AddNewEducation> {
                             child: CustomOption<String>(
                               options: listBeginningYears,
                               onHelper: onGettingBeginningOfYear,
-                              initialSelection: education == null
-                                  ? listBeginningYears.first
-                                  : education.getBeginningOfSchoolYear,
+                              initialSelection: selectedBeginningYear,
                             ),
                           ),
                         ],
@@ -237,9 +238,7 @@ class _AddNewEducationState extends State<AddNewEducation> {
                             child: CustomOption<String>(
                               options: listEndYears,
                               onHelper: onGettingEndOfYear,
-                              initialSelection: education == null
-                                  ? listEndYears.first
-                                  : education.getEndOfSchoolYear,
+                              initialSelection: selectedEndYear,
                             ),
                           ),
                         ],

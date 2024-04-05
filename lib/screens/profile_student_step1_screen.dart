@@ -3,6 +3,7 @@ import 'package:student_hub/components/add_new_education.dart';
 import 'package:student_hub/components/add_new_language.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
+import 'package:student_hub/components/custom_future_builder.dart';
 import 'package:student_hub/components/custom_option.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
@@ -105,21 +106,18 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
                       text: 'Techstack',
                       isBold: true,
                     ),
-                    FutureBuilder<List<TechStackModel>>(
+                    CustomFutureBuilder<List<TechStackModel>>(
                       future: initializeTechStack(),
-                      builder: (context, snapshot) {
-                        Widget child;
-
-                        if (snapshot.hasData) {
-                          child = CustomOption<TechStackModel>(
-                            options: snapshot.data!,
-                            onHelper: onGettingValueOfTechstack,
-                          );
-                        } else {
-                          child = const CircularProgressIndicator();
-                        }
-
-                        return child;
+                      widgetWithData: (snapshot) =>
+                          CustomOption<TechStackModel>(
+                        options: snapshot.data!,
+                        onHelper: onGettingValueOfTechstack,
+                      ),
+                      widgetWithError: (snapshot) {
+                        return const CustomText(
+                          text: 'Sorry, something went wrong',
+                          textColor: Colors.red,
+                        );
                       },
                     ),
                     const SizedBox(
@@ -130,21 +128,18 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
                       text: 'Skillset',
                       isBold: true,
                     ),
-                    FutureBuilder<List<SkillSetModel>>(
+                    CustomFutureBuilder<List<SkillSetModel>>(
                       future: initializeSkillSet(),
-                      builder: (context, snapshot) {
-                        Widget child;
-
-                        if (snapshot.hasData) {
-                          child = MultiSelectChip<SkillSetModel>(
-                            listOf: snapshot.data!,
-                            onHelper: onGettingValuesOfSkillset,
-                          );
-                        } else {
-                          child = const CircularProgressIndicator();
-                        }
-
-                        return child;
+                      widgetWithData: (snapshot) =>
+                          MultiSelectChip<SkillSetModel>(
+                        listOf: snapshot.data!,
+                        onHelper: onGettingValuesOfSkillset,
+                      ),
+                      widgetWithError: (snapshot) {
+                        return const CustomText(
+                          text: 'Sorry, something went wrong',
+                          textColor: Colors.red,
+                        );
                       },
                     ),
                     const SizedBox(

@@ -1,48 +1,62 @@
+import 'package:student_hub/models/skill_set_model.dart';
 
-class ExperienceModel{
+class ExperienceModel {
   String _tile;
   String _description;
-  String _setTimeStart;
-  String _setTimeEnd;
-  String _setMonths;
-  List<String> _skill;
-  
+  int _yearStart;
+  int _yearEnd;
+  int _monthStart;
+  int _monthEnd;
+  List<SkillSetModel> _skills;
 
-  ExperienceModel(
-    this._tile,
-    this._description,
-    this._setTimeStart,
-    this._setTimeEnd,
-    this._setMonths,
-    this._skill
-  );
-  
+  ExperienceModel(this._tile, this._description, this._yearStart, this._yearEnd,
+      this._monthStart, this._monthEnd, this._skills);
+
   String get getTile => _tile;
   String get getDescription => _description;
-  String get getTimeStart => _setTimeStart;
-  String get getTimeEnd => _setTimeEnd;
-  String get getMonths => _setMonths;
-  String get getTime => '$_setTimeStart-$_setTimeEnd, $_setMonths';
-  List<String> get getSkills => _skill;
+  int get getYearStart => _yearStart;
+  int get getYearEnd => _yearEnd;
+  int get getMonthStart => _monthStart;
+  int get getMonthEnd => _monthEnd;
+  String get getDuration =>
+      '$_monthStart/$_yearStart-$_monthEnd/$_yearEnd, ${diffMonths()} months';
+  List<SkillSetModel> get getSkills => _skills;
 
-  set setTile(String tile){
+  set setTile(String tile) {
     _tile = tile;
   }
 
-  set setDescription(String desciption){
+  set setDescription(String desciption) {
     _description = desciption;
   }
 
-  set setTimeStart(String timeStart){
-    _setTimeStart = timeStart;
+  set setYearStart(int yearStart) {
+    _yearStart = yearStart;
   }
-  set setTimeEnd(String timeEnd){
-    _setTimeEnd = timeEnd;
+
+  set setYearEnd(int yearEnd) {
+    _yearEnd = yearEnd;
   }
-  set setMonths(String months){
-    _setMonths = months;
+
+  set setMonthStart(int monthStart) {
+    _monthStart = monthStart;
   }
-  set setSelectSkill(List<String> skills){
-    _skill = skills;
+
+  set setMonthEnd(int monthEnd) {
+    _monthEnd = monthEnd;
+  }
+
+  set setSkills(List<SkillSetModel> skills) {
+    _skills = skills;
+  }
+
+  int diffMonths() {
+    int diffYears = _yearEnd - _yearStart;
+    int diffMonths = _monthEnd - _monthStart;
+
+    return diffYears < 0
+        // invalid difference years
+        ? -1
+        : (diffYears * 12 + (diffMonths <= 0 ? 0 : diffMonths)) + 1;
   }
 }

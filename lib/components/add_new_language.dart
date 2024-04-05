@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/models/language_model.dart';
@@ -128,7 +129,8 @@ class _AddNewLanguageState extends State<AddNewLanguage> {
               text: language == null ? '' : language.getLanguage);
           final levelController = TextEditingController(
               text: language == null ? '' : language.getLevel);
-          bool isDisabledSubmit = true;
+          bool isDisabledSubmit =
+              languageController.text.isEmpty || levelController.text.isEmpty;
 
           void onSubmitedToAddNewOne() {
             Navigator.of(context).pop(
