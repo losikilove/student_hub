@@ -66,7 +66,7 @@ class _ProfileStudentStep2Screen extends State<ProfileStudentStep2Screen> {
             ),
             CustomFutureBuilder<List<SkillSetModel>>(
               future: initializeSkillSet(),
-              widgetWithData: (snapshot) => Expanded(
+              widgetWithData: (snapshot) => Flexible(
                 child: AddNewExperience(
                   skills: snapshot.data!,
                   onHelper: onGettingValuesOfProject,

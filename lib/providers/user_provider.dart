@@ -15,7 +15,7 @@ class UserProvider with ChangeNotifier {
   UserModel? get user => _user;
 
   // sign in
-  void signin(String token) async {
+  Future<void> signin(String token) async {
     _token = token;
 
     // get response from me-API

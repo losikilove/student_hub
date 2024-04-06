@@ -97,67 +97,64 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
               height: SpacingUtil.mediumHeight,
             ),
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // techstack options
-                    const CustomText(
-                      text: 'Techstack',
-                      isBold: true,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // techstack options
+                  const CustomText(
+                    text: 'Techstack',
+                    isBold: true,
+                  ),
+                  CustomFutureBuilder<List<TechStackModel>>(
+                    future: initializeTechStack(),
+                    widgetWithData: (snapshot) => CustomOption<TechStackModel>(
+                      options: snapshot.data!,
+                      onHelper: onGettingValueOfTechstack,
                     ),
-                    CustomFutureBuilder<List<TechStackModel>>(
-                      future: initializeTechStack(),
-                      widgetWithData: (snapshot) =>
-                          CustomOption<TechStackModel>(
-                        options: snapshot.data!,
-                        onHelper: onGettingValueOfTechstack,
-                      ),
-                      widgetWithError: (snapshot) {
-                        return const CustomText(
-                          text: 'Sorry, something went wrong',
-                          textColor: Colors.red,
-                        );
-                      },
+                    widgetWithError: (snapshot) {
+                      return const CustomText(
+                        text: 'Sorry, something went wrong',
+                        textColor: Colors.red,
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    height: SpacingUtil.mediumHeight,
+                  ),
+                  // skillset selections
+                  const CustomText(
+                    text: 'Skillset',
+                    isBold: true,
+                  ),
+                  CustomFutureBuilder<List<SkillSetModel>>(
+                    future: initializeSkillSet(),
+                    widgetWithData: (snapshot) =>
+                        MultiSelectChip<SkillSetModel>(
+                      listOf: snapshot.data!,
+                      onHelper: onGettingValuesOfSkillset,
                     ),
-                    const SizedBox(
-                      height: SpacingUtil.mediumHeight,
-                    ),
-                    // skillset selections
-                    const CustomText(
-                      text: 'Skillset',
-                      isBold: true,
-                    ),
-                    CustomFutureBuilder<List<SkillSetModel>>(
-                      future: initializeSkillSet(),
-                      widgetWithData: (snapshot) =>
-                          MultiSelectChip<SkillSetModel>(
-                        listOf: snapshot.data!,
-                        onHelper: onGettingValuesOfSkillset,
-                      ),
-                      widgetWithError: (snapshot) {
-                        return const CustomText(
-                          text: 'Sorry, something went wrong',
-                          textColor: Colors.red,
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      height: SpacingUtil.mediumHeight,
-                    ),
-                    // language adding new one
-                    AddNewLanguage(
-                      onHelper: onGettingValuesOfLanguage,
-                    ),
-                    const SizedBox(
-                      height: SpacingUtil.mediumHeight,
-                    ),
-                    // education adding new one
-                    AddNewEducation(
-                      onHelper: onGettingValuesOfEducation,
-                    )
-                  ],
-                ),
+                    widgetWithError: (snapshot) {
+                      return const CustomText(
+                        text: 'Sorry, something went wrong',
+                        textColor: Colors.red,
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    height: SpacingUtil.mediumHeight,
+                  ),
+                  // language adding new one
+                  AddNewLanguage(
+                    onHelper: onGettingValuesOfLanguage,
+                  ),
+                  const SizedBox(
+                    height: SpacingUtil.mediumHeight,
+                  ),
+                  // education adding new one
+                  AddNewEducation(
+                    onHelper: onGettingValuesOfEducation,
+                  )
+                ],
               ),
             ),
           ],

@@ -8,6 +8,7 @@ import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/custom_listtile.dart';
 import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/providers/user_provider.dart';
+import 'package:student_hub/screens/main_screen.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/user_util.dart';
 
@@ -22,7 +23,10 @@ class _SwitchAccountScreen extends State<SwitchAccountScreen> {
   final ExpansionTileController _switchProfileController =
       ExpansionTileController();
 
-  void onPressed() {}
+  // switch to main screen
+  void onSwitchedToMainScreen() {
+    NavigationUtil.toMainScreen(context, MainScreenIndex.dashboard);
+  }
 
   // switch profile
   Future<void> onSwitchedProfile() async {
@@ -101,9 +105,9 @@ class _SwitchAccountScreen extends State<SwitchAccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        onPressed: onPressed,
+        onPressed: onSwitchedToMainScreen,
         currentContext: context,
-        iconButton: Icons.search,
+        iconButton: Icons.home_filled,
       ),
       body: InitialBody(
         left: 0.0,

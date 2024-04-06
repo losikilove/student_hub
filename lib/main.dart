@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_hub/providers/user_provider.dart';
-import 'package:student_hub/screens/profile_student_step1_screen.dart';
-import 'package:student_hub/screens/profile_student_step2_screen.dart';
 import 'package:student_hub/screens/signin_screen.dart';
 import 'package:student_hub/providers/theme_provider.dart';
 
@@ -25,7 +23,7 @@ class StudentHubApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const ProfileStudentStep1Screen(),
+      home: const SignInScreen(),
       theme: Provider.of<ThemeProvider>(context).themeData,
     );
   }

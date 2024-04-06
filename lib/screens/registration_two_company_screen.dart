@@ -121,9 +121,7 @@ class _RegistrationTwoCompanyScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        onPressed: () {
-          NavigationUtil.toSwitchAccountScreen(context);
-        },
+        onPressed: () {},
         currentContext: context,
       ),
       body: InitialBody(

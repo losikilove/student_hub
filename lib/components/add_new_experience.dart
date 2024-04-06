@@ -47,112 +47,108 @@ class _AddNewExperienceState extends State<AddNewExperience> {
               icon: const Icon(Icons.add_circle_outline))
         ]),
         Expanded(
-          child: SingleChildScrollView(
-            child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: _experiences.length,
-                itemBuilder: (BuildContext context, int index) {
-                  ExperienceModel currentExperience = _experiences[index];
+          child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: _experiences.length,
+              itemBuilder: (BuildContext context, int index) {
+                ExperienceModel currentExperience = _experiences[index];
 
-                  void onEdited() async {
-                    final editedExperience =
-                        await openDialogHandleNewOne(currentExperience);
-                    if (editedExperience == null) return;
+                void onEdited() async {
+                  final editedExperience =
+                      await openDialogHandleNewOne(currentExperience);
+                  if (editedExperience == null) return;
 
-                    setState(() {
-                      currentExperience.setTile = editedExperience.getTile;
-                      currentExperience.setDescription =
-                          editedExperience.getDescription;
-                      currentExperience.setYearStart =
-                          editedExperience.getYearStart;
-                      currentExperience.setYearEnd =
-                          editedExperience.getYearEnd;
-                      currentExperience.setMonthStart =
-                          editedExperience.getMonthStart;
-                      currentExperience.setMonthEnd =
-                          editedExperience.getMonthEnd;
-                    });
-                    widget.onHelper(_experiences);
-                  }
+                  setState(() {
+                    currentExperience.setTile = editedExperience.getTile;
+                    currentExperience.setDescription =
+                        editedExperience.getDescription;
+                    currentExperience.setYearStart =
+                        editedExperience.getYearStart;
+                    currentExperience.setYearEnd = editedExperience.getYearEnd;
+                    currentExperience.setMonthStart =
+                        editedExperience.getMonthStart;
+                    currentExperience.setMonthEnd =
+                        editedExperience.getMonthEnd;
+                  });
+                  widget.onHelper(_experiences);
+                }
 
-                  // remove this education out of list
-                  void onRemoved() async {
-                    // show alert which confirms removed this education
-                    final decision = await openDialogWarningRemoveItem(
-                        currentExperience.getTile);
+                // remove this education out of list
+                void onRemoved() async {
+                  // show alert which confirms removed this education
+                  final decision = await openDialogWarningRemoveItem(
+                      currentExperience.getTile);
 
-                    // do not want to remove this education
-                    if (decision == null) return;
+                  // do not want to remove this education
+                  if (decision == null) return;
 
-                    // after confirm, remove this education
-                    setState(() {
-                      _experiences.removeAt(index);
-                    });
-                    widget.onHelper(_experiences);
-                  }
+                  // after confirm, remove this education
+                  setState(() {
+                    _experiences.removeAt(index);
+                  });
+                  widget.onHelper(_experiences);
+                }
 
-                  // get values from skillset list
-                  void onGettingValuesOfSkillset(List<SkillSetModel> skills) {
-                    currentExperience.setSkills = skills;
-                  }
+                // get values from skillset list
+                void onGettingValuesOfSkillset(List<SkillSetModel> skills) {
+                  currentExperience.setSkills = skills;
+                }
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.6,
-                                child: CustomText(
-                                  text: currentExperience.getTile,
-                                  size: 14.5,
-                                  isOverflow: true,
-                                ),
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              child: CustomText(
+                                text: currentExperience.getTile,
+                                size: 14.5,
+                                isOverflow: true,
                               ),
-                              Text(
-                                currentExperience.getDuration,
-                                style: const TextStyle(
-                                    fontSize: 14.5,
-                                    fontStyle: FontStyle.italic),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              // update this education
-                              IconButton(
-                                onPressed: onEdited,
-                                icon: const Icon(Icons.edit_outlined),
-                              ),
-                              // remove this one
-                              IconButton(
-                                onPressed: onRemoved,
-                                icon: const Icon(Icons.delete),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      CustomText(text: currentExperience.getDescription),
-                      MultiSelectChip<SkillSetModel>(
-                        listOf: widget.skills,
-                        onHelper: onGettingValuesOfSkillset,
-                      ),
-                      const SizedBox(
-                        height: SpacingUtil.smallHeight,
-                      ),
-                      const CustomDivider(
-                        isFullWidth: true,
-                      ),
-                    ],
-                  );
-                }),
-          ),
+                            ),
+                            Text(
+                              currentExperience.getDuration,
+                              style: const TextStyle(
+                                  fontSize: 14.5, fontStyle: FontStyle.italic),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            // update this education
+                            IconButton(
+                              onPressed: onEdited,
+                              icon: const Icon(Icons.edit_outlined),
+                            ),
+                            // remove this one
+                            IconButton(
+                              onPressed: onRemoved,
+                              icon: const Icon(Icons.delete),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    CustomText(text: currentExperience.getDescription),
+                    MultiSelectChip<SkillSetModel>(
+                      listOf: widget.skills,
+                      onHelper: onGettingValuesOfSkillset,
+                    ),
+                    const SizedBox(
+                      height: SpacingUtil.smallHeight,
+                    ),
+                    const CustomDivider(
+                      isFullWidth: true,
+                    ),
+                  ],
+                );
+              }),
         )
       ],
     );
@@ -237,6 +233,7 @@ class _AddNewExperienceState extends State<AddNewExperience> {
                               isFilledDescription = value.isNotEmpty;
                             });
                           },
+                          maxLines: 5,
                           controller: descriptionProject,
                           autofocus: true,
                           decoration: const InputDecoration(

@@ -43,6 +43,7 @@ class _SignInScreenState extends State<SignInScreen> {
             .isNullPriorityRole() ==
         true) {
       UserUtil.switchToCreateProfile(context);
+      return;
     }
 
     // go to main screen
@@ -74,7 +75,7 @@ class _SignInScreenState extends State<SignInScreen> {
       // response is ok
       final token = result['token'];
       // save the token
-      Provider.of<UserProvider>(context, listen: false).signin(token);
+      await Provider.of<UserProvider>(context, listen: false).signin(token);
 
       // pop the loading progress
       Navigator.of(context).pop();
