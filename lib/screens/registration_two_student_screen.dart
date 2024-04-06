@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_anchor.dart';
 import 'package:student_hub/components/custom_appbar.dart';
@@ -7,6 +6,7 @@ import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/popup_notification.dart';
+import 'package:student_hub/models/enums/enum_user.dart';
 import 'package:student_hub/services/auth_service.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
@@ -61,24 +61,29 @@ class _RegistrationTwoStudentScreenState
       fullname: fullnameController.text,
       email: emailController.text,
       password: passwordController.text,
-      role: 0,
+      role: EnumUser.student.value,
     );
 
     // decode the response to get the body of response
     final body = ApiUtil.getBody(response);
 
     // validate the response
-    if (response.statusCode == StatusCode.ok.code) {
+    if (response.statusCode == StatusCode.created.code) {
+      // get the result about verified email
+      final result = body['result'];
+
       // the response is ok
-      popupNotification(
+      await popupNotification(
         context: context,
         type: NotificationType.success,
-        content: 'Back to sign in',
+        // show a content about verified email
+        content: result['message'].toString(),
         textSubmit: 'OK',
-        submit: () {
-          NavigationUtil.toSignInScreen(context);
-        },
+        submit: null,
       );
+
+      NavigationUtil.toSignInScreen(context);
+      return;
     } else if (response.statusCode == StatusCode.error.code) {
       // the reponse got an error
       popupNotification(
@@ -89,7 +94,6 @@ class _RegistrationTwoStudentScreenState
         submit: null,
       );
     } else {
-      log(body.toString());
       // the reponse got an error
       popupNotification(
         context: context,
