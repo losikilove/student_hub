@@ -1,10 +1,11 @@
 class EducationModel {
+  final int? id;
   String _schoolName;
   String _beginningOfSchoolYear;
   String _endOfSchoolYear;
 
-  EducationModel(
-      this._schoolName, this._beginningOfSchoolYear, this._endOfSchoolYear);
+  EducationModel(this.id, this._schoolName, this._beginningOfSchoolYear,
+      this._endOfSchoolYear);
 
   String get getSchoolName => _schoolName;
   String get getBeginningOfSchoolYear => _beginningOfSchoolYear;

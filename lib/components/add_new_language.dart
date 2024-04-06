@@ -133,8 +133,8 @@ class _AddNewLanguageState extends State<AddNewLanguage> {
               languageController.text.isEmpty || levelController.text.isEmpty;
 
           void onSubmitedToAddNewOne() {
-            Navigator.of(context).pop(
-                LanguageModel(languageController.text, levelController.text));
+            Navigator.of(context).pop(LanguageModel(
+                null, languageController.text, levelController.text));
           }
 
           return StatefulBuilder(

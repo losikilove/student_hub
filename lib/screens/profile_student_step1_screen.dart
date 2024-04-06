@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:student_hub/components/add_new_education.dart';
 import 'package:student_hub/components/add_new_language.dart';
+import 'package:student_hub/components/circle_progress.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_future_builder.dart';
@@ -8,12 +10,16 @@ import 'package:student_hub/components/custom_option.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/mutliselect_chip.dart';
+import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/models/education_model.dart';
 import 'package:student_hub/models/language_model.dart';
 import 'package:student_hub/models/skill_set_model.dart';
 import 'package:student_hub/models/tech_stack_model.dart';
+import 'package:student_hub/providers/user_provider.dart';
+import 'package:student_hub/services/profile_service.dart';
 import 'package:student_hub/services/skill_set_service.dart';
 import 'package:student_hub/services/tech_stack_service.dart';
+import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
@@ -65,6 +71,68 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
   // get results from the educations
   void onGettingValuesOfEducation(List<EducationModel> educations) {
     addedNewEducations = educations;
+  }
+
+  // allez-y
+  Future<void> onSubmittedThenContinue() async {
+    NavigationUtil.toProfileStudentStep2Screen(context);
+    // // get token and student id
+    // final UserProvider userProvider = Provider.of<UserProvider>(context);
+    // final token = userProvider.token!;
+    // final studentId = userProvider.user!.student!.id;
+
+    // // loading in progress
+    // showCircleProgress(context: context);
+
+    // // reponse of create student profile
+    // final response = await ProfileService.createStudentProfileStep1(
+    //   techStack: optionValueTechstack,
+    //   skills: selectedSkillsets,
+    //   languages: addedNewLanguages,
+    //   educations: addedNewEducations,
+    //   token: token,
+    //   studentId: studentId,
+    // );
+
+    // // handle response
+    // // when the last data - educations for student is created
+    // if (response.statusCode == StatusCode.ok.code) {
+    //   // stop the loading
+    //   Navigator.of(context).pop();
+
+    //   // continue to create experiences of student
+    //   NavigationUtil.toProfileStudentStep2Screen(context);
+    //   return;
+    // }
+
+    // // when has a problem
+    // if (response.statusCode == StatusCode.error.code) {
+    //   popupNotification(
+    //     context: context,
+    //     type: NotificationType.error,
+    //     content: ApiUtil.getBody(response)['errorDetails'],
+    //     textSubmit: 'Ok',
+    //     submit: null,
+    //   );
+
+    //   return;
+    // }
+
+    // // when expired token
+    // if (response.statusCode == StatusCode.unauthorized.code) {
+    //   // switch to sign in screen
+    //   ApiUtil.handleExpiredToken(context: context);
+    //   return;
+    // }
+
+    // // others
+    // popupNotification(
+    //   context: context,
+    //   type: NotificationType.error,
+    //   content: 'Sorry, something went wrong',
+    //   textSubmit: 'Ok',
+    //   submit: null,
+    // );
   }
 
   @override
@@ -166,9 +234,7 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
         color: Theme.of(context).colorScheme.background,
         child: CustomButton(
           size: CustomButtonSize.small,
-          onPressed: () {
-            NavigationUtil.toProfileStudentStep2Screen(context);
-          },
+          onPressed: onSubmittedThenContinue,
           text: 'Next',
         ),
       ),

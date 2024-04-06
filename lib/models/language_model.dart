@@ -1,7 +1,8 @@
 class LanguageModel {
+  final int? id;
   String _language;
   String _level;
-  LanguageModel(this._language, this._level);
+  LanguageModel(this.id, this._language, this._level);
 
   String get getLanguage => _language;
   String get getLevel => _level;

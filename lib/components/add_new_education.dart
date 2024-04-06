@@ -160,8 +160,12 @@ class _AddNewEducationState extends State<AddNewEducation> {
           bool isDisabledSubmit = schoolNameController.text.isEmpty;
 
           void onSubmitedToAddNewOne() {
-            Navigator.of(context).pop(EducationModel(schoolNameController.text,
-                selectedBeginningYear, selectedEndYear));
+            Navigator.of(context).pop(EducationModel(
+              null,
+              schoolNameController.text,
+              selectedBeginningYear,
+              selectedEndYear,
+            ));
           }
 
           void onGettingBeginningOfYear(String? year) {
