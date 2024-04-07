@@ -19,7 +19,6 @@ class ListViewProjectItems extends StatelessWidget {
     );
 
     String? token = userProvider.token; 
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImZ1bGxuYW1lIjoiTHV1IE1pbmggTmhhdCIsImVtYWlsIjoibmd1b2lkZXA0MzNAZ21haWwuY29tIiwicm9sZXMiOlswXSwiaWF0IjoxNzEyNDU5NTQwLCJleHAiOjE3MTM2NjkxNDB9.UOxvja9fw5ynKqKk7IRtP0WMkdpSoqA5Wt1ulF8Lua0";
     return Expanded(
       child: ListView.builder(
           itemCount: projects.length,

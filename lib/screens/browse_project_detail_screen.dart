@@ -59,12 +59,12 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
             CustomText(
               text: "Detail: "+ title,
               isBold: true,
-              size: 21,
+              size: 23,
             ),
             const CustomDivider(),
             // desirements of student text
             const CustomText(
-              size: 20,
+              size: 18,
               text: 'Student are looking for',
             ),
             CustomBulletedList(
