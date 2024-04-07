@@ -1,11 +1,15 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:student_hub/components/circle_progress.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/screens/main_screen.dart';
+import 'package:student_hub/services/profile_service.dart';
+import 'package:student_hub/utils/api_util.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:file_picker/file_picker.dart';
 
@@ -18,22 +22,88 @@ class ProfileStudentStep3Screen extends StatefulWidget {
 }
 
 class _ProfileStudentStep3ScreenState extends State<ProfileStudentStep3Screen> {
-  Future<void> pickFile(BuildContext context) async {
+  FilePickerResult? _resumeFile;
+  FilePickerResult? _transcriptFile;
+
+  Future<FilePickerResult?> pickFile(BuildContext context) async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles();
 
-      if (result != null) {
-        // Handle the selected file
-        String filePath = result.files.single.path!;
-        log('Selected file: $filePath');
-        // You can use the filePath as needed (e.g., upload to server)
-      } else {
-        // User canceled the file picker
-        log('User canceled file picker');
-      }
+      return result;
     } catch (e) {
-      log('Error picking file: $e');
+      // when have error, show the popup
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: 'Sorry, cannot get the file',
+        textSubmit: 'Ok',
+        submit: null,
+      );
+      return null;
     }
+  }
+
+  // pick a resume of student up
+  Future<void> onPickedResume() async {
+    // get the resume file
+    _resumeFile = await pickFile(context);
+  }
+
+  // pick a transcript of student up
+  Future<void> onPickedTranscript() async {
+    // get the transcript file
+    _transcriptFile = await pickFile(context);
+  }
+
+  // go to the next screen
+  Future<void> onGoneToTheNextScreen() async {
+    // loading in progress
+    showCircleProgress(context: context);
+
+    // get response from the 2 APIs: resume and transcript
+    final response = await ProfileService.createStudentProfileStep3(
+      context: context,
+      resumeFilePath: _resumeFile!.files.first.path!,
+      transcriptFilePath: _transcriptFile!.files.first.path!,
+    );
+
+    // handle response
+    // go to next screen
+    if (response.statusCode == StatusCode.ok.code) {
+      // stop loading progress
+      Navigator.of(context).pop();
+
+      // go the main screen
+      NavigationUtil.toMainScreen(context, MainScreenIndex.project);
+
+      return;
+    }
+
+    // stop loading progress
+    Navigator.of(context).pop();
+
+    // when has a problem
+    if (response.statusCode == StatusCode.error.code) {
+      final result = ApiUtil.getResult(response);
+
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: result['errorDetails'] as String,
+        textSubmit: 'Ok',
+        submit: null,
+      );
+      return;
+    }
+
+    // when expired token
+    if (response.statusCode == StatusCode.unauthorized.code) {
+      ApiUtil.handleExpiredToken(context: context);
+      return;
+    }
+
+    // others
+    ApiUtil.handleOtherStatusCode(context: context);
   }
 
   @override
@@ -75,9 +145,7 @@ class _ProfileStudentStep3ScreenState extends State<ProfileStudentStep3Screen> {
                       size: 90,
                     ),
                     CustomButton(
-                      onPressed: () {
-                        pickFile(context);
-                      },
+                      onPressed: onPickedResume,
                       text: "choose file to up",
                       buttonColor: Theme.of(context).colorScheme.secondary,
                     )
@@ -104,9 +172,7 @@ class _ProfileStudentStep3ScreenState extends State<ProfileStudentStep3Screen> {
                     ),
                     // CustomText(text: "Drag on",isBold: true,),
                     CustomButton(
-                      onPressed: () {
-                        pickFile(context);
-                      },
+                      onPressed: onPickedTranscript,
                       text: "choose file to up",
                       buttonColor: Theme.of(context).colorScheme.secondary,
                     )
@@ -120,13 +186,7 @@ class _ProfileStudentStep3ScreenState extends State<ProfileStudentStep3Screen> {
             Container(
               alignment: Alignment.topRight,
               child: CustomButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MainScreen(
-                              contentBody: MainScreenIndex.project)));
-                },
+                onPressed: onGoneToTheNextScreen,
                 text: "Continue",
               ),
             ),

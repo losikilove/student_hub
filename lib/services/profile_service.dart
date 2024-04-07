@@ -149,4 +149,92 @@ class ProfileService {
     // last but not least, return the first reponse
     return firstResponse;
   }
+
+  // create student profile step 3
+  static Future<http.Response> createStudentProfileStep3(
+      {required BuildContext context,
+      required String resumeFilePath,
+      required String transcriptFilePath}) async {
+    // get token and student id
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.token;
+    final studentId = userProvider.user!.student!.id;
+
+    // PUT api resume
+    final responseResume = await couResumeStudent(
+      token: token!,
+      studentId: studentId,
+      filePath: resumeFilePath,
+    );
+
+    // if cannot PUT resume, return response
+    if (responseResume.statusCode != StatusCode.ok.code) {
+      return responseResume;
+    }
+
+    // save the resume into the user provider
+    userProvider.saveStudentWhenUpdatedProfileStudent(
+      resume: ApiUtil.getResult(responseResume)['resume'],
+    );
+
+    // PUT api transcript
+    final responseTranscript = await couTranscriptStudent(
+      token: token,
+      studentId: studentId,
+      filePath: transcriptFilePath,
+    );
+
+    // if cannot PUT transcript, return response
+    if (responseTranscript.statusCode != StatusCode.ok.code) {
+      return responseTranscript;
+    }
+
+    // save the transcript into the user provider
+    userProvider.saveStudentWhenUpdatedProfileStudent(
+      transcript: ApiUtil.getResult(responseResume)['transcript'],
+    );
+
+    return responseTranscript;
+  }
+
+  // cou (create or update) resume of student
+  static Future<http.Response> couResumeStudent(
+      {required String token,
+      required int studentId,
+      required String filePath}) async {
+    final String url = '$_baseUrl/$_student/$studentId/resume';
+
+    http.MultipartRequest request =
+        http.MultipartRequest('PUT', Uri.parse(url));
+    http.MultipartFile resumeFile =
+        await http.MultipartFile.fromPath('file', filePath);
+    request.files.add(resumeFile);
+    request.headers.addAll(ApiUtil.getHeadersWithToken(token));
+
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+
+    return response;
+  }
+
+  // cout (create or update) transcript of student
+  static Future<http.Response> couTranscriptStudent(
+      {required String token,
+      required int studentId,
+      required String filePath}) async {
+    final String url = '$_baseUrl/$_student/$studentId/transcript';
+
+    http.MultipartRequest request =
+        http.MultipartRequest('PUT', Uri.parse(url));
+    http.MultipartFile resumeFile =
+        await http.MultipartFile.fromPath('file', filePath);
+    request.files.add(resumeFile);
+    request.headers.addAll(ApiUtil.getHeadersWithToken(token));
+
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+
+    return response;
+  }
 }
