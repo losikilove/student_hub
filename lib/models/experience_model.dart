@@ -1,6 +1,7 @@
 import 'package:student_hub/models/skill_set_model.dart';
 
 class ExperienceModel {
+  final int? id;
   String _tile;
   String _description;
   int _yearStart;
@@ -9,8 +10,8 @@ class ExperienceModel {
   int _monthEnd;
   List<SkillSetModel> _skills;
 
-  ExperienceModel(this._tile, this._description, this._yearStart, this._yearEnd,
-      this._monthStart, this._monthEnd, this._skills);
+  ExperienceModel(this.id, this._tile, this._description, this._yearStart,
+      this._yearEnd, this._monthStart, this._monthEnd, this._skills);
 
   String get getTile => _tile;
   String get getDescription => _description;

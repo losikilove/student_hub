@@ -1,26 +1,26 @@
 class EducationModel {
   final int? id;
   String _schoolName;
-  String _beginningOfSchoolYear;
-  String _endOfSchoolYear;
+  int _beginningOfSchoolYear;
+  int _endOfSchoolYear;
 
   EducationModel(this.id, this._schoolName, this._beginningOfSchoolYear,
       this._endOfSchoolYear);
 
   String get getSchoolName => _schoolName;
-  String get getBeginningOfSchoolYear => _beginningOfSchoolYear;
-  String get getEndOfSchoolYear => _endOfSchoolYear;
+  int get getBeginningOfSchoolYear => _beginningOfSchoolYear;
+  int get getEndOfSchoolYear => _endOfSchoolYear;
   String get getSchoolYear => '$_beginningOfSchoolYear-$_endOfSchoolYear';
 
   set setSchoolName(String otherSchoolName) {
     _schoolName = otherSchoolName;
   }
 
-  set setBeginningOfSchoolYear(String otherStartOfSchoolYear) {
+  set setBeginningOfSchoolYear(int otherStartOfSchoolYear) {
     _beginningOfSchoolYear = otherStartOfSchoolYear;
   }
 
-  set setEndOfSchoolYear(String otherEndOfSchoolYear) {
+  set setEndOfSchoolYear(int otherEndOfSchoolYear) {
     _endOfSchoolYear = otherEndOfSchoolYear;
   }
 }

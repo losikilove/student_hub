@@ -4,7 +4,7 @@ class TextFormUtil {
   }
 
   static bool isValidEmail(String email) {
-    return RegExp(r'^[\w-\.]+@[a-zA-Z]+\.[a-zA-Z]{2,}$').hasMatch(email);
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 
   static bool isValidPassword(String password) {

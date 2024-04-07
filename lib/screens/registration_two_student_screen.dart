@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_hub/components/circle_progress.dart';
 import 'package:student_hub/components/custom_anchor.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
@@ -56,6 +57,9 @@ class _RegistrationTwoStudentScreenState
       return;
     }
 
+    // loading in progress
+    showCircleProgress(context: context);
+
     // get response from the server
     final response = await AuthService.signup(
       fullname: fullnameController.text,
@@ -63,6 +67,9 @@ class _RegistrationTwoStudentScreenState
       password: passwordController.text,
       role: EnumUser.student.value,
     );
+
+    // stop loading
+    Navigator.of(context).pop();
 
     // decode the response to get the body of response
     final body = ApiUtil.getBody(response);

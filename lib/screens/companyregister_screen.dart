@@ -77,9 +77,7 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
         type: NotificationType.success,
         content: 'Created your company profile successfully',
         textSubmit: 'Ok',
-        submit: () {
-          NavigationUtil.toWelcomeScreen(context);
-        },
+        submit: null,
       );
 
       // auto switch to the welcome screen

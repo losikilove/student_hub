@@ -184,6 +184,7 @@ class _AddNewExperienceState extends State<AddNewExperience> {
 
             void onSubmitedToAddNewOne() {
               Navigator.of(context).pop(ExperienceModel(
+                  null,
                   tileProject.text,
                   descriptionProject.text,
                   beginYear,

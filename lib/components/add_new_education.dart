@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_option.dart';
 import 'package:student_hub/components/custom_text.dart';
@@ -145,17 +144,13 @@ class _AddNewEducationState extends State<AddNewEducation> {
         builder: (context) {
           final schoolNameController = TextEditingController(
               text: education == null ? '' : education.getSchoolName);
-          final listBeginningYears = List<String>.generate(
-              EducationUtil.numberOfYears(),
-              (index) => '${DateTime.now().year - index}');
-          String selectedBeginningYear = education == null
-              ? listBeginningYears.first
+          final listYears = List<int>.generate(EducationUtil.numberOfYears(),
+              (index) => DateTime.now().year - index);
+          int selectedBeginningYear = education == null
+              ? listYears.first
               : education.getBeginningOfSchoolYear;
-          final listEndYears = List<String>.generate(
-              EducationUtil.numberOfYears(),
-              (index) => '${DateTime.now().year - index}');
-          String selectedEndYear = education == null
-              ? listEndYears.first
+          int selectedEndYear = education == null
+              ? listYears.first
               : education.getEndOfSchoolYear;
           bool isDisabledSubmit = schoolNameController.text.isEmpty;
 
@@ -168,11 +163,11 @@ class _AddNewEducationState extends State<AddNewEducation> {
             ));
           }
 
-          void onGettingBeginningOfYear(String? year) {
+          void onGettingBeginningOfYear(int? year) {
             selectedBeginningYear = year!;
           }
 
-          void onGettingEndOfYear(String? year) {
+          void onGettingEndOfYear(int? year) {
             selectedEndYear = year!;
           }
 
@@ -215,8 +210,8 @@ class _AddNewEducationState extends State<AddNewEducation> {
                             ),
                           ),
                           Expanded(
-                            child: CustomOption<String>(
-                              options: listBeginningYears,
+                            child: CustomOption<int>(
+                              options: listYears,
                               onHelper: onGettingBeginningOfYear,
                               initialSelection: selectedBeginningYear,
                             ),
@@ -239,8 +234,8 @@ class _AddNewEducationState extends State<AddNewEducation> {
                             ),
                           ),
                           Expanded(
-                            child: CustomOption<String>(
-                              options: listEndYears,
+                            child: CustomOption<int>(
+                              options: listYears,
                               onHelper: onGettingEndOfYear,
                               initialSelection: selectedEndYear,
                             ),

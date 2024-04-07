@@ -106,7 +106,7 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
     // }
 
     // // when has a problem
-    // if (response.statusCode == StatusCode.error.code) {
+    // if (response.statusCode == StatusCode.error.code || (response.statusCode == StatusCode.unprocessableEntity.code) {
     //   popupNotification(
     //     context: context,
     //     type: NotificationType.error,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/screens/main_screen.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
@@ -15,8 +17,6 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  final String name = 'Hai';
-
   void onPressed() {}
 
   @override
@@ -38,8 +38,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               height: SpacingUtil.largeHeight,
             ),
             // welcome text
-            Center(
-              child: CustomText(text: 'Welcome, $name!'),
+            Consumer<UserProvider>(
+              builder: (context, userProvider, child) => Center(
+                child: CustomText(
+                    text: 'Welcome, ${userProvider.user!.fullname}!'),
+              ),
             ),
             const SizedBox(
               height: SpacingUtil.smallHeight,
