@@ -10,7 +10,8 @@ import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class ProjectPostStep3Screen extends StatefulWidget {
-  const ProjectPostStep3Screen({super.key, ProjectCompanyModel? projectCompanyModel});
+  final ProjectCompanyModel projectCompanyModel;
+  const ProjectPostStep3Screen({super.key, required this.projectCompanyModel});
 
   @override
   State<ProjectPostStep3Screen> createState() => _ProjectPostStep3ScreenState();
@@ -66,7 +67,7 @@ class _ProjectPostStep3ScreenState extends State<ProjectPostStep3Screen> {
               alignment: Alignment.topRight,
               child: CustomButton(
                 onPressed: () {
-                  NavigationUtil.toPostProjectStep4(context);
+                  NavigationUtil.toPostProjectStep4(context, widget.projectCompanyModel);
                 },
                 text: 'Preview your post',
               ),

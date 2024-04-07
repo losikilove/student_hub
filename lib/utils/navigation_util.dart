@@ -131,7 +131,7 @@ class NavigationUtil {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
-        builder: (context) =>  ProfileStudentStep2Screen(),
+        builder: (context) =>  const ProfileStudentStep2Screen(),
       ),
     );
   }
@@ -199,20 +199,20 @@ class NavigationUtil {
     );
   }
 
-  static void toPostProjectStep3(BuildContext currentContext) {
+static void toPostProjectStep3(BuildContext currentContext, ProjectCompanyModel projectCompanyModel) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
-        builder: (context) => const ProjectPostStep3Screen(),
+        builder: (context) => ProjectPostStep3Screen(projectCompanyModel: projectCompanyModel),
       ),
     );
   }
 
-  static void toPostProjectStep4(BuildContext currentContext) {
+static void toPostProjectStep4(BuildContext currentContext, ProjectCompanyModel projectCompanyModel) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
-        builder: (context) => const ProjectPostStep4Screen(),
+        builder: (context) => ProjectPostStep4Screen(projectCompanyModel: projectCompanyModel),
       ),
     );
   }

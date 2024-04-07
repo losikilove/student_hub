@@ -4,11 +4,13 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/custom_divider.dart';
+import 'package:student_hub/models/project_company_model.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 
 class ProjectPostStep4Screen extends StatefulWidget {
-  const ProjectPostStep4Screen({Key? key}) : super(key: key);
+  final ProjectCompanyModel projectCompanyModel;
+  const ProjectPostStep4Screen({super.key, required this.projectCompanyModel});
 
   @override
   State<ProjectPostStep4Screen> createState() => _ProjectPostStep4ScreenState();

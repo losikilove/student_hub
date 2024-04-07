@@ -83,7 +83,6 @@ class _ProjectPostStep1ScreenState extends State<ProjectPostStep1Screen> {
                     child: CustomButton(
                         isDisabled: !_titlePost,
                         onPressed: () {
-                          projectCModel.title = titleController.text;
                           NavigationUtil.toPostProjectStep2(context,projectCModel);
                         },
                         text: "Next Scope"

@@ -20,7 +20,7 @@ enum ProjectDuration {
 
 class ProjectPostStep2Screen extends StatefulWidget {
   final ProjectCompanyModel projectCompanyModel;
-  const ProjectPostStep2Screen({required this.projectCompanyModel});
+  const ProjectPostStep2Screen({super.key, required this.projectCompanyModel});
 
   @override
   State<ProjectPostStep2Screen> createState() => _ProjectPostStep2ScreenState();
@@ -130,7 +130,7 @@ class _ProjectPostStep2ScreenState extends State<ProjectPostStep2Screen> {
               alignment: Alignment.topRight,
               child: CustomButton(
                 onPressed: () {
-                  NavigationUtil.toPostProjectStep3(context);
+                  NavigationUtil.toPostProjectStep3(context,widget.projectCompanyModel);
                 },
                 text: 'Next: Description',
                 isDisabled: _isDisabledNextButton,
