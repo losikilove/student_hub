@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
