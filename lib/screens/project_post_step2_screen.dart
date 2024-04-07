@@ -5,6 +5,7 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/models/project_company_model.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
@@ -18,7 +19,8 @@ enum ProjectDuration {
 }
 
 class ProjectPostStep2Screen extends StatefulWidget {
-  const ProjectPostStep2Screen({super.key});
+  final ProjectCompanyModel projectCompanyModel;
+  const ProjectPostStep2Screen({required this.projectCompanyModel});
 
   @override
   State<ProjectPostStep2Screen> createState() => _ProjectPostStep2ScreenState();
@@ -28,7 +30,7 @@ class _ProjectPostStep2ScreenState extends State<ProjectPostStep2Screen> {
   ProjectDuration _projectDuration = ProjectDuration.oneToThreeMonths;
   final _numberStudentsController = TextEditingController();
   bool _isDisabledNextButton = true;
-
+  
   void onPressed() {}
 
   // change value of project-duration when selecting another duration

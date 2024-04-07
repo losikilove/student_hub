@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_hub/models/project_company_model.dart';
 import 'package:student_hub/screens/browse_project_detail_screen.dart';
 import 'package:student_hub/screens/change_password_screen.dart';
 import 'package:student_hub/screens/company_view_profile_screen.dart';
@@ -130,7 +131,7 @@ class NavigationUtil {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
-        builder: (context) => const ProfileStudentStep2Screen(),
+        builder: (context) =>  ProfileStudentStep2Screen(),
       ),
     );
   }
@@ -147,7 +148,7 @@ class NavigationUtil {
 
   // switch to main screen
   static void toMainScreen(
-      BuildContext currentContext, MainScreenIndex contentBody) {
+    BuildContext currentContext, MainScreenIndex contentBody) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
@@ -158,46 +159,7 @@ class NavigationUtil {
     );
   }
 
-  // switch to project-post-step1 screen
-  static void toProjectPostStep1Screen(BuildContext currentContext) {
-    Navigator.push(
-      currentContext,
-      MaterialPageRoute(
-        builder: (context) => const ProjectPostStep1Screen(),
-      ),
-    );
-  }
-
-  // switch to project-post-step2 screen
-  static void toProjectPostStep2Screen(BuildContext currentContext) {
-    Navigator.push(
-      currentContext,
-      MaterialPageRoute(
-        builder: (context) => const ProjectPostStep2Screen(),
-      ),
-    );
-  }
-
-  // switch to project-post-step3 screen
-  static void toProjectPostStep3Screen(BuildContext currentContext) {
-    Navigator.push(
-      currentContext,
-      MaterialPageRoute(
-        builder: (context) => const ProjectPostStep3Screen(),
-      ),
-    );
-  }
-
-  // switch to project-post-step4 screen
-  static void toProjectPostStep4Screen(BuildContext currentContext) {
-    Navigator.push(
-      currentContext,
-      MaterialPageRoute(
-        builder: (context) => const ProjectPostStep4Screen(),
-      ),
-    );
-  }
-
+ 
   // switch to browse-project-detail screen
   static void toBrowseProjectDetailScreen(BuildContext currentContext,int id,String token) {
     Navigator.push(
@@ -228,11 +190,11 @@ class NavigationUtil {
     );
   }
 
-  static void toPostProjectStep2(BuildContext currentContext) {
+  static void toPostProjectStep2(BuildContext currentContext, ProjectCompanyModel projectCompanyModel) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
-        builder: (context) => const ProjectPostStep2Screen(),
+        builder: (context) => ProjectPostStep2Screen(projectCompanyModel: projectCompanyModel,),
       ),
     );
   }

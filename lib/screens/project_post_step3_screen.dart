@@ -5,11 +5,12 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/models/project_company_model.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class ProjectPostStep3Screen extends StatefulWidget {
-  const ProjectPostStep3Screen({super.key});
+  const ProjectPostStep3Screen({super.key, ProjectCompanyModel? projectCompanyModel});
 
   @override
   State<ProjectPostStep3Screen> createState() => _ProjectPostStep3ScreenState();
