@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:student_hub/components/add_new_education.dart';
 import 'package:student_hub/components/add_new_language.dart';
 import 'package:student_hub/components/circle_progress.dart';
@@ -15,7 +14,6 @@ import 'package:student_hub/models/education_model.dart';
 import 'package:student_hub/models/language_model.dart';
 import 'package:student_hub/models/skill_set_model.dart';
 import 'package:student_hub/models/tech_stack_model.dart';
-import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/services/profile_service.dart';
 import 'package:student_hub/services/skill_set_service.dart';
 import 'package:student_hub/services/tech_stack_service.dart';
@@ -41,14 +39,16 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
   Future<List<TechStackModel>> initializeTechStack() async {
     final responseTechStack = await TechStackService.getAllTeckStack();
 
-    return TechStackModel.fromResponse(responseTechStack);
+    return TechStackModel.fromResponse(
+        ApiUtil.getBody(responseTechStack)['result'] as List<dynamic>);
   }
 
   // initialize skill set
   Future<List<SkillSetModel>> initializeSkillSet() async {
-    final responseTechStack = await SkillSetService.getAllSkillSet();
+    final responseSkillSets = await SkillSetService.getAllSkillSet();
 
-    return SkillSetModel.fromResponse(responseTechStack);
+    return SkillSetModel.fromResponse(
+        ApiUtil.getBody(responseSkillSets)['result'] as List<dynamic>);
   }
 
   void onPressed() {}
@@ -75,64 +75,55 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
 
   // allez-y
   Future<void> onSubmittedThenContinue() async {
-    NavigationUtil.toProfileStudentStep2Screen(context);
-    // // get token and student id
-    // final UserProvider userProvider = Provider.of<UserProvider>(context);
-    // final token = userProvider.token!;
-    // final studentId = userProvider.user!.student!.id;
+    // loading in progress
+    showCircleProgress(context: context);
 
-    // // loading in progress
-    // showCircleProgress(context: context);
+    // reponse of create student profile
+    final response = await ProfileService.createStudentProfileStep1(
+      techStack: optionValueTechstack,
+      skills: selectedSkillsets,
+      languages: addedNewLanguages,
+      educations: addedNewEducations,
+      context: context,
+    );
 
-    // // reponse of create student profile
-    // final response = await ProfileService.createStudentProfileStep1(
-    //   techStack: optionValueTechstack,
-    //   skills: selectedSkillsets,
-    //   languages: addedNewLanguages,
-    //   educations: addedNewEducations,
-    //   token: token,
-    //   studentId: studentId,
-    // );
+    // handle response
+    // when techstack-skillset for student is created
+    if (response.statusCode == StatusCode.created.code) {
+      // stop the loading
+      Navigator.of(context).pop();
 
-    // // handle response
-    // // when the last data - educations for student is created
-    // if (response.statusCode == StatusCode.ok.code) {
-    //   // stop the loading
-    //   Navigator.of(context).pop();
+      // continue to create experiences of student
+      NavigationUtil.toProfileStudentStep2Screen(context);
+      return;
+    }
 
-    //   // continue to create experiences of student
-    //   NavigationUtil.toProfileStudentStep2Screen(context);
-    //   return;
-    // }
+    // stop the loading
+    Navigator.of(context).pop();
 
-    // // when has a problem
-    // if (response.statusCode == StatusCode.error.code || (response.statusCode == StatusCode.unprocessableEntity.code) {
-    //   popupNotification(
-    //     context: context,
-    //     type: NotificationType.error,
-    //     content: ApiUtil.getBody(response)['errorDetails'],
-    //     textSubmit: 'Ok',
-    //     submit: null,
-    //   );
+    // when has a problem
+    if (response.statusCode == StatusCode.error.code ||
+        response.statusCode == StatusCode.unprocessableEntity.code) {
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: ApiUtil.getBody(response)['errorDetails'],
+        textSubmit: 'Ok',
+        submit: null,
+      );
 
-    //   return;
-    // }
+      return;
+    }
 
-    // // when expired token
-    // if (response.statusCode == StatusCode.unauthorized.code) {
-    //   // switch to sign in screen
-    //   ApiUtil.handleExpiredToken(context: context);
-    //   return;
-    // }
+    // when expired token
+    if (response.statusCode == StatusCode.unauthorized.code) {
+      // switch to sign in screen
+      ApiUtil.handleExpiredToken(context: context);
+      return;
+    }
 
-    // // others
-    // popupNotification(
-    //   context: context,
-    //   type: NotificationType.error,
-    //   content: 'Sorry, something went wrong',
-    //   textSubmit: 'Ok',
-    //   submit: null,
-    // );
+    // others
+    ApiUtil.handleOtherStatusCode(context: context);
   }
 
   @override

@@ -1,10 +1,13 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:student_hub/models/education_model.dart';
 import 'package:student_hub/models/language_model.dart';
 import 'package:student_hub/models/skill_set_model.dart';
 import 'package:student_hub/models/tech_stack_model.dart';
+import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/services/education_service.dart';
 import 'package:student_hub/services/language_service.dart';
 import 'package:student_hub/utils/api_util.dart';
@@ -72,10 +75,15 @@ class ProfileService {
     required List<SkillSetModel> skills,
     required List<LanguageModel> languages,
     required List<EducationModel> educations,
-    required String token,
-    required int studentId,
+    required BuildContext context,
   }) async {
     String url = '$_baseUrl/$_student';
+
+    // get user provider to take data
+    // get token
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.token!;
 
     // POST tech-stack and skill set firstly
     final firstResponse = await http.post(Uri.parse(url),
@@ -91,9 +99,17 @@ class ProfileService {
       return firstResponse;
     }
 
+    // get student id
+    Map<String, dynamic> result = ApiUtil.getResult(firstResponse);
+    final studentId = result['id'] as int;
+
+    // save result into the user provider
+    userProvider.saveStudentAfterCreatedStudentProfile(
+        id: studentId, techStack: techStack, skillSets: skills);
+
     // create languages for student
-    final secondResponse = await LanguageService.couEducation(
-        studentId: studentId, languages: languages);
+    final secondResponse = await LanguageService.couLanguage(
+        token: token, studentId: result['id'], languages: languages);
 
     // created languages for student not successfully
     // then return response
@@ -101,8 +117,36 @@ class ProfileService {
       return secondResponse;
     }
 
+    // get info of language response
+    List<LanguageModel> languagesReponse = LanguageModel.fromResponse(
+      ApiUtil.getBody(secondResponse)['result' as List<dynamic>],
+    );
+
+    // save the languages into user provider
+    userProvider.saveStudentWhenUpdatedProfileStudent(
+      languages: languagesReponse,
+    );
+
     // create educations for student
-    return EducationService.couEducation(
-        studentId: studentId, educations: educations);
+    final thirdResponse = await EducationService.couEducation(
+        token: token, studentId: studentId, educations: educations);
+
+    // created educations for student not successfully
+    // then return response
+    if (thirdResponse.statusCode != StatusCode.ok.code) {
+      return thirdResponse;
+    }
+
+    // get info of education response
+    List<EducationModel> educationsReponse =
+        EducationModel.fromResponse(ApiUtil.getBody(thirdResponse)['result']);
+
+    // save the languages into user provider
+    userProvider.saveStudentWhenUpdatedProfileStudent(
+      educations: educationsReponse,
+    );
+
+    // last but not least, return the first reponse
+    return firstResponse;
   }
 }

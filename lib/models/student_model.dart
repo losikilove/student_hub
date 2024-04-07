@@ -59,31 +59,8 @@ class StudentModel extends AccountModel {
             ),
           )
           .toList(),
-      experiences: (jsonStudent['experiences'] as List<dynamic>)
-          .map(
-            (element) => ExperienceModel(
-                element['id'] as int,
-                element['title'] as String,
-                element['description'] as String,
-                // for start year
-                int.parse(element['startMonth'].toString().split('-')[0]),
-                // for end year
-                int.parse(element['endMonth'].toString().split('-')[0]),
-                // for start month
-                int.parse(element['startMonth'].toString().split('-')[1]),
-                // for end month
-                int.parse(element['endMonth'].toString().split('-')[0]),
-                // for skill-sets of experience
-                (element['skillSets'] as List<dynamic>)
-                    .map(
-                      (element) => SkillSetModel(
-                        element['id'] as int,
-                        element['name'] as String,
-                      ),
-                    )
-                    .toList()),
-          )
-          .toList(),
+      experiences: ExperienceModel.fromResponse(
+          jsonStudent['experiences'] as List<dynamic>),
       resume: jsonStudent['resume'],
       transcript: jsonStudent['transcript'],
     );

@@ -7,6 +7,19 @@ class EducationModel {
   EducationModel(this.id, this._schoolName, this._beginningOfSchoolYear,
       this._endOfSchoolYear);
 
+  static List<EducationModel> fromResponse(List<dynamic> educationsResponse) {
+    return educationsResponse
+        .map(
+          (e) => EducationModel(
+            e['id'] as int,
+            e['schoolName'] as String,
+            e['startYear'] as int,
+            e['endYear'] as int,
+          ),
+        )
+        .toList();
+  }
+
   String get getSchoolName => _schoolName;
   int get getBeginningOfSchoolYear => _beginningOfSchoolYear;
   int get getEndOfSchoolYear => _endOfSchoolYear;

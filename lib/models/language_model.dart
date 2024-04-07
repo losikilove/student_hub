@@ -7,6 +7,18 @@ class LanguageModel {
   String get getLanguage => _language;
   String get getLevel => _level;
 
+  static List<LanguageModel> fromResponse(List<dynamic> languagesResponse) {
+    return languagesResponse
+        .map(
+          (e) => LanguageModel(
+            e['id'] as int,
+            e['languageName'] as String,
+            e['level'] as String,
+          ),
+        )
+        .toList();
+  }
+
   @override
   String toString() {
     return '$getLanguage: $getLevel';

@@ -11,10 +11,12 @@ class EducationService {
   // create - when id of education is null
   // update - when id of education is not null
   static Future<http.Response> couEducation(
-      {required int? studentId, required List<EducationModel> educations}) {
-    String url = '$_baseUrl/updateByStudentId/$studentId';
+      {required String token,
+      required int? studentId,
+      required List<EducationModel> educations}) {
+    String url = '$_baseUrl/updateByStudentId/${studentId.toString()}';
     return http.put(Uri.parse(url),
-        headers: ApiUtil.headers,
+        headers: ApiUtil.getHeadersWithToken(token),
         body: jsonEncode(<String, dynamic>{
           'education': educations
               .map((education) => <String, dynamic>{

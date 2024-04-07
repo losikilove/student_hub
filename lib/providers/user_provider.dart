@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:student_hub/models/education_model.dart';
 import 'package:student_hub/models/enums/enum_numberpeople.dart';
+import 'package:student_hub/models/experience_model.dart';
+import 'package:student_hub/models/language_model.dart';
+import 'package:student_hub/models/skill_set_model.dart';
+import 'package:student_hub/models/student_model.dart';
+import 'package:student_hub/models/tech_stack_model.dart';
 import 'package:student_hub/models/user_model.dart';
 import 'package:student_hub/services/auth_service.dart';
 import 'package:student_hub/utils/api_util.dart';
@@ -43,7 +49,7 @@ class UserProvider with ChangeNotifier {
     required String website,
     required String description,
     required EnumNumberPeople size,
-  }) async {
+  }) {
     _user?.company = CompanyModel(
       id: id,
       companyName: companyName,
@@ -60,7 +66,7 @@ class UserProvider with ChangeNotifier {
     required String companyName,
     required String website,
     required String description,
-  }) async {
+  }) {
     _user?.company = CompanyModel(
       id: _user!.company!.id,
       companyName: companyName,
@@ -68,6 +74,65 @@ class UserProvider with ChangeNotifier {
       size: _user!.company!.size,
       description: description,
     );
+
+    notifyListeners();
+  }
+
+  // create student profile
+  void saveStudentAfterCreatedStudentProfile({
+    required int id,
+    required TechStackModel techStack,
+    required List<SkillSetModel> skillSets,
+  }) {
+    _user?.student =
+        StudentModel(id: id, techStack: techStack, skillSets: skillSets);
+    notifyListeners();
+  }
+
+  // update student profile
+  void saveStudentWhenUpdatedProfileStudent({
+    TechStackModel? techStack,
+    List<SkillSetModel>? skillSets,
+    List<LanguageModel>? languages,
+    List<EducationModel>? educations,
+    List<ExperienceModel>? experiences,
+    dynamic resume,
+    dynamic transcript,
+  }) {
+    // update techstack of student
+    if (techStack != null) {
+      _user?.student?.techStack = techStack;
+    }
+
+    // update skillsets of student
+    if (skillSets != null) {
+      _user?.student?.skillSets = skillSets;
+    }
+
+    // update languages of student
+    if (languages != null) {
+      _user?.student?.languages = languages;
+    }
+
+    // update educations of student
+    if (educations != null) {
+      _user?.student?.educations = educations;
+    }
+
+    // update experiences of student
+    if (experiences != null) {
+      _user?.student?.experiences = experiences;
+    }
+
+    // update resume of student
+    if (resume != null) {
+      _user?.student?.resume = resume;
+    }
+
+    // update transcript of student
+    if (transcript != null) {
+      _user?.student?.transcript = transcript;
+    }
 
     notifyListeners();
   }

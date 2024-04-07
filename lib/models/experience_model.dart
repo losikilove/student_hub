@@ -10,6 +10,34 @@ class ExperienceModel {
   int _monthEnd;
   List<SkillSetModel> _skills;
 
+  static List<ExperienceModel> fromResponse(List<dynamic> educationsReponse) {
+    return educationsReponse
+        .map(
+          (element) => ExperienceModel(
+              element['id'] as int,
+              element['title'] as String,
+              element['description'] as String,
+              // for start year
+              int.parse(element['startMonth'].toString().split('-')[0]),
+              // for end year
+              int.parse(element['endMonth'].toString().split('-')[0]),
+              // for start month
+              int.parse(element['startMonth'].toString().split('-')[1]),
+              // for end month
+              int.parse(element['endMonth'].toString().split('-')[0]),
+              // for skill-sets of experience
+              (element['skillSets'] as List<dynamic>)
+                  .map(
+                    (element) => SkillSetModel(
+                      element['id'] as int,
+                      element['name'] as String,
+                    ),
+                  )
+                  .toList()),
+        )
+        .toList();
+  }
+
   ExperienceModel(this.id, this._tile, this._description, this._yearStart,
       this._yearEnd, this._monthStart, this._monthEnd, this._skills);
 
