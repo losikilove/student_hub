@@ -199,11 +199,11 @@ class NavigationUtil {
   }
 
   // switch to browse-project-detail screen
-  static void toBrowseProjectDetailScreen(BuildContext currentContext) {
+  static void toBrowseProjectDetailScreen(BuildContext currentContext,int id,String token) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
-        builder: (context) => const BrowseProjectDetailScreen(),
+        builder: (context) => BrowseProjectDetailScreen(id: id,token: token,),
       ),
     );
   }

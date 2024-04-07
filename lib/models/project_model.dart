@@ -1,33 +1,55 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 class ProjectModel {
-  final String _title;
-  final String _timeCreating;
-  final List<String> _wishes;
-  bool _isCompelte;
-  bool _like;
-  int _numberProposals;
-  int _numberMessages;
-  int _numberHires;
+  final int id;
+  final String title;
+  final String description;
+  final String companyId;
+  final int projectScopeFlag;
+  final int typeFlag;
+  final String timeCreated;
+  final int proposal;
+  final int numberofStudent;
 
-  ProjectModel(
-    this._title,
-    this._timeCreating,
-    this._wishes,
-    this._isCompelte,
-    this._like,
-    this._numberProposals,
-    this._numberMessages,
-    this._numberHires,
-  );
-  set setLike(bool flag){
-    _like = flag;
+  ProjectModel({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.companyId,
+    required this.projectScopeFlag,
+    required this.typeFlag,
+    required this.timeCreated,
+    required this.proposal,
+    required this.numberofStudent,
+  });
+
+  factory ProjectModel.fromJson(Map<String, dynamic> json) {
+    return ProjectModel(
+      id: json['id'],
+      title: json['title'],
+      description: json['description'],
+      companyId: json['companyID'],
+      projectScopeFlag: json['projectScopeFlag'],
+      typeFlag: json['typeFlag'],
+      timeCreated: json['createdAt'],
+      proposal: json['countProposals'],
+      numberofStudent: json['numberOfStudents']
+    );
   }
-
-  String get title => _title;
-  String get timeCreating => _timeCreating;
-  List<String> get wishes => _wishes;
-  bool get isCompelte => _isCompelte;
-  bool get like => _like;
-  int get numberProposals => _numberProposals;
-  int get numberMessages => _numberMessages;
-  int get numberHires => _numberHires;
+  static List<ProjectModel> fromResponse(http.Response response) {
+  return (json.decode(response.body)['result'] as List<dynamic>)
+      .map((element) => ProjectModel(
+          id: element['id'] as int,
+          title: element['title'] as String,
+          description: element['description'] as String,
+          companyId: element['companyId'] as String,
+          projectScopeFlag: element['projectScopeFlag'] as int,
+          typeFlag: element['typeFlag'] as int,
+          timeCreated: element['createdAt'] as String,
+          proposal: element['countProposals'] as int,
+          numberofStudent: element['numberOfStudents'] as int
+      ))
+      .toList();
+}
 }

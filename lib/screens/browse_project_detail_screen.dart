@@ -5,13 +5,16 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/services/project_service.dart';
+import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class BrowseProjectDetailScreen extends StatefulWidget {
   // TODO: require a project-model attribute
-
-  const BrowseProjectDetailScreen({super.key});
+  final int id;
+  final String token;
+  const BrowseProjectDetailScreen({super.key,required this.id,required this.token});
 
   @override
   State<BrowseProjectDetailScreen> createState() =>
@@ -20,7 +23,9 @@ class BrowseProjectDetailScreen extends StatefulWidget {
 
 class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
   void onPressed() {}
-
+  String title = '',projectScope = '1-3',requiredStudent = '6';
+  String description = '';
+ 
   // apply this project
   void onAppliedNow() {
     NavigationUtil.toSubmitProposal(context);
@@ -28,52 +33,53 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
 
   // save this project
   void onSaved() {}
-
+  void getDetail() async{
+    final response = await ProjectService.viewProjectDetail(id: widget.id, token: widget.token);  
+    final result = ApiUtil.getResult(response); 
+    setState(() {
+      title = result['project']['title'];
+      description = result['project']['description'];
+      if (result['project']['projectScopeFlag'] == 1) {
+      projectScope = '3 - 6';
+    }
+    requiredStudent = result['project']['numberOfStudents'].toString();
+});
+    
+  }
   @override
   Widget build(BuildContext context) {
+    getDetail();
     return Scaffold(
-      appBar: CustomAppbar(
-        onPressed: onPressed,
-        currentContext: context,
-      ),
       body: InitialBody(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // title of this screen
-            const CustomText(
-              text: 'Project detail',
-              isBold: true,
-            ),
-            const SizedBox(
-              height: SpacingUtil.mediumHeight,
-            ),
             // title of job
             CustomText(
-              text: 'Title of the job',
+              text: "Detail: "+ title,
               isBold: true,
+              size: 21,
             ),
             const CustomDivider(),
             // desirements of student text
             const CustomText(
+              size: 20,
               text: 'Student are looking for',
             ),
             CustomBulletedList(
-              listItems: [
-                'Clear expectation about your project or deliverables',
-                'The skills required for your project',
-                'Detail about your project'
-              ],
+              textSize: 18,
+              listItems:description.split(';'),
             ),
             const CustomDivider(),
             // scope of project
-            _projectRequirement(Icons.alarm, 'Project scope', '3 to 6 months'),
+            _projectRequirement(Icons.alarm, 'Project scope', '$projectScope months'),
             const SizedBox(
               height: SpacingUtil.smallHeight,
             ),
             // Required students
             _projectRequirement(
-                Icons.people_outline, 'Required students', '6 students'),
+                Icons.people_outline, 'Required students', '$requiredStudent students'),
           ],
         ),
       ),
@@ -108,7 +114,7 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
       children: [
         Icon(
           icon,
-          size: 35,
+          size: 42,
         ),
         const SizedBox(
           width: 15,
@@ -118,8 +124,9 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(text: title),
+              CustomText(text: title,size: 20,),
               CustomBulletedList(
+                textSize: 18,
                 listItems: [detailRequirement],
               ),
             ],

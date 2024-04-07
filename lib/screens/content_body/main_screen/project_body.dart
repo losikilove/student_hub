@@ -9,9 +9,13 @@ import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/listview_project_items.dart';
 import 'package:student_hub/models/enums/enum_projectlenght.dart';
 import 'package:student_hub/models/project_model.dart';
+import 'package:student_hub/services/project_service.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_divider.dart';
+import 'package:student_hub/utils/api_util.dart';
+import 'package:student_hub/components/popup_notification.dart';
+import 'package:student_hub/components/circle_progress.dart';
 
 enum ProjectBodyType {
   main(nameRoute: ''),
@@ -98,26 +102,69 @@ class ProjectBodyMainPart extends StatefulWidget {
 
 class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
   String searchItem = "Search for project";
-  final List<ProjectModel> _projects = [
-    ProjectModel('Senior frontend developer (Fintech)', 'Created 3 days ago',
-        ['Clear expectation about your project'], false, false, 0, 8, 2),
-    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
-        ['Clear expectation about your'], false, false, 0, 8, 2),
-    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
-        ['Clear expectation about your'], false, false, 0, 8, 2),
-    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
-        ['Clear expectation about your'], false, false, 0, 8, 2),
-    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
-        ['Clear expectation about your'], false, false, 0, 8, 2),
-    ProjectModel('Senior frontend developer (Fintech)', 'Created 5 days ago',
-        ['Clear expectation about your'], false, false, 0, 8, 2),
-  ];
+
   final List<String> suggestion = ["reactjs", "flutter", "education app"];
 
   void onPressed() {}
+  List<ProjectModel> _projects = [];
+  void getAllProject() async{
+    final response = await ProjectService.viewProject();
+    final body = ApiUtil.getBody(response);
+    //showCircleProgress(context: context);
+    if (response.statusCode == 200){
+      // //
+      setState(() {
+        _projects = ProjectModel.fromResponse(response);
+      });
+     
+    
+    }else if (response.statusCode == StatusCode.notFound.code) {
+      // pop the loading progress
+      //Navigator.of(context).pop();
 
+      // the user is not found
+      final errorDetails = body['errorDetails'];
+
+      // show popup error message
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: errorDetails.toString(),
+        textSubmit: 'Ok',
+        submit: null,
+      );
+    } else if (response.statusCode == StatusCode.unprocessableEntity.code) {
+      // pop the loading progress
+      //
+
+      // incorrect password
+      final errorDetails = body['errorDetails'];
+
+      // show popup error message
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: errorDetails.toString(),
+        textSubmit: 'Ok',
+        submit: null,
+      );
+    } else {
+      // pop the loading progress
+      //
+
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: 'Something went wrong',
+        textSubmit: 'Ok',
+        submit: null,
+      );
+    }
+   
+  }
   @override
   Widget build(BuildContext context) {
+    getAllProject();
     return Scaffold(
       body: InitialBody(
         child: Column(
@@ -144,31 +191,31 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
                 const SizedBox(
                   width: 32,
                 ),
-                InkWell(
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.all(0.2),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xFF2DAAD4), // Màu nền của nút
-                    ),
-                    child: IconButton(
-                        onPressed: () {
-                          List<ProjectModel> saved = _projects
-                              .where((projectModel) => projectModel.like)
-                              .toList();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ProjectBodySavedPart(projects: saved)));
-                        },
-                        icon: const Icon(
-                          Icons.favorite,
-                          color: Colors.white,
-                        )),
-                  ),
-                ),
+                // InkWell(
+                //   onTap: () {},
+                //   child: Container(
+                //     padding: const EdgeInsets.all(0.2),
+                //     decoration: const BoxDecoration(
+                //       shape: BoxShape.circle,
+                //       color: Color(0xFF2DAAD4), // Màu nền của nút
+                //     ),
+                //     child: IconButton(
+                //         onPressed: () {
+                //           List<ProjectModel> saved = _projects
+                //               .where((projectModel) => projectModel.like)
+                //               .toList();
+                //           Navigator.push(
+                //               context,
+                //               MaterialPageRoute(
+                //                   builder: (context) =>
+                //                       ProjectBodySavedPart(projects: saved)));
+                //         },
+                //         icon: const Icon(
+                //           Icons.favorite,
+                //           color: Colors.white,
+                //         )),
+                //   ),
+                // ),
               ],
             ),
             const SizedBox(
@@ -498,7 +545,7 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ListViewProjectItems(projects: widget.projects),
+           ListViewProjectItems(projects: widget.projects),
         ],
       )),
     );
