@@ -85,25 +85,6 @@ class _DashboardStudentState extends State<DashboardStudent>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Yours job',
-                  ),
-                  CustomButton(
-                      onPressed: () {
-                        NavigationUtil.toPostProjectStep1(context);
-                      },
-                      text: 'Post a job')
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: SpacingUtil.smallHeight,
-            ),
             CustomTabBar(
               tabController: _tabController,
               tabs: _tabViews.map((e) => e.tab).toList(),
@@ -183,7 +164,7 @@ class _DashboardStudentState extends State<DashboardStudent>
                                       const CustomText(
                                           text: "Submited 3 days ago"),
                                       const SizedBox(
-                                        height: SpacingUtil.mediumHeight,
+                                        height: SpacingUtil.smallHeight,
                                       ),
                                       const CustomText(
                                           text: "Student are looking for"),
