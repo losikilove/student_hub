@@ -8,7 +8,7 @@ import 'package:student_hub/services/project_service.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
-
+import 'package:student_hub/components/custom_appbar.dart';
 class BrowseProjectDetailScreen extends StatefulWidget {
   // TODO: require a project-model attribute
   final int id;
@@ -32,7 +32,9 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
 
   // save this project
   void onSaved() {}
+  
   void getDetail() async{
+    if (!mounted) return;
     final response = await ProjectService.viewProjectDetail(id: widget.id, token: widget.token);  
     final result = ApiUtil.getResult(response); 
     setState(() {
@@ -42,19 +44,31 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
       projectScope = '3 - 6';
     }
     requiredStudent = result['project']['numberOfStudents'].toString();
-});
+  });
     
   }
   @override
   Widget build(BuildContext context) {
     getDetail();
     return Scaffold(
+      appBar: CustomAppbar(
+        title: 'Saved projects',
+        isBack: true,
+        onPressed: onPressed,
+        currentContext: context,
+      ),
       body: InitialBody(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // title of this screen
-            // title of job
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.end,
+            //   children: [
+            //     IconButton(onPressed: (){
+            //       NavigationUtil.turnBack(context);
+            //     }, icon: Icon(Icons.cancel)),
+            //   ],
+            // ),
             CustomText(
               text: "Detail: "+ title,
               isBold: true,

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:student_hub/components/custom_text.dart';
+import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/models/project_model.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 import 'package:intl/intl.dart';
-
+import 'package:student_hub/providers/user_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:student_hub/models/user_model.dart';
+import 'package:student_hub/services/project_service.dart';
+import 'package:student_hub/utils/api_util.dart';
 class ProjectItem extends StatefulWidget {
   final ProjectModel project;
   ProjectItem({Key? key, required this.project}) : super(key: key);
@@ -15,6 +20,36 @@ class ProjectItem extends StatefulWidget {
 
 class _ProjectItem extends State<ProjectItem> {
   String month = '1 - 3';
+ void saveProject(int projectID,bool likeProject) async{
+    UserProvider userProvider = Provider.of<UserProvider>(
+      context,
+      listen: false,
+    );
+    UserModel user = userProvider.user!;
+    String? token = userProvider.token; 
+    final response = await ProjectService.likeProject(id: user.userId, 
+                    projectID: projectID,likedProject: false, token: token!);
+       final body = ApiUtil.getBody(response);
+       if (response.statusCode == 200){
+            await popupNotification(
+              context: context,
+              type: NotificationType.success,
+              content: 'Saved successfully',
+              textSubmit: 'Ok',
+              submit: null,
+            );
+        }else{
+           final errorDetails = body['errorDetails'];
+           popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: errorDetails.toString(),
+        textSubmit: 'Ok',
+        submit: null,
+      );
+        }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.project.projectScopeFlag == 1){
@@ -49,19 +84,18 @@ class _ProjectItem extends State<ProjectItem> {
             ],
           ),
         ),
-        // IconButton(
-        //     onPressed: () {
-        //       setState(() {
-        //         widget.project.setLike = !widget.project.like;
-        //       });
-        //     },
-        //     icon: Icon(
-        //       widget.project.like
-        //           ? Icons.favorite
-        //           : Icons.favorite_border_outlined,
-        //       color: Color.fromARGB(255, 0, 78, 212),
-        //       size: 30,
-        //     )),
+        IconButton(
+           onPressed: () {
+              setState(() {
+                saveProject(widget.project.id, false);
+              });
+            },
+          icon: const Icon(
+            Icons.favorite_border_outlined,
+            color: Color.fromARGB(255, 0, 78, 212),
+            size: 30,
+          )
+        )
       ],
     );
   }

@@ -50,6 +50,21 @@ class ProjectModel {
           proposal: element['countProposals'] as int,
           numberofStudent: element['numberOfStudents'] as int
       ))
-      .toList();
-}
+      .toList();  
+  }
+  static List<ProjectModel> fromFavoriteResponse(http.Response response) {
+  return (json.decode(response.body)['result'] as List<dynamic>)
+      .map((element) => ProjectModel(
+          id: element['project']['id'] as int,
+          title: element['project']['title'] as String,
+          description: element['project']['description'] as String,
+          companyId: element['project']['companyId'] as String,
+          projectScopeFlag: element['project']['projectScopeFlag'] as int,
+          typeFlag: element['project']['typeFlag'] as int,
+          timeCreated: element['project']['createdAt'] as String,
+          proposal: element['countProposals'] as int,
+          numberofStudent: element['project']['numberOfStudents'] as int
+      ))
+      .toList();  
+  }
 }

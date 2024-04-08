@@ -6,11 +6,11 @@ import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/providers/user_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:student_hub/models/user_model.dart';
+
 class ListViewProjectItems extends StatelessWidget {
   final List<ProjectModel> projects;
   const ListViewProjectItems({super.key, required this.projects});
-  
+
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(

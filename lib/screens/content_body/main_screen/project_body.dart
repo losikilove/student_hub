@@ -9,12 +9,17 @@ import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/listview_project_items.dart';
 import 'package:student_hub/models/enums/enum_projectlenght.dart';
 import 'package:student_hub/models/project_model.dart';
+import 'package:student_hub/models/user_model.dart';
 import 'package:student_hub/services/project_service.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/components/popup_notification.dart';
+import 'package:student_hub/providers/user_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:student_hub/components/custom_bulleted_list.dart';
+import 'package:intl/intl.dart';
 
 
 enum ProjectBodyType {
@@ -107,8 +112,15 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
 
   void onPressed() {}
   List<ProjectModel> _projects = [];
+  List<ProjectModel> _FavoriteProjects = [];
   void getAllProject() async{
-    final response = await ProjectService.viewProject();
+    UserProvider userProvider = Provider.of<UserProvider>(
+      context,
+      listen: false,
+    );
+
+    String? token = userProvider.token; 
+    final response = await ProjectService.viewProject(token:token!);
     final body = ApiUtil.getBody(response);
     //showCircleProgress(context: context);
     if (response.statusCode == 200){
@@ -119,9 +131,63 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
      
     
     }else if (response.statusCode == StatusCode.notFound.code) {
-      // pop the loading progress
-      //Navigator.of(context).pop();
+      // the user is not found
+      final errorDetails = body['errorDetails'];
 
+      // show popup error message
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: errorDetails.toString(),
+        textSubmit: 'Ok',
+        submit: null,
+      );
+    } else if (response.statusCode == StatusCode.unprocessableEntity.code) {
+      // pop the loading progress
+      //
+
+      // incorrect password
+      final errorDetails = body['errorDetails'];
+
+      // show popup error message
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: errorDetails.toString(),
+        textSubmit: 'Ok',
+        submit: null,
+      );
+    } else {
+      // pop the loading progress
+      //
+
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: 'Something went wrong',
+        textSubmit: 'Ok',
+        submit: null,
+      );
+    }
+   
+  }
+  void getSavedProject() async{
+    UserProvider userProvider = Provider.of<UserProvider>(
+      context,
+      listen: false,
+    );
+    UserModel user = userProvider.user!;
+    String? token = userProvider.token; 
+    final response = await ProjectService.viewProjectFavorite(id: user.userId, token: token!);
+    final body = ApiUtil.getBody(response);
+    if (response.statusCode == 200){
+      // //
+      setState(() {
+        _FavoriteProjects = ProjectModel.fromFavoriteResponse(response);
+      });
+     
+    
+    }else if (response.statusCode == StatusCode.notFound.code) {
       // the user is not found
       final errorDetails = body['errorDetails'];
 
@@ -191,31 +257,29 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
                 const SizedBox(
                   width: 32,
                 ),
-                // InkWell(
-                //   onTap: () {},
-                //   child: Container(
-                //     padding: const EdgeInsets.all(0.2),
-                //     decoration: const BoxDecoration(
-                //       shape: BoxShape.circle,
-                //       color: Color(0xFF2DAAD4), // Màu nền của nút
-                //     ),
-                //     child: IconButton(
-                //         onPressed: () {
-                //           List<ProjectModel> saved = _projects
-                //               .where((projectModel) => projectModel.like)
-                //               .toList();
-                //           Navigator.push(
-                //               context,
-                //               MaterialPageRoute(
-                //                   builder: (context) =>
-                //                       ProjectBodySavedPart(projects: saved)));
-                //         },
-                //         icon: const Icon(
-                //           Icons.favorite,
-                //           color: Colors.white,
-                //         )),
-                //   ),
-                // ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.all(0.2),
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFF2DAAD4), // Màu nền của nút
+                    ),
+                    child: IconButton(
+                        onPressed: () {
+                          getSavedProject();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ProjectBodySavedPart(projects: _FavoriteProjects)));
+                        },
+                        icon: const Icon(
+                          Icons.favorite,
+                          color: Colors.white,
+                        )),
+                  ),
+                ),
               ],
             ),
             const SizedBox(
@@ -521,8 +585,8 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
 
 //saved part of this body
 class ProjectBodySavedPart extends StatefulWidget {
-  final List<ProjectModel> projects;
-  const ProjectBodySavedPart({
+  List<ProjectModel> projects;
+  ProjectBodySavedPart({
     super.key,
     required this.projects,
   });
@@ -532,6 +596,7 @@ class ProjectBodySavedPart extends StatefulWidget {
 
 class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
   void onPressed() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -543,11 +608,68 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
       ),
       body: InitialBody(
           child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-           ListViewProjectItems(projects: widget.projects),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+           Expanded(
+            child: ListView.builder(
+              itemCount: widget.projects.length,
+              itemBuilder: (context, index) {
+                final project = widget.projects[index];
+                String month = '1 - 3';
+                if (project.projectScopeFlag == 1){
+                  month = '3-6';
+                }
+                return saveProjectItem(project, month);
+              }
+            )
+          ),
         ],
       )),
     );
   }
-}
+
+  Row saveProjectItem(ProjectModel project, String month) {
+    return Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Title: " + project.title,
+                  style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(
+                  height: SpacingUtil.smallHeight,
+                ),
+                CustomText(text:"Time created: " + DateFormat('dd-MM-yyyy').format(DateTime.parse(project.timeCreated)) ),
+                const SizedBox(
+                  height: SpacingUtil.smallHeight,
+                ),
+                CustomText(text: "Time: " + month + " months, ${project.numberofStudent} students needed"),
+                const SizedBox(
+                  height: SpacingUtil.mediumHeight,
+                ),
+                const CustomText(text: "Student are looking for"),
+                CustomBulletedList(listItems: project.description.split(';')),
+                CustomText(text: "Proposals: " +   project.proposal.toString()),
+                CustomDivider(),
+                const SizedBox(
+                  height: SpacingUtil.smallHeight,
+                ),
+                ],
+              ),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon:const Icon(
+                Icons.favorite,
+                color: Color.fromARGB(255, 0, 78, 212),
+                size: 30,
+        )),
+      ],
+    );
+  }
+ }
+
