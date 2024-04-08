@@ -32,35 +32,26 @@ class StudentModel extends AccountModel {
       id: jsonStudent['id'],
       techStack: TechStackModel(jsonStudent['techStack']['id'] as int,
           jsonStudent['techStack']['name'] as String),
-      skillSets: (jsonStudent['skillSets'] as List<dynamic>)
-          .map(
-            (element) => SkillSetModel(
-              element['id'] as int,
-              element['name'] as String,
+      skillSets: jsonStudent['skillSets'] == null
+          ? const []
+          : SkillSetModel.fromResponse(
+              jsonStudent['skillSets'],
             ),
-          )
-          .toList(),
-      languages: (jsonStudent['languages'] as List<dynamic>)
-          .map(
-            (element) => LanguageModel(
-              element['id'] as int,
-              element['language'] as String,
-              element['level'] as String,
+      languages: jsonStudent['languages'] == null
+          ? const []
+          : LanguageModel.fromResponse(
+              jsonStudent['languages'] as List<dynamic>,
             ),
-          )
-          .toList(),
-      educations: (jsonStudent['educations'] as List<dynamic>)
-          .map(
-            (element) => EducationModel(
-              element['id'] as int,
-              element['schoolName'] as String,
-              element['startYear'] as int,
-              element['endYear'] as int,
+      educations: jsonStudent['educations'] == null
+          ? const []
+          : EducationModel.fromResponse(
+              jsonStudent['educations'],
             ),
-          )
-          .toList(),
-      experiences: ExperienceModel.fromResponse(
-          jsonStudent['experiences'] as List<dynamic>),
+      experiences: jsonStudent['experiences'] == null
+          ? const []
+          : ExperienceModel.fromResponse(
+              jsonStudent['experiences'] as List<dynamic>,
+            ),
       resume: jsonStudent['resume'],
       transcript: jsonStudent['transcript'],
     );

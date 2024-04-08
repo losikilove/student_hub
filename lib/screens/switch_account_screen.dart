@@ -7,6 +7,7 @@ import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/custom_listtile.dart';
 import 'package:student_hub/components/popup_notification.dart';
+import 'package:student_hub/models/enums/enum_user.dart';
 import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/screens/main_screen.dart';
 import 'package:student_hub/utils/navigation_util.dart';
@@ -69,15 +70,21 @@ class _SwitchAccountScreen extends State<SwitchAccountScreen> {
   void onSwitchedToProfileScreen() {
     final user = Provider.of<UserProvider>(context, listen: false).user;
 
-    // if have no info of company
-    // switch to company-register-screen
-    // else switch to view-company-profile
-    if (user?.company == null) {
-      NavigationUtil.toCompanyRegisterScreen(context);
-    } else {
-      // switch to view-company-profile
+    // if have info of user, switch to view profile:
+    // switch to view-company-profile
+    if (user?.priorityRole == EnumUser.company && user?.company != null) {
       NavigationUtil.toCompanyViewProfileScreen(context);
+      return;
     }
+
+    // switch to view-student-profile
+    if (user?.priorityRole == EnumUser.student && user?.student != null) {
+      NavigationUtil.toStudentViewProfileScreen(context);
+      return;
+    }
+
+    // else switch to create profile:
+    UserUtil.switchToCreateProfile(context);
   }
 
   // switch to setting screen

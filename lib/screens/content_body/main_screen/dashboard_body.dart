@@ -18,8 +18,8 @@ class _DashboardBody extends State<DashboardBody> {
     return Scaffold(
       body: Consumer<UserProvider>(builder: (context, userProvider, _) {
         return userProvider.user!.priorityRole == EnumUser.student
-            ? DashboardStudent()
-            : DashboardCompany();
+            ? const DashboardStudent()
+            : const DashboardCompany();
       }),
     );
   }

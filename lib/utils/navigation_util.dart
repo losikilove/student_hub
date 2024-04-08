@@ -23,6 +23,7 @@ import 'package:student_hub/screens/settings_screen.dart';
 import 'package:student_hub/screens/signin_screen.dart';
 import 'package:student_hub/screens/signupsetup1_screen.dart';
 import 'package:student_hub/screens/student_submit_proposal_screen.dart';
+import 'package:student_hub/screens/student_view_profile_screen.dart';
 import 'package:student_hub/screens/switch_account_screen.dart';
 import 'package:student_hub/screens/welcome_screen.dart';
 
@@ -131,7 +132,7 @@ class NavigationUtil {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
-        builder: (context) =>  const ProfileStudentStep2Screen(),
+        builder: (context) => const ProfileStudentStep2Screen(),
       ),
     );
   }
@@ -148,7 +149,7 @@ class NavigationUtil {
 
   // switch to main screen
   static void toMainScreen(
-    BuildContext currentContext, MainScreenIndex contentBody) {
+      BuildContext currentContext, MainScreenIndex contentBody) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
@@ -159,13 +160,16 @@ class NavigationUtil {
     );
   }
 
- 
   // switch to browse-project-detail screen
-  static void toBrowseProjectDetailScreen(BuildContext currentContext,int id,String token) {
+  static void toBrowseProjectDetailScreen(
+      BuildContext currentContext, int id, String token) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
-        builder: (context) => BrowseProjectDetailScreen(id: id,token: token,),
+        builder: (context) => BrowseProjectDetailScreen(
+          id: id,
+          token: token,
+        ),
       ),
     );
   }
@@ -190,29 +194,36 @@ class NavigationUtil {
     );
   }
 
-  static void toPostProjectStep2(BuildContext currentContext, ProjectCompanyModel projectCompanyModel) {
+  static void toPostProjectStep2(
+      BuildContext currentContext, ProjectCompanyModel projectCompanyModel) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
-        builder: (context) => ProjectPostStep2Screen(projectCompanyModel: projectCompanyModel,),
+        builder: (context) => ProjectPostStep2Screen(
+          projectCompanyModel: projectCompanyModel,
+        ),
       ),
     );
   }
 
-static void toPostProjectStep3(BuildContext currentContext, ProjectCompanyModel projectCompanyModel) {
+  static void toPostProjectStep3(
+      BuildContext currentContext, ProjectCompanyModel projectCompanyModel) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
-        builder: (context) => ProjectPostStep3Screen(projectCompanyModel: projectCompanyModel),
+        builder: (context) =>
+            ProjectPostStep3Screen(projectCompanyModel: projectCompanyModel),
       ),
     );
   }
 
-static void toPostProjectStep4(BuildContext currentContext, ProjectCompanyModel projectCompanyModel) {
+  static void toPostProjectStep4(
+      BuildContext currentContext, ProjectCompanyModel projectCompanyModel) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
-        builder: (context) => ProjectPostStep4Screen(projectCompanyModel: projectCompanyModel),
+        builder: (context) =>
+            ProjectPostStep4Screen(projectCompanyModel: projectCompanyModel),
       ),
     );
   }
@@ -272,6 +283,15 @@ static void toPostProjectStep4(BuildContext currentContext, ProjectCompanyModel 
         currentContext,
         MaterialPageRoute(
           builder: (context) => const CompanyViewProfileScreen(),
+        ));
+  }
+
+  // view-student-profile screen
+  static void toStudentViewProfileScreen(BuildContext currentContext) {
+    Navigator.push(
+        currentContext,
+        MaterialPageRoute(
+          builder: (context) => const StudentViewProfileScreen(),
         ));
   }
 }

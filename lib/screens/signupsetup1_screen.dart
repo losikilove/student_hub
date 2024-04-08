@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_anchor.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/models/enums/enum_user.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
@@ -22,6 +23,24 @@ class _SignUpSetup1ScreenState extends State<SignUpSetup1Screen> {
     setState(() {
       _user = value;
     });
+  }
+
+  // create account in next screen
+  void onGoneToNextScreen() {
+    // show notification
+    popupNotification(
+      context: context,
+      type: NotificationType.warning,
+      content: 'You really want to register as ${_user?.name.toUpperCase()}',
+      textSubmit: 'Yes',
+      submit: () {
+        if (_user == EnumUser.company) {
+          NavigationUtil.toSignUpStepTwoAsCompanyScreen(context);
+        } else if (_user == EnumUser.student) {
+          NavigationUtil.toSignUpStepTwoAsStudentScreen(context);
+        }
+      },
+    );
   }
 
   // back to sigin in screen
@@ -62,13 +81,7 @@ class _SignUpSetup1ScreenState extends State<SignUpSetup1Screen> {
               height: SpacingUtil.mediumHeight,
             ),
             CustomButton(
-              onPressed: () {
-                if (_user == EnumUser.company) {
-                  NavigationUtil.toSignUpStepTwoAsCompanyScreen(context);
-                } else if (_user == EnumUser.student) {
-                  NavigationUtil.toSignUpStepTwoAsStudentScreen(context);
-                }
-              },
+              onPressed: onGoneToNextScreen,
               text: 'Create account',
               size: CustomButtonSize.large,
             ),

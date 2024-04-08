@@ -43,7 +43,7 @@ class _CompanyViewProfileScreenState extends State<CompanyViewProfileScreen> {
                   const CustomText(
                     text: 'Your company profile',
                     isBold: true,
-                    size: 30,
+                    size: 25,
                   ),
                   const SizedBox(
                     height: SpacingUtil.mediumHeight,

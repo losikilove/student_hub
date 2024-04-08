@@ -5,9 +5,9 @@ import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_tabbar.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
-// import 'package:student_hub/models/project_model.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
+
 class ProjectModel {
   final String _title;
   final String _timeCreating;
@@ -28,7 +28,7 @@ class ProjectModel {
     this._numberMessages,
     this._numberHires,
   );
-  set setLike(bool flag){
+  set setLike(bool flag) {
     _like = flag;
   }
 
@@ -140,7 +140,7 @@ class _DashboardStudentState extends State<DashboardStudent>
                       text: "Active proposal(1)",
                       isBold: true,
                     )))),
-        SizedBox(
+        const SizedBox(
           height: SpacingUtil.mediumHeight,
         ),
         Card(
@@ -151,20 +151,20 @@ class _DashboardStudentState extends State<DashboardStudent>
                 decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.onSecondary),
                 child: Padding(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomText(
+                          const CustomText(
                             text: "Submitted proposal(1)",
                             isBold: true,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 12,
                           ),
                           Container(
-                            height: 350,
-                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            height: 395,
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
                             child: ListView.builder(
                                 itemCount: _projects.length,
                                 itemBuilder: (context, index) {

@@ -119,7 +119,7 @@ class ProfileService {
 
     // get info of language response
     List<LanguageModel> languagesReponse = LanguageModel.fromResponse(
-      ApiUtil.getBody(secondResponse)['result' as List<dynamic>],
+      ApiUtil.getBody(secondResponse)['result'] as List<dynamic>,
     );
 
     // save the languages into user provider
@@ -138,8 +138,9 @@ class ProfileService {
     }
 
     // get info of education response
-    List<EducationModel> educationsReponse =
-        EducationModel.fromResponse(ApiUtil.getBody(thirdResponse)['result']);
+    List<EducationModel> educationsReponse = EducationModel.fromResponse(
+      ApiUtil.getBody(thirdResponse)['result'] as List<dynamic>,
+    );
 
     // save the languages into user provider
     userProvider.saveStudentWhenUpdatedProfileStudent(

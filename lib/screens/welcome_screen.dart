@@ -41,7 +41,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             Consumer<UserProvider>(
               builder: (context, userProvider, child) => Center(
                 child: CustomText(
-                    text: 'Welcome, ${userProvider.user!.fullname}!'),
+                    text: 'Welcome, ${userProvider.user?.fullname ?? 'you'}!'),
               ),
             ),
             const SizedBox(
