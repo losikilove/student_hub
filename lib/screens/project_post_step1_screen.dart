@@ -5,6 +5,7 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/models/enums/enum_projectlenght.dart';
 import 'package:student_hub/models/project_company_model.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
@@ -20,7 +21,7 @@ class _ProjectPostStep1ScreenState extends State<ProjectPostStep1Screen> {
   final titleController = TextEditingController();
   ProjectCompanyModel projectCModel = ProjectCompanyModel(
     title: "title", 
-    projectScopeFlag: 0, 
+    projectScopeFlag: EnumProjectLenght.less_than_one_month, 
     numberofStudent: 0, 
     description: 'description'
   );
@@ -83,6 +84,7 @@ class _ProjectPostStep1ScreenState extends State<ProjectPostStep1Screen> {
                     child: CustomButton(
                         isDisabled: !_titlePost,
                         onPressed: () {
+                          projectCModel.title = titleController.text;
                           NavigationUtil.toPostProjectStep2(context,projectCModel);
                         },
                         text: "Next Scope"

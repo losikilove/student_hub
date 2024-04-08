@@ -20,13 +20,17 @@ class ProjectPostStep3Screen extends StatefulWidget {
 class _ProjectPostStep3ScreenState extends State<ProjectPostStep3Screen> {
   final _descriptionController = TextEditingController();
 
-  void onPressed() {}
+  void onPressed() {
+    widget.projectCompanyModel.description = _descriptionController.text;
+    NavigationUtil.toPostProjectStep4(context, widget.projectCompanyModel);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: CustomAppbar(
-        onPressed: onPressed,
+        onPressed: (){},
         currentContext: context,
       ),
       body: InitialBody(
@@ -66,9 +70,7 @@ class _ProjectPostStep3ScreenState extends State<ProjectPostStep3Screen> {
             Align(
               alignment: Alignment.topRight,
               child: CustomButton(
-                onPressed: () {
-                  NavigationUtil.toPostProjectStep4(context, widget.projectCompanyModel);
-                },
+                onPressed: onPressed,
                 text: 'Preview your post',
               ),
             ),

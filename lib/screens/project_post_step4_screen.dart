@@ -35,7 +35,7 @@ class _ProjectPostStep4ScreenState extends State<ProjectPostStep4Screen> {
             const SizedBox(
               height: SpacingUtil.mediumHeight,
             ),
-            const CustomText(text: "Title job"),
+            CustomText(text: widget.projectCompanyModel.title),
             const CustomDivider(),
             const CustomText(text: "Student are looking for"),
             const CustomBulletedList(listItems: [
@@ -45,12 +45,12 @@ class _ProjectPostStep4ScreenState extends State<ProjectPostStep4Screen> {
             ]),
             const CustomDivider(),
             const CustomText(text: "Student are looking for"),
-            _projectRequirement(Icons.alarm, 'Project scope', '3 to 6 months'),
+            _projectRequirement(Icons.alarm, 'Project scope', widget.projectCompanyModel.projectScopeFlag.name),
             const SizedBox(
               height: SpacingUtil.smallHeight,
             ),
             _projectRequirement(
-                Icons.people_outline, 'Required students', '6 students'),
+                Icons.people_outline, 'Required students', widget.projectCompanyModel.numberofStudent.toString()+' students'),
           ],
         ),
       ),
