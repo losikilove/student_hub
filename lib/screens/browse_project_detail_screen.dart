@@ -74,7 +74,7 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
             ),
             CustomBulletedList(
               textSize: 18,
-              listItems:description.split(';'),
+              listItems:description.split(','),
             ),
             const CustomDivider(),
             // scope of project
