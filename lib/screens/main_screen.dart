@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/screens/content_body/main_screen/dashboard_body.dart';
 import 'package:student_hub/screens/content_body/main_screen/message_body.dart';
 import 'package:student_hub/screens/content_body/main_screen/notification_body.dart';
 import 'package:student_hub/screens/content_body/main_screen/project_body.dart';
-import 'package:student_hub/utils/navigation_util.dart';
 
 enum MainScreenIndex {
   project(number: 0),
@@ -35,11 +33,6 @@ class _MainScreen extends State<MainScreen> {
     MessageBody(),
     NotificationBody(),
   ];
-
-  // switch to switch account screen
-  void onSwitchedToSwitchAccountScreen() {
-    NavigationUtil.toSwitchAccountScreen(context);
-  }
 
   void _onItemTapped(int index) {
     setState(() {

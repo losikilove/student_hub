@@ -11,10 +11,14 @@ import 'package:student_hub/models/project_model.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class ProjectBodySearchPart extends StatefulWidget {
+  final BuildContext parentContext;
   final String search;
   final List<ProjectModel> projects;
   const ProjectBodySearchPart(
-      {super.key, required this.search, required this.projects});
+      {super.key,
+      required this.parentContext,
+      required this.search,
+      required this.projects});
 
   @override
   State<ProjectBodySearchPart> createState() => _ProjectBodySearchPartState();
@@ -48,7 +52,6 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
 
     return showModalBottomSheet<dynamic>(
       context: context,
-      
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (context, setModalState) {
@@ -75,95 +78,95 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
             }
 
             return SingleChildScrollView(
-                child:  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.cancel),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                          const CustomText(
-                            text: "Filter by",
-                            size: 17,
-                            isBold: true,
-                          ),
-                        ],
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.cancel),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                       ),
-                      const CustomText(text: 'Project length'),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            chooseLenght(EnumProjectLenght.less_than_one_month,
-                                "Less than one month"),
-                            chooseLenght(EnumProjectLenght.one_to_three_month,
-                                "1 to 3 months"),
-                            chooseLenght(EnumProjectLenght.three_to_six_month,
-                                "3 to 6 months"),
-                            chooseLenght(EnumProjectLenght.more_than_six_month,
-                                "more than 6 months"),
-                          ]),
-                      const CustomText(text: 'Student needed'),
-                      SizedBox(
-                        width: 200,
-                        height: 25,
-                        child: TextField(
-                          controller: studentNeededController,
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Theme.of(context).colorScheme.onPrimary),
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(0)),
-                          )),
-                          textAlign: TextAlign.center,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                          keyboardType: TextInputType.number,
-                        ),
+                      const CustomText(
+                        text: "Filter by",
+                        size: 17,
+                        isBold: true,
                       ),
-                      const SizedBox(
-                        height: SpacingUtil.smallHeight,
-                      ),
-                      const CustomText(text: 'Proposals less than'),
-                      SizedBox(
-                        width: 200,
-                        height: 25,
-                        child: TextField(
-                          controller: proposalsLessThanController,
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Theme.of(context).colorScheme.onPrimary),
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(0)),
-                          )),
-                          textAlign: TextAlign.center,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                          keyboardType: TextInputType.number,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: SpacingUtil.smallHeight,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CustomButton(onPressed: onPressed, text: 'Clear filter'),
-                          const SizedBox(
-                            width: SpacingUtil.smallHeight,
-                          ),
-                          CustomButton(onPressed: onPressed, text: 'Apply')
-                        ],
-                      )
                     ],
-                  ),            
-              );
+                  ),
+                  const CustomText(text: 'Project length'),
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        chooseLenght(EnumProjectLenght.less_than_one_month,
+                            "Less than one month"),
+                        chooseLenght(EnumProjectLenght.one_to_three_month,
+                            "1 to 3 months"),
+                        chooseLenght(EnumProjectLenght.three_to_six_month,
+                            "3 to 6 months"),
+                        chooseLenght(EnumProjectLenght.more_than_six_month,
+                            "more than 6 months"),
+                      ]),
+                  const CustomText(text: 'Student needed'),
+                  SizedBox(
+                    width: 200,
+                    height: 25,
+                    child: TextField(
+                      controller: studentNeededController,
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).colorScheme.onPrimary),
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(0)),
+                      )),
+                      textAlign: TextAlign.center,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: SpacingUtil.smallHeight,
+                  ),
+                  const CustomText(text: 'Proposals less than'),
+                  SizedBox(
+                    width: 200,
+                    height: 25,
+                    child: TextField(
+                      controller: proposalsLessThanController,
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).colorScheme.onPrimary),
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(0)),
+                      )),
+                      textAlign: TextAlign.center,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: SpacingUtil.smallHeight,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomButton(onPressed: onPressed, text: 'Clear filter'),
+                      const SizedBox(
+                        width: SpacingUtil.smallHeight,
+                      ),
+                      CustomButton(onPressed: onPressed, text: 'Apply')
+                    ],
+                  )
+                ],
+              ),
+            );
           },
         );
       },

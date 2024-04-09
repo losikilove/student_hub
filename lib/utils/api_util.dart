@@ -25,7 +25,7 @@ class ApiUtil {
   static const port = 4400;
   static const ipAndroid = '10.0.2.2';
   static const ipIos = '10.0.2.1';
-  static const baseUrl = 'http://34.16.137.128/api';
+  static const baseUrl = 'https://api.studenthub.dev/api';
 
   // general headers
   static const headers = <String, String>{

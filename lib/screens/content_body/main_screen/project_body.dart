@@ -15,6 +15,7 @@ import 'package:student_hub/components/custom_future_builder.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/screens/content_body/main_screen/project/project_search.dart';
 import 'package:student_hub/screens/content_body/main_screen/project/project_save.dart';
+
 enum ProjectBodyType {
   main(nameRoute: ''),
   search(nameRoute: 'search'),
@@ -51,13 +52,18 @@ class _ProjectBody extends State<ProjectBody> {
           final searchArgs = settings.arguments as List<dynamic>;
           return MaterialPageRoute(
             builder: (_) => ProjectBodySearchPart(
+              parentContext: context,
               search: searchArgs[0] as String,
               projects: searchArgs[1] as List<ProjectModel>,
             ),
           );
         }
         // have no one, switch to main part
-        return MaterialPageRoute(builder: (_) => const ProjectBodyMainPart());
+        return MaterialPageRoute(
+          builder: (_) => ProjectBodyMainPart(
+            parentContext: context,
+          ),
+        );
       },
     );
   }
@@ -92,7 +98,8 @@ class _ProjectBody extends State<ProjectBody> {
 
 // Main part of this body
 class ProjectBodyMainPart extends StatefulWidget {
-  const ProjectBodyMainPart({super.key});
+  final BuildContext parentContext;
+  const ProjectBodyMainPart({super.key, required this.parentContext});
 
   @override
   State<ProjectBodyMainPart> createState() => _ProjectBodyMainPartState();
@@ -103,18 +110,21 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
 
   final List<String> suggestion = ["reactjs", "flutter", "education app"];
 
-  void onPressed() {}
+  // switch to switch account screen
+  void onSwitchedToSwitchAccountScreen() {
+    NavigationUtil.toSwitchAccountScreen(widget.parentContext);
+  }
+
   List<ProjectModel> _projects = [];
   // List<ProjectModel> _FavoriteProjects = [];
   Future<List<ProjectModel>> initializeProject() async {
-    
-      UserProvider userProvider = Provider.of<UserProvider>(
+    UserProvider userProvider = Provider.of<UserProvider>(
       context,
       listen: false,
     );
 
-    String? token = userProvider.token; 
-    final response = await ProjectService.viewProject(token:token!);
+    String? token = userProvider.token;
+    final response = await ProjectService.viewProject(token: token!);
     return ProjectModel.fromResponse(response);
   }
 
@@ -122,9 +132,7 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        onPressed:(){
-          NavigationUtil.toSwitchAccountScreen(context);
-        },
+        onPressed: onSwitchedToSwitchAccountScreen,
         currentContext: context,
       ),
       body: InitialBody(
@@ -162,14 +170,14 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
                     ),
                     child: IconButton(
                         onPressed: () {
-                          // getSavedProject();
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ProjectBodySavedPart()
-                              )
-                            );
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProjectBodySavedPart(
+                                parentContext: context,
+                              ),
+                            ),
+                          );
                         },
                         icon: const Icon(
                           Icons.favorite,
@@ -184,17 +192,17 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
             ),
             const CustomDivider(),
             //ListViewProjectItems(projects: _projects),
-             CustomFutureBuilder<List<ProjectModel>>(
-                    future: initializeProject(),
-                    widgetWithData: (snapshot) =>
-                        ListViewProjectItems(projects: snapshot.data!),
-                    widgetWithError: (snapshot) {
-                      return const CustomText(
-                        text: 'Sorry, something went wrong',
-                        textColor: Colors.red,
-                      );
-                    },
-                  ),
+            CustomFutureBuilder<List<ProjectModel>>(
+              future: initializeProject(),
+              widgetWithData: (snapshot) =>
+                  ListViewProjectItems(projects: snapshot.data!),
+              widgetWithError: (snapshot) {
+                return CustomText(
+                  text: snapshot.toString(),
+                  textColor: Colors.red,
+                );
+              },
+            ),
           ],
         ),
       ),

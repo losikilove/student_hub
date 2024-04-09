@@ -15,14 +15,16 @@ class NotificationBody extends StatefulWidget {
 }
 
 class _NotificationBody extends State<NotificationBody> {
-  void onPressed() {}
+  // switch to switch account screen
+  void onSwitchedToSwitchAccountScreen() {
+    NavigationUtil.toSwitchAccountScreen(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        onPressed:(){
-          NavigationUtil.toSwitchAccountScreen(context);
-        },
+        onPressed: onSwitchedToSwitchAccountScreen,
         currentContext: context,
       ),
       body: InitialBody(

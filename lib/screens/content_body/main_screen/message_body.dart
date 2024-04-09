@@ -46,15 +46,16 @@ class _MessageBody extends State<MessageBody> {
     super.dispose();
   }
 
-  void onPressed() {}
+  // switch to switch account screen
+  void onSwitchedToSwitchAccountScreen() {
+    NavigationUtil.toSwitchAccountScreen(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        onPressed:(){
-          NavigationUtil.toSwitchAccountScreen(context);
-        },
+        onPressed: onSwitchedToSwitchAccountScreen,
         currentContext: context,
       ),
       body: InitialBody(

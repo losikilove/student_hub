@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
-import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_tabbar.dart';
 import 'package:student_hub/components/custom_text.dart';
@@ -78,9 +78,19 @@ class _DashboardStudentState extends State<DashboardStudent>
 
   void onPressed() {}
 
+  // switch to switch account screen
+  void onSwitchedToSwitchAccountScreen() {
+    NavigationUtil.toSwitchAccountScreen(context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return  InitialBody(
+    return Scaffold(
+      appBar: CustomAppbar(
+        onPressed: onSwitchedToSwitchAccountScreen,
+        currentContext: context,
+      ),
+      body: InitialBody(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -99,7 +109,8 @@ class _DashboardStudentState extends State<DashboardStudent>
             ),
           ],
         ),
-      );
+      ),
+    );
   }
 
   Widget _studentAllProjectContent() {

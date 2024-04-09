@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:student_hub/models/user_model.dart';
 import 'package:student_hub/services/project_service.dart';
 import 'package:student_hub/utils/api_util.dart';
+
 class ProjectItem extends StatefulWidget {
   final ProjectModel project;
   ProjectItem({Key? key, required this.project}) : super(key: key);
@@ -21,39 +22,42 @@ class ProjectItem extends StatefulWidget {
 
 class _ProjectItem extends State<ProjectItem> {
   String month = '1 - 3';
- void saveProject(int projectID,EnumLikeProject likeProject) async{
+  void saveProject(int projectID, EnumLikeProject likeProject) async {
     UserProvider userProvider = Provider.of<UserProvider>(
       context,
       listen: false,
     );
     UserModel user = userProvider.user!;
-    String? token = userProvider.token; 
-    final response = await ProjectService.likeProject(id: user.userId, 
-                    projectID: projectID,likedProject: likeProject,token: token!);
-       final body = ApiUtil.getBody(response);
-       if (response.statusCode == 200){
-            await popupNotification(
-              context: context,
-              type: NotificationType.success,
-              content: 'Saved successfully',
-              textSubmit: 'Ok',
-              submit: null,
-            );
-        }else{
-           final errorDetails = body['errorDetails'];
-           popupNotification(
+    String? token = userProvider.token;
+    final response = await ProjectService.likeProject(
+        id: user.userId,
+        projectID: projectID,
+        likedProject: likeProject,
+        token: token!);
+    final body = ApiUtil.getBody(response);
+    if (response.statusCode == 200) {
+      await popupNotification(
+        context: context,
+        type: NotificationType.success,
+        content: 'Saved successfully',
+        textSubmit: 'Ok',
+        submit: null,
+      );
+    } else {
+      final errorDetails = body['errorDetails'];
+      popupNotification(
         context: context,
         type: NotificationType.error,
         content: errorDetails.toString(),
         textSubmit: 'Ok',
         submit: null,
       );
-        }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.project.projectScopeFlag == 1){
+    if (widget.project.projectScopeFlag == 1) {
       month = '3-6';
     }
     return Row(
@@ -62,41 +66,47 @@ class _ProjectItem extends State<ProjectItem> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
-              Text("Title: "+ 
-                widget.project.title,
-                style: const TextStyle(
-                  fontSize: 22,fontWeight: FontWeight.w500),
+              Text(
+                "Title: " + widget.project.title,
+                style:
+                    const TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
               ),
-               const SizedBox(
+              const SizedBox(
                 height: SpacingUtil.smallHeight,
               ),
-              CustomText(text:"Time created: " + DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.project.timeCreated)) ),
-               const SizedBox(
+              CustomText(
+                  text: "Time created: " +
+                      DateFormat('dd-MM-yyyy')
+                          .format(DateTime.parse(widget.project.timeCreated))),
+              const SizedBox(
                 height: SpacingUtil.smallHeight,
               ),
-              CustomText(text: "Time: " + month + " months, ${widget.project.numberofStudent} students needed"),
+              CustomText(
+                  text: "Time: " +
+                      month +
+                      " months, ${widget.project.numberofStudent} students needed"),
               const SizedBox(
                 height: SpacingUtil.mediumHeight,
               ),
               const CustomText(text: "Student are looking for"),
-              CustomBulletedList(listItems: widget.project.description.split(';')),
-              CustomText(text: "Proposals: " +   widget.project.proposal.toString()),
+              CustomBulletedList(
+                  listItems: widget.project.description.split(';')),
+              CustomText(
+                  text: "Proposals: " + widget.project.proposal.toString()),
             ],
           ),
         ),
         IconButton(
-           onPressed: () {
+            onPressed: () {
               setState(() {
                 saveProject(widget.project.id, EnumLikeProject.like);
               });
             },
-          icon: const Icon(
-            Icons.favorite_border_outlined,
-            color: Color.fromARGB(255, 0, 78, 212),
-            size: 30,
-          )
-        )
+            icon: const Icon(
+              Icons.favorite_border_outlined,
+              color: Color.fromARGB(255, 0, 78, 212),
+              size: 30,
+            ))
       ],
     );
   }

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_tabbar.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
-// import 'package:student_hub/models/project_model.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/utils/text_util.dart';
+
 class ProjectModel {
   final String _title;
   final String _timeCreating;
@@ -29,7 +30,7 @@ class ProjectModel {
     this._numberMessages,
     this._numberHires,
   );
-  set setLike(bool flag){
+  set setLike(bool flag) {
     _like = flag;
   }
 
@@ -77,46 +78,58 @@ class _DashboardCompanyState extends State<DashboardCompany>
     super.dispose();
   }
 
+  // switch to switch account screen
+  void onSwitchedToSwitchAccountScreen() {
+    NavigationUtil.toSwitchAccountScreen(context);
+  }
+
   void onPressed() {}
+
   @override
   Widget build(BuildContext context) {
-    return InitialBody(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Yours job',
-                ),
-                CustomButton(
-                    onPressed: () {
-                      NavigationUtil.toPostProjectStep1(context);
-                    },
-                    text: 'Post a job')
-              ],
+    return Scaffold(
+      appBar: CustomAppbar(
+        onPressed: onSwitchedToSwitchAccountScreen,
+        currentContext: context,
+      ),
+      body: InitialBody(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Yours job',
+                  ),
+                  CustomButton(
+                      onPressed: () {
+                        NavigationUtil.toPostProjectStep1(context);
+                      },
+                      text: 'Post a job')
+                ],
+              ),
             ),
-          ),
-          const SizedBox(
-            height: SpacingUtil.smallHeight,
-          ),
-          CustomTabBar(
-            tabController: _tabController,
-            tabs: _tabViews.map((e) => e.tab).toList(),
-          ),
-          const SizedBox(
-            height: SpacingUtil.mediumHeight,
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: _tabViews.map((e) => e.widget).toList(),
+            const SizedBox(
+              height: SpacingUtil.smallHeight,
             ),
-          ),
-        ],
+            CustomTabBar(
+              tabController: _tabController,
+              tabs: _tabViews.map((e) => e.tab).toList(),
+            ),
+            const SizedBox(
+              height: SpacingUtil.mediumHeight,
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: _tabViews.map((e) => e.widget).toList(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

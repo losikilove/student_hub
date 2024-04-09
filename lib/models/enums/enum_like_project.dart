@@ -6,7 +6,7 @@ enum EnumLikeProject {
 
   const EnumLikeProject({required this.value});
 
-  static EnumLikeProject toRole(int id) {
+  static EnumLikeProject toLike(int id) {
     if (id == EnumLikeProject.like.value) {
       return EnumLikeProject.like;
     }
