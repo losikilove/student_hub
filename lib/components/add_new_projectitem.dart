@@ -22,37 +22,47 @@ class ProjectItem extends StatefulWidget {
 
 class _ProjectItem extends State<ProjectItem> {
   String month = '1 - 3';
-  void saveProject(int projectID, EnumLikeProject likeProject) async {
+  bool islike = false;
+
+  void LikeProject(int projectID) async {
     UserProvider userProvider = Provider.of<UserProvider>(
       context,
       listen: false,
     );
     UserModel user = userProvider.user!;
     String? token = userProvider.token;
-    final response = await ProjectService.likeProject(
+    if (islike == false){
+      final response = await ProjectService.likeProject(
         id: user.userId,
         projectID: projectID,
-        likedProject: likeProject,
+        likedProject: EnumLikeProject.like,
         token: token!);
-    final body = ApiUtil.getBody(response);
-    if (response.statusCode == 200) {
-      await popupNotification(
-        context: context,
-        type: NotificationType.success,
-        content: 'Saved successfully',
-        textSubmit: 'Ok',
-        submit: null,
-      );
-    } else {
-      final errorDetails = body['errorDetails'];
-      popupNotification(
-        context: context,
-        type: NotificationType.error,
-        content: errorDetails.toString(),
-        textSubmit: 'Ok',
-        submit: null,
-      );
+        if (response.statusCode == 200) {
+        await popupNotification(
+          context: context,
+          type: NotificationType.success,
+          content: 'Saved successfully',
+          textSubmit: 'Ok',
+          submit: null,
+        );
+      } 
+    }else{
+       final response = await ProjectService.likeProject(
+        id: user.userId,
+        projectID: projectID,
+        likedProject: EnumLikeProject.dislike,
+        token: token!);
+        if (response.statusCode == 200) {
+        await popupNotification(
+          context: context,
+          type: NotificationType.success,
+          content: 'Unsaved successfully',
+          textSubmit: 'Ok',
+          submit: null,
+        );
+      }
     }
+    
   }
 
   @override
@@ -96,17 +106,31 @@ class _ProjectItem extends State<ProjectItem> {
             ],
           ),
         ),
-        IconButton(
+         IconButton(
             onPressed: () {
               setState(() {
-                saveProject(widget.project.id, EnumLikeProject.like);
+                LikeProject(widget.project.id);
+                islike = !islike;
               });
             },
-            icon: const Icon(
-              Icons.favorite_border_outlined,
+            icon: Icon(
+              islike
+                  ? Icons.favorite
+                  : Icons.favorite_border_outlined,
               color: Color.fromARGB(255, 0, 78, 212),
               size: 30,
-            ))
+            )),
+      //   IconButton(
+      //       onPressed: () {
+      //         setState(() {
+      //           saveProject(widget.project.id, EnumLikeProject.like);
+      //         });
+      //       },
+      //       icon: const Icon(
+      //         islike ? Icons.favorite: Icons.favorite_border_outlined,
+      //         color: Color.fromARGB(255, 0, 78, 212),
+      //         size: 30,
+      //       ))
       ],
     );
   }

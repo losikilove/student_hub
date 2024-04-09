@@ -14,6 +14,7 @@ class ProjectModel {
   final String timeCreated;
   final int proposal;
   final int numberofStudent;
+  final bool isFavorite;
 
   ProjectModel({
     required this.id,
@@ -25,6 +26,7 @@ class ProjectModel {
     required this.timeCreated,
     required this.proposal,
     required this.numberofStudent,
+    required this.isFavorite,
   });
 
   factory ProjectModel.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class ProjectModel {
             : EnumTypeFlag.toTypeFlag(json['typeFlag'] as int),
         timeCreated: json['createdAt'],
         proposal: json['countProposals'],
+        isFavorite: json['isFavorite'],
         numberofStudent: json['numberOfStudents']);
   }
   static List<ProjectModel> fromResponse(http.Response response) {
@@ -55,6 +58,7 @@ class ProjectModel {
                 ? null
                 : EnumTypeFlag.toTypeFlag(element['typeFlag'] as int),
             timeCreated: element['createdAt'] as String,
+            isFavorite: element['isFavorite'] as bool,
             proposal: element['countProposals'] as int,
             numberofStudent: element['numberOfStudents'] as int))
         .toList();
@@ -75,6 +79,7 @@ class ProjectModel {
                     element['project']['typeFlag'] as int),
             timeCreated: element['project']['createdAt'] as String,
             proposal: element['countProposals'] as int,
+            isFavorite: element['isFavorite'] as bool,
             numberofStudent: element['project']['numberOfStudents'] as int))
         .toList();
   }
