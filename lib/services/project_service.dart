@@ -1,6 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:student_hub/models/project_company_model.dart';
+import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/utils/api_util.dart';
 
 class ProjectService {
@@ -9,11 +13,12 @@ class ProjectService {
   //View the all project
   static Future<http.Response> viewProject({required String token}) {
     const String url = _baseUrl;
-    return http.get(Uri.parse(url), 
-      headers: ApiUtil.getHeadersWithToken(token));
+    return http.get(Uri.parse(url),
+        headers: ApiUtil.getHeadersWithToken(token));
   }
 
-  static Future<http.Response> viewProjectFavorite({required int id,required String token}) {
+  static Future<http.Response> viewProjectFavorite(
+      {required int id, required String token}) {
     String url = '${ApiUtil.baseUrl}/favoriteProject/$id';
     return http.get(
       Uri.parse(url),
@@ -21,14 +26,14 @@ class ProjectService {
     );
   }
 
-  static Future<http.Response> likeProject({
-      required int id,
+  static Future<http.Response> likeProject(
+      {required int id,
       required int projectID,
       required bool likedProject,
       required String token}) {
     String url = '${ApiUtil.baseUrl}/favoriteProject/$id';
     int disableFlag = 0;
-    if (likedProject == true){
+    if (likedProject == true) {
       disableFlag = 1;
     }
     return http.patch(
@@ -41,7 +46,8 @@ class ProjectService {
     );
   }
 
-  static Future<http.Response> viewProjectDetail({required int id,required String token}) {
+  static Future<http.Response> viewProjectDetail(
+      {required int id, required String token}) {
     String url = '$_baseUrl/$id';
     return http.get(
       Uri.parse(url),
@@ -49,6 +55,27 @@ class ProjectService {
     );
   }
 
+  //company project - My compnay project or student join project
+  static Future<http.Response> createProject({
+    required ProjectCompanyModel project,
+    required BuildContext context,
+  }) async {
+    const String url = '$_baseUrl';
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    int? id = userProvider.user?.company!.id;
+    final token = userProvider.token!;
+    return http.post(Uri.parse(url),
+        headers: ApiUtil.getHeadersWithToken(token),
+        body: jsonEncode(<String, dynamic>{
+          "companyId": id,
+          "projectScopeFlag": project.projectScopeFlag,
+          "title": project.title,
+          "numberOfStudents": project.numberofStudent,
+          "description": project.description,
+          "typeFlag": 0
+        }));
+  }
 }
 
 // import 'package:http/http.dart' as http;

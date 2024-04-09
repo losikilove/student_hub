@@ -4,7 +4,12 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/custom_divider.dart';
+import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/models/project_company_model.dart';
+import 'package:student_hub/screens/main_screen.dart';
+import 'package:student_hub/services/project_service.dart';
+import 'package:student_hub/utils/api_util.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 
@@ -17,6 +22,26 @@ class ProjectPostStep4Screen extends StatefulWidget {
 }
 
 class _ProjectPostStep4ScreenState extends State<ProjectPostStep4Screen> {
+  
+
+  Future<void> createProject() async {
+    final response =  await ProjectService.createProject(project: widget.projectCompanyModel,context: context);
+    if(response.statusCode == 200){
+      NavigationUtil.toMainScreen(context, MainScreenIndex.dashboard);
+      return;
+    }
+    if(response.statusCode == StatusCode.error){
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: ApiUtil.getBody(response)['errorDetails'],
+        textSubmit: 'Ok',
+        submit: null,
+      );
+      
+      return;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +87,7 @@ class _ProjectPostStep4ScreenState extends State<ProjectPostStep4Screen> {
           alignment: Alignment.topRight,
           child: CustomButton(
             size: CustomButtonSize.small,
-            onPressed: () {},
+            onPressed: createProject,
             text: 'Save',
           ),
         ),
