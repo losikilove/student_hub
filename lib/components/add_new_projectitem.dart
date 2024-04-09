@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/popup_notification.dart';
+import 'package:student_hub/models/enums/enum_like_project.dart';
 import 'package:student_hub/models/project_model.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
@@ -20,7 +21,7 @@ class ProjectItem extends StatefulWidget {
 
 class _ProjectItem extends State<ProjectItem> {
   String month = '1 - 3';
- void saveProject(int projectID,bool likeProject) async{
+ void saveProject(int projectID,EnumLikeProject likeProject) async{
     UserProvider userProvider = Provider.of<UserProvider>(
       context,
       listen: false,
@@ -28,7 +29,7 @@ class _ProjectItem extends State<ProjectItem> {
     UserModel user = userProvider.user!;
     String? token = userProvider.token; 
     final response = await ProjectService.likeProject(id: user.userId, 
-                    projectID: projectID,likedProject: false, token: token!);
+                    projectID: projectID,likedProject: likeProject,token: token!);
        final body = ApiUtil.getBody(response);
        if (response.statusCode == 200){
             await popupNotification(
@@ -87,7 +88,7 @@ class _ProjectItem extends State<ProjectItem> {
         IconButton(
            onPressed: () {
               setState(() {
-                saveProject(widget.project.id, false);
+                saveProject(widget.project.id, EnumLikeProject.like);
               });
             },
           icon: const Icon(

@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:student_hub/models/enums/enum_like_project.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -26,22 +26,18 @@ class ProjectService {
     );
   }
 
-  static Future<http.Response> likeProject(
+   static Future<http.Response> likeProject(
       {required int id,
       required int projectID,
-      required bool likedProject,
+      required EnumLikeProject likedProject,
       required String token}) {
     String url = '${ApiUtil.baseUrl}/favoriteProject/$id';
-    int disableFlag = 0;
-    if (likedProject == true) {
-      disableFlag = 1;
-    }
-    return http.patch(
+     return http.patch(
       Uri.parse(url),
       headers: ApiUtil.getHeadersWithToken(token),
       body: jsonEncode(<String, dynamic>{
         'projectId': projectID,
-        'disableFlag': disableFlag,
+        'disableFlag':likedProject.value,
       }),
     );
   }

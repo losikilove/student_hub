@@ -61,14 +61,6 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.end,
-            //   children: [
-            //     IconButton(onPressed: (){
-            //       NavigationUtil.turnBack(context);
-            //     }, icon: Icon(Icons.cancel)),
-            //   ],
-            // ),
             CustomText(
               text: "Detail: "+ title,
               isBold: true,
