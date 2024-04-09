@@ -20,7 +20,7 @@ class CustomBulletedList extends StatelessWidget {
     return BulletedList(
       style: TextStyle(
         fontSize: textSize,
-        color: Theme.of(context).colorScheme.onPrimary,
+        color: textColor ?? Theme.of(context).colorScheme.onPrimary,
       ),
       bulletColor: bulletColor ?? Theme.of(context).colorScheme.onPrimary,
       listItems: listItems,

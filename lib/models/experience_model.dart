@@ -14,15 +14,15 @@ class ExperienceModel {
     return educationsReponse
         .map(
           (element) => ExperienceModel(
-              element['id'] as int,
+              int.parse(element['id'].toString()),
               element['title'] as String,
               element['description'] as String,
               // for start year
-              int.parse(element['startMonth'].toString().split('-')[0]),
-              // for end year
-              int.parse(element['endMonth'].toString().split('-')[0]),
-              // for start month
               int.parse(element['startMonth'].toString().split('-')[1]),
+              // for end year
+              int.parse(element['endMonth'].toString().split('-')[1]),
+              // for start month
+              int.parse(element['startMonth'].toString().split('-')[0]),
               // for end month
               int.parse(element['endMonth'].toString().split('-')[0]),
               // for skill-sets of experience
