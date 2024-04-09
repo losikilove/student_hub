@@ -6,6 +6,7 @@ import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/enums/enum_projectlenght.dart';
+import 'package:student_hub/models/enums/enum_scopeProject.dart';
 import 'package:student_hub/models/project_company_model.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
@@ -23,7 +24,8 @@ class _ProjectPostStep1ScreenState extends State<ProjectPostStep1Screen> {
     title: "title", 
     projectScopeFlag: EnumProjectLenght.less_than_one_month, 
     numberofStudent: 0, 
-    description: 'description'
+    description: 'description',
+    scropProject: EnumScopeProject.archive,
   );
 
   bool _titlePost = false;

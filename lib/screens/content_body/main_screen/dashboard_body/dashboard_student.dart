@@ -80,8 +80,7 @@ class _DashboardStudentState extends State<DashboardStudent>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: InitialBody(
+    return  InitialBody(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -100,8 +99,7 @@ class _DashboardStudentState extends State<DashboardStudent>
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 
   Widget _studentAllProjectContent() {
