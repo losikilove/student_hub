@@ -180,6 +180,12 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
   Widget build(BuildContext context) {
     //getAllProject();
     return Scaffold(
+      appBar: CustomAppbar(
+        onPressed:(){
+          NavigationUtil.toSwitchAccountScreen(context);
+        },
+        currentContext: context,
+      ),
       body: InitialBody(
         child: Column(
           children: [

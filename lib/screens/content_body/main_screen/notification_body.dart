@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 
 class NotificationBody extends StatefulWidget {
   const NotificationBody({super.key});
@@ -17,6 +19,12 @@ class _NotificationBody extends State<NotificationBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppbar(
+        onPressed:(){
+          NavigationUtil.toSwitchAccountScreen(context);
+        },
+        currentContext: context,
+      ),
       body: InitialBody(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
