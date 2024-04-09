@@ -14,13 +14,13 @@ import 'package:student_hub/services/project_service.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_divider.dart';
-import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 import 'package:intl/intl.dart';
-
+import 'package:student_hub/components/custom_future_builder.dart';
+import 'package:student_hub/utils/api_util.dart';
 
 enum ProjectBodyType {
   main(nameRoute: ''),
@@ -113,64 +113,18 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
   void onPressed() {}
   List<ProjectModel> _projects = [];
   List<ProjectModel> _FavoriteProjects = [];
-  void getAllProject() async{
-    UserProvider userProvider = Provider.of<UserProvider>(
+  Future<List<ProjectModel>> initializeProject() async {
+    
+      UserProvider userProvider = Provider.of<UserProvider>(
       context,
       listen: false,
     );
 
     String? token = userProvider.token; 
     final response = await ProjectService.viewProject(token:token!);
-    final body = ApiUtil.getBody(response);
-    //showCircleProgress(context: context);
-    if (response.statusCode == 200){
-      // //
-      setState(() {
-        _projects = ProjectModel.fromResponse(response);
-      });
-     
-    
-    }else if (response.statusCode == StatusCode.notFound.code) {
-      // the user is not found
-      final errorDetails = body['errorDetails'];
-
-      // show popup error message
-      popupNotification(
-        context: context,
-        type: NotificationType.error,
-        content: errorDetails.toString(),
-        textSubmit: 'Ok',
-        submit: null,
-      );
-    } else if (response.statusCode == StatusCode.unprocessableEntity.code) {
-      // pop the loading progress
-      //
-
-      // incorrect password
-      final errorDetails = body['errorDetails'];
-
-      // show popup error message
-      popupNotification(
-        context: context,
-        type: NotificationType.error,
-        content: errorDetails.toString(),
-        textSubmit: 'Ok',
-        submit: null,
-      );
-    } else {
-      // pop the loading progress
-      //
-
-      popupNotification(
-        context: context,
-        type: NotificationType.error,
-        content: 'Something went wrong',
-        textSubmit: 'Ok',
-        submit: null,
-      );
-    }
-   
+    return ProjectModel.fromResponse(response);
   }
+
   void getSavedProject() async{
     UserProvider userProvider = Provider.of<UserProvider>(
       context,
@@ -201,12 +155,8 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
       );
     } else if (response.statusCode == StatusCode.unprocessableEntity.code) {
       // pop the loading progress
-      //
-
-      // incorrect password
       final errorDetails = body['errorDetails'];
 
-      // show popup error message
       popupNotification(
         context: context,
         type: NotificationType.error,
@@ -216,8 +166,6 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
       );
     } else {
       // pop the loading progress
-      //
-
       popupNotification(
         context: context,
         type: NotificationType.error,
@@ -230,7 +178,7 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
   }
   @override
   Widget build(BuildContext context) {
-    getAllProject();
+    //getAllProject();
     return Scaffold(
       body: InitialBody(
         child: Column(
@@ -272,7 +220,9 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      ProjectBodySavedPart(projects: _FavoriteProjects)));
+                                      ProjectBodySavedPart(projects: _FavoriteProjects)
+                              )
+                            );
                         },
                         icon: const Icon(
                           Icons.favorite,
@@ -286,7 +236,18 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
               height: SpacingUtil.smallHeight,
             ),
             const CustomDivider(),
-            ListViewProjectItems(projects: _projects),
+            //ListViewProjectItems(projects: _projects),
+             CustomFutureBuilder<List<ProjectModel>>(
+                    future: initializeProject(),
+                    widgetWithData: (snapshot) =>
+                        ListViewProjectItems(projects: snapshot.data!),
+                    widgetWithError: (snapshot) {
+                      return const CustomText(
+                        text: 'Sorry, something went wrong',
+                        textColor: Colors.red,
+                      );
+                    },
+                  ),
           ],
         ),
       ),
