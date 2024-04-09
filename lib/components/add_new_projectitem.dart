@@ -3,7 +3,6 @@ import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/models/enums/enum_like_project.dart';
 import 'package:student_hub/models/project_model.dart';
-import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 import 'package:intl/intl.dart';
@@ -11,7 +10,7 @@ import 'package:student_hub/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:student_hub/models/user_model.dart';
 import 'package:student_hub/services/project_service.dart';
-import 'package:student_hub/utils/api_util.dart';
+
 
 class ProjectItem extends StatefulWidget {
   final ProjectModel project;

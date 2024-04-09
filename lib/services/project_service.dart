@@ -51,6 +51,15 @@ class ProjectService {
     );
   }
 
+  static Future<http.Response> searchProject(
+      {required String search,required String token}) {
+    String url = '$_baseUrl?title=$search';
+    return http.get(
+      Uri.parse(url),
+      headers: ApiUtil.getHeadersWithToken(token),
+    );
+  }
+
   //company project - My compnay project or student join project
   static Future<http.Response> createProject({
     required ProjectCompanyModel project,
