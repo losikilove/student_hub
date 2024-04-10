@@ -34,9 +34,6 @@ class StudentViewProfileScreen extends StatefulWidget {
 class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
   Future<void> onPressed() async {}
 
-  // update educations
-  Future<void> onUpdatedEducations() async {}
-
   // update experiences
   Future<void> onUpdatedExperiences() async {}
 
@@ -161,7 +158,11 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                         ),
                         // educations info
                         _expansionTile(
-                          onUpdated: onUpdatedEducations,
+                          onUpdated: () {
+                            ProfileStudentUtil.onUpdatedEducations(
+                              context: context,
+                            );
+                          },
                           title: 'Educations',
                           expandedChild: ConstrainedBox(
                             constraints: BoxConstraints(

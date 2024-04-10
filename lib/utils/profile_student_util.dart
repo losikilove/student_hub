@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:student_hub/components/add_new_education.dart';
 import 'package:student_hub/components/add_new_language.dart';
 import 'package:student_hub/components/circle_progress.dart';
 import 'package:student_hub/components/custom_anchor.dart';
@@ -17,11 +18,13 @@ import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/mutliselect_chip.dart';
 import 'package:student_hub/components/popup_notification.dart';
+import 'package:student_hub/models/education_model.dart';
 import 'package:student_hub/models/language_model.dart';
 import 'package:student_hub/models/skill_set_model.dart';
 import 'package:student_hub/models/tech_stack_model.dart';
 import 'package:student_hub/models/user_model.dart';
 import 'package:student_hub/providers/user_provider.dart';
+import 'package:student_hub/services/education_service.dart';
 import 'package:student_hub/services/language_service.dart';
 import 'package:student_hub/services/profile_service.dart';
 import 'package:student_hub/services/skill_set_service.dart';
@@ -203,7 +206,7 @@ class ProfileStudentUtil {
       context: context,
       titleAttribute: 'Languages',
       content: SizedBox(
-        width: MediaQuery.sizeOf(context).width + 60,
+        width: MediaQuery.sizeOf(context).width,
         child: AddNewLanguage(
           onHelper: onGettingValuesOfLanguage,
           initialLanguages: languages,
@@ -224,6 +227,74 @@ class ProfileStudentUtil {
             languages: LanguageModel.fromResponse(
               jsonDecode(response.body)['result'] as List<dynamic>,
             ),
+          );
+        }
+
+        return response;
+      },
+    );
+
+    // have no clue
+    if (isUpdated == null) {
+      return;
+    }
+
+    // if isUpdated is false, that means something went wrong
+    if (isUpdated == false) {
+      ApiUtil.handleOtherStatusCode(context: context);
+      return;
+    }
+
+    // and then popup succes
+    popupNotification(
+      context: context,
+      type: NotificationType.success,
+      content: 'Update languages successfully',
+      textSubmit: 'Ok',
+      submit: null,
+    );
+  }
+
+  // update educations
+  static Future<void> onUpdatedEducations(
+      {required BuildContext context}) async {
+    // get educations
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    UserModel user = userProvider.user!;
+    // copy list to avoid accessing the old list
+    List<EducationModel> educations = [...user.student!.educations];
+
+    // get results from the educations
+    void onGettingValuesOfEducation(List<EducationModel> newEducations) {
+      educations = newEducations;
+    }
+
+    // check that info is updated
+    final isUpdated = await _showEditedInfo(
+      context: context,
+      titleAttribute: 'Educations',
+      content: SizedBox(
+        width: MediaQuery.sizeOf(context).width,
+        child: AddNewEducation(
+          onHelper: onGettingValuesOfEducation,
+          initialEducations: educations,
+        ),
+      ),
+      handleSubmit: () async {
+        // call API
+        final response = await EducationService.couEducation(
+          token: userProvider.token!,
+          studentId: user.student!.id,
+          educations: educations,
+        );
+
+        // save result to user provider
+        // to avoid that an id of language is null
+        if (response.statusCode == StatusCode.ok.code) {
+          userProvider.saveStudentWhenUpdatedProfileStudent(
+            educations: EducationModel.fromResponse(
+                jsonDecode(response.body)['result'] as List<dynamic>),
           );
         }
 

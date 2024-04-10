@@ -8,14 +8,26 @@ import 'package:student_hub/utils/spacing_util.dart';
 
 class AddNewEducation extends StatefulWidget {
   final void Function(List<EducationModel> educations) onHelper;
-  const AddNewEducation({super.key, required this.onHelper});
+  final List<EducationModel>? initialEducations;
+  const AddNewEducation(
+      {super.key, required this.onHelper, this.initialEducations});
 
   @override
   State<AddNewEducation> createState() => _AddNewEducationState();
 }
 
 class _AddNewEducationState extends State<AddNewEducation> {
-  final List<EducationModel> _educations = [];
+  late List<EducationModel> _educations;
+
+  @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      _educations =
+          widget.initialEducations == null ? [] : widget.initialEducations!;
+    });
+  }
 
   void onCreatedNewEducation() async {
     // get data after submit info of dialog
@@ -34,6 +46,7 @@ class _AddNewEducationState extends State<AddNewEducation> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -100,13 +113,10 @@ class _AddNewEducationState extends State<AddNewEducation> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      child: CustomText(
-                        text: _educations[index].getSchoolName,
-                        size: 14.5,
-                        isOverflow: true,
-                      ),
+                    CustomText(
+                      text: _educations[index].getSchoolName,
+                      size: 14.5,
+                      isOverflow: true,
                     ),
                     Text(
                       _educations[index].getSchoolYear,
