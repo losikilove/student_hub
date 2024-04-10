@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -197,6 +198,38 @@ class ProfileService {
     );
 
     return responseTranscript;
+  }
+
+  // update student with techstack or skillsets
+  static Future<http.Response> updateStudentTechStackOrSkillSets(
+      {required BuildContext context,
+      required TechStackModel techStack,
+      required List<SkillSetModel> skillSets}) async {
+    // get token and user id
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.token!;
+    final studentId = userProvider.user!.student!.id;
+    // url API
+    final String url = '$_baseUrl/$_student/$studentId';
+    // response
+    final response = await http.put(Uri.parse(url),
+        headers: ApiUtil.getHeadersWithToken(token),
+        body: jsonEncode(<String, dynamic>{
+          'techStackId': techStack.id,
+          'skillSets': skillSets.map((skill) => skill.id).toList(),
+        }));
+
+    // if something went wrong, return response
+    if (response.statusCode != StatusCode.ok.code) return response;
+
+    // save data to the user provider
+    userProvider.saveStudentWhenUpdatedProfileStudent(
+      techStack: techStack,
+      skillSets: skillSets,
+    );
+
+    return response;
   }
 
   // cou (create or update) resume of student

@@ -1,14 +1,26 @@
+import 'dart:developer';
+
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:student_hub/components/circle_progress.dart';
 import 'package:student_hub/components/custom_anchor.dart';
 import 'package:student_hub/components/custom_appbar.dart';
+import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_expansion_tile.dart';
+import 'package:student_hub/components/custom_future_builder.dart';
+import 'package:student_hub/components/custom_option.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/components/popup_notification.dart';
+import 'package:student_hub/models/tech_stack_model.dart';
+import 'package:student_hub/models/user_model.dart';
 import 'package:student_hub/providers/user_provider.dart';
-import 'package:student_hub/utils/color_util.dart';
+import 'package:student_hub/services/profile_service.dart';
+import 'package:student_hub/services/tech_stack_service.dart';
+import 'package:student_hub/utils/api_util.dart';
+import 'package:student_hub/utils/profile_student_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class StudentViewProfileScreen extends StatefulWidget {
@@ -21,12 +33,6 @@ class StudentViewProfileScreen extends StatefulWidget {
 
 class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
   Future<void> onPressed() async {}
-
-  // update a techstack
-  Future<void> onUpdatedTechStack() async {}
-
-  // update skillsets
-  Future<void> onUpdatedSkillSets() async {}
 
   // update languages
   Future<void> onUpdatedLanguages() async {}
@@ -79,7 +85,9 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                       children: [
                         // techstack info
                         _expansionTile(
-                          onUpdated: onUpdatedTechStack,
+                          onUpdated: () =>
+                              ProfileStudentUtil.onUpdatedTechStack(
+                                  context: context),
                           title: 'Techstack',
                           expandedChild: CustomText(
                             text: student?.techStack.name ?? '',
@@ -93,7 +101,10 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                         ),
                         // skillsets info
                         _expansionTile(
-                          onUpdated: onUpdatedSkillSets,
+                          onUpdated: () =>
+                              ProfileStudentUtil.onUpdatedSkillSets(
+                            context: context,
+                          ),
                           title: 'Skill-set',
                           expandedChild: ConstrainedBox(
                             constraints: BoxConstraints(
@@ -332,6 +343,7 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
     );
   }
 
+  // custom expansion tile to show info
   Widget _expansionTile({
     required String title,
     required Widget expandedChild,
@@ -366,4 +378,83 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
       ],
     );
   }
+
+  // edit info dialog
+  Future<bool?> _showEditedInfo(
+          {required String titleAttribute,
+          required Widget content,
+          required Future<http.Response> handleSubmit}) async =>
+      showDialog(
+        context: context,
+        builder: (context) {
+          // confirm edition
+          Future<bool?> showConfirmedEdition() async => showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  // title of popup
+                  title: Text(
+                    NotificationType.warning.message,
+                    style: TextStyle(
+                      color: NotificationType.warning.color,
+                    ),
+                  ),
+                  // content of popup
+                  content: const CustomText(
+                    text: 'Are you sure about that?',
+                  ),
+                  // buttons
+                  actions: <Widget>[
+                    // cancel button
+                    TextButton(
+                      child: const Text('No'),
+                      onPressed: () => Navigator.of(context).pop(false),
+                    ),
+                    // submit button
+                    CustomButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      text: 'Yes',
+                    ),
+                  ],
+                );
+              });
+
+          // return main dialog
+          return AlertDialog(
+            // title of popup
+            title: Text(
+              'Update $titleAttribute',
+            ),
+            // content of popup
+            content: content,
+            // buttons
+            actions: <Widget>[
+              // cancel button
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () => Navigator.of(context).pop(false),
+              ),
+              // submit button
+              CustomButton(
+                onPressed: () async {
+                  final isComfirmed = await showConfirmedEdition();
+
+                  // check if the user is not confirmed
+                  // that means nothing has edited
+                  if (isComfirmed == false || isComfirmed == null) return;
+
+                  // handle submit
+                  showCircleProgress(context: context);
+                  await handleSubmit;
+                  Navigator.pop(context);
+
+                  // back to the main page
+                  Navigator.of(context).pop(true);
+                },
+                text: 'Submit',
+              ),
+            ],
+          );
+        },
+      );
 }

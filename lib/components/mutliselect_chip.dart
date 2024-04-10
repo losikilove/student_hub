@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 class MultiSelectChip<T> extends StatefulWidget {
+  final List<T>? initialList;
   final List<T> listOf;
   // this function is called when parent needs to get list of selected items
   final void Function(List<T> selectedItems) onHelper;
@@ -9,6 +10,7 @@ class MultiSelectChip<T> extends StatefulWidget {
     super.key,
     required this.listOf,
     required this.onHelper,
+    this.initialList,
   });
 
   @override
@@ -16,7 +18,8 @@ class MultiSelectChip<T> extends StatefulWidget {
 }
 
 class _MultiSelectChipState<T> extends State<MultiSelectChip<T>> {
-  List<T> _selectedItems = [];
+  late List<T> _selectedItems;
+  late List<ValueItem<T>> _initialOptions;
   late List<ValueItem<T>> _options;
 
   @override
@@ -28,6 +31,15 @@ class _MultiSelectChipState<T> extends State<MultiSelectChip<T>> {
       _options = widget.listOf
           .map((item) => ValueItem(label: item.toString(), value: item))
           .toList();
+      if (widget.initialList != null) {
+        _selectedItems = widget.initialList!;
+        _initialOptions = widget.initialList!
+            .map((item) => ValueItem(label: item.toString(), value: item))
+            .toList();
+      } else {
+        _selectedItems = const [];
+        _initialOptions = const [];
+      }
     });
 
     widget.onHelper(_selectedItems);
@@ -51,6 +63,7 @@ class _MultiSelectChipState<T> extends State<MultiSelectChip<T>> {
       hint: 'Choose skills',
       onOptionSelected: onOptionSelected,
       options: _options,
+      selectedOptions: _initialOptions,
       selectionType: SelectionType.multi,
       dropdownHeight: 250,
       chipConfig: ChipConfig(
