@@ -1,19 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/models/language_model.dart';
 
 class AddNewLanguage extends StatefulWidget {
+  final List<LanguageModel>? initialLanguages;
   final void Function(List<LanguageModel> languages) onHelper;
-  const AddNewLanguage({super.key, required this.onHelper});
+  const AddNewLanguage(
+      {super.key, required this.onHelper, this.initialLanguages});
 
   @override
   State<AddNewLanguage> createState() => _AddNewLanguageState();
 }
 
 class _AddNewLanguageState extends State<AddNewLanguage> {
-  final List<LanguageModel> _languages = [];
+  late List<LanguageModel> _languages;
+
+  @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      _languages =
+          widget.initialLanguages == null ? [] : widget.initialLanguages!;
+    });
+  }
 
   void onCreatedNewLanguage() async {
     // get data after submit info of dialog
@@ -32,6 +43,7 @@ class _AddNewLanguageState extends State<AddNewLanguage> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,15 +102,13 @@ class _AddNewLanguageState extends State<AddNewLanguage> {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  child: CustomText(
-                    text: _languages[index].toString(),
-                    size: 14.5,
-                    isOverflow: true,
-                  ),
+                CustomText(
+                  text: _languages[index].toString(),
+                  size: 14.5,
+                  isOverflow: true,
                 ),
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     // update this language
                     IconButton(

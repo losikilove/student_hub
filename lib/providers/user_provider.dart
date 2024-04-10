@@ -138,7 +138,7 @@ class UserProvider with ChangeNotifier {
   }
 
   // sign out
-  void signout() async {
+  Future<void> signout() async {
     // call API logout
     await AuthService.signout(token: _token!);
 

@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:student_hub/components/add_new_language.dart';
 import 'package:student_hub/components/circle_progress.dart';
 import 'package:student_hub/components/custom_anchor.dart';
 import 'package:student_hub/components/custom_appbar.dart';
@@ -16,10 +17,12 @@ import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/mutliselect_chip.dart';
 import 'package:student_hub/components/popup_notification.dart';
+import 'package:student_hub/models/language_model.dart';
 import 'package:student_hub/models/skill_set_model.dart';
 import 'package:student_hub/models/tech_stack_model.dart';
 import 'package:student_hub/models/user_model.dart';
 import 'package:student_hub/providers/user_provider.dart';
+import 'package:student_hub/services/language_service.dart';
 import 'package:student_hub/services/profile_service.dart';
 import 'package:student_hub/services/skill_set_service.dart';
 import 'package:student_hub/services/tech_stack_service.dart';
@@ -34,7 +37,7 @@ class ProfileStudentUtil {
       {required BuildContext context}) async {
     // get techstack
     UserModel user = Provider.of<UserProvider>(context, listen: false).user!;
-    TechStackModel techStack = user.student!.techStack;
+    late TechStackModel techStack;
 
     // initialize the techstack from server
     Future<List<TechStackModel>> initializeTechStack() async {
@@ -59,7 +62,7 @@ class ProfileStudentUtil {
           future: initializeTechStack(),
           widgetWithData: (snapshot) => CustomOption<TechStackModel>(
             initialSelection: snapshot.data!.singleWhere(
-              (element) => element.id == techStack.id,
+              (element) => element.id == user.student!.techStack.id,
             ),
             options: snapshot.data!,
             onHelper: onGettingValueOfTechstack,
@@ -105,9 +108,10 @@ class ProfileStudentUtil {
   // update skillsets
   static Future<void> onUpdatedSkillSets(
       {required BuildContext context}) async {
-    // get techstack
+    // get skillsets
     UserModel user = Provider.of<UserProvider>(context, listen: false).user!;
-    List<SkillSetModel> skillSets = user.student!.skillSets;
+    // copy list to avoid accessing the old list
+    List<SkillSetModel> skillSets = [...user.student!.skillSets];
 
     // initialize skill set
     Future<List<SkillSetModel>> initializeSkillSet() async {
@@ -132,7 +136,6 @@ class ProfileStudentUtil {
           future: initializeSkillSet(),
           widgetWithData: (snapshot) => MultiSelectChip<SkillSetModel>(
             listOf: snapshot.data!,
-            // initialList: snapshot.data!.map((skillset) => skillSets.singleWhere((element) => element.id == skillset.id)).toList(),
             initialList: skillSets
                 .map(
                   (parent) => snapshot.data!.singleWhere(
@@ -175,6 +178,75 @@ class ProfileStudentUtil {
       context: context,
       type: NotificationType.success,
       content: 'Update skillsets successfully',
+      textSubmit: 'Ok',
+      submit: null,
+    );
+  }
+
+  // update languages
+  static Future<void> onUpdatedLanguages(
+      {required BuildContext context}) async {
+    // get languages
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    UserModel user = userProvider.user!;
+    // copy list to avoid accessing the old list
+    List<LanguageModel> languages = [...user.student!.languages];
+
+    // get results from the languages
+    void onGettingValuesOfLanguage(List<LanguageModel> languages) {
+      languages = languages;
+    }
+
+    // check that info is updated
+    final isUpdated = await _showEditedInfo(
+      context: context,
+      titleAttribute: 'Languages',
+      content: SizedBox(
+        width: MediaQuery.sizeOf(context).width + 60,
+        child: AddNewLanguage(
+          onHelper: onGettingValuesOfLanguage,
+          initialLanguages: languages,
+        ),
+      ),
+      handleSubmit: () async {
+        // call API
+        final response = await LanguageService.couLanguage(
+          token: userProvider.token!,
+          studentId: user.student!.id,
+          languages: languages,
+        );
+
+        // save result to user provider
+        // to avoid that an id of language is null
+        if (response.statusCode == StatusCode.ok.code) {
+          userProvider.saveStudentWhenUpdatedProfileStudent(
+            languages: LanguageModel.fromResponse(
+              jsonDecode(response.body)['result'] as List<dynamic>,
+            ),
+          );
+        }
+
+        return response;
+      },
+    );
+
+    // have no clue
+    if (isUpdated == null) {
+      return;
+    }
+
+    // if isUpdated is false, that means something went wrong
+    if (isUpdated == false) {
+      ApiUtil.handleOtherStatusCode(context: context);
+      return;
+    }
+
+    // and then popup succes
+    popupNotification(
+      context: context,
+      type: NotificationType.success,
+      content: 'Update languages successfully',
       textSubmit: 'Ok',
       submit: null,
     );

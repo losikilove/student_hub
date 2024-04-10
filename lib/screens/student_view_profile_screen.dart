@@ -34,9 +34,6 @@ class StudentViewProfileScreen extends StatefulWidget {
 class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
   Future<void> onPressed() async {}
 
-  // update languages
-  Future<void> onUpdatedLanguages() async {}
-
   // update educations
   Future<void> onUpdatedEducations() async {}
 
@@ -132,7 +129,11 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                         ),
                         // languages info
                         _expansionTile(
-                          onUpdated: onUpdatedLanguages,
+                          onUpdated: () {
+                            ProfileStudentUtil.onUpdatedLanguages(
+                              context: context,
+                            );
+                          },
                           title: 'Languages',
                           expandedChild: ConstrainedBox(
                             constraints: BoxConstraints(
@@ -378,83 +379,4 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
       ],
     );
   }
-
-  // edit info dialog
-  Future<bool?> _showEditedInfo(
-          {required String titleAttribute,
-          required Widget content,
-          required Future<http.Response> handleSubmit}) async =>
-      showDialog(
-        context: context,
-        builder: (context) {
-          // confirm edition
-          Future<bool?> showConfirmedEdition() async => showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  // title of popup
-                  title: Text(
-                    NotificationType.warning.message,
-                    style: TextStyle(
-                      color: NotificationType.warning.color,
-                    ),
-                  ),
-                  // content of popup
-                  content: const CustomText(
-                    text: 'Are you sure about that?',
-                  ),
-                  // buttons
-                  actions: <Widget>[
-                    // cancel button
-                    TextButton(
-                      child: const Text('No'),
-                      onPressed: () => Navigator.of(context).pop(false),
-                    ),
-                    // submit button
-                    CustomButton(
-                      onPressed: () => Navigator.of(context).pop(true),
-                      text: 'Yes',
-                    ),
-                  ],
-                );
-              });
-
-          // return main dialog
-          return AlertDialog(
-            // title of popup
-            title: Text(
-              'Update $titleAttribute',
-            ),
-            // content of popup
-            content: content,
-            // buttons
-            actions: <Widget>[
-              // cancel button
-              TextButton(
-                child: const Text('Cancel'),
-                onPressed: () => Navigator.of(context).pop(false),
-              ),
-              // submit button
-              CustomButton(
-                onPressed: () async {
-                  final isComfirmed = await showConfirmedEdition();
-
-                  // check if the user is not confirmed
-                  // that means nothing has edited
-                  if (isComfirmed == false || isComfirmed == null) return;
-
-                  // handle submit
-                  showCircleProgress(context: context);
-                  await handleSubmit;
-                  Navigator.pop(context);
-
-                  // back to the main page
-                  Navigator.of(context).pop(true);
-                },
-                text: 'Submit',
-              ),
-            ],
-          );
-        },
-      );
 }

@@ -37,8 +37,8 @@ class _MultiSelectChipState<T> extends State<MultiSelectChip<T>> {
             .map((item) => ValueItem(label: item.toString(), value: item))
             .toList();
       } else {
-        _selectedItems = const [];
-        _initialOptions = const [];
+        _selectedItems = [];
+        _initialOptions = [];
       }
     });
 

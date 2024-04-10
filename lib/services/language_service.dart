@@ -14,7 +14,7 @@ class LanguageService {
       {required String token,
       required int? studentId,
       required List<LanguageModel> languages}) {
-    String url = '$_baseUrl/updateByStudentId/${studentId.toString()}';
+    String url = '$_baseUrl/updateByStudentId/$studentId';
     return http.put(Uri.parse(url),
         headers: ApiUtil.getHeadersWithToken(token),
         body: jsonEncode(<String, dynamic>{

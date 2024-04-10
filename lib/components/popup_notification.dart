@@ -5,7 +5,7 @@ import 'package:student_hub/utils/navigation_util.dart';
 
 enum NotificationType {
   error(message: 'Error', color: Colors.red),
-  warning(message: 'Warning', color: Colors.yellow),
+  warning(message: 'Warning', color: Colors.orange),
   success(message: 'Success', color: Colors.green);
 
   final String message;
