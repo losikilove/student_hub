@@ -29,7 +29,6 @@ class ProjectBodySavedPart extends StatefulWidget {
 }
 
 class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
-  List<ProjectModel> projects = [];
 
   void onPressed() {}
 
@@ -38,7 +37,7 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
     NavigationUtil.toSwitchAccountScreen(context);
   }
 
-  Future<List<ProjectModel>> initializeFavoriteProject() async {
+  Future<List<SaveProjectModel>> initializeFavoriteProject() async {
     UserProvider userProvider = Provider.of<UserProvider>(
       context,
       listen: false,
@@ -48,7 +47,7 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
     UserModel user = userProvider.user!;
     final response = await ProjectService.viewProjectFavorite(
         id: user.userId, token: token!);
-    return ProjectModel.fromFavoriteResponse(response);
+    return SaveProjectModel.fromFavoriteResponse(response);
   }
 
   void unSaveProject(int projectID, EnumLikeProject likeProject) async {
@@ -97,7 +96,7 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomFutureBuilder<List<ProjectModel>>(
+          CustomFutureBuilder<List<SaveProjectModel>>(
             future: initializeFavoriteProject(),
             widgetWithData: (snapshot) => Expanded(
                 child: ListView.builder(
@@ -105,15 +104,15 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
               itemBuilder: (context, index) {
                 final project = snapshot.data?[index];
                 String month = '1 - 3';
-                if (project?.projectScopeFlag == 1) {
+                if (project?.projectScopeFlag.value == 1) {
                   month = '3-6';
                 }
                 return saveProjectItem(project!, month);
               },
             )),
             widgetWithError: (snapshot) {
-              return const CustomText(
-                text: 'Sorry, something went wrong',
+              return  CustomText(
+                text: 'Sorry, something went wrong ${snapshot.error}',
                 textColor: Colors.red,
               );
             },
@@ -123,7 +122,7 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
     );
   }
 
-  Row saveProjectItem(ProjectModel project, String month) {
+  Row saveProjectItem(SaveProjectModel project, String month) {
     return Row(
       children: [
         Expanded(

@@ -6,6 +6,7 @@ import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/listview_project_items.dart';
 import 'package:student_hub/models/project_model.dart';
 import 'package:student_hub/services/project_service.dart';
+import 'package:student_hub/theme/theme.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_divider.dart';
@@ -54,7 +55,6 @@ class _ProjectBody extends State<ProjectBody> {
             builder: (_) => ProjectBodySearchPart(
               parentContext: context,
               search: searchArgs[0] as String,
-              projects: searchArgs[1] as List<ProjectModel>,
             ),
           );
         }
@@ -108,15 +108,13 @@ class ProjectBodyMainPart extends StatefulWidget {
 class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
   String searchItem = "Search for project";
 
-  final List<String> suggestion = ["reactjs", "flutter", "education app"];
-
   // switch to switch account screen
   void onSwitchedToSwitchAccountScreen() {
     NavigationUtil.toSwitchAccountScreen(widget.parentContext);
   }
 
-  List<ProjectModel> _projects = [];
-  // List<ProjectModel> _FavoriteProjects = [];
+  final List<ProjectModel> _projects = [];
+
   Future<List<ProjectModel>> initializeProject() async {
     UserProvider userProvider = Provider.of<UserProvider>(
       context,
@@ -191,7 +189,6 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
               height: SpacingUtil.smallHeight,
             ),
             const CustomDivider(),
-            //ListViewProjectItems(projects: _projects),
             CustomFutureBuilder<List<ProjectModel>>(
               future: initializeProject(),
               widgetWithData: (snapshot) =>
@@ -251,33 +248,42 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
                       );
                     },
                   ),
+                  const SizedBox(
+                    height: SpacingUtil.smallHeight,
+                  ),
                   ListTile(
-                    title: const CustomText(text: 'ReactJS'),
+                    title: const CustomText(text: 'proj1'),
                     onTap: () {
-                      setState(() {
-                        searchItem = "React JS";
-                      });
                       Navigator.pop(context);
+                      Navigator.pushNamed(
+                        context,
+                        ProjectBodyType.search.nameRoute,
+                        arguments: ["proj1", _projects],
+                      ); 
                     },
                   ),
                   ListTile(
-                    title: const CustomText(text: 'Education App'),
+                    title: const CustomText(text: 'project test 1'),
                     onTap: () {
-                      setState(() {
-                        searchItem = "Education App";
-                      });
-                      Navigator.pop(context);
+                     Navigator.pop(context);
+                      Navigator.pushNamed(
+                        context,
+                        ProjectBodyType.search.nameRoute,
+                        arguments: ["project test 1", _projects],
+                      ); 
                     },
                   ),
                   ListTile(
                     title: const CustomText(
-                      text: "Flutter",
+                      text: "Data Dev",
                     ),
                     onTap: () {
-                      setState(() {
-                        searchItem = "Flutter";
-                      });
                       Navigator.pop(context);
+                      Navigator.pushNamed(
+                        context,
+                        ProjectBodyType.search.nameRoute,
+                        arguments: ["Data Dev", _projects],
+                      ); 
                     },
                   ),
                 ],

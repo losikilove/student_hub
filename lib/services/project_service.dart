@@ -65,7 +65,7 @@ class ProjectService {
     required ProjectCompanyModel project,
     required BuildContext context,
   }) async {
-    const String url = '$_baseUrl';
+    const String url = _baseUrl;
     final UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
     int? id = userProvider.user?.company!.id;

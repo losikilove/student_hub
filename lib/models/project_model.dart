@@ -14,7 +14,7 @@ class ProjectModel {
   final String timeCreated;
   final int proposal;
   final int numberofStudent;
-  final bool isFavorite;
+  bool isFavorite;
 
   ProjectModel({
     required this.id,
@@ -64,9 +64,51 @@ class ProjectModel {
         .toList();
   }
 
-  static List<ProjectModel> fromFavoriteResponse(http.Response response) {
+}
+
+class SaveProjectModel {
+  final int id;
+  final String title;
+  final String description;
+  final String companyId;
+  final EnumProjectLenght projectScopeFlag;
+  final EnumTypeFlag? typeFlag;
+  final String timeCreated;
+  final int proposal;
+  final int numberofStudent;
+
+  SaveProjectModel({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.companyId,
+    required this.projectScopeFlag,
+    required this.typeFlag,
+    required this.timeCreated,
+    required this.proposal,
+    required this.numberofStudent,
+  });
+
+  factory SaveProjectModel.fromJson(Map<String, dynamic> json) {
+    return SaveProjectModel(
+        id: json['id'],
+        title: json['title'],
+        description: json['description'],
+        companyId: json['companyID'],
+        projectScopeFlag:
+            EnumProjectLenght.toProjectLenght(json['projectScopeFlag'] as int),
+        typeFlag: json['typeFlag'] == null
+            ? null
+            : EnumTypeFlag.toTypeFlag(json['typeFlag'] as int),
+        timeCreated: json['createdAt'],
+        proposal: json['countProposals'],
+        numberofStudent: json['numberOfStudents']);
+  }
+ 
+
+  static List<SaveProjectModel> fromFavoriteResponse(http.Response response) {
     return (json.decode(response.body)['result'] as List<dynamic>)
-        .map((element) => ProjectModel(
+        .map((element) => SaveProjectModel(
             id: element['project']['id'] as int,
             title: element['project']['title'] as String,
             description: element['project']['description'] as String,
@@ -78,8 +120,7 @@ class ProjectModel {
                 : EnumTypeFlag.toTypeFlag(
                     element['project']['typeFlag'] as int),
             timeCreated: element['project']['createdAt'] as String,
-            proposal: element['countProposals'] as int,
-            isFavorite: element['isFavorite'] as bool,
+            proposal: element['project']['countProposals'] as int,
             numberofStudent: element['project']['numberOfStudents'] as int))
         .toList();
   }

@@ -9,16 +9,19 @@ import 'package:student_hub/components/listview_project_items.dart';
 import 'package:student_hub/models/enums/enum_projectlenght.dart';
 import 'package:student_hub/models/project_model.dart';
 import 'package:student_hub/utils/spacing_util.dart';
-
+import 'package:provider/provider.dart';
+import 'package:student_hub/services/project_service.dart';
+import 'package:student_hub/providers/user_provider.dart';
+import 'package:student_hub/components/custom_future_builder.dart';
 class ProjectBodySearchPart extends StatefulWidget {
   final BuildContext parentContext;
   final String search;
-  final List<ProjectModel> projects;
+
   const ProjectBodySearchPart(
       {super.key,
       required this.parentContext,
       required this.search,
-      required this.projects});
+    });
 
   @override
   State<ProjectBodySearchPart> createState() => _ProjectBodySearchPartState();
@@ -32,6 +35,17 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
     super.initState();
     // initialize the search controller
     _searchController = TextEditingController(text: widget.search);
+  }
+
+  Future<List<ProjectModel>> initializeProject() async {
+    UserProvider userProvider = Provider.of<UserProvider>(
+      context,
+      listen: false,
+    );
+
+    String? token = userProvider.token;
+    final response = await ProjectService.searchProject(search: widget.search,token: token!);
+    return ProjectModel.fromResponse(response);
   }
 
   @override
@@ -213,7 +227,17 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
             ),
             const SizedBox(height: SpacingUtil.smallHeight),
             // filter list of projects
-            ListViewProjectItems(projects: widget.projects),
+            CustomFutureBuilder<List<ProjectModel>>(
+              future: initializeProject(),
+              widgetWithData: (snapshot) =>
+                  ListViewProjectItems(projects: snapshot.data!),
+              widgetWithError: (snapshot) {
+                return CustomText(
+                  text: snapshot.toString(),
+                  textColor: Colors.red,
+                );
+              },
+            ),
           ],
         ),
       ),
