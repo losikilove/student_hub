@@ -162,7 +162,7 @@ class NavigationUtil {
 
   // switch to browse-project-detail screen
   static void toBrowseProjectDetailScreen(
-      BuildContext currentContext, int id, String token) {
+      BuildContext currentContext, int id) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(

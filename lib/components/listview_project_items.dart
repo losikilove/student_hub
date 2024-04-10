@@ -12,7 +12,7 @@ class ListViewProjectItems extends StatelessWidget {
   const ListViewProjectItems({super.key, required this.projects});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return Expanded(
       child: ListView.builder(
           itemCount: projects.length,
@@ -23,13 +23,7 @@ class ListViewProjectItems extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    NavigationUtil.toBrowseProjectDetailScreen(
-                        context,
-                        project.id,
-                        Provider.of<UserProvider>(
-                          context,
-                          listen: false,
-                        ).token!);
+                    NavigationUtil.toBrowseProjectDetailScreen(context,project.id);
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
