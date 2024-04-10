@@ -167,8 +167,8 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
                       color: Color(0xFF2DAAD4), // Màu nền của nút
                     ),
                     child: IconButton(
-                        onPressed: () {
-                          Navigator.push(
+                        onPressed: () async {
+                          await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ProjectBodySavedPart(
@@ -176,6 +176,10 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
                               ),
                             ),
                           );
+
+                          // after join in area saved project,
+                          // reset this context by using setState
+                          setState(() {});
                         },
                         icon: const Icon(
                           Icons.favorite,
@@ -194,8 +198,8 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
               widgetWithData: (snapshot) =>
                   ListViewProjectItems(projects: snapshot.data!),
               widgetWithError: (snapshot) {
-                return CustomText(
-                  text: snapshot.toString(),
+                return const CustomText(
+                  text: 'Sorry, something went wrong',
                   textColor: Colors.red,
                 );
               },

@@ -64,6 +64,25 @@ class ProjectModel {
         .toList();
   }
 
+  static List<ProjectModel> fromFavoriteResponse(http.Response response) {
+    return (json.decode(response.body)['result'] as List<dynamic>)
+        .map((element) => ProjectModel(
+            id: element['project']['id'] as int,
+            title: element['project']['title'] as String,
+            description: element['project']['description'] as String,
+            companyId: element['project']['companyId'] as String,
+            projectScopeFlag: EnumProjectLenght.toProjectLenght(
+                element['project']['projectScopeFlag'] as int),
+            typeFlag: element['project']['typeFlag'] == null
+                ? null
+                : EnumTypeFlag.toTypeFlag(
+                    element['project']['typeFlag'] as int),
+            timeCreated: element['project']['createdAt'] as String,
+            proposal: element['project']['countProposals'] as int,
+            isFavorite: true,
+            numberofStudent: element['project']['numberOfStudents'] as int))
+        .toList();
+  }
 }
 
 class SaveProjectModel {
@@ -104,7 +123,6 @@ class SaveProjectModel {
         proposal: json['countProposals'],
         numberofStudent: json['numberOfStudents']);
   }
- 
 
   static List<SaveProjectModel> fromFavoriteResponse(http.Response response) {
     return (json.decode(response.body)['result'] as List<dynamic>)

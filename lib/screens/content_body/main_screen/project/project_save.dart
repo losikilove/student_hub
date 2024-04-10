@@ -29,7 +29,6 @@ class ProjectBodySavedPart extends StatefulWidget {
 }
 
 class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
-
   void onPressed() {}
 
   // switch to switch account screen
@@ -37,7 +36,7 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
     NavigationUtil.toSwitchAccountScreen(context);
   }
 
-  Future<List<SaveProjectModel>> initializeFavoriteProject() async {
+  Future<List<ProjectModel>> initializeFavoriteProject() async {
     UserProvider userProvider = Provider.of<UserProvider>(
       context,
       listen: false,
@@ -46,11 +45,11 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
     String? token = userProvider.token;
     UserModel user = userProvider.user!;
     final response = await ProjectService.viewProjectFavorite(
-        id: user.userId, token: token!);
-    return SaveProjectModel.fromFavoriteResponse(response);
+        studentId: user.student!.id, token: token!);
+    return ProjectModel.fromFavoriteResponse(response);
   }
 
-  void unSaveProject(int projectID, EnumLikeProject likeProject) async {
+  Future<void> unSaveProject(int projectID, EnumLikeProject likeProject) async {
     UserProvider userProvider = Provider.of<UserProvider>(
       context,
       listen: false,
@@ -58,16 +57,16 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
     UserModel user = userProvider.user!;
     String? token = userProvider.token;
     final response = await ProjectService.likeProject(
-        id: user.userId,
+        studentId: user.student!.id,
         projectID: projectID,
         likedProject: likeProject,
         token: token!);
     final body = ApiUtil.getBody(response);
-    if (response.statusCode == 200) {
+    if (response.statusCode == StatusCode.ok.code) {
       await popupNotification(
         context: context,
         type: NotificationType.success,
-        content: 'Unsave project',
+        content: 'Unsaved project',
         textSubmit: 'Ok',
         submit: null,
       );
@@ -96,23 +95,24 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomFutureBuilder<List<SaveProjectModel>>(
+          CustomFutureBuilder<List<ProjectModel>>(
             future: initializeFavoriteProject(),
-            widgetWithData: (snapshot) => Expanded(
+            widgetWithData: (snapshot) {
+              return Expanded(
                 child: ListView.builder(
-              itemCount: snapshot.data?.length,
-              itemBuilder: (context, index) {
-                final project = snapshot.data?[index];
-                String month = '1 - 3';
-                if (project?.projectScopeFlag.value == 1) {
-                  month = '3-6';
-                }
-                return saveProjectItem(project!, month);
-              },
-            )),
+                  itemCount: snapshot.data?.length,
+                  itemBuilder: (context, index) {
+                    final project = snapshot.data?[index];
+
+                    return saveProjectItem(
+                        project!, project.projectScopeFlag.name);
+                  },
+                ),
+              );
+            },
             widgetWithError: (snapshot) {
-              return  CustomText(
-                text: 'Sorry, something went wrong ${snapshot.error}',
+              return CustomText(
+                text: snapshot.toString(),
                 textColor: Colors.red,
               );
             },
@@ -122,7 +122,7 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
     );
   }
 
-  Row saveProjectItem(SaveProjectModel project, String month) {
+  Row saveProjectItem(ProjectModel project, String month) {
     return Row(
       children: [
         Expanded(
@@ -147,14 +147,14 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
               CustomText(
                   text: "Time: " +
                       month +
-                      " months, ${project.numberofStudent} students needed"),
+                      ", ${project.numberofStudent} students needed"),
               const SizedBox(
                 height: SpacingUtil.mediumHeight,
               ),
               const CustomText(text: "Student are looking for"),
               CustomBulletedList(listItems: project.description.split(',')),
               CustomText(text: "Proposals: " + project.proposal.toString()),
-              CustomDivider(),
+              const CustomDivider(),
               const SizedBox(
                 height: SpacingUtil.smallHeight,
               ),

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:student_hub/components/custom_anchor.dart';
 import 'package:student_hub/components/custom_appbar.dart';
-import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_expansion_tile.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/providers/user_provider.dart';
+import 'package:student_hub/utils/color_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class StudentViewProfileScreen extends StatefulWidget {
@@ -18,12 +20,28 @@ class StudentViewProfileScreen extends StatefulWidget {
 }
 
 class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
-  void onPressed() {}
+  Future<void> onPressed() async {}
 
-  // switch to update-company-profile screen
-  void onSwitchedToStudentUpdateProfile() {
-    // TODO:
-  }
+  // update a techstack
+  Future<void> onUpdatedTechStack() async {}
+
+  // update skillsets
+  Future<void> onUpdatedSkillSets() async {}
+
+  // update languages
+  Future<void> onUpdatedLanguages() async {}
+
+  // update educations
+  Future<void> onUpdatedEducations() async {}
+
+  // update experiences
+  Future<void> onUpdatedExperiences() async {}
+
+  // update a resume
+  Future<void> onUpdatedResume() async {}
+
+  // update a transcript
+  Future<void> onUpdatedTranscript() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +55,6 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // update student button
-            Align(
-              alignment: Alignment.topRight,
-              child: CustomButton(
-                size: CustomButtonSize.small,
-                onPressed: onSwitchedToStudentUpdateProfile,
-                text: 'Update',
-              ),
-            ),
             const SizedBox(
               height: SpacingUtil.mediumHeight,
             ),
@@ -70,6 +79,7 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                       children: [
                         // techstack info
                         _expansionTile(
+                          onUpdated: onUpdatedTechStack,
                           title: 'Techstack',
                           expandedChild: CustomText(
                             text: student?.techStack.name ?? '',
@@ -83,6 +93,7 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                         ),
                         // skillsets info
                         _expansionTile(
+                          onUpdated: onUpdatedSkillSets,
                           title: 'Skill-set',
                           expandedChild: ConstrainedBox(
                             constraints: BoxConstraints(
@@ -110,6 +121,7 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                         ),
                         // languages info
                         _expansionTile(
+                          onUpdated: onUpdatedLanguages,
                           title: 'Languages',
                           expandedChild: ConstrainedBox(
                             constraints: BoxConstraints(
@@ -137,6 +149,7 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                         ),
                         // educations info
                         _expansionTile(
+                          onUpdated: onUpdatedEducations,
                           title: 'Educations',
                           expandedChild: ConstrainedBox(
                             constraints: BoxConstraints(
@@ -190,6 +203,7 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                         ),
                         // experiences info
                         _expansionTile(
+                          onUpdated: onUpdatedExperiences,
                           title: 'Experiences',
                           expandedChild: ConstrainedBox(
                             constraints: BoxConstraints(
@@ -276,6 +290,7 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                         ),
                         // resume info
                         _expansionTile(
+                          onUpdated: onUpdatedResume,
                           title: 'Resume',
                           expandedChild: CustomText(
                             text: student?.resume == null
@@ -291,6 +306,7 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                         ),
                         // transcript info
                         _expansionTile(
+                          onUpdated: onUpdatedTranscript,
                           title: 'Academic transcript',
                           expandedChild: CustomText(
                             text: student?.transcript == null
@@ -319,6 +335,7 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
   Widget _expansionTile({
     required String title,
     required Widget expandedChild,
+    required void Function() onUpdated,
   }) {
     return CustomExpansionTile(
       context: context,
@@ -329,6 +346,14 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
         ),
       ),
       children: [
+        // update the info
+        Align(
+          alignment: Alignment.topRight,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: CustomAnchor(text: 'edit', onTap: onUpdated),
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.only(
             left: 20,

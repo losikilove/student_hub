@@ -1,14 +1,14 @@
-enum EnumProjectLenght{
+enum EnumProjectLenght {
   less_than_one_month(value: 0, name: 'Less than one month'),
-  one_to_three_month(value: 1, name: 'One to three months'),
-  three_to_six_month(value: 2, name: 'Three to six months'),
-  more_than_six_month(value: 3, name: 'More than six months');
+  one_to_three_month(value: 1, name: '1 - 3 months'),
+  three_to_six_month(value: 2, name: '3 - 6 months'),
+  more_than_six_month(value: 3, name: 'More than 6 months');
 
   final int value;
   final String name;
   const EnumProjectLenght({required this.value, required this.name});
 
-  static EnumProjectLenght toProjectLenght(int inputValue){
+  static EnumProjectLenght toProjectLenght(int inputValue) {
     switch (inputValue) {
       case 0:
         return EnumProjectLenght.less_than_one_month;
