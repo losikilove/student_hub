@@ -69,16 +69,31 @@ class ProjectService {
     final UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
     int? id = userProvider.user?.company!.id;
+    debugPrint('id: $id');
     final token = userProvider.token!;
     return http.post(Uri.parse(url),
         headers: ApiUtil.getHeadersWithToken(token),
         body: jsonEncode(<String, dynamic>{
-          "companyId": id,
-          "projectScopeFlag": project.projectScopeFlag,
+          "companyId": id.toString(),
+          "projectScopeFlag": project.projectScopeFlag.value,
           "title": project.title,
           "numberOfStudents": project.numberofStudent,
           "description": project.description,
           "typeFlag": 0
         }));
   }
+  //
+  static Future<http.Response> getAllProjectMyCompany({
+    required BuildContext context,
+  }) async {
+    const String url = _baseUrl;
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    int? id = userProvider.user?.company!.id;
+    final token = userProvider.token!;
+    return http.get(Uri.parse(url+"company/$id"),
+        headers: ApiUtil.getHeadersWithToken(token),
+    );
+  }
+
 }

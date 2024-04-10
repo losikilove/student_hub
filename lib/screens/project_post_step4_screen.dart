@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_hub/components/circle_progress.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
@@ -24,9 +25,11 @@ class ProjectPostStep4Screen extends StatefulWidget {
 class _ProjectPostStep4ScreenState extends State<ProjectPostStep4Screen> {
   
 
-  Future<void> createProject() async {
+  Future<void> createProjectCompany() async {
+    // loading in progress
+    showCircleProgress(context: context);
     final response =  await ProjectService.createProject(project: widget.projectCompanyModel,context: context);
-    if(response.statusCode == 200){
+    if(response.statusCode == StatusCode.created.code){
       NavigationUtil.toMainScreen(context, MainScreenIndex.dashboard);
       return;
     }
@@ -38,7 +41,6 @@ class _ProjectPostStep4ScreenState extends State<ProjectPostStep4Screen> {
         textSubmit: 'Ok',
         submit: null,
       );
-      
       return;
     }
   }
@@ -87,7 +89,7 @@ class _ProjectPostStep4ScreenState extends State<ProjectPostStep4Screen> {
           alignment: Alignment.topRight,
           child: CustomButton(
             size: CustomButtonSize.small,
-            onPressed: createProject,
+            onPressed: createProjectCompany,
             text: 'Save',
           ),
         ),

@@ -28,7 +28,8 @@ class _ProjectPostStep3ScreenState extends State<ProjectPostStep3Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
+      //overflows
+      resizeToAvoidBottomInset: false, 
       appBar: CustomAppbar(
         onPressed: (){},
         currentContext: context,
