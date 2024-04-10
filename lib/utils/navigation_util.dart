@@ -168,7 +168,6 @@ class NavigationUtil {
       MaterialPageRoute(
         builder: (context) => BrowseProjectDetailScreen(
           id: id,
-          token: token,
         ),
       ),
     );

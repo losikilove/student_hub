@@ -16,11 +16,16 @@ import 'package:student_hub/components/custom_future_builder.dart';
 class ProjectBodySearchPart extends StatefulWidget {
   final BuildContext parentContext;
   final String search;
-
-  const ProjectBodySearchPart(
+  String? projectScopeFlag;
+  String? proposalsLessThan;
+  String? numberOfStudents;
+  ProjectBodySearchPart(
       {super.key,
       required this.parentContext,
       required this.search,
+      this.projectScopeFlag,
+      this.numberOfStudents,
+      this.proposalsLessThan
     });
 
   @override
@@ -29,7 +34,6 @@ class ProjectBodySearchPart extends StatefulWidget {
 
 class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
   late final TextEditingController _searchController;
-
   @override
   void initState() {
     super.initState();
@@ -42,9 +46,9 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
       context,
       listen: false,
     );
-
     String? token = userProvider.token;
-    final response = await ProjectService.searchProject(search: widget.search,token: token!);
+    final response = await ProjectService.searchProject(search: widget.search,projectScopeFlag: widget.projectScopeFlag,
+            numberOfStudents: widget.numberOfStudents,proposalsLessThan: widget.proposalsLessThan,token: token!);
     return ProjectModel.fromResponse(response);
   }
 
@@ -56,8 +60,6 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
     super.dispose();
   }
 
-  void onPressed() {}
-
   Future<dynamic> onOpenedFilter(BuildContext context) {
     EnumProjectLenght? enumProjectLenght =
         EnumProjectLenght.less_than_one_month;
@@ -66,6 +68,7 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
 
     return showModalBottomSheet<dynamic>(
       context: context,
+      isScrollControlled: true,
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (context, setModalState) {
@@ -74,7 +77,15 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                 enumProjectLenght = value;
               });
             }
+            
+             void submitFilter() {
+              setModalState(() {
+                widget.numberOfStudents = studentNeededController.text;
+                widget.proposalsLessThan = proposalsLessThanController.text;
+                widget.projectScopeFlag = enumProjectLenght?.value.toString();
 
+              });
+            }
             Widget chooseLenght(EnumProjectLenght projectLenght, String text) {
               return Row(
                 children: [
@@ -92,93 +103,118 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
             }
 
             return SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.cancel),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      const CustomText(
-                        text: "Filter by",
-                        size: 17,
-                        isBold: true,
-                      ),
-                    ],
-                  ),
-                  const CustomText(text: 'Project length'),
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              child: Container(
+                height:MediaQuery.of(context).size.height * 0.7,
+                padding: const EdgeInsets.all(8.0),
+                color: Theme.of(context).colorScheme.onBackground,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const SizedBox(
+                      height: SpacingUtil.mediumHeight,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        chooseLenght(EnumProjectLenght.less_than_one_month,
-                            "Less than one month"),
-                        chooseLenght(EnumProjectLenght.one_to_three_month,
-                            "1 to 3 months"),
-                        chooseLenght(EnumProjectLenght.three_to_six_month,
-                            "3 to 6 months"),
-                        chooseLenght(EnumProjectLenght.more_than_six_month,
-                            "more than 6 months"),
-                      ]),
-                  const CustomText(text: 'Student needed'),
-                  SizedBox(
-                    width: 200,
-                    height: 25,
-                    child: TextField(
-                      controller: studentNeededController,
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).colorScheme.onPrimary),
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(0)),
-                      )),
-                      textAlign: TextAlign.center,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      keyboardType: TextInputType.number,
+                        const CustomText(
+                          text: "Filter by",
+                          size: 20,
+                          isBold: true,
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.cancel_outlined),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    height: SpacingUtil.smallHeight,
-                  ),
-                  const CustomText(text: 'Proposals less than'),
-                  SizedBox(
-                    width: 200,
-                    height: 25,
-                    child: TextField(
-                      controller: proposalsLessThanController,
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).colorScheme.onPrimary),
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(0)),
-                      )),
-                      textAlign: TextAlign.center,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      keyboardType: TextInputType.number,
+                    const CustomText(text: 'Project length',size:18,),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          chooseLenght(EnumProjectLenght.less_than_one_month,
+                              "Less than one month"),
+                          chooseLenght(EnumProjectLenght.one_to_three_month,
+                              "1 to 3 months"),
+                          chooseLenght(EnumProjectLenght.three_to_six_month,
+                              "3 to 6 months"),
+                          chooseLenght(EnumProjectLenght.more_than_six_month,
+                              "more than 6 months"),
+                        ]),
+                    const SizedBox(
+                      height: SpacingUtil.mediumHeight,
                     ),
-                  ),
-                  const SizedBox(
-                    height: SpacingUtil.smallHeight,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomButton(onPressed: onPressed, text: 'Clear filter'),
-                      const SizedBox(
-                        width: SpacingUtil.smallHeight,
+                    const CustomText(text: 'Student needed',size:18,),
+                    const SizedBox(
+                      height: SpacingUtil.smallHeight,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                         border: Border.all(width: 1.0, color: Theme.of(context).colorScheme.onPrimary)
+   
                       ),
-                      CustomButton(onPressed: onPressed, text: 'Apply')
-                    ],
-                  )
-                ],
+                      height: 35,
+                      child: TextField(
+                        controller: studentNeededController,
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Theme.of(context).colorScheme.onPrimary),
+                        textAlign: TextAlign.start,
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: SpacingUtil.mediumHeight,
+                    ),
+                    const CustomText(text: 'Proposals less than',size:18,),
+                    const SizedBox(
+                      height: SpacingUtil.smallHeight,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1.0, color: Theme.of(context).colorScheme.onPrimary)
+                      ),
+                      height: 35,
+                      child: TextField(
+                        controller: proposalsLessThanController,
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Theme.of(context).colorScheme.onPrimary),
+                       
+                        textAlign: TextAlign.start,
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: SpacingUtil.mediumHeight,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustomButton(onPressed: (){
+                          studentNeededController.clear();
+                          proposalsLessThanController.clear();
+                          changeProjectLength(EnumProjectLenght.less_than_one_month);
+                        }, text: 'Clear filter'),
+                        const SizedBox(
+                          width: SpacingUtil.smallHeight,
+                        ),
+                        CustomButton(onPressed: (){
+                          Navigator.pop(context);
+                          submitFilter();
+                        }, text: 'Apply')
+                      ],
+                    ),
+                    const SizedBox(
+                      height: SpacingUtil.smallHeight,
+                    ),
+                  ],
+                ),
               ),
             );
           },
@@ -193,7 +229,7 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
       appBar: CustomAppbar(
         title: 'Project search',
         isBack: true,
-        onPressed: onPressed,
+        onPressed: (){},
         currentContext: context,
       ),
       body: InitialBody(
