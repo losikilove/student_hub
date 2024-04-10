@@ -23,17 +23,16 @@ class ProjectPostStep4Screen extends StatefulWidget {
 }
 
 class _ProjectPostStep4ScreenState extends State<ProjectPostStep4Screen> {
-  
-
   Future<void> createProjectCompany() async {
     // loading in progress
     showCircleProgress(context: context);
-    final response =  await ProjectService.createProject(project: widget.projectCompanyModel,context: context);
-    if(response.statusCode == StatusCode.created.code){
+    final response = await ProjectService.createProject(
+        project: widget.projectCompanyModel, context: context);
+    if (response.statusCode == StatusCode.created.code) {
       NavigationUtil.toMainScreen(context, MainScreenIndex.dashboard);
       return;
     }
-    if(response.statusCode == StatusCode.error){
+    if (response.statusCode == StatusCode.error.code) {
       popupNotification(
         context: context,
         type: NotificationType.error,
@@ -44,6 +43,7 @@ class _ProjectPostStep4ScreenState extends State<ProjectPostStep4Screen> {
       return;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,21 +63,26 @@ class _ProjectPostStep4ScreenState extends State<ProjectPostStep4Screen> {
               height: SpacingUtil.mediumHeight,
             ),
             CustomText(text: widget.projectCompanyModel.title),
-            const CustomDivider(),
+            const CustomDivider(
+              isFullWidth: true,
+            ),
             const CustomText(text: "Student are looking for"),
-            const CustomBulletedList(listItems: [
-              "Clear expectation about your project or deliverables",
-              "The skills required for your project",
-              "Detail about your project"
-            ]),
-            const CustomDivider(),
-            const CustomText(text: "Student are looking for"),
-            _projectRequirement(Icons.alarm, 'Project scope', widget.projectCompanyModel.projectScopeFlag.name),
+            CustomBulletedList(
+              listItems: [widget.projectCompanyModel.description],
+            ),
+            const CustomDivider(
+              isFullWidth: true,
+            ),
+            _projectRequirement(Icons.alarm, 'Project scope',
+                widget.projectCompanyModel.projectScopeFlag.name),
             const SizedBox(
               height: SpacingUtil.smallHeight,
             ),
             _projectRequirement(
-                Icons.people_outline, 'Required students', widget.projectCompanyModel.numberofStudent.toString()+' students'),
+                Icons.people_outline,
+                'Required students',
+                widget.projectCompanyModel.numberofStudent.toString() +
+                    ' students'),
           ],
         ),
       ),
