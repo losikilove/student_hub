@@ -128,12 +128,9 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
         Expanded(
           child: GestureDetector(
             onTap: () => NavigationUtil.toBrowseProjectDetailScreen(
-                context,
-                project.id,
-                Provider.of<UserProvider>(
-                  context,
-                  listen: false,
-                ).token!),
+              context,
+              project.id,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
