@@ -126,39 +126,48 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
     return Row(
       children: [
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Title: " + project.title,
-                style:
-                    const TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(
-                height: SpacingUtil.smallHeight,
-              ),
-              CustomText(
-                  text: "Time created: " +
-                      DateFormat('dd-MM-yyyy')
-                          .format(DateTime.parse(project.timeCreated))),
-              const SizedBox(
-                height: SpacingUtil.smallHeight,
-              ),
-              CustomText(
-                  text: "Time: " +
-                      month +
-                      ", ${project.numberofStudent} students needed"),
-              const SizedBox(
-                height: SpacingUtil.mediumHeight,
-              ),
-              const CustomText(text: "Student are looking for"),
-              CustomBulletedList(listItems: project.description.split(',')),
-              CustomText(text: "Proposals: " + project.proposal.toString()),
-              const CustomDivider(),
-              const SizedBox(
-                height: SpacingUtil.smallHeight,
-              ),
-            ],
+          child: GestureDetector(
+            onTap: () => NavigationUtil.toBrowseProjectDetailScreen(
+                context,
+                project.id,
+                Provider.of<UserProvider>(
+                  context,
+                  listen: false,
+                ).token!),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Title: " + project.title,
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(
+                  height: SpacingUtil.smallHeight,
+                ),
+                CustomText(
+                    text: "Time created: " +
+                        DateFormat('dd-MM-yyyy')
+                            .format(DateTime.parse(project.timeCreated))),
+                const SizedBox(
+                  height: SpacingUtil.smallHeight,
+                ),
+                CustomText(
+                    text: "Time: " +
+                        month +
+                        ", ${project.numberofStudent} students needed"),
+                const SizedBox(
+                  height: SpacingUtil.mediumHeight,
+                ),
+                const CustomText(text: "Student are looking for"),
+                CustomBulletedList(listItems: project.description.split(',')),
+                CustomText(text: "Proposals: " + project.proposal.toString()),
+                const CustomDivider(),
+                const SizedBox(
+                  height: SpacingUtil.smallHeight,
+                ),
+              ],
+            ),
           ),
         ),
         IconButton(
