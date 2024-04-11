@@ -99,7 +99,7 @@ class ProjectService {
         Provider.of<UserProvider>(context, listen: false);
     int? id = userProvider.user?.company!.id;
     final token = userProvider.token!;
-    return http.get(Uri.parse(url+"company/$id"),
+    return http.get(Uri.parse("$url/company/$id"),
         headers: ApiUtil.getHeadersWithToken(token),
     );
   }

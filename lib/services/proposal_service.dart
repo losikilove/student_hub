@@ -8,13 +8,13 @@ class ProposalService {
   static const String _baseUrl = '${ApiUtil.baseUrl}/proposal';
   static Future<http.Response> getAllProjectMyStudent(
       {required BuildContext context}) {
-    const String url = '$_baseUrl/project/';
+    const String url = '$_baseUrl/project';
     final UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
     int? id = userProvider.user?.company!.id;
     final token = userProvider.token!;
     return http.get(
-      Uri.parse(url+"$id"),
+      Uri.parse("$url/$id"),
       headers: ApiUtil.getHeadersWithToken(token),
     );
   }
