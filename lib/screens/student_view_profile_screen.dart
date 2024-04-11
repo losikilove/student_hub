@@ -1,25 +1,13 @@
-import 'dart:developer';
-
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:student_hub/components/circle_progress.dart';
 import 'package:student_hub/components/custom_anchor.dart';
 import 'package:student_hub/components/custom_appbar.dart';
-import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_expansion_tile.dart';
-import 'package:student_hub/components/custom_future_builder.dart';
-import 'package:student_hub/components/custom_option.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
-import 'package:student_hub/components/popup_notification.dart';
-import 'package:student_hub/models/tech_stack_model.dart';
-import 'package:student_hub/models/user_model.dart';
 import 'package:student_hub/providers/user_provider.dart';
-import 'package:student_hub/services/profile_service.dart';
-import 'package:student_hub/services/tech_stack_service.dart';
-import 'package:student_hub/utils/api_util.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/profile_student_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
@@ -35,7 +23,9 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
   Future<void> onPressed() async {}
 
   // update experiences
-  Future<void> onUpdatedExperiences() async {}
+  Future<void> onUpdatedExperiences() async {
+    NavigationUtil.toStudentUpdateExperienceScreen(context);
+  }
 
   // update a resume
   Future<void> onUpdatedResume() async {}

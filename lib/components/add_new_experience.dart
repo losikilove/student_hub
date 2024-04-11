@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_option.dart';
@@ -13,15 +12,31 @@ import 'package:student_hub/utils/spacing_util.dart';
 class AddNewExperience extends StatefulWidget {
   final void Function(List<ExperienceModel> projects) onHelper;
   final List<SkillSetModel> skills;
-  const AddNewExperience(
-      {super.key, required this.skills, required this.onHelper});
+  final List<ExperienceModel>? initialExperieces;
+  const AddNewExperience({
+    super.key,
+    required this.skills,
+    required this.onHelper,
+    this.initialExperieces,
+  });
 
   @override
   State<AddNewExperience> createState() => _AddNewExperienceState();
 }
 
 class _AddNewExperienceState extends State<AddNewExperience> {
-  final List<ExperienceModel> _experiences = [];
+  late List<ExperienceModel> _experiences;
+
+  @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      _experiences =
+          widget.initialExperieces == null ? [] : widget.initialExperieces!;
+    });
+    widget.onHelper(_experiences);
+  }
 
   void onCreateNewExperience() async {
     final experienceInfo = await openDialogHandleNewOne(null);
@@ -30,6 +45,7 @@ class _AddNewExperienceState extends State<AddNewExperience> {
     setState(() {
       _experiences.add(experienceInfo);
     });
+    widget.onHelper(_experiences);
   }
 
   @override
@@ -136,6 +152,7 @@ class _AddNewExperienceState extends State<AddNewExperience> {
                   ),
                   CustomText(text: currentExperience.getDescription),
                   MultiSelectChip<SkillSetModel>(
+                    initialList: [...currentExperience.getSkills],
                     listOf: widget.skills,
                     onHelper: onGettingValuesOfSkillset,
                   ),
@@ -234,7 +251,7 @@ class _AddNewExperienceState extends State<AddNewExperience> {
                               isFilledDescription = value.isNotEmpty;
                             });
                           },
-                          maxLines: 5,
+                          maxLines: 3,
                           controller: descriptionProject,
                           autofocus: true,
                           decoration: const InputDecoration(

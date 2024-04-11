@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:student_hub/components/custom_appbar.dart';
@@ -11,8 +9,6 @@ import 'package:student_hub/models/enums/enum_projectlenght.dart';
 import 'package:student_hub/models/project_company_model.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
-
-
 
 class ProjectPostStep2Screen extends StatefulWidget {
   final ProjectCompanyModel projectCompanyModel;
@@ -29,10 +25,10 @@ class _ProjectPostStep2ScreenState extends State<ProjectPostStep2Screen> {
 
   void onPressedNext() {
     widget.projectCompanyModel.projectScopeFlag = _projectDuration;
-    widget.projectCompanyModel.numberofStudent = int.parse(_numberStudentsController.text);
+    widget.projectCompanyModel.numberofStudent =
+        int.parse(_numberStudentsController.text);
     NavigationUtil.toPostProjectStep3(context, widget.projectCompanyModel);
   }
-
 
   // change value of project-duration when selecting another duration
   void onSelectedDuration(EnumProjectLenght? duration) {
@@ -54,8 +50,8 @@ class _ProjectPostStep2ScreenState extends State<ProjectPostStep2Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(onPressed: (){}, currentContext: context),
-      resizeToAvoidBottomInset: false, 
+      appBar: CustomAppbar(onPressed: () {}, currentContext: context),
+      resizeToAvoidBottomInset: false,
       body: InitialBody(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,7 +79,8 @@ class _ProjectPostStep2ScreenState extends State<ProjectPostStep2Screen> {
             ListTile(
               horizontalTitleGap: 0.0,
               contentPadding: const EdgeInsets.only(),
-              title: CustomText(text: EnumProjectLenght.less_than_one_month.name),
+              title:
+                  CustomText(text: EnumProjectLenght.less_than_one_month.name),
               leading: Radio<EnumProjectLenght>(
                 activeColor: Theme.of(context).colorScheme.onPrimary,
                 value: EnumProjectLenght.less_than_one_month,
@@ -94,7 +91,8 @@ class _ProjectPostStep2ScreenState extends State<ProjectPostStep2Screen> {
             ListTile(
               horizontalTitleGap: 0.0,
               contentPadding: const EdgeInsets.only(),
-              title: CustomText(text: EnumProjectLenght.one_to_three_month.name),
+              title:
+                  CustomText(text: EnumProjectLenght.one_to_three_month.name),
               leading: Radio<EnumProjectLenght>(
                 activeColor: Theme.of(context).colorScheme.onPrimary,
                 value: EnumProjectLenght.one_to_three_month,
@@ -105,7 +103,8 @@ class _ProjectPostStep2ScreenState extends State<ProjectPostStep2Screen> {
             ListTile(
               horizontalTitleGap: 0.0,
               contentPadding: const EdgeInsets.only(),
-              title: CustomText(text: EnumProjectLenght.three_to_six_month.name),
+              title:
+                  CustomText(text: EnumProjectLenght.three_to_six_month.name),
               leading: Radio<EnumProjectLenght>(
                 activeColor: Theme.of(context).colorScheme.onPrimary,
                 value: EnumProjectLenght.three_to_six_month,
@@ -116,7 +115,8 @@ class _ProjectPostStep2ScreenState extends State<ProjectPostStep2Screen> {
             ListTile(
               horizontalTitleGap: 0.0,
               contentPadding: const EdgeInsets.only(),
-              title: CustomText(text: EnumProjectLenght.more_than_six_month.name),
+              title:
+                  CustomText(text: EnumProjectLenght.more_than_six_month.name),
               leading: Radio<EnumProjectLenght>(
                 activeColor: Theme.of(context).colorScheme.onPrimary,
                 value: EnumProjectLenght.more_than_six_month,

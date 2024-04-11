@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -7,15 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:student_hub/components/add_new_education.dart';
 import 'package:student_hub/components/add_new_language.dart';
 import 'package:student_hub/components/circle_progress.dart';
-import 'package:student_hub/components/custom_anchor.dart';
-import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
-import 'package:student_hub/components/custom_divider.dart';
-import 'package:student_hub/components/custom_expansion_tile.dart';
 import 'package:student_hub/components/custom_future_builder.dart';
 import 'package:student_hub/components/custom_option.dart';
 import 'package:student_hub/components/custom_text.dart';
-import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/mutliselect_chip.dart';
 import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/models/education_model.dart';
@@ -30,7 +24,6 @@ import 'package:student_hub/services/profile_service.dart';
 import 'package:student_hub/services/skill_set_service.dart';
 import 'package:student_hub/services/tech_stack_service.dart';
 import 'package:student_hub/utils/api_util.dart';
-import 'package:student_hub/utils/spacing_util.dart';
 
 class ProfileStudentUtil {
   static const double _percentWidthSize = 0.9;

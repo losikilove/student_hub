@@ -23,6 +23,7 @@ import 'package:student_hub/screens/settings_screen.dart';
 import 'package:student_hub/screens/signin_screen.dart';
 import 'package:student_hub/screens/signupsetup1_screen.dart';
 import 'package:student_hub/screens/student_submit_proposal_screen.dart';
+import 'package:student_hub/screens/student_update_experience_screen.dart';
 import 'package:student_hub/screens/student_view_profile_screen.dart';
 import 'package:student_hub/screens/switch_account_screen.dart';
 import 'package:student_hub/screens/welcome_screen.dart';
@@ -161,8 +162,7 @@ class NavigationUtil {
   }
 
   // switch to browse-project-detail screen
-  static void toBrowseProjectDetailScreen(
-      BuildContext currentContext, int id) {
+  static void toBrowseProjectDetailScreen(BuildContext currentContext, int id) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
@@ -291,6 +291,15 @@ class NavigationUtil {
         currentContext,
         MaterialPageRoute(
           builder: (context) => const StudentViewProfileScreen(),
+        ));
+  }
+
+  // update experience screen
+  static void toStudentUpdateExperienceScreen(BuildContext currentContext) {
+    Navigator.push(
+        currentContext,
+        MaterialPageRoute(
+          builder: (context) => const StudentUpdateExperienceScreen(),
         ));
   }
 }
