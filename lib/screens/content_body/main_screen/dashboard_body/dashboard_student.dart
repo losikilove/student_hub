@@ -114,78 +114,80 @@ class _DashboardStudentState extends State<DashboardStudent>
   }
 
   Widget _studentAllProjectContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Card(
-            shape: Border.all(),
-            child: Container(
-                width: 400,
-                height: 50,
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onSecondary),
-                child: const Padding(
-                    padding: EdgeInsets.all(10),
-                    child: CustomText(
-                      text: "Active proposal(1)",
-                      isBold: true,
-                    )))),
-        const SizedBox(
-          height: SpacingUtil.mediumHeight,
-        ),
-        Card(
-            shape: Border.all(),
-            child: Container(
-                width: 400,
-                height: 450,
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onSecondary),
-                child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const CustomText(
-                            text: "Submitted proposal(1)",
-                            isBold: true,
-                          ),
-                          const SizedBox(
-                            height: 12,
-                          ),
-                          Container(
-                            height: 395,
-                            padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: ListView.builder(
-                                itemCount: _projects.length,
-                                itemBuilder: (context, index) {
-                                  final project = _projects[index];
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        project.title,
-                                        style: const TextStyle(
-                                            color:
-                                                Color.fromARGB(255, 6, 194, 13),
-                                            fontSize: 16),
-                                      ),
-                                      const CustomText(
-                                          text: "Submited 3 days ago"),
-                                      const SizedBox(
-                                        height: SpacingUtil.smallHeight,
-                                      ),
-                                      const CustomText(
-                                          text: "Student are looking for"),
-                                      CustomBulletedList(
-                                          listItems: project.wishes),
-                                      const CustomDivider(),
-                                    ],
-                                  );
-                                }),
-                          )
-                        ])))),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Card(
+              shape: Border.all(),
+              child: Container(
+                  width: 400,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onSecondary),
+                  child: const Padding(
+                      padding: EdgeInsets.all(10),
+                      child: CustomText(
+                        text: "Active proposal(1)",
+                        isBold: true,
+                      )))),
+          const SizedBox(
+            height: SpacingUtil.mediumHeight,
+          ),
+          Card(
+              shape: Border.all(),
+              child: Container(
+                  width: 400,
+                  height: 450,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onSecondary),
+                  child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const CustomText(
+                              text: "Submitted proposal(1)",
+                              isBold: true,
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            Container(
+                              height: 395,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: ListView.builder(
+                                  itemCount: _projects.length,
+                                  itemBuilder: (context, index) {
+                                    final project = _projects[index];
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          project.title,
+                                          style: const TextStyle(
+                                              color: Color.fromARGB(255, 6, 194, 13),
+                                              fontSize: 16),
+                                        ),
+                                        const CustomText(
+                                            text: "Submited 3 days ago"),
+                                        const SizedBox(
+                                          height: SpacingUtil.smallHeight,
+                                        ),
+                                        const CustomText(
+                                            text: "Student are looking for"),
+                                        CustomBulletedList(
+                                            listItems: project.wishes),
+                                        const CustomDivider(),
+                                      ],
+                                    );
+                                  }),
+                            )
+                          ])))),
+        ],
+      )
     );
   }
 
