@@ -68,8 +68,6 @@ class ProjectService {
       headers: ApiUtil.getHeadersWithToken(token),
     );
   }
-
-
   //company project - My compnay project or student join project
   static Future<http.Response> createProject({
     required ProjectCompanyModel project,
@@ -92,7 +90,7 @@ class ProjectService {
           "typeFlag": 0
         }));
   }
-  //
+  //get all project of my company
   static Future<http.Response> getAllProjectMyCompany({
     required BuildContext context,
   }) async {
@@ -105,5 +103,18 @@ class ProjectService {
         headers: ApiUtil.getHeadersWithToken(token),
     );
   }
-
+  //delete project
+  static Future<http.Response> deleteProject({
+    required int id,
+    required BuildContext context,
+  }) async {
+    String url = '$_baseUrl/$id';
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.token!;
+    return http.delete(
+      Uri.parse(url),
+      headers: ApiUtil.getHeadersWithToken(token),
+    );
+  }
 }
