@@ -27,9 +27,6 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
     NavigationUtil.toStudentUpdateExperienceScreen(context);
   }
 
-  // update a resume
-  Future<void> onUpdatedResume() async {}
-
   // update a transcript
   Future<void> onUpdatedTranscript() async {}
 
@@ -293,7 +290,11 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                         ),
                         // resume info
                         _expansionTile(
-                          onUpdated: onUpdatedResume,
+                          onUpdated: () {
+                            ProfileStudentUtil.onUpdatedResume(
+                              context: context,
+                            );
+                          },
                           title: 'Resume',
                           expandedChild: CustomText(
                             text: student?.resume == null
@@ -309,7 +310,11 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                         ),
                         // transcript info
                         _expansionTile(
-                          onUpdated: onUpdatedTranscript,
+                          onUpdated: () {
+                            ProfileStudentUtil.onUpdatedTranscript(
+                              context: context,
+                            );
+                          },
                           title: 'Academic transcript',
                           expandedChild: CustomText(
                             text: student?.transcript == null

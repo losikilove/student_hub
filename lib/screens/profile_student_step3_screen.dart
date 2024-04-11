@@ -10,6 +10,7 @@ import 'package:student_hub/screens/main_screen.dart';
 import 'package:student_hub/services/profile_service.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
+import 'package:student_hub/utils/profile_student_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:file_picker/file_picker.dart';
 
@@ -25,34 +26,16 @@ class _ProfileStudentStep3ScreenState extends State<ProfileStudentStep3Screen> {
   FilePickerResult? _resumeFile;
   FilePickerResult? _transcriptFile;
 
-  Future<FilePickerResult?> pickFile(BuildContext context) async {
-    try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles();
-
-      return result;
-    } catch (e) {
-      // when have error, show the popup
-      popupNotification(
-        context: context,
-        type: NotificationType.error,
-        content: 'Sorry, cannot get the file',
-        textSubmit: 'Ok',
-        submit: null,
-      );
-      return null;
-    }
-  }
-
   // pick a resume of student up
   Future<void> onPickedResume() async {
     // get the resume file
-    _resumeFile = await pickFile(context);
+    _resumeFile = await ProfileStudentUtil.pickFile(context);
   }
 
   // pick a transcript of student up
   Future<void> onPickedTranscript() async {
     // get the transcript file
-    _transcriptFile = await pickFile(context);
+    _transcriptFile = await ProfileStudentUtil.pickFile(context);
   }
 
   // go to the next screen

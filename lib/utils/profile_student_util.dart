@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,7 @@ import 'package:student_hub/services/language_service.dart';
 import 'package:student_hub/services/profile_service.dart';
 import 'package:student_hub/services/skill_set_service.dart';
 import 'package:student_hub/services/tech_stack_service.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:student_hub/utils/api_util.dart';
 
 class ProfileStudentUtil {
@@ -316,6 +318,153 @@ class ProfileStudentUtil {
     );
   }
 
+  // update a resume
+  static Future<void> onUpdatedResume({required BuildContext context}) async {
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    UserModel user = userProvider.user!;
+    FilePickerResult? _resumeFile;
+    // pick a resume of student up
+    Future<void> onPickedResume() async {
+      // get the resume file
+      _resumeFile = await ProfileStudentUtil.pickFile(context);
+    }
+
+    // check that info is updated
+    final isUpdated = await _showEditedInfo(
+      context: context,
+      titleAttribute: 'Resume',
+      content: SizedBox(
+        width: MediaQuery.sizeOf(context).width * _percentWidthSize,
+        height: MediaQuery.sizeOf(context).width * _percentWidthSize,
+        child: DottedBorder(
+          radius: const Radius.circular(8),
+          color: Theme.of(context).colorScheme.onPrimary,
+          child: Container(
+            alignment: Alignment.center,
+            color: Colors.transparent,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.upload_file,
+                  size: 90,
+                ),
+                CustomButton(
+                  onPressed: onPickedResume,
+                  text: "choose file to up",
+                  buttonColor: Theme.of(context).colorScheme.secondary,
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+      handleSubmit: () {
+        return ProfileService.couResumeStudent(
+          token: userProvider.token!,
+          studentId: user.student!.id,
+          filePath: _resumeFile!.files.first.path!,
+        );
+      },
+    );
+
+    // have no clue
+    if (isUpdated == null) {
+      return;
+    }
+
+    // if isUpdated is false, that means something went wrong
+    if (isUpdated == false) {
+      ApiUtil.handleOtherStatusCode(context: context);
+      return;
+    }
+
+    // popup success
+    popupNotification(
+      context: context,
+      type: NotificationType.success,
+      content: 'Update resume successfully',
+      textSubmit: 'Ok',
+      submit: null,
+    );
+  }
+
+  // update a transcript
+  static Future<void> onUpdatedTranscript(
+      {required BuildContext context}) async {
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    UserModel user = userProvider.user!;
+    FilePickerResult? _transcriptFile;
+    // pick a transcript of student up
+    Future<void> onPickedTransCript() async {
+      // get the transcript file
+      _transcriptFile = await ProfileStudentUtil.pickFile(context);
+    }
+
+    // check that info is updated
+    final isUpdated = await _showEditedInfo(
+      context: context,
+      titleAttribute: 'Transcript',
+      content: SizedBox(
+        width: MediaQuery.sizeOf(context).width * _percentWidthSize,
+        height: MediaQuery.sizeOf(context).width * _percentWidthSize,
+        child: DottedBorder(
+          radius: const Radius.circular(8),
+          color: Theme.of(context).colorScheme.onPrimary,
+          child: Container(
+            alignment: Alignment.center,
+            color: Colors.transparent,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.upload_file,
+                  size: 90,
+                ),
+                CustomButton(
+                  onPressed: onPickedTransCript,
+                  text: "choose file to up",
+                  buttonColor: Theme.of(context).colorScheme.secondary,
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+      handleSubmit: () {
+        return ProfileService.couTranscriptStudent(
+          token: userProvider.token!,
+          studentId: user.student!.id,
+          filePath: _transcriptFile!.files.first.path!,
+        );
+      },
+    );
+
+    // have no clue
+    if (isUpdated == null) {
+      return;
+    }
+
+    // if isUpdated is false, that means something went wrong
+    if (isUpdated == false) {
+      ApiUtil.handleOtherStatusCode(context: context);
+      return;
+    }
+
+    // popup success
+    popupNotification(
+      context: context,
+      type: NotificationType.success,
+      content: 'Update transcript successfully',
+      textSubmit: 'Ok',
+      submit: null,
+    );
+  }
+
   // custom expansion tile to show info
   static Future<bool?> _showEditedInfo({
     required BuildContext context,
@@ -401,4 +550,22 @@ class ProfileStudentUtil {
           );
         },
       );
+
+  static Future<FilePickerResult?> pickFile(BuildContext context) async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+      return result;
+    } catch (e) {
+      // when have error, show the popup
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: 'Sorry, cannot get the file',
+        textSubmit: 'Ok',
+        submit: null,
+      );
+      return null;
+    }
+  }
 }
