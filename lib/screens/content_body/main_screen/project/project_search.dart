@@ -8,6 +8,7 @@ import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/listview_project_items.dart';
 import 'package:student_hub/models/enums/enum_projectlenght.dart';
 import 'package:student_hub/models/project_model.dart';
+import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:provider/provider.dart';
 import 'package:student_hub/services/project_service.dart';
@@ -47,8 +48,7 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
       listen: false,
     );
     String? token = userProvider.token;
-    final response = await ProjectService.searchProject(search: widget.search,projectScopeFlag: widget.projectScopeFlag,
-            numberOfStudents: widget.numberOfStudents,proposalsLessThan: widget.proposalsLessThan,token: token!);
+    final response = await ProjectService.searchProject(search: widget.search,token: token!);
     return ProjectModel.fromResponse(response);
   }
 
@@ -83,7 +83,7 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                 widget.numberOfStudents = studentNeededController.text;
                 widget.proposalsLessThan = proposalsLessThanController.text;
                 widget.projectScopeFlag = enumProjectLenght?.value.toString();
-
+                NavigationUtil.toProjectFilterScreen(context, widget.search,widget.proposalsLessThan, widget.projectScopeFlag,widget.numberOfStudents);
               });
             }
             Widget chooseLenght(EnumProjectLenght projectLenght, String text) {

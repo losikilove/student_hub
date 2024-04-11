@@ -43,17 +43,27 @@ class ProjectService {
   }
 
   static Future<http.Response> searchProject(
+      {required String search, required String token}) {
+    String url = '$_baseUrl?title=$search';
+
+    return http.get(
+      Uri.parse(url),
+      headers: ApiUtil.getHeadersWithToken(token),
+    );
+  }
+  static Future<http.Response> filterProject(
       {required String search,required String? proposalsLessThan,required String? projectScopeFlag,required String? numberOfStudents, required String token}) {
     String url = '$_baseUrl?title=$search';
     if (projectScopeFlag != null){
       url += "&projectScopeFlag=$projectScopeFlag"; 
     }
-    if (numberOfStudents != null){
-      url += "&proposalsLessThan=$numberOfStudents"; 
+    if (numberOfStudents != ""){
+      url += "&numberOfStudents=$numberOfStudents"; 
     }
-    if (proposalsLessThan != null){
+    if (proposalsLessThan != ""){
       url += "&proposalsLessThan=$proposalsLessThan"; 
     }
+    print(url);
     return http.get(
       Uri.parse(url),
       headers: ApiUtil.getHeadersWithToken(token),
