@@ -24,6 +24,7 @@ class _AddNewLanguageState extends State<AddNewLanguage> {
       _languages =
           widget.initialLanguages == null ? [] : widget.initialLanguages!;
     });
+    widget.onHelper(_languages);
   }
 
   void onCreatedNewLanguage() async {

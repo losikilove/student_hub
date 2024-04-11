@@ -152,10 +152,10 @@ class ProfileService {
   }
 
   // create student profile step 3
-  static Future<http.Response> createStudentProfileStep3(
+  static Future<http.Response?> createStudentProfileStep3(
       {required BuildContext context,
-      required String resumeFilePath,
-      required String transcriptFilePath}) async {
+      required String? resumeFilePath,
+      required String? transcriptFilePath}) async {
     // get token and student id
     UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
@@ -163,40 +163,46 @@ class ProfileService {
     final studentId = userProvider.user!.student!.id;
 
     // PUT api resume
-    final responseResume = await couResumeStudent(
-      token: token!,
-      studentId: studentId,
-      filePath: resumeFilePath,
-    );
+    if (resumeFilePath != null) {
+      final responseResume = await couResumeStudent(
+        token: token!,
+        studentId: studentId,
+        filePath: resumeFilePath,
+      );
 
-    // if cannot PUT resume, return response
-    if (responseResume.statusCode != StatusCode.ok.code) {
-      return responseResume;
+      // if cannot PUT resume, return response
+      if (responseResume.statusCode != StatusCode.ok.code) {
+        return responseResume;
+      }
+
+      // save the resume into the user provider
+      userProvider.saveStudentWhenUpdatedProfileStudent(
+        resume: ApiUtil.getResult(responseResume)['resume'],
+      );
     }
 
-    // save the resume into the user provider
-    userProvider.saveStudentWhenUpdatedProfileStudent(
-      resume: ApiUtil.getResult(responseResume)['resume'],
-    );
+    if (transcriptFilePath != null) {
+      // PUT api transcript
+      final responseTranscript = await couTranscriptStudent(
+        token: token!,
+        studentId: studentId,
+        filePath: transcriptFilePath,
+      );
 
-    // PUT api transcript
-    final responseTranscript = await couTranscriptStudent(
-      token: token,
-      studentId: studentId,
-      filePath: transcriptFilePath,
-    );
+      // if cannot PUT transcript, return response
+      if (responseTranscript.statusCode != StatusCode.ok.code) {
+        return responseTranscript;
+      }
 
-    // if cannot PUT transcript, return response
-    if (responseTranscript.statusCode != StatusCode.ok.code) {
+      // save the transcript into the user provider
+      userProvider.saveStudentWhenUpdatedProfileStudent(
+        transcript: ApiUtil.getResult(responseTranscript)['transcript'],
+      );
+
       return responseTranscript;
     }
 
-    // save the transcript into the user provider
-    userProvider.saveStudentWhenUpdatedProfileStudent(
-      transcript: ApiUtil.getResult(responseResume)['transcript'],
-    );
-
-    return responseTranscript;
+    return null;
   }
 
   // update student with techstack or skillsets

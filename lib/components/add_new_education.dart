@@ -27,6 +27,7 @@ class _AddNewEducationState extends State<AddNewEducation> {
       _educations =
           widget.initialEducations == null ? [] : widget.initialEducations!;
     });
+    widget.onHelper(_educations);
   }
 
   void onCreatedNewEducation() async {

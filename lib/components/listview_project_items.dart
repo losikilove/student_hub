@@ -4,15 +4,13 @@ import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/models/project_model.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
-import 'package:student_hub/providers/user_provider.dart';
-import 'package:provider/provider.dart';
 
 class ListViewProjectItems extends StatelessWidget {
   final List<ProjectModel> projects;
   const ListViewProjectItems({super.key, required this.projects});
 
   @override
-  Widget build(BuildContext context) { 
+  Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
           itemCount: projects.length,
@@ -23,7 +21,8 @@ class ListViewProjectItems extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    NavigationUtil.toBrowseProjectDetailScreen(context,project.id);
+                    NavigationUtil.toBrowseProjectDetailScreen(
+                        context, project.id);
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

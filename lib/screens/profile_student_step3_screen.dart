@@ -46,9 +46,18 @@ class _ProfileStudentStep3ScreenState extends State<ProfileStudentStep3Screen> {
     // get response from the 2 APIs: resume and transcript
     final response = await ProfileService.createStudentProfileStep3(
       context: context,
-      resumeFilePath: _resumeFile!.files.first.path!,
-      transcriptFilePath: _transcriptFile!.files.first.path!,
+      resumeFilePath: _resumeFile?.files.first.path!,
+      transcriptFilePath: _transcriptFile?.files.first.path!,
     );
+
+    if (response == null) {
+      // stop loading progress
+      Navigator.of(context).pop();
+
+      // go the main screen
+      NavigationUtil.toMainScreen(context, MainScreenIndex.project);
+      return;
+    }
 
     // handle response
     // go to next screen
