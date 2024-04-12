@@ -9,7 +9,6 @@ import 'package:student_hub/components/listview_project_items.dart';
 import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/models/enums/enum_projectlenght.dart';
 import 'package:student_hub/models/project_model.dart';
-import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:provider/provider.dart';
 import 'package:student_hub/services/project_service.dart';

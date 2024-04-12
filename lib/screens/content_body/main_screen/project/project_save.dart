@@ -159,6 +159,9 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
                 const CustomText(text: "Student are looking for"),
                 CustomBulletedList(listItems: project.description.split(',')),
                 CustomText(text: "Proposals: " + project.proposal.toString()),
+                const SizedBox(
+                  height: SpacingUtil.smallHeight,
+                ),
                 const CustomDivider(),
                 const SizedBox(
                   height: SpacingUtil.smallHeight,
