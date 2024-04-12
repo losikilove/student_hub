@@ -7,6 +7,7 @@ import 'package:student_hub/components/custom_tabbar.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/project_company_model.dart';
+import 'package:student_hub/screens/proposal_hire_offer_screen.dart';
 import 'package:student_hub/services/project_service.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
@@ -54,7 +55,11 @@ class _DashboardCompanyState extends State<DashboardCompany>
 
         // see detail of this project
         void onSeenDetail() {
-          NavigationUtil.toSendHireOffer(context);
+          NavigationUtil.toProposalHireOfferScreen(
+            context,
+            ProposalHiredType.proposals,
+            project.projectId,
+          );
         }
 
         // handle actions of this project
@@ -373,14 +378,20 @@ class _DashboardCompanyState extends State<DashboardCompany>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextButton(
-                      onPressed: onPressed,
+                      onPressed: () {
+                        NavigationUtil.toProposalHireOfferScreen(
+                          context,
+                          ProposalHiredType.proposals,
+                          project.projectId,
+                        );
+                      },
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.fromLTRB(30, 0, 200, 0),
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        minimumSize: const Size(0,15),
+                        minimumSize: const Size(0, 15),
                       ),
                       child: const CustomText(
-                        text: 'View proposel',
+                        text: 'View proposal',
                         size: TextUtil.smallTextSize,
                       ),
                     ),
@@ -389,7 +400,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.fromLTRB(30, 0, 200, 0),
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        minimumSize: const Size(0,15),
+                        minimumSize: const Size(0, 15),
                       ),
                       child: const CustomText(
                         text: 'View message',
@@ -397,11 +408,17 @@ class _DashboardCompanyState extends State<DashboardCompany>
                       ),
                     ),
                     TextButton(
-                      onPressed: onPressed,
+                      onPressed: () {
+                        NavigationUtil.toProposalHireOfferScreen(
+                          context,
+                          ProposalHiredType.hired,
+                          project.projectId,
+                        );
+                      },
                       style: TextButton.styleFrom(
                           padding: const EdgeInsets.fromLTRB(30, 0, 200, 0),
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          minimumSize: const Size(0,15)),
+                          minimumSize: const Size(0, 15)),
                       child: const CustomText(
                         text: 'View hired',
                         size: TextUtil.smallTextSize,
@@ -413,7 +430,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
                       style: TextButton.styleFrom(
                           padding: const EdgeInsets.fromLTRB(30, 0, 200, 0),
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          minimumSize: const Size(0,15)),
+                          minimumSize: const Size(0, 15)),
                       child: const CustomText(
                         text: 'View job posting',
                         size: TextUtil.smallTextSize,
@@ -422,14 +439,14 @@ class _DashboardCompanyState extends State<DashboardCompany>
                     TextButton(
                       onPressed: onPressed,
                       style: TextButton.styleFrom(
-                                padding: EdgeInsets.fromLTRB(30, 0, 50, 0),
-                                tapTargetSize: MaterialTapTargetSize
-                                    .shrinkWrap, //tap target
-                                minimumSize: Size(
-                                  0,
-                                  15,
-                                ) //size
-                                ),
+                          padding: EdgeInsets.fromLTRB(30, 0, 50, 0),
+                          tapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap, //tap target
+                          minimumSize: Size(
+                            0,
+                            15,
+                          ) //size
+                          ),
                       child: const CustomText(
                         text: 'Edit posting',
                         size: TextUtil.smallTextSize,
@@ -438,14 +455,14 @@ class _DashboardCompanyState extends State<DashboardCompany>
                     TextButton(
                       onPressed: onPressed,
                       style: TextButton.styleFrom(
-                                padding: EdgeInsets.fromLTRB(30, 0, 50, 0),
-                                tapTargetSize: MaterialTapTargetSize
-                                    .shrinkWrap, //tap target
-                                minimumSize: Size(
-                                  0,
-                                  15,
-                                ) //size
-                                ),
+                          padding: EdgeInsets.fromLTRB(30, 0, 50, 0),
+                          tapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap, //tap target
+                          minimumSize: Size(
+                            0,
+                            15,
+                          ) //size
+                          ),
                       child: const CustomText(
                         text: 'Remove posting',
                         size: TextUtil.smallTextSize,

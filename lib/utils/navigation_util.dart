@@ -174,11 +174,18 @@ class NavigationUtil {
   }
 
   // switch to proposal-hire-offer screen
-  static void toProposalHireOfferScreen(BuildContext currentContext) {
+  static void toProposalHireOfferScreen(
+    BuildContext currentContext,
+    ProposalHiredType type,
+    int projectId,
+  ) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
-        builder: (context) => const ProposalHireOfferScreen(),
+        builder: (context) => ProposalHireOfferScreen(
+          type: type,
+          projectId: projectId,
+        ),
       ),
     );
   }
@@ -224,14 +231,6 @@ class NavigationUtil {
         builder: (context) =>
             ProjectPostStep4Screen(projectCompanyModel: projectCompanyModel),
       ),
-    );
-  }
-
-  //Manage project flow
-  static void toSendHireOffer(BuildContext currentContext) {
-    Navigator.push(
-      currentContext,
-      MaterialPageRoute(builder: (context) => const ProposalHireOfferScreen()),
     );
   }
 
@@ -302,7 +301,4 @@ class NavigationUtil {
           builder: (context) => const StudentUpdateExperienceScreen(),
         ));
   }
-  
- 
-
 }

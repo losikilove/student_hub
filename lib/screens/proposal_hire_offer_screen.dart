@@ -9,10 +9,24 @@ import 'package:student_hub/models/candidate_model.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 
-class ProposalHireOfferScreen extends StatefulWidget {
-  //TODO: get data of project
+enum ProposalHiredType {
+  proposals(value: 0, name: 'Proposals'),
+  details(value: 1, name: 'Details'),
+  message(value: 2, name: 'Message'),
+  hired(value: 3, name: 'Hired');
 
-  const ProposalHireOfferScreen({super.key});
+  final int value;
+  final String name;
+
+  const ProposalHiredType({required this.value, required this.name});
+}
+
+class ProposalHireOfferScreen extends StatefulWidget {
+  final ProposalHiredType type;
+  final int projectId;
+
+  const ProposalHireOfferScreen(
+      {super.key, required this.type, required this.projectId});
 
   @override
   State<ProposalHireOfferScreen> createState() =>
@@ -53,7 +67,13 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
     super.initState();
 
     // initial the tab controller
-    _tabController = TabController(vsync: this, length: tabViews.length);
+    _tabController = TabController(
+      vsync: this,
+      length: tabViews.length,
+      initialIndex: widget.type == null
+          ? ProposalHiredType.proposals.value
+          : widget.type!.value,
+    );
   }
 
   @override
