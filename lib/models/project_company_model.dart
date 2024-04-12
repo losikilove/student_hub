@@ -16,47 +16,81 @@ class ProjectCompanyModel{
     required this.description,
     required this.typeFlag
   });
-  
 }
-class ProjectMyCompanyModel{
-  final int id;
+
+class ProjectCompanySubmitedModel extends ProjectCompanyModel{
+  final int projectId;
   final DateTime createdAt;
   final String companyId;
-  final EnumProjectLenght projectScopeFlag;
-  final String title;
-  final String description;
-  final int numberOfStudents;
-  final EnumTypeFlag typeFlag;
-  final List<dynamic> proposals;
+  ProjectCompanySubmitedModel({
+    required this.companyId,
+    required this.createdAt,
+    required this.projectId,
+    required String title,
+    required EnumProjectLenght projectScopeFlag,
+    required int numberofStudent,
+    required String description,
+    required EnumTypeFlag typeFlag
+  }) : super(
+    title: title,
+    projectScopeFlag: projectScopeFlag,
+    numberofStudent: numberofStudent,
+    description: description,
+    typeFlag: typeFlag
+  );
+  static ProjectCompanySubmitedModel fromJson(Map<String, dynamic> json) {
+    return ProjectCompanySubmitedModel(
+      projectId: json['id'] as int,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      companyId: json['companyId'] as String,
+      title: json['title'] as String,
+      projectScopeFlag: EnumProjectLenght.toProjectLenght(json['projectScopeFlag'] as int),
+      numberofStudent: json['numberOfStudents'] as int,
+      description: json['description'] as String,
+      typeFlag: EnumTypeFlag.toTypeFlag(json['typeFlag'] != null ? json['typeFlag'] as int : 0),
+    );
+  }
+}
+class ProjectMyCompanyModel extends ProjectCompanyModel{
+  final int projectId;
+  final DateTime createdAt;
+  final String companyId;
+  final List<dynamic>? proposals;
   final int countProposals;
   final int countMessages;
   final int countHired;
-
+  
   ProjectMyCompanyModel({
-    required this.id,
+    required this.projectId,
     required this.createdAt,
     required this.companyId,
-    required this.projectScopeFlag,
-    required this.title,
-    required this.description,
-    required this.numberOfStudents,
-    required this.typeFlag,
+    required String title,
+    required EnumProjectLenght projectScopeFlag,
+    required int numberofStudent,
+    required String description,
+    required EnumTypeFlag typeFlag,
     required this.proposals,
     required this.countProposals,
     required this.countMessages,
-    required this.countHired,
-  });
+    required this.countHired
+  }) : super(
+    title: title,
+    projectScopeFlag: projectScopeFlag,
+    numberofStudent: numberofStudent,
+    description: description,
+    typeFlag: typeFlag
+  );
 
   static List<ProjectMyCompanyModel> fromResponse(http.Response response) {
   final List<dynamic> result = json.decode(response.body)['result'];
   return result.map((element) => ProjectMyCompanyModel(
-    id: element['id'] as int,
+    projectId: element['id'] as int,
     createdAt: DateTime.parse(element['createdAt'] as String),
     companyId: element['companyId'] as String,
     projectScopeFlag: EnumProjectLenght.toProjectLenght(element['projectScopeFlag'] as int),
     title: element['title'] as String,
     description: element['description'] as String,
-    numberOfStudents: element['numberOfStudents'] as int,
+    numberofStudent: element['numberOfStudents'] as int,
     typeFlag: EnumTypeFlag.toTypeFlag(element['typeFlag'] as int),
     proposals: [], // Assuming proposals is always an empty list in the response
     countProposals: element['countProposals'] as int,
