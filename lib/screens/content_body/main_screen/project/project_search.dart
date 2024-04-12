@@ -6,6 +6,7 @@ import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/listview_project_items.dart';
+import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/models/enums/enum_projectlenght.dart';
 import 'package:student_hub/models/project_model.dart';
 import 'package:student_hub/utils/navigation_util.dart';
@@ -20,13 +21,15 @@ class ProjectBodySearchPart extends StatefulWidget {
   String? projectScopeFlag;
   String? proposalsLessThan;
   String? numberOfStudents;
+  bool isFilter = false;
   ProjectBodySearchPart(
       {super.key,
       required this.parentContext,
       required this.search,
       this.projectScopeFlag,
       this.numberOfStudents,
-      this.proposalsLessThan
+      this.proposalsLessThan,
+      this.isFilter = false
     });
 
   @override
@@ -42,14 +45,24 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
     _searchController = TextEditingController(text: widget.search);
   }
 
-  Future<List<ProjectModel>> initializeProject() async {
+ Future<List<ProjectModel>> initializeProject() async {
     UserProvider userProvider = Provider.of<UserProvider>(
       context,
       listen: false,
     );
     String? token = userProvider.token;
-    final response = await ProjectService.searchProject(search: widget.search,token: token!);
-    return ProjectModel.fromResponse(response);
+    if(!widget.isFilter){
+      final response = await ProjectService.searchProject(search: widget.search,token: token!);
+      return ProjectModel.fromResponse(response);
+    }
+    else{
+
+      final response = await ProjectService.filterProject(search: widget.search,projectScopeFlag: widget.projectScopeFlag,
+            numberOfStudents: widget.numberOfStudents,proposalsLessThan: widget.proposalsLessThan,token: token!);
+      popupNotification(context: context, type:NotificationType.success, content: "Filter success", textSubmit: "ok", submit: null);
+      return ProjectModel.fromResponse(response);
+    }
+    
   }
 
   @override
@@ -83,7 +96,10 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                 widget.numberOfStudents = studentNeededController.text;
                 widget.proposalsLessThan = proposalsLessThanController.text;
                 widget.projectScopeFlag = enumProjectLenght?.value.toString();
-                NavigationUtil.toProjectFilterScreen(context, widget.search,widget.proposalsLessThan, widget.projectScopeFlag,widget.numberOfStudents);
+                Navigator.pop(context);
+                setState(() {
+                  widget.isFilter = true;
+                });
               });
             }
             Widget chooseLenght(EnumProjectLenght projectLenght, String text) {
@@ -205,7 +221,6 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                           width: SpacingUtil.smallHeight,
                         ),
                         CustomButton(onPressed: (){
-                          Navigator.pop(context);
                           submitFilter();
                         }, text: 'Apply')
                       ],

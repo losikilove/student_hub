@@ -27,7 +27,7 @@ import 'package:student_hub/screens/student_update_experience_screen.dart';
 import 'package:student_hub/screens/student_view_profile_screen.dart';
 import 'package:student_hub/screens/switch_account_screen.dart';
 import 'package:student_hub/screens/welcome_screen.dart';
-import 'package:student_hub/screens/content_body/main_screen/project/project_filter.dart';
+
 class NavigationUtil {
   // back to previous screen
   static void turnBack(BuildContext currentContext) {
@@ -302,14 +302,7 @@ class NavigationUtil {
           builder: (context) => const StudentUpdateExperienceScreen(),
         ));
   }
-  // view-filter-profile screen
-  static void toProjectFilterScreen(BuildContext currentContext,String search,String? proposal,String? projectScopeFlag,String? student) {
-    Navigator.push(
-        currentContext,
-        MaterialPageRoute(
-          builder: (context) =>  ProjectBodyFilterPart(parentContext: context,search:search,
-          projectScopeFlag: projectScopeFlag,numberOfStudents: student,proposalsLessThan:proposal),
-        ));
-  }
+  
+ 
 
 }

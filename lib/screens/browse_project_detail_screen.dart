@@ -97,7 +97,7 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomText(
-          text: "Detail: " + project.title,
+          text: "Detail: ${project.title}",
           isBold: true,
           size: 23,
         ),
