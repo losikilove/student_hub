@@ -8,7 +8,7 @@ class CustomDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Divider(
-        height: 20,
+        height: 0,
         thickness: 2,
         indent: isFullWidth ? 0 : 40,
         endIndent: isFullWidth ? 0 : 35,
