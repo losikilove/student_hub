@@ -1,11 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
+import 'package:student_hub/components/custom_future_builder.dart';
 import 'package:student_hub/components/custom_tabbar.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/candidate_model.dart';
+import 'package:student_hub/models/enums/enum_status_flag.dart';
+import 'package:student_hub/models/project_company_model.dart';
+import 'package:student_hub/services/proposal_service.dart';
+import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 
@@ -23,10 +30,10 @@ enum ProposalHiredType {
 
 class ProposalHireOfferScreen extends StatefulWidget {
   final ProposalHiredType type;
-  final int projectId;
+  final ProjectCompanyModel currentProject;
 
   const ProposalHireOfferScreen(
-      {super.key, required this.type, required this.projectId});
+      {super.key, required this.type, required this.currentProject});
 
   @override
   State<ProposalHireOfferScreen> createState() =>
@@ -42,24 +49,6 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
     TabView(tab: const Tab(text: 'Hired'), widget: _hiredContent())
   ];
   late TabController _tabController;
-  final List<CandidateModel> _candidates = [
-    CandidateModel(
-      'Hung Le',
-      '4th year student',
-      'Fullstack Engineer',
-      'Excellent',
-      'I have gone through your project and it seems like a great project. I will commit for your project.',
-      false,
-    ),
-    CandidateModel(
-      'Quan Nguuyen',
-      '3th year student',
-      'Backend Engineer',
-      'Excellent',
-      'I have gone through your project and it seems like a great project. I will commit for your project.',
-      false,
-    ),
-  ];
   List<CandidateModel> _hiredCandidates = [];
 
   @override
@@ -70,9 +59,7 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
     _tabController = TabController(
       vsync: this,
       length: tabViews.length,
-      initialIndex: widget.type == null
-          ? ProposalHiredType.proposals.value
-          : widget.type!.value,
+      initialIndex: widget.type.value,
     );
   }
 
@@ -84,6 +71,18 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
   }
 
   void onPressed() {}
+
+  // initialize proposal
+  Future<List<CandidateModel>> initializeProposal() async {
+    final response = await ProposalService.getProposalByProject(
+      context: context,
+      projectId: (widget.currentProject as ProjectMyCompanyModel).projectId,
+    );
+
+    return CandidateModel.fromResponse(
+      ApiUtil.getResult(response)['items'] as List<dynamic>,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,125 +131,146 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
   // widgets contain content of tab
   // proposal content
   Widget _proposalContent() {
-    return ListView.builder(
-      itemCount: _candidates.length,
-      itemBuilder: (context, index) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            final candidate = _candidates[index];
-            String hireText = candidate.isHired ? 'Sent hired offer' : 'Hire';
+    return CustomFutureBuilder(
+      future: initializeProposal(),
+      widgetWithError: (snapshot) => CustomText(
+        text: snapshot.error.toString(),
+        textColor: Colors.red,
+      ),
+      widgetWithData: (snapshot) {
+        // just get status flag is waiting or offer
+        List<CandidateModel> candidates = snapshot.data!
+            .where((element) => element.statusFlag != EnumStatusFlag.hired)
+            .toList();
 
-            void onMessaged() {}
+        return ListView.builder(
+          itemCount: candidates.length,
+          itemBuilder: (context, index) {
+            return StatefulBuilder(
+              builder: (context, setModalState) {
+                final candidate = candidates[index];
+                String hireText = candidate.statusFlag == EnumStatusFlag.offer
+                    ? 'Sent hired offer'
+                    : 'Hire';
 
-            void onHired() async {
-              // show and get data of dialog which accepts or denies the hired offer
-              final showDialogHired = await showDialog(
-                  context: context,
-                  builder: (context) {
-                    // cancel the hired offer
-                    void _onCancelled() {
-                      Navigator.of(context).pop(false);
-                    }
+                void onMessaged() {}
 
-                    // accept the hired offer
-                    void _onSent() {
-                      Navigator.of(context).pop(true);
-                    }
+                void onHired() async {
+                  // show and get data of dialog which accepts or denies the hired offer
+                  final showDialogHired = await showDialog(
+                      context: context,
+                      builder: (context) {
+                        // cancel the hired offer
+                        void _onCancelled() {
+                          Navigator.of(context).pop(false);
+                        }
 
-                    return AlertDialog(
-                      title: const Center(
-                        child: Text(
-                          'Hired offer',
-                        ),
-                      ),
-                      content: const CustomText(
-                        text:
-                            'Do you want to send hired offer to this guy to do this project?',
-                      ),
-                      actions: [
-                        CustomButton(onPressed: _onCancelled, text: 'Cancel'),
-                        CustomButton(
-                          onPressed: _onSent,
-                          text: 'Send',
-                          buttonColor: Theme.of(context).colorScheme.secondary,
-                        ),
-                      ],
-                    );
+                        // accept the hired offer
+                        void _onSent() {
+                          Navigator.of(context).pop(true);
+                        }
+
+                        return AlertDialog(
+                          title: const Center(
+                            child: Text(
+                              'Hired offer',
+                            ),
+                          ),
+                          content: const CustomText(
+                            text:
+                                'Do you want to send hired offer to this guy to do this project?',
+                          ),
+                          actions: [
+                            CustomButton(
+                                onPressed: _onCancelled, text: 'Cancel'),
+                            CustomButton(
+                              onPressed: _onSent,
+                              text: 'Send',
+                              buttonColor:
+                                  Theme.of(context).colorScheme.secondary,
+                            ),
+                          ],
+                        );
+                      });
+
+                  // denies a hired offer for student
+                  if (showDialogHired == null || showDialogHired == false) {
+                    return;
+                  }
+
+                  // accepts a hired offer for student
+                  setModalState(() {
+                    candidate.changeHiredCandidate(EnumStatusFlag.offer);
+                    hireText = candidate.statusFlag == EnumStatusFlag.offer
+                        ? 'Sent hired offer'
+                        : 'Hire';
                   });
+                }
 
-              // denies a hired offer for student
-              if (showDialogHired == null || showDialogHired == false) {
-                return;
-              }
-
-              // accepts a hired offer for student
-              setState(() {
-                candidate.changeHiredCandidate();
-                hireText = candidate.isHired ? 'Sent hired offer' : 'Hire';
-              });
-            }
-
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+                return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // icon of candidate
-                    const Icon(
-                      Icons.person_outline,
-                      size: 40.0,
-                    ),
-                    Column(
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // fullname of candidate
-                        CustomText(text: candidate.fullname),
-                        // year of study of candidate
-                        CustomText(text: candidate.yearOfStudy),
+                        // icon of candidate
+                        const Icon(
+                          Icons.person_outline,
+                          size: 40.0,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // fullname of candidate
+                            CustomText(text: candidate.fullname),
+                            // year of study of candidate
+                            CustomText(text: candidate.yearOfStudy),
+                          ],
+                        )
                       ],
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: SpacingUtil.smallHeight,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomText(text: candidate.profession),
-                    CustomText(text: candidate.level),
-                  ],
-                ),
-                const SizedBox(
-                  height: SpacingUtil.smallHeight,
-                ),
-                CustomText(
-                  text: candidate.description,
-                  size: 14.0,
-                ),
-                const SizedBox(
-                  height: SpacingUtil.smallHeight,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // message button
-                    CustomButton(
-                      onPressed: onMessaged,
-                      text: 'Message',
                     ),
-                    // hired button
-                    CustomButton(
-                      onPressed: onHired,
-                      text: hireText,
-                      buttonColor: Theme.of(context).colorScheme.secondary,
-                      isDisabled: candidate.isHired,
+                    const SizedBox(
+                      height: SpacingUtil.smallHeight,
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(text: candidate.techStack),
+                        CustomText(text: candidate.level),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: SpacingUtil.smallHeight,
+                    ),
+                    CustomText(
+                      text: candidate.coverLetter,
+                      size: 14.0,
+                    ),
+                    const SizedBox(
+                      height: SpacingUtil.smallHeight,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // message button
+                        CustomButton(
+                          onPressed: onMessaged,
+                          text: 'Message',
+                        ),
+                        // hired button
+                        CustomButton(
+                          onPressed: onHired,
+                          text: hireText,
+                          buttonColor: Theme.of(context).colorScheme.secondary,
+                          isDisabled:
+                              candidate.statusFlag == EnumStatusFlag.offer,
+                        ),
+                      ],
+                    ),
+                    const CustomDivider(),
                   ],
-                ),
-                const CustomDivider(),
-              ],
+                );
+              },
             );
           },
         );
@@ -294,22 +314,25 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
         const CustomText(
           text: 'Student are looking for',
         ),
-        const CustomBulletedList(
-          listItems: [
-            'Clear expectation about your project or deliverables',
-            'The skills required for your project',
-            'Detail about your project'
-          ],
+        CustomBulletedList(
+          listItems: widget.currentProject.description.split('\n'),
         ),
         const CustomDivider(),
         // scope of project
-        _projectRequirement(Icons.alarm, 'Project scope', '3 to 6 months'),
+        _projectRequirement(
+          Icons.alarm,
+          'Project scope',
+          widget.currentProject.projectScopeFlag.name,
+        ),
         const SizedBox(
           height: SpacingUtil.smallHeight,
         ),
         // Required students
         _projectRequirement(
-            Icons.people_outline, 'Required students', '6 students'),
+          Icons.people_outline,
+          'Required students',
+          widget.currentProject.numberofStudent.toString(),
+        ),
         SizedBox(
           height: SpacingUtil.largeHeight,
         ),
@@ -328,6 +351,75 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
 
   // hired content
   Widget _hiredContent() {
-    return Center();
+    return CustomFutureBuilder(
+      future: initializeProposal(),
+      widgetWithError: (snapshot) => CustomText(
+        text: snapshot.error.toString(),
+        textColor: Colors.red,
+      ),
+      widgetWithData: (snapshot) {
+        // just get status flag is waiting or offer
+        List<CandidateModel> candidates = snapshot.data!
+            .where((element) => element.statusFlag == EnumStatusFlag.hired)
+            .toList();
+
+        return ListView.builder(
+          itemCount: candidates.length,
+          itemBuilder: (context, index) {
+            return StatefulBuilder(
+              builder: (context, setModalState) {
+                final candidate = candidates[index];
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // icon of candidate
+                        const Icon(
+                          Icons.person_outline,
+                          size: 40.0,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // fullname of candidate
+                            CustomText(text: candidate.fullname),
+                            // year of study of candidate
+                            CustomText(text: candidate.yearOfStudy),
+                          ],
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: SpacingUtil.smallHeight,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(text: candidate.techStack),
+                        CustomText(text: candidate.level),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: SpacingUtil.smallHeight,
+                    ),
+                    CustomText(
+                      text: candidate.coverLetter,
+                      size: 14.0,
+                    ),
+                    const SizedBox(
+                      height: SpacingUtil.smallHeight,
+                    ),
+                    const CustomDivider(),
+                  ],
+                );
+              },
+            );
+          },
+        );
+      },
+    );
   }
 }

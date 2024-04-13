@@ -178,14 +178,14 @@ class NavigationUtil {
   static void toProposalHireOfferScreen(
     BuildContext currentContext,
     ProposalHiredType type,
-    int projectId,
+    ProjectCompanyModel project,
   ) {
     Navigator.push(
       currentContext,
       MaterialPageRoute(
         builder: (context) => ProposalHireOfferScreen(
           type: type,
-          projectId: projectId,
+          currentProject: project,
         ),
       ),
     );

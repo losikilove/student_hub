@@ -59,7 +59,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
           NavigationUtil.toProposalHireOfferScreen(
             context,
             ProposalHiredType.proposals,
-            project.projectId,
+            project,
           );
         }
 
@@ -384,10 +384,13 @@ class _DashboardCompanyState extends State<DashboardCompany>
                   children: [
                     TextButton(
                       onPressed: () {
+                        // closes the bottom sheet
+                        Navigator.pop(context);
+                        // goes to the screen
                         NavigationUtil.toProposalHireOfferScreen(
                           context,
                           ProposalHiredType.proposals,
-                          project.projectId,
+                          project,
                         );
                       },
                       style: TextButton.styleFrom(
@@ -414,10 +417,13 @@ class _DashboardCompanyState extends State<DashboardCompany>
                     ),
                     TextButton(
                       onPressed: () {
+                        // closes the bottom sheet
+                        Navigator.pop(context);
+                        // goes to the screen
                         NavigationUtil.toProposalHireOfferScreen(
                           context,
                           ProposalHiredType.hired,
-                          project.projectId,
+                          project,
                         );
                       },
                       style: TextButton.styleFrom(

@@ -83,35 +83,35 @@ class ProjectModel {
             numberofStudent: element['project']['numberOfStudents'] as int))
         .toList();
   }
+
   static ProjectModel fromDetailResponse(http.Response response) {
-  final Map<String, dynamic> responseBody = json.decode(response.body);
-  final Map<String, dynamic> projectData = responseBody['result']['project'];
-  
-  dynamic proposals = projectData['proposals'];
-  int proposal;
-  if (proposals is List && proposals.isEmpty) {
-    // If 'proposals' is an empty array, set 'proposal' to 0 or handle it accordingly
-    proposal = 0; // Or any other default value
-  } else {
-    // If 'proposals' is not an array or it's not empty, handle it accordingly
-    proposal = int.tryParse(proposals.toString()) ?? 0;
+    final Map<String, dynamic> responseBody = json.decode(response.body);
+    final Map<String, dynamic> projectData = responseBody['result'];
+
+    dynamic proposals = projectData['proposals'];
+    int proposal;
+    if (proposals is List && proposals.isEmpty) {
+      // If 'proposals' is an empty array, set 'proposal' to 0 or handle it accordingly
+      proposal = 0; // Or any other default value
+    } else {
+      // If 'proposals' is not an array or it's not empty, handle it accordingly
+      proposal = int.tryParse(proposals.toString()) ?? 0;
     }
-  
+
     return ProjectModel(
       id: projectData['id'] as int,
       title: projectData['title'] as String,
       description: projectData['description'] as String,
       companyId: projectData['companyId'] as String,
-      projectScopeFlag: EnumProjectLenght.toProjectLenght(projectData['projectScopeFlag'] as int),
+      projectScopeFlag: EnumProjectLenght.toProjectLenght(
+          projectData['projectScopeFlag'] as int),
       typeFlag: projectData['typeFlag'] == null
-        ? null
-        : EnumTypeFlag.toTypeFlag(projectData['typeFlag'] as int),
+          ? null
+          : EnumTypeFlag.toTypeFlag(projectData['typeFlag'] as int),
       timeCreated: projectData['createdAt'] as String,
       isFavorite: true,
       proposal: proposal,
       numberofStudent: projectData['numberOfStudents'] as int,
     );
   }
-
-
 }

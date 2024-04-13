@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:student_hub/models/enums/enum_like_project.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -50,17 +51,22 @@ class ProjectService {
       headers: ApiUtil.getHeadersWithToken(token),
     );
   }
+
   static Future<http.Response> filterProject(
-      {required String search,required String? proposalsLessThan,required String? projectScopeFlag,required String? numberOfStudents, required String token}) {
+      {required String search,
+      required String? proposalsLessThan,
+      required String? projectScopeFlag,
+      required String? numberOfStudents,
+      required String token}) {
     String url = '$_baseUrl?title=$search';
-    if (projectScopeFlag != null){
-      url += "&projectScopeFlag=$projectScopeFlag"; 
+    if (projectScopeFlag != null) {
+      url += "&projectScopeFlag=$projectScopeFlag";
     }
-    if (numberOfStudents != ""){
-      url += "&numberOfStudents=$numberOfStudents"; 
+    if (numberOfStudents != "") {
+      url += "&numberOfStudents=$numberOfStudents";
     }
-    if (proposalsLessThan != ""){
-      url += "&proposalsLessThan=$proposalsLessThan"; 
+    if (proposalsLessThan != "") {
+      url += "&proposalsLessThan=$proposalsLessThan";
     }
     return http.get(
       Uri.parse(url),
@@ -71,11 +77,13 @@ class ProjectService {
   static Future<http.Response> viewProjectDetail(
       {required int id, required String token}) {
     String url = '$_baseUrl/$id';
+
     return http.get(
       Uri.parse(url),
       headers: ApiUtil.getHeadersWithToken(token),
     );
   }
+
   //company project - My compnay project or student join project
   static Future<http.Response> createProject({
     required ProjectCompanyModel project,
@@ -98,6 +106,7 @@ class ProjectService {
           "typeFlag": 0
         }));
   }
+
   //get all project of my company
   static Future<http.Response> getAllProjectMyCompany({
     required BuildContext context,
@@ -107,10 +116,12 @@ class ProjectService {
         Provider.of<UserProvider>(context, listen: false);
     int? id = userProvider.user?.company!.id;
     final token = userProvider.token!;
-    return http.get(Uri.parse("$url/company/$id"),
-        headers: ApiUtil.getHeadersWithToken(token),
+    return http.get(
+      Uri.parse("$url/company/$id"),
+      headers: ApiUtil.getHeadersWithToken(token),
     );
   }
+
   //delete project
   static Future<http.Response> deleteProject({
     required int id,
