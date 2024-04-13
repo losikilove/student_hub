@@ -6,7 +6,6 @@ import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/listview_project_items.dart';
-import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/models/enums/enum_projectlenght.dart';
 import 'package:student_hub/models/project_model.dart';
 import 'package:student_hub/utils/spacing_util.dart';
@@ -286,7 +285,7 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                 // filter list
                 IconButton(
                   onPressed: () {
-                    onOpenedFilter(context);
+                    onOpenedFilter(widget.parentContext);
                   },
                   icon: const Icon(
                     Icons.filter_list,
