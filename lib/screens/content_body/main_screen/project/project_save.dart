@@ -135,7 +135,7 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Title: " + project.title,
+                  "Title:  ${project.title}",
                   style: const TextStyle(
                       fontSize: 22, fontWeight: FontWeight.w500),
                 ),
@@ -143,22 +143,19 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
                   height: SpacingUtil.smallHeight,
                 ),
                 CustomText(
-                    text: "Time created: " +
-                        DateFormat('dd-MM-yyyy')
-                            .format(DateTime.parse(project.timeCreated))),
+                    text: "Time created: ${DateFormat('dd-MM-yyyy').format(DateTime.parse(project.timeCreated))}"
+                            ),
                 const SizedBox(
                   height: SpacingUtil.smallHeight,
                 ),
                 CustomText(
-                    text: "Time: " +
-                        month +
-                        ", ${project.numberofStudent} students needed"),
+                    text: "Time:  $month, ${project.numberofStudent} students needed"),
                 const SizedBox(
                   height: SpacingUtil.mediumHeight,
                 ),
                 const CustomText(text: "Student are looking for"),
                 CustomBulletedList(listItems: project.description.split(',')),
-                CustomText(text: "Proposals: " + project.proposal.toString()),
+                CustomText(text: "Proposals: ${project.proposal}"),
                 const SizedBox(
                   height: SpacingUtil.smallHeight,
                 ),
