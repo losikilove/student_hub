@@ -242,13 +242,16 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
                       prefixIcon: Icon(Icons.search),
                       hintText: 'Search for project',
                     ),
-                    onSubmitted: (s) {
+                    onSubmitted: (s) async {
                       // switch to content search
-                      Navigator.pushNamed(
+                      await Navigator.pushNamed(
                         context,
                         ProjectBodyType.search.nameRoute,
                         arguments: [s, _projects],
                       );
+
+                      // pop this context
+                      Navigator.pop(context);
                     },
                   ),
                   const SizedBox(
@@ -262,18 +265,18 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
                         context,
                         ProjectBodyType.search.nameRoute,
                         arguments: ["proj1", _projects],
-                      ); 
+                      );
                     },
                   ),
                   ListTile(
                     title: const CustomText(text: 'project test 1'),
                     onTap: () {
-                     Navigator.pop(context);
+                      Navigator.pop(context);
                       Navigator.pushNamed(
                         context,
                         ProjectBodyType.search.nameRoute,
                         arguments: ["project test 1", _projects],
-                      ); 
+                      );
                     },
                   ),
                   ListTile(
@@ -286,7 +289,7 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
                         context,
                         ProjectBodyType.search.nameRoute,
                         arguments: ["Data Dev", _projects],
-                      ); 
+                      );
                     },
                   ),
                 ],

@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:student_hub/services/project_service.dart';
 import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/components/custom_future_builder.dart';
+
 class ProjectBodySearchPart extends StatefulWidget {
   final BuildContext parentContext;
   final String search;
@@ -28,8 +29,7 @@ class ProjectBodySearchPart extends StatefulWidget {
       this.projectScopeFlag,
       this.numberOfStudents,
       this.proposalsLessThan,
-      this.isFilter = false
-    });
+      this.isFilter = false});
 
   @override
   State<ProjectBodySearchPart> createState() => _ProjectBodySearchPartState();
@@ -44,24 +44,25 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
     _searchController = TextEditingController(text: widget.search);
   }
 
- Future<List<ProjectModel>> initializeProject() async {
+  Future<List<ProjectModel>> initializeProject() async {
     UserProvider userProvider = Provider.of<UserProvider>(
       context,
       listen: false,
     );
     String? token = userProvider.token;
-    if(!widget.isFilter){
-      final response = await ProjectService.searchProject(search: widget.search,token: token!);
+    if (!widget.isFilter) {
+      final response = await ProjectService.searchProject(
+          search: widget.search, token: token!);
+      return ProjectModel.fromResponse(response);
+    } else {
+      final response = await ProjectService.filterProject(
+          search: widget.search,
+          projectScopeFlag: widget.projectScopeFlag,
+          numberOfStudents: widget.numberOfStudents,
+          proposalsLessThan: widget.proposalsLessThan,
+          token: token!);
       return ProjectModel.fromResponse(response);
     }
-    else{
-
-      final response = await ProjectService.filterProject(search: widget.search,projectScopeFlag: widget.projectScopeFlag,
-            numberOfStudents: widget.numberOfStudents,proposalsLessThan: widget.proposalsLessThan,token: token!);
-      popupNotification(context: context, type:NotificationType.success, content: "Filter success", textSubmit: "ok", submit: null);
-      return ProjectModel.fromResponse(response);
-    }
-    
   }
 
   @override
@@ -89,8 +90,8 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                 enumProjectLenght = value;
               });
             }
-            
-             void submitFilter() {
+
+            void submitFilter() {
               setModalState(() {
                 widget.numberOfStudents = studentNeededController.text;
                 widget.proposalsLessThan = proposalsLessThanController.text;
@@ -101,6 +102,7 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                 });
               });
             }
+
             Widget chooseLenght(EnumProjectLenght projectLenght, String text) {
               return Row(
                 children: [
@@ -119,7 +121,7 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
 
             return SingleChildScrollView(
               child: Container(
-                height:MediaQuery.of(context).size.height * 0.7,
+                height: MediaQuery.of(context).size.height * 0.7,
                 padding: const EdgeInsets.all(8.0),
                 color: Theme.of(context).colorScheme.onBackground,
                 child: Column(
@@ -145,7 +147,10 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                         ),
                       ],
                     ),
-                    const CustomText(text: 'Project length',size:18,),
+                    const CustomText(
+                      text: 'Project length',
+                      size: 18,
+                    ),
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -161,15 +166,18 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                     const SizedBox(
                       height: SpacingUtil.mediumHeight,
                     ),
-                    const CustomText(text: 'Student needed',size:18,),
+                    const CustomText(
+                      text: 'Student needed',
+                      size: 18,
+                    ),
                     const SizedBox(
                       height: SpacingUtil.smallHeight,
                     ),
                     Container(
                       decoration: BoxDecoration(
-                         border: Border.all(width: 1.0, color: Theme.of(context).colorScheme.onPrimary)
-   
-                      ),
+                          border: Border.all(
+                              width: 1.0,
+                              color: Theme.of(context).colorScheme.onPrimary)),
                       height: 35,
                       child: TextField(
                         controller: studentNeededController,
@@ -177,30 +185,37 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                             fontSize: 20,
                             color: Theme.of(context).colorScheme.onPrimary),
                         textAlign: TextAlign.start,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         keyboardType: TextInputType.number,
                       ),
                     ),
                     const SizedBox(
                       height: SpacingUtil.mediumHeight,
                     ),
-                    const CustomText(text: 'Proposals less than',size:18,),
+                    const CustomText(
+                      text: 'Proposals less than',
+                      size: 18,
+                    ),
                     const SizedBox(
                       height: SpacingUtil.smallHeight,
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(width: 1.0, color: Theme.of(context).colorScheme.onPrimary)
-                      ),
+                          border: Border.all(
+                              width: 1.0,
+                              color: Theme.of(context).colorScheme.onPrimary)),
                       height: 35,
                       child: TextField(
                         controller: proposalsLessThanController,
                         style: TextStyle(
                             fontSize: 20,
                             color: Theme.of(context).colorScheme.onPrimary),
-                       
                         textAlign: TextAlign.start,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         keyboardType: TextInputType.number,
                       ),
                     ),
@@ -211,17 +226,22 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CustomButton(onPressed: (){
-                          studentNeededController.clear();
-                          proposalsLessThanController.clear();
-                          changeProjectLength(EnumProjectLenght.less_than_one_month);
-                        }, text: 'Clear filter'),
+                        CustomButton(
+                            onPressed: () {
+                              studentNeededController.clear();
+                              proposalsLessThanController.clear();
+                              changeProjectLength(
+                                  EnumProjectLenght.less_than_one_month);
+                            },
+                            text: 'Clear filter'),
                         const SizedBox(
                           width: SpacingUtil.smallHeight,
                         ),
-                        CustomButton(onPressed: (){
-                          submitFilter();
-                        }, text: 'Apply')
+                        CustomButton(
+                            onPressed: () {
+                              submitFilter();
+                            },
+                            text: 'Apply')
                       ],
                     ),
                     const SizedBox(
@@ -243,7 +263,7 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
       appBar: CustomAppbar(
         title: 'Project search',
         isBack: true,
-        onPressed: (){},
+        onPressed: () {},
         currentContext: context,
       ),
       body: InitialBody(

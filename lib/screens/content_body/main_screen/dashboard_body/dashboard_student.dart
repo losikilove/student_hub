@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 import 'package:student_hub/components/custom_divider.dart';
@@ -10,40 +11,6 @@ import 'package:student_hub/services/proposal_service.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
-
-class ProjectModel {
-  final String _title;
-  final String _timeCreating;
-  final List<String> _wishes;
-  bool _isCompelte;
-  bool _like;
-  int _numberProposals;
-  int _numberMessages;
-  int _numberHires;
-
-  ProjectModel(
-    this._title,
-    this._timeCreating,
-    this._wishes,
-    this._isCompelte,
-    this._like,
-    this._numberProposals,
-    this._numberMessages,
-    this._numberHires,
-  );
-  set setLike(bool flag) {
-    _like = flag;
-  }
-
-  String get title => _title;
-  String get timeCreating => _timeCreating;
-  List<String> get wishes => _wishes;
-  bool get isCompelte => _isCompelte;
-  bool get like => _like;
-  int get numberProposals => _numberProposals;
-  int get numberMessages => _numberMessages;
-  int get numberHires => _numberHires;
-}
 
 class DashboardStudent extends StatefulWidget {
   const DashboardStudent({super.key});
@@ -94,7 +61,7 @@ class _DashboardStudentState extends State<DashboardStudent>
 
   Widget _buildProjectWorkingList() {
     return SingleChildScrollView(
-      child: Column(
+        child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
@@ -118,8 +85,11 @@ class _DashboardStudentState extends State<DashboardStudent>
                                 fontSize: 16),
                           ),
                           CustomText(
-                              text: "Submitted at " +
-                                  project.createdAt.toString()),
+                            text:
+                                "Submitted at: ${DateFormat('dd-MM-yyyy').format(
+                              DateTime.parse(project.createdAt.toString()),
+                            )}",
+                          ),
                           const SizedBox(
                             height: SpacingUtil.smallHeight,
                           ),
@@ -197,8 +167,12 @@ class _DashboardStudentState extends State<DashboardStudent>
                                             fontSize: 16),
                                       ),
                                       CustomText(
-                                          text: "Submitted at " +
+                                        text:
+                                            "Submitted at: ${DateFormat('dd-MM-yyyy').format(
+                                          DateTime.parse(
                                               project.createdAt.toString()),
+                                        )}",
+                                      ),
                                       const SizedBox(
                                         height: SpacingUtil.smallHeight,
                                       ),
@@ -303,7 +277,9 @@ class _DashboardStudentState extends State<DashboardStudent>
             child: Text('Error loading projects'),
           );
         } else {
-          _projects = snapshot.data!.where((element) => element.project.typeFlag == 1).toList();
+          _projects = snapshot.data!
+              .where((element) => element.project.typeFlag == 1)
+              .toList();
           return _buildProjectWorkingList();
         }
       },

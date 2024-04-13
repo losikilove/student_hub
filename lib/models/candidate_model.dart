@@ -1,21 +1,44 @@
-class CandidateModel {
-  final String _fullname;
-  final String _yearOfStudy;
-  final String _profession;
-  final String _level;
-  final String _description;
-  bool isHired;
+import 'package:student_hub/models/enums/enum_status_flag.dart';
 
-  CandidateModel(this._fullname, this._yearOfStudy, this._profession,
-      this._level, this._description, this.isHired);
+class CandidateModel {
+  final int studentId;
+  final String _fullname;
+  final String _yearOfStudy = '';
+  final String _techStack;
+  final String _level = 'Excellent';
+  final String _coverLetter;
+  EnumStatusFlag _statusFlag;
+
+  CandidateModel(
+    this.studentId,
+    this._fullname,
+    this._techStack,
+    this._coverLetter,
+    this._statusFlag,
+  );
 
   String get fullname => _fullname;
   String get yearOfStudy => _yearOfStudy;
-  String get profession => _profession;
+  String get techStack => _techStack;
   String get level => _level;
-  String get description => _description;
+  String get coverLetter => _coverLetter;
+  EnumStatusFlag get statusFlag => _statusFlag;
 
-  void changeHiredCandidate() {
-    isHired = !isHired;
+  void changeHiredCandidate(EnumStatusFlag status) {
+    if (status == EnumStatusFlag.waitting) {
+      _statusFlag = EnumStatusFlag.offer;
+    }
+  }
+
+  static List<CandidateModel> fromResponse(List<dynamic> items) {
+    return items
+        .map((e) => CandidateModel(
+              e['student']['id'],
+              e['student']['fullname'],
+              e['student']['techStack']['name'],
+              e['coverLetter'],
+              EnumStatusFlag.toStatusFlag(e['statusFlag'] as int),
+            ))
+        .toList();
   }
 }
