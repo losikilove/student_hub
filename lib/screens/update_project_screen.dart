@@ -12,6 +12,7 @@ import 'package:student_hub/services/project_service.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
+import 'package:student_hub/utils/text_util.dart';
 
 class UpdateProjectScreen extends StatefulWidget {
   final ProjectMyCompanyModel projectCModel;
@@ -32,12 +33,12 @@ class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
       _projectDuration = duration!;
     });
   }
+
   //closed project
-  void  closeProject() async {
+  void closeProject() async {
     final confirmedCloseProject = await _showDialogConfirmCloseProject();
 
-    if (confirmedCloseProject == null || confirmedCloseProject == false)
-      return;
+    if (confirmedCloseProject == null || confirmedCloseProject == false) return;
 
     final response = await ProjectService.closeProject(
       project: widget.projectCModel,
@@ -66,6 +67,7 @@ class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
     //others
     ApiUtil.handleOtherStatusCode(context: context);
   }
+
   Future<bool?> _showDialogConfirmCloseProject() => showDialog<bool>(
       context: context,
       builder: (context) {
@@ -93,7 +95,7 @@ class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
           ],
         );
       });
-  
+
   Future<void> updateProject() async {
     final confirmedUpdatedProject = await _showDialogConfirmUpdatedCProject();
 
@@ -155,22 +157,30 @@ class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
           title: "Update Project",
         ),
         body: InitialBody(
+          left: 0,
+          top: 0,
+          right: 0,
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const CustomText(text: 'Update Project'),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: CustomButton(
+                    onPressed: closeProject,
+                    text: 'Close Project',
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(18, 0, 18, 10),
+                  child: Column(
+                    children: [
+                       const SizedBox(
+                  height: SpacingUtil.mediumHeight,
+                ),
+                const CustomText(text: 'Update Project', isBold: true, size: TextUtil.textSize,),
                 const SizedBox(
                   height: SpacingUtil.mediumHeight,
                 ),
-                // close project
-                CustomButton(
-                  onPressed: closeProject,
-                  text: 'Close Project',
-                ),
-                const SizedBox(
-                  height: SpacingUtil.mediumHeight,
-                )
-                ,
                 TextField(
                   controller: controllerTile,
                   decoration: const InputDecoration(
@@ -278,6 +288,11 @@ class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
                 const SizedBox(
                   height: SpacingUtil.mediumHeight,
                 ),
+                    ],
+                  ),
+                ),
+                
+               
               ],
             ),
           ),
