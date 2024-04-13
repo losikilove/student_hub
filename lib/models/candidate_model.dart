@@ -34,7 +34,7 @@ class CandidateModel {
     return items
         .map((e) => CandidateModel(
               e['student']['id'],
-              e['student']['fullname'],
+              e['student']['user']['fullname'],
               e['student']['techStack']['name'],
               e['coverLetter'],
               EnumStatusFlag.toStatusFlag(e['statusFlag'] as int),

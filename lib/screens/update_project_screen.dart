@@ -32,7 +32,68 @@ class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
       _projectDuration = duration!;
     });
   }
+  //closed project
+  void  closeProject() async {
+    final confirmedCloseProject = await _showDialogConfirmCloseProject();
 
+    if (confirmedCloseProject == null || confirmedCloseProject == false)
+      return;
+
+    final response = await ProjectService.closeProject(
+      project: widget.projectCModel,
+      context: context,
+    );
+
+    if (response.statusCode == StatusCode.ok.code) {
+      await popupNotification(
+        context: context,
+        type: NotificationType.success,
+        content: 'Close project success',
+        textSubmit: 'Ok',
+        submit: null,
+      );
+
+      NavigationUtil.toMainScreen(context, MainScreenIndex.dashboard);
+      return;
+    }
+
+    // when expired token
+    if (response.statusCode == StatusCode.unauthorized.code) {
+      ApiUtil.handleExpiredToken(context: context);
+      return;
+    }
+
+    //others
+    ApiUtil.handleOtherStatusCode(context: context);
+  }
+  Future<bool?> _showDialogConfirmCloseProject() => showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            'WARNING',
+            style: TextStyle(color: Colors.red),
+          ),
+          content: const CustomText(
+            text: 'Are you sure to close your project?',
+          ),
+          actions: [
+            CustomButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              text: 'Yes',
+            ),
+            CustomButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              text: 'No',
+            ),
+          ],
+        );
+      });
+  
   Future<void> updateProject() async {
     final confirmedUpdatedProject = await _showDialogConfirmUpdatedCProject();
 
@@ -101,6 +162,15 @@ class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
                 const SizedBox(
                   height: SpacingUtil.mediumHeight,
                 ),
+                // close project
+                CustomButton(
+                  onPressed: closeProject,
+                  text: 'Close Project',
+                ),
+                const SizedBox(
+                  height: SpacingUtil.mediumHeight,
+                )
+                ,
                 TextField(
                   controller: controllerTile,
                   decoration: const InputDecoration(

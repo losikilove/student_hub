@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:student_hub/models/enums/enum_like_project.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:student_hub/models/enums/enum_type_flag.dart';
 import 'package:student_hub/models/project_company_model.dart';
 import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/utils/api_util.dart';
@@ -103,7 +103,7 @@ class ProjectService {
           "title": project.title,
           "numberOfStudents": project.numberofStudent,
           "description": project.description,
-          "typeFlag": 0
+          "typeFlag": null
         }));
   }
 
@@ -136,6 +136,7 @@ class ProjectService {
       headers: ApiUtil.getHeadersWithToken(token),
     );
   }
+
   //update project
   static Future<http.Response> updateProject({
     required ProjectMyCompanyModel project,
@@ -152,7 +153,46 @@ class ProjectService {
           "title": project.title,
           "numberOfStudents": project.numberofStudent,
           "description": project.description,
-          "typeFlag": 0
+          "typeFlag": project.typeFlag!.value,
+        }));
+  }
+
+  //start working project
+  static Future<http.Response> startWorkingProject({
+    required ProjectMyCompanyModel project,
+    required BuildContext context,
+  }) async {
+    String url = '$_baseUrl/${project.projectId}';
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.token!;
+    return http.patch(Uri.parse(url),
+        headers: ApiUtil.getHeadersWithToken(token),
+        body: jsonEncode(<String, dynamic>{
+          "projectScopeFlag": project.projectScopeFlag.value,
+          "title": project.title,
+          "numberOfStudents": project.numberofStudent,
+          "description": project.description,
+          "typeFlag": EnumTypeFlag.working.value,
+        }));
+  }
+  //finish project
+  static Future<http.Response> closeProject({
+    required ProjectMyCompanyModel project,
+    required BuildContext context,
+  }) async {
+    String url = '$_baseUrl/${project.projectId}';
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.token!;
+    return http.patch(Uri.parse(url),
+        headers: ApiUtil.getHeadersWithToken(token),
+        body: jsonEncode(<String, dynamic>{
+          "projectScopeFlag": project.projectScopeFlag.value,
+          "title": project.title,
+          "numberOfStudents": project.numberofStudent,
+          "description": project.description,
+          "typeFlag": EnumTypeFlag.archive.value,
         }));
   }
 }

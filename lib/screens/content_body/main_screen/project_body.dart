@@ -175,7 +175,6 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
                               ),
                             ),
                           );
-
                           // after join in area saved project,
                           // reset this context by using setState
                           setState(() {});

@@ -38,7 +38,6 @@ class _DashboardStudentState extends State<DashboardStudent>
     final response =
         await ProposalService.getAllProjectMyStudent(context: context);
     if (response.statusCode == StatusCode.ok.code) {
-      debugPrint(response.body);
       return ProposalStudent.fromResponse(response);
     } else {
       throw Exception('Failed to load projects');
@@ -256,7 +255,7 @@ class _DashboardStudentState extends State<DashboardStudent>
           );
         } else {
           _projects = snapshot.data!
-              .where((element) => element.statusFlag == 1)
+              .where((element) => element.statusFlag == 1 && element.project.typeFlag == 0)
               .toList();
           return _buildProjectWorkingList();
         }
@@ -278,7 +277,7 @@ class _DashboardStudentState extends State<DashboardStudent>
           );
         } else {
           _projects = snapshot.data!
-              .where((element) => element.project.typeFlag == 1)
+              .where((element) => element.project.typeFlag == 1 && element.statusFlag == 1)
               .toList();
           return _buildProjectWorkingList();
         }

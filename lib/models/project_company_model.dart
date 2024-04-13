@@ -8,7 +8,7 @@ class ProjectCompanyModel{
   EnumProjectLenght projectScopeFlag;
   int numberofStudent;
   String description;
-  EnumTypeFlag typeFlag;
+  EnumTypeFlag? typeFlag;
   ProjectCompanyModel({
     required this.title,
     required this.projectScopeFlag ,
@@ -30,7 +30,7 @@ class ProjectCompanySubmitedModel extends ProjectCompanyModel{
     required EnumProjectLenght projectScopeFlag,
     required int numberofStudent,
     required String description,
-    required EnumTypeFlag typeFlag
+    required EnumTypeFlag? typeFlag
   }) : super(
     title: title,
     projectScopeFlag: projectScopeFlag,
@@ -47,7 +47,7 @@ class ProjectCompanySubmitedModel extends ProjectCompanyModel{
       projectScopeFlag: EnumProjectLenght.toProjectLenght(json['projectScopeFlag'] as int),
       numberofStudent: json['numberOfStudents'] as int,
       description: json['description'] as String,
-      typeFlag: EnumTypeFlag.toTypeFlag(json['typeFlag'] != null ? json['typeFlag'] as int : 0),
+      typeFlag: json['typeFlag'] == null? null : EnumTypeFlag.toTypeFlag( json['typeFlag'] as int),
     );
   }
 }
@@ -68,7 +68,7 @@ class ProjectMyCompanyModel extends ProjectCompanyModel{
     required EnumProjectLenght projectScopeFlag,
     required int numberofStudent,
     required String description,
-    required EnumTypeFlag typeFlag,
+    required EnumTypeFlag? typeFlag,
     required this.proposals,
     required this.countProposals,
     required this.countMessages,
@@ -91,7 +91,7 @@ class ProjectMyCompanyModel extends ProjectCompanyModel{
     title: element['title'] as String,
     description: element['description'] as String,
     numberofStudent: element['numberOfStudents'] as int,
-    typeFlag: EnumTypeFlag.toTypeFlag(element['typeFlag'] as int),
+    typeFlag: element['typeFlag'] == null? null : EnumTypeFlag.toTypeFlag(element['typeFlag'] as int),
     proposals: [], // Assuming proposals is always an empty list in the response
     countProposals: element['countProposals'] as int,
     countMessages: element['countMessages'] as int,

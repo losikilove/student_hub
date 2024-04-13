@@ -7,7 +7,9 @@ import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_tabbar.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/models/enums/enum_type_flag.dart';
 import 'package:student_hub/models/project_company_model.dart';
+import 'package:student_hub/screens/main_screen.dart';
 import 'package:student_hub/screens/proposal_hire_offer_screen.dart';
 import 'package:student_hub/services/project_service.dart';
 import 'package:student_hub/utils/api_util.dart';
@@ -41,10 +43,61 @@ class _DashboardCompanyState extends State<DashboardCompany>
     final response =
         await ProjectService.getAllProjectMyCompany(context: context);
     if (response.statusCode == StatusCode.ok.code) {
-      debugPrint(response.body);
       return ProjectMyCompanyModel.fromResponse(response);
     } else {
       throw Exception('Failed to load projects');
+    }
+  }
+  void  removePosting(ProjectMyCompanyModel project) async{
+    final isConfirmed = await _showDialogRemovePosting();
+    if (isConfirmed == null || isConfirmed == false) {
+      return;
+    }
+    if (isConfirmed == true) {
+      await ProjectService.deleteProject(id: project.projectId,context: context);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen(contentBody: MainScreenIndex.dashboard,))
+      );
+    }
+  }
+  Future<bool?> _showDialogRemovePosting() => showDialog<bool>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Remove posting'),
+            content: const Text(
+                'Are you sure you want to remove this posting? This action cannot be undone.'),
+            actions: [
+              CustomButton(
+                onPressed: () => {
+                  Navigator.of(context).pop(false),
+                },
+                text: 'Cancel',
+              ),
+              CustomButton(
+               onPressed:() => {
+                  Navigator.of(context).pop(true),
+                },
+                text: 'Remove',
+              ),
+            ],
+          );
+        },
+      );
+
+  void onStartWorkingProject(ProjectMyCompanyModel project) async {
+    final response = await ProjectService.startWorkingProject(
+      project: project,
+      context: context,
+    );
+    if (response.statusCode == StatusCode.ok.code) {
+      setState(() {
+        project.typeFlag = EnumTypeFlag.working;
+      });
+      //worst way is using to navigate to dashboard
+      NavigationUtil.toMainScreen(context, MainScreenIndex.dashboard);
+      
+    } else {
+      throw Exception('Failed to start working project');
     }
   }
 
@@ -182,7 +235,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
       },
     );
   }
-
+  
   @override
   void dispose() {
     // dispose the tab controller
@@ -299,20 +352,20 @@ class _DashboardCompanyState extends State<DashboardCompany>
           );
         } else {
           _projects = snapshot.data!
-              .where((projectModel) => projectModel.typeFlag.value.isEven)
+              .where((projectModel) => projectModel.typeFlag != null && projectModel.typeFlag!.value.isEven)
               .toList();
           if (_projects.isEmpty) {
             return const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: CustomText(text: 'Welcome, !'),
+                  child: CustomText(text: 'Welcome,'),
                 ),
                 SizedBox(
                   height: SpacingUtil.smallHeight,
                 ),
                 Center(
-                  child: CustomText(text: 'You have no jobs!'),
+                  child: CustomText(text: 'You have no jobs working!'),
                 ),
               ],
             );
@@ -338,20 +391,20 @@ class _DashboardCompanyState extends State<DashboardCompany>
           );
         } else {
           _projects = snapshot.data!
-              .where((projectModel) => projectModel.typeFlag.value.isOdd)
+              .where((projectModel) =>projectModel.typeFlag != null && projectModel.typeFlag!.value.isOdd)
               .toList();
           if (_projects.isEmpty) {
             return const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: CustomText(text: 'Welcome!'),
+                  child: CustomText(text: 'Welcome,'),
                 ),
                 SizedBox(
                   height: SpacingUtil.smallHeight,
                 ),
                 Center(
-                  child: CustomText(text: 'You have no jobs!'),
+                  child: CustomText(text: 'You have no jobs archived!'),
                 ),
               ],
             );
@@ -435,7 +488,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
                         size: TextUtil.smallTextSize,
                       ),
                     ),
-                    const CustomDivider(isFullWidth: true),
+                    const CustomDivider(isFullWidth: true, height: 0,),
                     TextButton(
                       onPressed: onPressed,
                       style: TextButton.styleFrom(
@@ -466,7 +519,9 @@ class _DashboardCompanyState extends State<DashboardCompany>
                       ),
                     ),
                     TextButton(
-                      onPressed: onPressed,
+                      onPressed: (){
+                        removePosting(project);
+                      },
                       style: TextButton.styleFrom(
                           padding: EdgeInsets.fromLTRB(30, 0, 50, 0),
                           tapTargetSize:
@@ -485,16 +540,19 @@ class _DashboardCompanyState extends State<DashboardCompany>
                 ),
               ),
               Builder(builder: (context) {
-                if (project.typeFlag.value.isEven)
+                if (project.typeFlag == null)
                   return Container(
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomDivider(
                             isFullWidth: true,
+                            height: 0,
                           ),
                           TextButton(
-                            onPressed: onPressed,
+                            onPressed: (){
+                              onStartWorkingProject(project);
+                            },
                             child: Text(
                               'Start working this project',
                               style: TextStyle(color: Colors.black),
