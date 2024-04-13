@@ -26,6 +26,7 @@ import 'package:student_hub/screens/student_submit_proposal_screen.dart';
 import 'package:student_hub/screens/student_update_experience_screen.dart';
 import 'package:student_hub/screens/student_view_profile_screen.dart';
 import 'package:student_hub/screens/switch_account_screen.dart';
+import 'package:student_hub/screens/update_project_screen.dart';
 import 'package:student_hub/screens/welcome_screen.dart';
 
 class NavigationUtil {
@@ -299,6 +300,15 @@ class NavigationUtil {
         currentContext,
         MaterialPageRoute(
           builder: (context) => const StudentUpdateExperienceScreen(),
+        ));
+  }
+  //update company project screen
+  static void toUpdateProjectScreen(
+      BuildContext currentContext, ProjectMyCompanyModel projectCModel) {
+    Navigator.push(
+        currentContext,
+        MaterialPageRoute(
+          builder: (context) => UpdateProjectScreen(projectCModel: projectCModel),
         ));
   }
 }

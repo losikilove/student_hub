@@ -194,6 +194,9 @@ class _DashboardCompanyState extends State<DashboardCompany>
   }
 
   void onPressed() {}
+  void onEditProject(ProjectMyCompanyModel project) {
+    NavigationUtil.toUpdateProjectScreen(context, project);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -437,7 +440,9 @@ class _DashboardCompanyState extends State<DashboardCompany>
                       ),
                     ),
                     TextButton(
-                      onPressed: onPressed,
+                      onPressed: () {
+                        onEditProject(project);
+                      },
                       style: TextButton.styleFrom(
                           padding: EdgeInsets.fromLTRB(30, 0, 50, 0),
                           tapTargetSize:

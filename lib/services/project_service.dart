@@ -125,4 +125,23 @@ class ProjectService {
       headers: ApiUtil.getHeadersWithToken(token),
     );
   }
+  //update project
+  static Future<http.Response> updateProject({
+    required ProjectMyCompanyModel project,
+    required BuildContext context,
+  }) async {
+    String url = '$_baseUrl/${project.projectId}';
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.token!;
+    return http.patch(Uri.parse(url),
+        headers: ApiUtil.getHeadersWithToken(token),
+        body: jsonEncode(<String, dynamic>{
+          "projectScopeFlag": project.projectScopeFlag.value,
+          "title": project.title,
+          "numberOfStudents": project.numberofStudent,
+          "description": project.description,
+          "typeFlag": 0
+        }));
+  }
 }
