@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 import 'package:student_hub/components/custom_button.dart';
@@ -86,9 +87,10 @@ class _DashboardCompanyState extends State<DashboardCompany>
                           ),
                           // time-creating of this project
                           CustomText(
-                            text: project.createdAt.toString(),
-                            isItalic: true,
-                          )
+                            text: "Time created: ${DateFormat('dd-MM-yyyy').format(
+                              DateTime.parse(project.createdAt.toString()),
+                            )}",
+                          ),
                         ],
                       ),
                       // icon button seeing detail of this project

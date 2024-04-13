@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
 import 'package:student_hub/components/custom_divider.dart';
@@ -94,7 +95,7 @@ class _DashboardStudentState extends State<DashboardStudent>
 
   Widget _buildProjectWorkingList() {
     return SingleChildScrollView(
-      child: Column(
+        child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
@@ -118,8 +119,11 @@ class _DashboardStudentState extends State<DashboardStudent>
                                 fontSize: 16),
                           ),
                           CustomText(
-                              text: "Submitted at " +
-                                  project.createdAt.toString()),
+                            text:
+                                "Submitted at: ${DateFormat('dd-MM-yyyy').format(
+                              DateTime.parse(project.createdAt.toString()),
+                            )}",
+                          ),
                           const SizedBox(
                             height: SpacingUtil.smallHeight,
                           ),
@@ -197,8 +201,12 @@ class _DashboardStudentState extends State<DashboardStudent>
                                             fontSize: 16),
                                       ),
                                       CustomText(
-                                          text: "Submitted at " +
+                                        text:
+                                            "Submitted at: ${DateFormat('dd-MM-yyyy').format(
+                                          DateTime.parse(
                                               project.createdAt.toString()),
+                                        )}",
+                                      ),
                                       const SizedBox(
                                         height: SpacingUtil.smallHeight,
                                       ),
@@ -303,7 +311,9 @@ class _DashboardStudentState extends State<DashboardStudent>
             child: Text('Error loading projects'),
           );
         } else {
-          _projects = snapshot.data!.where((element) => element.project.typeFlag == 1).toList();
+          _projects = snapshot.data!
+              .where((element) => element.project.typeFlag == 1)
+              .toList();
           return _buildProjectWorkingList();
         }
       },
