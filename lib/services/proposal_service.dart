@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:student_hub/models/enums/enum_disable_flag.dart';
 import 'package:student_hub/models/enums/enum_status_flag.dart';
 import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/utils/api_util.dart';
@@ -7,6 +10,7 @@ import 'package:http/http.dart' as http;
 
 class ProposalService {
   static const String _baseUrl = '${ApiUtil.baseUrl}/proposal';
+
   static Future<http.Response> getAllProjectMyStudent(
       {required BuildContext context}) {
     const String url = '$_baseUrl/project';
@@ -17,6 +21,32 @@ class ProposalService {
     return http.get(
       Uri.parse("$url/$id"),
       headers: ApiUtil.getHeadersWithToken(token),
+    );
+  }
+
+  static Future<http.Response> postProposal({
+    required BuildContext context,
+    required int projectId,
+    required String coverLetter,
+    required EnumStatusFlag statusFlag,
+    EnumDisableFlag disableFlag = EnumDisableFlag.enable,
+  }) {
+    const String url = _baseUrl;
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.token!;
+    int studentId = userProvider.user!.student!.id;
+
+    return http.post(
+      Uri.parse(url),
+      headers: ApiUtil.getHeadersWithToken(token),
+      body: jsonEncode(<String, dynamic>{
+        'projectId': projectId,
+        'studentId': studentId,
+        'coverLetter': coverLetter,
+        'statusFlag': statusFlag.value,
+        'disableFlag': disableFlag.value,
+      }),
     );
   }
 

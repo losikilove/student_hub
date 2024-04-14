@@ -168,7 +168,7 @@ class NavigationUtil {
       currentContext,
       MaterialPageRoute(
         builder: (context) => BrowseProjectDetailScreen(
-          id: id,
+          projectId: id,
         ),
       ),
     );
@@ -236,11 +236,13 @@ class NavigationUtil {
   }
 
   //Student submit proposal
-  static void toSubmitProposal(BuildContext currentContext) {
+  static void toSubmitProposal(BuildContext currentContext, int projectId) {
     Navigator.push(
         currentContext,
         MaterialPageRoute(
-            builder: (context) => const StudentSubmitProposalScreen()));
+            builder: (context) => StudentSubmitProposalScreen(
+                  projectId: projectId,
+                )));
   }
 
   //Chat
@@ -302,13 +304,15 @@ class NavigationUtil {
           builder: (context) => const StudentUpdateExperienceScreen(),
         ));
   }
+
   //update company project screen
   static void toUpdateProjectScreen(
       BuildContext currentContext, ProjectMyCompanyModel projectCModel) {
     Navigator.push(
         currentContext,
         MaterialPageRoute(
-          builder: (context) => UpdateProjectScreen(projectCModel: projectCModel),
+          builder: (context) =>
+              UpdateProjectScreen(projectCModel: projectCModel),
         ));
   }
 }

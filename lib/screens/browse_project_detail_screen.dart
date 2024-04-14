@@ -15,8 +15,8 @@ import 'package:provider/provider.dart';
 
 class BrowseProjectDetailScreen extends StatefulWidget {
   // TODO: require a project-model attribute
-  final int id;
-  const BrowseProjectDetailScreen({super.key, required this.id});
+  final int projectId;
+  const BrowseProjectDetailScreen({super.key, required this.projectId});
 
   @override
   State<BrowseProjectDetailScreen> createState() =>
@@ -26,7 +26,10 @@ class BrowseProjectDetailScreen extends StatefulWidget {
 class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
   void onPressed() {}
   void onAppliedNow() {
-    NavigationUtil.toSubmitProposal(context);
+    NavigationUtil.toSubmitProposal(
+      context,
+      widget.projectId,
+    );
   }
 
   // save this project
@@ -38,8 +41,8 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
     );
 
     String? token = userProvider.token;
-    final response =
-        await ProjectService.viewProjectDetail(id: widget.id, token: token!);
+    final response = await ProjectService.viewProjectDetail(
+        id: widget.projectId, token: token!);
     return ProjectModel.fromDetailResponse(response);
   }
 
@@ -60,8 +63,8 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
               return projectDetail(snapshot.data!);
             },
             widgetWithError: (snapshot) {
-              return CustomText(
-                text: snapshot.error.toString(),
+              return const CustomText(
+                text: 'Sorry, something went wrong',
                 textColor: Colors.red,
               );
             },
@@ -120,7 +123,7 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
         ),
         // Required students
         _projectRequirement(Icons.people_outline, 'Required students',
-            '${project.numberofStudent}  students'),
+            '${project.numberofStudent} students'),
       ],
     );
   }
@@ -148,7 +151,7 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
               ),
               CustomBulletedList(
                 textSize: 18,
-                listItems: [detailRequirement],
+                listItems: detailRequirement.split('\n'),
               ),
             ],
           ),

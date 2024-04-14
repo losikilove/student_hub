@@ -59,12 +59,7 @@ class ApiUtil {
       type: NotificationType.error,
       content: 'Sign in timed out! Back to sign in',
       textSubmit: 'Sign in',
-      submit: () {
-        // expire token
-        Provider.of<UserProvider>(context, listen: false).signout();
-        // then switch to the sign in screen
-        NavigationUtil.toSignInScreen(context);
-      },
+      submit: null,
     );
 
     // auto switch to the sign in screen

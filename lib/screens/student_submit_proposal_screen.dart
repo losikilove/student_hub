@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:student_hub/components/circle_progress.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
-import 'package:student_hub/utils/color_util.dart';
+import 'package:student_hub/components/popup_confirm.dart';
+import 'package:student_hub/components/popup_notification.dart';
+import 'package:student_hub/models/enums/enum_status_flag.dart';
+import 'package:student_hub/services/proposal_service.dart';
+import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
 class StudentSubmitProposalScreen extends StatefulWidget {
-  const StudentSubmitProposalScreen({super.key});
+  final int projectId;
+
+  const StudentSubmitProposalScreen({super.key, required this.projectId});
 
   @override
   State<StudentSubmitProposalScreen> createState() =>
@@ -45,7 +52,58 @@ class _StudentSubmitProposalScreenState
   }
 
   // submit this proposal
-  void onSubmittedProposal() {}
+  Future<void> onSubmittedProposal() async {
+    // popup confirm that user want to submit this proposal
+    final confirmedSubmitProposal = await popupConfirm(
+      context: context,
+      content: 'Are you sure to submit this',
+    );
+
+    // do not want to submit
+    if (confirmedSubmitProposal == null || confirmedSubmitProposal == false) {
+      return;
+    }
+
+    // loading in progress
+    showCircleProgress(context: context);
+
+    // handle the submission
+    final response = await ProposalService.postProposal(
+      context: context,
+      projectId: widget.projectId,
+      coverLetter: _describeController.text,
+      statusFlag: EnumStatusFlag.waitting,
+    );
+
+    // stop loading
+    Navigator.of(context).pop();
+
+    // handle the response
+    // when the reponse is ok
+    if (response.statusCode == StatusCode.created.code) {
+      // show successful popup
+      await popupNotification(
+        context: context,
+        type: NotificationType.success,
+        content: 'Your proposal has submitted',
+        textSubmit: 'Ok',
+        submit: null,
+      );
+
+      // back to the previous screen
+      NavigationUtil.turnBack(context);
+      return;
+    }
+
+    // when expired token
+    if (response.statusCode == StatusCode.unauthorized.code) {
+      ApiUtil.handleExpiredToken(context: context);
+      return;
+    }
+
+    // others
+    ApiUtil.handleOtherStatusCode(context: context);
+  }
 
   @override
   Widget build(BuildContext context) {

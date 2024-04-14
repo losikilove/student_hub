@@ -34,7 +34,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
     TabView(
         tab: const Tab(text: 'Archived'), widget: _companyArchievedContent())
   ];
-  late TabController _tabController =
+  late final TabController _tabController =
       TabController(vsync: this, length: _tabViews.length);
 
   List<ProjectMyCompanyModel> _projects = [];
@@ -48,17 +48,24 @@ class _DashboardCompanyState extends State<DashboardCompany>
       throw Exception('Failed to load projects');
     }
   }
-  void  removePosting(ProjectMyCompanyModel project) async{
+
+  void removePosting(ProjectMyCompanyModel project) async {
     final isConfirmed = await _showDialogRemovePosting();
     if (isConfirmed == null || isConfirmed == false) {
       return;
     }
     if (isConfirmed == true) {
-      await ProjectService.deleteProject(id: project.projectId,context: context);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen(contentBody: MainScreenIndex.dashboard,))
-      );
+      await ProjectService.deleteProject(
+          id: project.projectId, context: context);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const MainScreen(
+                    contentBody: MainScreenIndex.dashboard,
+                  )));
     }
   }
+
   Future<bool?> _showDialogRemovePosting() => showDialog<bool>(
         context: context,
         builder: (context) {
@@ -74,7 +81,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
                 text: 'Cancel',
               ),
               CustomButton(
-               onPressed:() => {
+                onPressed: () => {
                   Navigator.of(context).pop(true),
                 },
                 text: 'Remove',
@@ -95,7 +102,6 @@ class _DashboardCompanyState extends State<DashboardCompany>
       });
       //worst way is using to navigate to dashboard
       NavigationUtil.toMainScreen(context, MainScreenIndex.dashboard);
-      
     } else {
       throw Exception('Failed to start working project');
     }
@@ -140,7 +146,8 @@ class _DashboardCompanyState extends State<DashboardCompany>
                           ),
                           // time-creating of this project
                           CustomText(
-                            text: "Time created: ${DateFormat('dd-MM-yyyy').format(
+                            text:
+                                "Time created: ${DateFormat('dd-MM-yyyy').format(
                               DateTime.parse(project.createdAt.toString()),
                             )}",
                           ),
@@ -235,7 +242,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
       },
     );
   }
-  
+
   @override
   void dispose() {
     // dispose the tab controller
@@ -252,6 +259,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
   void onEditProject(ProjectMyCompanyModel project) {
     NavigationUtil.toUpdateProjectScreen(context, project);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -352,7 +360,9 @@ class _DashboardCompanyState extends State<DashboardCompany>
           );
         } else {
           _projects = snapshot.data!
-              .where((projectModel) => projectModel.typeFlag != null && projectModel.typeFlag!.value.isEven)
+              .where((projectModel) =>
+                  projectModel.typeFlag != null &&
+                  projectModel.typeFlag!.value.isEven)
               .toList();
           if (_projects.isEmpty) {
             return const Column(
@@ -391,7 +401,9 @@ class _DashboardCompanyState extends State<DashboardCompany>
           );
         } else {
           _projects = snapshot.data!
-              .where((projectModel) =>projectModel.typeFlag != null && projectModel.typeFlag!.value.isOdd)
+              .where((projectModel) =>
+                  projectModel.typeFlag != null &&
+                  projectModel.typeFlag!.value.isOdd)
               .toList();
           if (_projects.isEmpty) {
             return const Column(
@@ -488,7 +500,10 @@ class _DashboardCompanyState extends State<DashboardCompany>
                         size: TextUtil.smallTextSize,
                       ),
                     ),
-                    const CustomDivider(isFullWidth: true, height: 0,),
+                    const CustomDivider(
+                      isFullWidth: true,
+                      height: 0,
+                    ),
                     TextButton(
                       onPressed: onPressed,
                       style: TextButton.styleFrom(
@@ -519,7 +534,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
                       ),
                     ),
                     TextButton(
-                      onPressed: (){
+                      onPressed: () {
                         removePosting(project);
                       },
                       style: TextButton.styleFrom(
@@ -550,7 +565,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
                             height: 0,
                           ),
                           TextButton(
-                            onPressed: (){
+                            onPressed: () {
                               onStartWorkingProject(project);
                             },
                             child: Text(
