@@ -10,6 +10,7 @@ import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/models/enums/enum_user.dart';
 import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/screens/main_screen.dart';
+import 'package:student_hub/screens/signin_screen.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/user_util.dart';
 
@@ -105,7 +106,9 @@ class _SwitchAccountScreen extends State<SwitchAccountScreen> {
     // expire token
     Provider.of<UserProvider>(context, listen: false).signout();
     // back to sign in screen
-    NavigationUtil.toSignInScreen(context);
+    Navigator.pushReplacement(context, MaterialPageRoute(
+      builder: (BuildContext context)=> const SignInScreen()
+    ));
   }
 
   @override
