@@ -47,7 +47,10 @@ class _SignInScreenState extends State<SignInScreen> {
     }
 
     // go to main screen
-    NavigationUtil.toMainScreen(context, MainScreenIndex.dashboard);
+    // NavigationUtil.toMainScreen(context, MainScreenIndex.dashboard);
+     Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (BuildContext context)=> const MainScreen(contentBody: MainScreenIndex.dashboard,)));
+      ;
   }
 
   // sign up
