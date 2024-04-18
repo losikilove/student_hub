@@ -88,4 +88,17 @@ class ExperienceModel {
         ? -1
         : (diffYears * 12 + (diffMonths <= 0 ? 0 : diffMonths)) + 1;
   }
+  factory ExperienceModel.fromJson(Map<String, dynamic> json) {
+    return ExperienceModel(
+      json['id'],
+      json['title'],
+      json['description'],
+      int.parse(json['startMonth'].toString().split('-')[1]),
+      int.parse(json['endMonth'].toString().split('-')[1]),
+      int.parse(json['startMonth'].toString().split('-')[0]),
+      int.parse(json['endMonth'].toString().split('-')[0]),
+      json['skillSets'],
+    );
+  
+  }
 }

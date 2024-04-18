@@ -11,6 +11,12 @@ class TechStackModel {
         .toList();
   }
 
+  factory TechStackModel.fromJson(Map<String, dynamic> json) {
+    return TechStackModel(
+      json['id'],
+      json['name'],
+    );
+  }
   // getter
   int get id => _id;
   String get name => _name;

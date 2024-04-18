@@ -19,6 +19,14 @@ class LanguageModel {
         .toList();
   }
 
+  factory LanguageModel.fromJson(Map<String, dynamic> json) {
+    return LanguageModel(
+      int.parse(json['id']),
+      json['languageName'], 
+      json['level']      
+    );
+  }
+
   @override
   String toString() {
     return '$getLanguage: $getLevel';

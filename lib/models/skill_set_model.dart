@@ -11,6 +11,12 @@ class SkillSetModel {
         .toList();
   }
 
+  factory SkillSetModel.fromJson(Map<String, dynamic> json) {
+    return SkillSetModel(
+      int.parse(json['id']),
+      json['name'],   
+    );
+  }
   // getter
   int get id => _id;
   String get name => _name;

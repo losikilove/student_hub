@@ -20,6 +20,15 @@ class EducationModel {
         .toList();
   }
 
+   factory EducationModel.fromJson(Map<String, dynamic> json) {
+    return EducationModel(
+      json['id'],
+      json['schoolName'],
+      json['startYear'],
+      json['endYear'],   
+    );
+  }
+
   String get getSchoolName => _schoolName;
   int get getBeginningOfSchoolYear => _beginningOfSchoolYear;
   int get getEndOfSchoolYear => _endOfSchoolYear;

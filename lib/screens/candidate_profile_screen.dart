@@ -1,4 +1,8 @@
 
+import 'package:student_hub/models/education_model.dart';
+import 'package:student_hub/models/experience_model.dart';
+import 'package:student_hub/models/language_model.dart';
+import 'package:student_hub/models/skill_set_model.dart';
 import 'package:student_hub/services/profile_service.dart';
 import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_appbar.dart';
@@ -100,9 +104,9 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                 child: ListView.builder(
                       itemCount: profile.skillSets.length,
                       itemBuilder: (context,index){
-                        Skillset skillset = profile.skillSets[index];
+                        SkillSetModel skillset = profile.skillSets[index];
                         return ListTile(
-                          title: Text(skillset.skillSetname,style: textStyleTitle(),),
+                          title: Text(skillset.name,style: textStyleTitle(),),
                           leading: iconLeading() ,
                         );
                       }, 
@@ -123,10 +127,10 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               child: ListView.builder(
               itemCount: profile.educations.length,
               itemBuilder: (context,index){
-                Education education = profile.educations[index];
+                EducationModel education = profile.educations[index];
                 return ListTile(
-                  title: Text(education.schoolName,style: textStyleTitle(),),
-                  subtitle: Text("${education.startYear} - ${education.endYear}",style: textStyleSubtitle(),),
+                  title: Text(education.getSchoolName,style: textStyleTitle(),),
+                  subtitle: Text("${education.getBeginningOfSchoolYear} - ${education.getEndOfSchoolYear}",style: textStyleSubtitle(),),
                     leading: iconLeading() ,
                   );
                 }, 
@@ -148,31 +152,33 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
               child: ListView.builder(
                 itemCount: profile.experiences.length,
                 itemBuilder: (context,index){
-                  Experience experience = profile.experiences[index];
+                  ExperienceModel experience = profile.experiences[index];
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomDivider(height: 1,),
+                      const Divider(height: 7,color: Colors.black,thickness: 1,indent: 10,endIndent: 12,),
                       const SizedBox(height: 8,),
-                      Text("Title: ${experience.title}",style: textStyleTitle(),),
+                      Text("Title: ${experience.getTile}",style: textStyleTitle(),),
                       const SizedBox(height: 10,),
-                      Text("Start: ${experience.startMonth}",style: textStyleSubtitle(),),
+                      Text("Start: ${experience.getMonthStart}-${experience.getYearStart}",style: textStyleSubtitle(),),
                       const SizedBox(height: 10,),
-                      Text("End: ${experience.endMonth}",style: textStyleSubtitle(),),
+                      Text("End:${experience.getMonthEnd}-${experience.getYearEnd}",style: textStyleSubtitle(),),
                       const SizedBox(height: 10,),
-                      Text("Descriptions: ${experience.description}",style: textStyleSubtitle(),softWrap: true,),
+                      Text("Descriptions: ${experience.getDescription}",style: textStyleSubtitle(),softWrap: true,),
                       ExpansionTile(title: 
                         Text("Show skills",style: textStyleTitle(),),
+                        iconColor: Colors.black,
+                        collapsedIconColor: Colors.black,
                         children: [
                           Container(
-                            height: experience.skillSets.isNotEmpty ?  experience.skillSets.length* 50.0 : 10,
+                            height: experience.getSkills.isNotEmpty ?  experience.getSkills.length* 50.0 : 10,
                             decoration: decoration(),  
                             child: ListView.builder(
-                              itemCount: experience.skillSets.length,
+                              itemCount: experience.getSkills.length,
                               itemBuilder: (context,index){
-                                Skillset skillset = experience.skillSets[index];
+                                SkillSetModel skillset = experience.getSkills[index];
                                 return ListTile(
-                                  title: Text(skillset.skillSetname,style: textStyleTitle(),),
+                                  title: Text(skillset.name,style: textStyleTitle(),),
                                   leading: iconLeading(),
                                 );
                               }, 
@@ -199,10 +205,10 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
             child: ListView.builder(
               itemCount: profile.languages.length,
               itemBuilder: (context,index){
-                Language language = profile.languages[index];
+                LanguageModel language = profile.languages[index];
                 return ListTile(
-                  title:Text(language.languageName,style: textStyleTitle(),),
-                  subtitle: Text(language.level,style:textStyleSubtitle(),),
+                  title:Text(language.getLanguage,style: textStyleTitle(),),
+                  subtitle: Text(language.getLevel,style:textStyleSubtitle(),),
                   leading: iconLeading() ,
                 );
               }, 
