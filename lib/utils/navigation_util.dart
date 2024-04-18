@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:student_hub/models/project_company_model.dart';
 import 'package:student_hub/screens/browse_project_detail_screen.dart';
+import 'package:student_hub/screens/candidate_profile_screen.dart';
 import 'package:student_hub/screens/change_password_screen.dart';
 import 'package:student_hub/screens/company_view_profile_screen.dart';
 import 'package:student_hub/screens/companyupdateprofile_screen.dart';
@@ -313,6 +314,17 @@ class NavigationUtil {
         MaterialPageRoute(
           builder: (context) =>
               UpdateProjectScreen(projectCModel: projectCModel),
+        ));
+  }
+
+  //view candidate profile screen
+  static void toViewCandidateProfileScreen(
+      BuildContext currentContext, String id) {
+    Navigator.push(
+        currentContext,
+        MaterialPageRoute(
+          builder: (context) =>
+              CandidateProfileScreen(id: id),
         ));
   }
 }
