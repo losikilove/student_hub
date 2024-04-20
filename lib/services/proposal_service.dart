@@ -83,7 +83,6 @@ class ProposalService {
       body: jsonEncode(
         <String, dynamic>{
           'statusFlag': EnumStatusFlag.offer.value,
-          'disableFlag': EnumDisableFlag.enable.value,
         },
       ),
       headers: ApiUtil.getHeadersWithToken(token),
