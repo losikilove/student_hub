@@ -3,8 +3,9 @@
 //	Hired = 2,
 enum EnumStatusFlag {
   waitting(value: 0),
-  offer(value: 1),
-  hired(value: 2);
+  active(value: 1),
+  offer(value: 2),
+  hired(value: 3);
 
   final int value;
 
@@ -13,6 +14,10 @@ enum EnumStatusFlag {
   static EnumStatusFlag toStatusFlag(int id) {
     if (id == EnumStatusFlag.waitting.value) {
       return EnumStatusFlag.waitting;
+    }
+
+    if (id == EnumStatusFlag.active.value) {
+      return EnumStatusFlag.active;
     }
 
     if (id == EnumStatusFlag.offer.value) {

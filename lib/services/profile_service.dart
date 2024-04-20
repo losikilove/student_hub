@@ -277,9 +277,9 @@ class ProfileService {
     return response;
   }
 
-   static Future<http.Response> getProfileCandidate(
-      {required String id, required String token}) {
-    String url = '$_baseUrl/student/6';
+  static Future<http.Response> getProfileCandidate(
+      {required String studentId, required String token}) {
+    String url = '$_baseUrl/$_student/$studentId';
     return http.get(
       Uri.parse(url),
       headers: ApiUtil.getHeadersWithToken(token),

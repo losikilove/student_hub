@@ -210,7 +210,8 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
 
                 return GestureDetector(
                   onTap: () {
-                    NavigationUtil.toViewCandidateProfileScreen(context, candidate.studentId.toString());
+                    NavigationUtil.toViewCandidateProfileScreen(
+                        context, candidate.studentId.toString());
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,7 +267,8 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
                           CustomButton(
                             onPressed: onHired,
                             text: hireText,
-                            buttonColor: Theme.of(context).colorScheme.secondary,
+                            buttonColor:
+                                Theme.of(context).colorScheme.secondary,
                             isDisabled:
                                 candidate.statusFlag == EnumStatusFlag.offer,
                           ),
@@ -376,50 +378,50 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
               builder: (context, setModalState) {
                 final candidate = candidates[index];
                 return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // icon of candidate
-                          const Icon(
-                            Icons.person_outline,
-                            size: 40.0,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // fullname of candidate
-                              CustomText(text: candidate.fullname),
-                              // year of study of candidate
-                              CustomText(text: candidate.yearOfStudy),
-                            ],
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: SpacingUtil.smallHeight,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomText(text: candidate.techStack),
-                          CustomText(text: candidate.level),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: SpacingUtil.smallHeight,
-                      ),
-                      CustomText(
-                        text: candidate.coverLetter,
-                        size: 14.0,
-                      ),
-                      const SizedBox(
-                        height: SpacingUtil.smallHeight,
-                      ),
-                      const CustomDivider(),
-                    ],
-                  );
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // icon of candidate
+                        const Icon(
+                          Icons.person_outline,
+                          size: 40.0,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // fullname of candidate
+                            CustomText(text: candidate.fullname),
+                            // year of study of candidate
+                            CustomText(text: candidate.yearOfStudy),
+                          ],
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: SpacingUtil.smallHeight,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(text: candidate.techStack),
+                        CustomText(text: candidate.level),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: SpacingUtil.smallHeight,
+                    ),
+                    CustomText(
+                      text: candidate.coverLetter,
+                      size: 14.0,
+                    ),
+                    const SizedBox(
+                      height: SpacingUtil.smallHeight,
+                    ),
+                    const CustomDivider(),
+                  ],
+                );
               },
             );
           },

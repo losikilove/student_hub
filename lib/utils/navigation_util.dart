@@ -323,8 +323,7 @@ class NavigationUtil {
     Navigator.push(
         currentContext,
         MaterialPageRoute(
-          builder: (context) =>
-              CandidateProfileScreen(id: id),
+          builder: (context) => CandidateProfileScreen(studentId: id),
         ));
   }
 }

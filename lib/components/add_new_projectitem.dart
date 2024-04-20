@@ -97,7 +97,7 @@ class _ProjectItem extends State<ProjectItem> {
               ),
               const CustomText(text: "Student are looking for"),
               CustomBulletedList(
-                  listItems: widget.project.description.split(',')),
+                  listItems: widget.project.description.split('\n')),
               CustomText(
                   text: "Proposals: ${widget.project.proposal.toString()}"),
             ],
