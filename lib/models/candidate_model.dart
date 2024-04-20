@@ -1,6 +1,7 @@
 import 'package:student_hub/models/enums/enum_status_flag.dart';
 
 class CandidateModel {
+  final int proposalId;
   final int studentId;
   final String _fullname;
   final String _yearOfStudy = '';
@@ -10,6 +11,7 @@ class CandidateModel {
   EnumStatusFlag _statusFlag;
 
   CandidateModel(
+    this.proposalId,
     this.studentId,
     this._fullname,
     this._techStack,
@@ -25,14 +27,13 @@ class CandidateModel {
   EnumStatusFlag get statusFlag => _statusFlag;
 
   void changeHiredCandidate(EnumStatusFlag status) {
-    if (status == EnumStatusFlag.waitting) {
-      _statusFlag = EnumStatusFlag.offer;
-    }
+    _statusFlag = status;
   }
 
   static List<CandidateModel> fromResponse(List<dynamic> items) {
     return items
         .map((e) => CandidateModel(
+              e['id'] as int,
               e['student']['id'],
               e['student']['user']['fullname'],
               e['student']['techStack']['name'],

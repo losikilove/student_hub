@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:student_hub/components/circle_progress.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
@@ -8,6 +7,7 @@ import 'package:student_hub/components/custom_future_builder.dart';
 import 'package:student_hub/components/custom_tabbar.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/models/candidate_model.dart';
 import 'package:student_hub/models/enums/enum_status_flag.dart';
 import 'package:student_hub/models/project_company_model.dart';
@@ -50,7 +50,6 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
     TabView(tab: const Tab(text: 'Hired'), widget: _hiredContent())
   ];
   late TabController _tabController;
-  List<CandidateModel> _hiredCandidates = [];
 
   @override
   void initState() {
@@ -158,16 +157,16 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
 
                 void onHired() async {
                   // show and get data of dialog which accepts or denies the hired offer
-                  final showDialogHired = await showDialog(
+                  final showDialogHired = await showDialog<bool?>(
                       context: context,
                       builder: (context) {
                         // cancel the hired offer
-                        void _onCancelled() {
+                        void onCancelledOffer() {
                           Navigator.of(context).pop(false);
                         }
 
                         // accept the hired offer
-                        void _onSent() {
+                        void onSentOffer() {
                           Navigator.of(context).pop(true);
                         }
 
@@ -183,9 +182,9 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
                           ),
                           actions: [
                             CustomButton(
-                                onPressed: _onCancelled, text: 'Cancel'),
+                                onPressed: onCancelledOffer, text: 'Cancel'),
                             CustomButton(
-                              onPressed: _onSent,
+                              onPressed: onSentOffer,
                               text: 'Send',
                               buttonColor:
                                   Theme.of(context).colorScheme.secondary,
@@ -200,6 +199,26 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
                   }
 
                   // accepts a hired offer for student
+                  showCircleProgress(context: context);
+                  final response =
+                      await ProposalService.sendHiredForProposalStudent(
+                    context: context,
+                    proposalId: candidate.proposalId,
+                  );
+                  Navigator.of(context).pop();
+
+                  // handle status code
+                  if (response.statusCode != StatusCode.ok.code) {
+                    await popupNotification(
+                      context: context,
+                      type: NotificationType.error,
+                      content: 'Sorry, something went wrong',
+                      textSubmit: 'Ok',
+                      submit: null,
+                    );
+                    return;
+                  }
+
                   setModalState(() {
                     candidate.changeHiredCandidate(EnumStatusFlag.offer);
                     hireText = candidate.statusFlag == EnumStatusFlag.offer

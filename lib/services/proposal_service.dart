@@ -69,4 +69,24 @@ class ProposalService {
       headers: ApiUtil.getHeadersWithToken(token),
     );
   }
+
+  static Future<http.Response> sendHiredForProposalStudent(
+      {required BuildContext context, required int proposalId}) {
+    String url = '$_baseUrl/$proposalId';
+
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.token!;
+
+    return http.patch(
+      Uri.parse(url),
+      body: jsonEncode(
+        <String, dynamic>{
+          'statusFlag': EnumStatusFlag.offer.value,
+          'disableFlag': EnumDisableFlag.enable.value,
+        },
+      ),
+      headers: ApiUtil.getHeadersWithToken(token),
+    );
+  }
 }
