@@ -120,10 +120,12 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
 
             return SingleChildScrollView(
               child: Container(
-                height: MediaQuery.of(context).size.height * 0.7,
                 padding: const EdgeInsets.all(8.0),
                 color: Theme.of(context).colorScheme.onBackground,
-                child: Column(
+                child: ConstrainedBox(constraints: new BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height * 0.6,
+                  maxHeight: MediaQuery.of(context).size.height * 0.8,),
+                  child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -248,6 +250,10 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                     ),
                   ],
                 ),
+                ),
+
+                
+                
               ),
             );
           },
