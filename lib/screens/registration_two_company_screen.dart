@@ -237,10 +237,11 @@ class _RegistrationTwoCompanyScreenState
                             value: _isAcceptedRules,
                             onChanged: tickCheckBox,
                           ),
-                          const CustomText(
+                          Flexible(child: const CustomText(
                             text: 'Yes, I understand and agree to StudentHub',
                             size: 15,
-                          ),
+                          ),)
+                          
                         ],
                       ),
                       const SizedBox(
