@@ -8,6 +8,7 @@ import 'package:student_hub/components/custom_tabbar.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/enums/enum_status_flag.dart';
+import 'package:student_hub/models/enums/enum_type_flag.dart';
 import 'package:student_hub/models/proposal_model.dart';
 import 'package:student_hub/services/proposal_service.dart';
 import 'package:student_hub/utils/navigation_util.dart';
@@ -104,6 +105,15 @@ class _DashboardStudentState extends State<DashboardStudent>
   }
 
   Widget _buildProjectSubmitedList() {
+    List<ProposalStudent> waitingProjects = _projects
+        .where((element) => element.statusFlag == EnumStatusFlag.waitting.value)
+        .toList();
+    List<ProposalStudent> activeProjects = _projects
+        .where((element) =>
+            element.statusFlag == EnumStatusFlag.active.value ||
+            element.statusFlag == EnumStatusFlag.offer.value)
+        .toList();
+
     return SingleChildScrollView(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,7 +138,7 @@ class _DashboardStudentState extends State<DashboardStudent>
                       padding: EdgeInsets.all(10),
                       child: CustomText(
                         text:
-                            "Active/Offered proposal(${_projects.where((element) => element.statusFlag == EnumStatusFlag.active.value || element.statusFlag == EnumStatusFlag.offer.value).length})",
+                            "Active/Offered proposal(${activeProjects.length})",
                         isBold: true,
                       )))),
         ),
@@ -148,7 +158,8 @@ class _DashboardStudentState extends State<DashboardStudent>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(
-                            text: "Submitted proposal(${_projects.length})",
+                            text:
+                                "Submitted proposal(${waitingProjects.length})",
                             isBold: true,
                           ),
                           const SizedBox(
@@ -158,9 +169,9 @@ class _DashboardStudentState extends State<DashboardStudent>
                             height: 395,
                             padding: const EdgeInsets.symmetric(horizontal: 5),
                             child: ListView.builder(
-                                itemCount: _projects.length,
+                                itemCount: waitingProjects.length,
                                 itemBuilder: (context, index) {
-                                  final project = _projects[index];
+                                  final project = waitingProjects[index];
                                   return Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -263,7 +274,8 @@ class _DashboardStudentState extends State<DashboardStudent>
         } else {
           _projects = snapshot.data!
               .where((element) =>
-                  element.statusFlag == 1 && element.project.typeFlag == 0)
+                  element.statusFlag == EnumStatusFlag.hired.value &&
+                  element.project.typeFlag == EnumTypeFlag.working)
               .toList();
           return _buildProjectWorkingList();
         }
@@ -286,7 +298,8 @@ class _DashboardStudentState extends State<DashboardStudent>
         } else {
           _projects = snapshot.data!
               .where((element) =>
-                  element.project.typeFlag == 1 && element.statusFlag == 1)
+                  element.project.typeFlag == EnumTypeFlag.archive &&
+                  element.statusFlag == EnumStatusFlag.hired.value)
               .toList();
           return _buildProjectWorkingList();
         }
