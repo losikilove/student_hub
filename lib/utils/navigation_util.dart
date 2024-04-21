@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:student_hub/models/project_company_model.dart';
+import 'package:student_hub/models/proposal_model.dart';
+import 'package:student_hub/screens/approve_project_screen.dart';
 import 'package:student_hub/screens/browse_project_detail_screen.dart';
 import 'package:student_hub/screens/candidate_profile_screen.dart';
 import 'package:student_hub/screens/change_password_screen.dart';
@@ -28,6 +30,7 @@ import 'package:student_hub/screens/student_update_experience_screen.dart';
 import 'package:student_hub/screens/student_view_profile_screen.dart';
 import 'package:student_hub/screens/switch_account_screen.dart';
 import 'package:student_hub/screens/update_project_screen.dart';
+import 'package:student_hub/screens/view_active_or_offer_screen.dart';
 import 'package:student_hub/screens/welcome_screen.dart';
 
 class NavigationUtil {
@@ -324,6 +327,26 @@ class NavigationUtil {
         currentContext,
         MaterialPageRoute(
           builder: (context) => CandidateProfileScreen(studentId: id),
+        ));
+  }
+
+  // student view active or offered proposals screen
+  static void toViewActiveOrOfferScreen(
+      BuildContext currentContext, List<ProposalStudent> proposals) {
+    Navigator.push(
+        currentContext,
+        MaterialPageRoute(
+          builder: (context) => ViewActiveOrOfferScreen(proposals: proposals),
+        ));
+  }
+
+  // student approve project screen
+  static void toApproveProjectScreen(
+      BuildContext currentContext, ProposalStudent proposal) {
+    Navigator.push(
+        currentContext,
+        MaterialPageRoute(
+          builder: (context) => ApproveProjectScreen(proposal: proposal),
         ));
   }
 }

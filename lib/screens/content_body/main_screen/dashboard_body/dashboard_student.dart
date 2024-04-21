@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
@@ -6,9 +7,9 @@ import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_tabbar.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/models/enums/enum_status_flag.dart';
 import 'package:student_hub/models/proposal_model.dart';
 import 'package:student_hub/services/proposal_service.dart';
-import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 
@@ -37,11 +38,7 @@ class _DashboardStudentState extends State<DashboardStudent>
   Future<List<ProposalStudent>> inittializeProject() async {
     final response =
         await ProposalService.getAllProjectMyStudent(context: context);
-    if (response.statusCode == StatusCode.ok.code) {
-      return ProposalStudent.fromResponse(response);
-    } else {
-      throw Exception('Failed to load projects');
-    }
+    return ProposalStudent.fromResponse(response);
   }
 
   @override
@@ -111,20 +108,30 @@ class _DashboardStudentState extends State<DashboardStudent>
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Card(
-            shape: Border.all(),
-            child: Container(
-                width: 400,
-                height: 50,
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onSecondary),
-                child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: CustomText(
-                      text:
-                          "Active proposal(${_projects.where((element) => element.statusFlag == 1).length})",
-                      isBold: true,
-                    )))),
+        GestureDetector(
+          // switch to see details of active or offered proposals
+          onTap: () => NavigationUtil.toViewActiveOrOfferScreen(
+              context,
+              _projects
+                  .where((element) =>
+                      element.statusFlag == EnumStatusFlag.active.value ||
+                      element.statusFlag == EnumStatusFlag.offer.value)
+                  .toList()),
+          child: Card(
+              shape: Border.all(),
+              child: Container(
+                  width: 400,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onSecondary),
+                  child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: CustomText(
+                        text:
+                            "Active/Offered proposal(${_projects.where((element) => element.statusFlag == EnumStatusFlag.active.value || element.statusFlag == EnumStatusFlag.offer.value).length})",
+                        isBold: true,
+                      )))),
+        ),
         const SizedBox(
           height: SpacingUtil.mediumHeight,
         ),
@@ -255,7 +262,8 @@ class _DashboardStudentState extends State<DashboardStudent>
           );
         } else {
           _projects = snapshot.data!
-              .where((element) => element.statusFlag == 1 && element.project.typeFlag == 0)
+              .where((element) =>
+                  element.statusFlag == 1 && element.project.typeFlag == 0)
               .toList();
           return _buildProjectWorkingList();
         }
@@ -277,7 +285,8 @@ class _DashboardStudentState extends State<DashboardStudent>
           );
         } else {
           _projects = snapshot.data!
-              .where((element) => element.project.typeFlag == 1 && element.statusFlag == 1)
+              .where((element) =>
+                  element.project.typeFlag == 1 && element.statusFlag == 1)
               .toList();
           return _buildProjectWorkingList();
         }

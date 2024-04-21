@@ -196,8 +196,8 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
               widgetWithData: (snapshot) =>
                   ListViewProjectItems(projects: snapshot.data!),
               widgetWithError: (snapshot) {
-                return const CustomText(
-                  text: 'Sorry, something went wrong',
+                return CustomText(
+                  text: snapshot.error.toString(),
                   textColor: Colors.red,
                 );
               },

@@ -32,6 +32,7 @@ Future<bool?> popupConfirm({
               CustomButton(
                 onPressed: () => Navigator.of(context).pop(true),
                 text: 'Yes',
+                buttonColor: Theme.of(context).colorScheme.secondary,
               ),
             ],
           );

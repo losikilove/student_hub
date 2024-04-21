@@ -48,7 +48,7 @@ class ProjectModel {
   static List<ProjectModel> fromResponse(http.Response response) {
     return (json.decode(response.body)['result'] as List<dynamic>)
         .map((element) => ProjectModel(
-            id: element['projectId'] as int,
+            id: element['id'] as int,
             title: element['title'] as String,
             description: element['description'] as String,
             companyId: element['companyId'] as String,
