@@ -143,19 +143,20 @@ class _DashboardStudentState extends State<DashboardStudent>
                       )))),
         ),
         const SizedBox(
-          height: SpacingUtil.mediumHeight,
+          height: SpacingUtil.smallHeight,
         ),
         Card(
             shape: Border.all(),
             child: Container(
                 width: 400,
-                height: 450,
+                height: MediaQuery.of(context).size.height*0.5,
                 decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.onSecondary),
                 child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           CustomText(
                             text:
@@ -166,7 +167,7 @@ class _DashboardStudentState extends State<DashboardStudent>
                             height: 12,
                           ),
                           Container(
-                            height: 395,
+                            height: MediaQuery.of(context).size.height*0.5-70,
                             padding: const EdgeInsets.symmetric(horizontal: 5),
                             child: ListView.builder(
                                 itemCount: waitingProjects.length,
