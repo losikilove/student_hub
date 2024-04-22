@@ -3,7 +3,7 @@ import 'package:student_hub/models/project_company_model.dart';
 import 'package:student_hub/models/proposal_model.dart';
 import 'package:student_hub/screens/approve_project_screen.dart';
 import 'package:student_hub/screens/browse_project_detail_screen.dart';
-import 'package:student_hub/screens/candidate_profile_screen.dart';
+import 'package:student_hub/screens/candidate_profile_and_proposal_screen.dart';
 import 'package:student_hub/screens/change_password_screen.dart';
 import 'package:student_hub/screens/company_view_profile_screen.dart';
 import 'package:student_hub/screens/companyupdateprofile_screen.dart';
@@ -320,16 +320,6 @@ class NavigationUtil {
         ));
   }
 
-  //view candidate profile screen
-  static void toViewCandidateProfileScreen(
-      BuildContext currentContext, String id) {
-    Navigator.push(
-        currentContext,
-        MaterialPageRoute(
-          builder: (context) => CandidateProfileScreen(studentId: id),
-        ));
-  }
-
   // student view active or offered proposals screen
   static void toViewActiveOrOfferScreen(
       BuildContext currentContext, List<ProposalStudent> proposals) {
@@ -347,6 +337,14 @@ class NavigationUtil {
         currentContext,
         MaterialPageRoute(
           builder: (context) => ApproveProjectScreen(proposal: proposal),
+        ));
+  }
+   static void toViewCandidateProfileAndProposalScreen(
+      BuildContext currentContext, String studentName,String proposalName,String proposalID) {
+    Navigator.push(
+        currentContext,
+        MaterialPageRoute(
+          builder: (context) => CandidateProfileAndProposalScreen(studentName: studentName,proposalId: proposalID,proposalName: proposalName,),
         ));
   }
 }

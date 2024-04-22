@@ -107,4 +107,12 @@ class ProposalService {
       headers: ApiUtil.getHeadersWithToken(token),
     );
   }
+    static Future<http.Response> getProposalAndProfileCandidate(
+      {required String proposalId, required String token}) {
+    String url = '$_baseUrl/$proposalId';
+    return http.get(
+      Uri.parse(url),
+      headers: ApiUtil.getHeadersWithToken(token),
+    );
+  }
 }

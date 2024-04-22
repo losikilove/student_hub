@@ -229,8 +229,7 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
 
                 return GestureDetector(
                   onTap: () {
-                    NavigationUtil.toViewCandidateProfileScreen(
-                        context, candidate.studentId.toString());
+                    NavigationUtil.toViewCandidateProfileAndProposalScreen(context, candidate.fullname, widget.currentProject.title,candidate.proposalId.toString());
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
