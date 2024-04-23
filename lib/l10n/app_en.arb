@@ -1,0 +1,8 @@
+{
+    "settings":"Settings",
+    "@settings":{
+        "description": "text: settings"
+    },
+    "profile": "Profile",
+    "logout": "Logout"
+}

@@ -5,9 +5,11 @@ import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_option.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/providers/langue_provider.dart';
 import 'package:student_hub/providers/theme_provider.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -19,7 +21,19 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   void onPressed() {}
 
-  void onGotLanguage(String? selectedLanguage) {}
+  void onGotLanguage(String? selectedLanguage) {
+    // change language
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (selectedLanguage == 'English') {
+        Provider.of<LanguageProvider>(context, listen: false)
+            .changeLanguage('en');
+      }
+      if (selectedLanguage == 'Vietnamese') {
+        Provider.of<LanguageProvider>(context, listen: false)
+            .changeLanguage('vi');
+      }
+    });
+  }
 
   // change theme
   void onChangedDarkTheme(bool value) {
@@ -38,7 +52,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         onPressed: onPressed,
         currentContext: context,
         iconButton: null,
-        title: 'Settings',
+        title: AppLocalizations.of(context)!.settings,
         isBack: true,
       ),
       body: InitialBody(
@@ -56,6 +70,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             CustomOption(
               options: const ['English', 'Vietnamese'],
               onHelper: onGotLanguage,
+              initialSelection:
+                  Provider.of<LanguageProvider>(context).languageCode == 'en'
+                      ? 'English'
+                      : 'Vietnamese',
             ),
             const SizedBox(
               height: SpacingUtil.mediumHeight,

@@ -13,6 +13,7 @@ import 'package:student_hub/screens/main_screen.dart';
 import 'package:student_hub/screens/signin_screen.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/user_util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SwitchAccountScreen extends StatefulWidget {
   const SwitchAccountScreen({super.key});
@@ -165,7 +166,7 @@ class _SwitchAccountScreen extends State<SwitchAccountScreen> {
                 children: [
                   CustomListTitle(
                     icon: Icons.person_2_outlined,
-                    text: 'Profile',
+                    text: AppLocalizations.of(context)!.profile,
                     onTap: onSwitchedToProfileScreen,
                     subtext: null,
                   ),
