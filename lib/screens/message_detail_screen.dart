@@ -7,10 +7,11 @@ import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/components/interview_card.dart';
 import 'package:student_hub/models/interview_model.dart';
+import 'package:student_hub/services/socket_service.dart';
 import 'package:student_hub/utils/interview_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
-
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 class MessageDetailScreen extends StatefulWidget {
   const MessageDetailScreen({super.key});
 
@@ -27,12 +28,27 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
       ChatUser(id: '2', firstName: 'nhat', lastName: 'bo');
   final List<ChatMessage> _message = <ChatMessage>[];
   final List<ChatUser> _typing = <ChatUser>[];
+  IO.Socket? socket;
 
   @override
   void initState() {
     super.initState();
   }
+  void connectSocket(){
+    socket = SocketService.connectSocket(token: "");
+    SocketService.addAuthorizationToSocket(socket: socket!, token: '');
 
+    socket!.on('connect', (_) {
+      print('Connected');
+    });
+    socket!.on('message', (data) {
+      print('Received message: $data');
+      // Update your state based on the received data here
+    });
+    socket!.on('disconnect', (_) {
+      print('Disconnected');
+    });
+  }
   // show the more actions bottom-sheet
   void onOpenedMoreAction() async {
     // open more actions bottom
