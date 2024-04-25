@@ -12,6 +12,7 @@ import 'package:student_hub/utils/interview_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:student_hub/services/interview_service.dart';
 class MessageDetailScreen extends StatefulWidget {
   const MessageDetailScreen({super.key});
 
@@ -192,6 +193,14 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
         InterviewUtil.calculateTheDiffTimes(selectedStartTime, selectedEndTime);
     bool isValidTitle = false;
 
+     void saveInterview() async{
+      await InterviewService.postInterview(
+          title: titleController.text,
+          dateStartInterview: selectedDate,
+          timeStartInterview: selectedStartTime,
+          timeEndInterview: selectedEndTime);
+    }
+
     // send invite interview to student
     void onSentInvititation() {
       ChatMessage invitation = ChatMessage(
@@ -213,7 +222,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
       setState(() {
         _message.insert(0, invitation);
       });
-
+      saveInterview();
       // out of this Interview bottom sheet
       Navigator.of(context).pop();
     }
