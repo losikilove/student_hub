@@ -5,8 +5,11 @@ import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/chat_model.dart';
+import 'package:student_hub/services/message_service.dart';
+import 'package:student_hub/services/socket_service.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class MessageBody extends StatefulWidget {
   const MessageBody({super.key});
@@ -17,38 +20,35 @@ class MessageBody extends StatefulWidget {
 
 class _MessageBody extends State<MessageBody> {
   final _searchController = TextEditingController();
-  List<ChatModel> _chats = [
-    ChatModel(
-      'Luis Pham',
-      'Senior frontend developer (Fintech)',
-      DateTime(2024, 6, 6, 12, 12),
-      Icons.person,
-    ),
-    ChatModel(
-      'Luis Pham',
-      'Senior frontend developer (Fintech)',
-      DateTime(2024, 6, 6, 12, 14),
-      Icons.person_2_outlined,
-    ),
-    ChatModel(
-      'Luis Pham',
-      'Senior frontend developer (Fintech)',
-      DateTime(2024, 6, 6, 12, 15),
-      Icons.person_2_outlined,
-    ),
-  ];
-
+  final IO.Socket socket = SocketService.builderSocket();
   @override
   void dispose() {
     // dispose the search controller when this widget has cleared on the widget tree
     _searchController.dispose();
-
     super.dispose();
   }
-
+    @override
+  void initState() {
+    super.initState();
+    addAuthorization();
+  }
   // switch to switch account screen
   void onSwitchedToSwitchAccountScreen() {
     NavigationUtil.toSwitchAccountScreen(context);
+  }
+
+  Stream<List<ChatModel>> getChats() async* {
+    final response = await MessageService.getMessage(context: context);
+    if (response.statusCode == 200) {
+      yield ChatModel.fromResponse(response, context);
+    } else {
+      throw Exception('Failed to load chats');
+    }
+  }//
+
+  //connect socket
+  void addAuthorization() {
+    SocketService.addAuthorizationToSocket(socket: socket, context: context);
   }
 
   @override
@@ -73,13 +73,7 @@ class _MessageBody extends State<MessageBody> {
             ),
             // chat listview
             Expanded(
-              child: ListView.builder(
-                itemCount: _chats.length,
-                itemBuilder: (context, index) {
-                  final chat = _chats[index];
-                  return _buildChatBlock(chat);
-                },
-              ),
+              child: _chats(context),
             ),
           ],
         ),
@@ -87,10 +81,32 @@ class _MessageBody extends State<MessageBody> {
     );
   }
 
+  Widget _chats(BuildContext context) {
+    return StreamBuilder<List<ChatModel>>(
+      stream: getChats(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return const CircularProgressIndicator();
+          default:
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                return _buildChatBlock(snapshot.data![index]);
+              },
+            );
+        }
+      },
+    );
+  }
+
   Widget _buildChatBlock(ChatModel chat) {
     // switch to the chat box
     void onSwitchedToChatBox() {
-      NavigationUtil.toMessageDetail(context);
+      NavigationUtil.toMessageDetail(context, chat, socket);
     }
 
     return Column(
@@ -106,10 +122,10 @@ class _MessageBody extends State<MessageBody> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // avatar
-              Flexible(
+              const Flexible(
                 flex: 1,
                 child: Icon(
-                  chat.getAvatar,
+                  Icons.account_circle,
                   size: 35,
                 ),
               ),

@@ -1,39 +1,84 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:student_hub/providers/user_provider.dart';
 
 class ChatModel {
-  String _name;
-  String _profession;
-  DateTime _dateTime;
-  IconData _avatar;
+  int idUser;
+  int idProject;
+  String name;
+  String profession;
+  DateTime dateTime;
 
   ChatModel(
-    this._name,
-    this._profession,
-    this._dateTime,
-    this._avatar,
+    this.idUser,
+    this.idProject,
+    this.name,
+    this.profession,
+    this.dateTime,
   );
 
   // getter
-  String get getName => _name;
-  String get getProfession => _profession;
+  int get getId => idUser;
+  int get getIdProject => idProject;
+  String get getName => name;
+  String get getProfession => profession;
   String get getDateTime =>
-      '${_dateTime.hour}:${_dateTime.minute} ${_dateTime.day}/${_dateTime.month}/${_dateTime.year}';
-  IconData get getAvatar => _avatar;
+      '${dateTime.hour}:${dateTime.minute} ${dateTime.day}/${dateTime.month}/${dateTime.year}';
 
   // setter
   set setName(String newName) {
-    _name = newName;
+    name = newName;
   }
 
   set setProfession(String newProfession) {
-    _profession = newProfession;
+    profession = newProfession;
   }
 
   set setDateTime(DateTime newTime) {
-    _dateTime = newTime;
+    dateTime = newTime;
   }
 
-  set setAvatar(IconData newAvatar) {
-    _avatar = newAvatar;
+  static List<ChatModel> fromResponse(
+      http.Response response, BuildContext context) {
+    final Map<String, dynamic> data = jsonDecode(response.body);
+    final List<dynamic> result = data['result'];
+    Set<ChatModel> chatSet = {};
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    final myId = userProvider.user!.userId;
+
+    Map<String, ChatModel> latestChats = {};
+    var idUser = 0;
+    for (var item in result) {
+      var projectId = item['project']['id'];
+      if(item['sender']['id'] == myId) {
+        idUser = item['receiver']['id'];
+      }
+      else{
+        idUser = item['sender']['id'];
+      }
+      var senderName = item['sender']['fullname'];
+      var senderProfession = item['sender']['profession'] ?? 'Unknown';
+      var messageDateTime = DateTime.parse(item['createdAt']);
+
+      var chat = ChatModel(
+          idUser, projectId, senderName, senderProfession, messageDateTime);
+
+      var key = '$idUser-$projectId';
+
+      // If there's already a chat for this user and it's newer, skip this one
+      if (latestChats.containsKey(key) &&
+          latestChats[key]!.dateTime.isAfter(messageDateTime)) {
+        continue;
+      }
+
+      // Otherwise, add this chat as the latest chat for this user
+      latestChats[key] = chat;
+    }
+
+    return latestChats.values.toList();
   }
 }

@@ -1,20 +1,29 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/components/interview_card.dart';
+import 'package:student_hub/models/chat_model.dart';
 import 'package:student_hub/models/interview_model.dart';
-import 'package:student_hub/services/socket_service.dart';
+import 'package:student_hub/providers/user_provider.dart';
+import 'package:student_hub/services/message_service.dart';
 import 'package:student_hub/utils/interview_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:student_hub/services/interview_service.dart';
+
 class MessageDetailScreen extends StatefulWidget {
-  const MessageDetailScreen({super.key});
+  final ChatModel chatModel;
+  final IO.Socket socket;
+  MessageDetailScreen(
+      {super.key, required this.chatModel, required this.socket});
 
   @override
   State<MessageDetailScreen> createState() => _MessageDetailScreenState();
@@ -23,33 +32,57 @@ class MessageDetailScreen extends StatefulWidget {
 class _MessageDetailScreenState extends State<MessageDetailScreen> {
   final optionOfMinute = 2;
   final optionOfHour = 24;
-  final ChatUser _currentUser =
-      ChatUser(id: '1', firstName: 'phat', lastName: 'bo');
-  final ChatUser _anotherUser =
-      ChatUser(id: '2', firstName: 'nhat', lastName: 'bo');
-  final List<ChatMessage> _message = <ChatMessage>[];
+
+  List<ChatMessage> _message = <ChatMessage>[];
   final List<ChatUser> _typing = <ChatUser>[];
-  IO.Socket? socket;
+  late ChatUser _currentUser;
+  late ChatUser _anotherUser;
+  StreamController<void> _updateStreamController = StreamController<void>();
+  @override
+  void dispose() {
+    widget.socket.onDisconnect(
+      (data) => '$data',
+    );
+    super.dispose();
+  }
+
+  _connectSocket() {
+    widget.socket.io.options?['query'] = {
+      'project_id': 436,
+    };
+    widget.socket.connect();
+  }
 
   @override
   void initState() {
     super.initState();
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    _currentUser = ChatUser(
+        id: userProvider.user!.userId.toString(),
+        firstName: userProvider.user!.fullname);
+    _anotherUser = ChatUser(
+        id: widget.chatModel.idUser.toString(),
+        firstName: widget.chatModel.name);
+    _connectSocket();
+    getMessages();
   }
-  void connectSocket(){
-    socket = SocketService.connectSocket(token: "");
-    SocketService.addAuthorizationToSocket(socket: socket!, token: '');
 
-    socket!.on('connect', (_) {
-      print('Connected');
-    });
-    socket!.on('message', (data) {
-      print('Received message: $data');
-      // Update your state based on the received data here
-    });
-    socket!.on('disconnect', (_) {
-      print('Disconnected');
+  _listenForNewMessages() {
+    widget.socket.on('RECEIVE_MESSAGE', (data) {
+      if (data['senderId'] == widget.chatModel.idUser) {
+        _message.insert(
+            0,
+            ChatMessage(
+              user: _anotherUser,
+              text: data['content'],
+              createdAt: DateTime.now(),
+            ));
+        _updateStreamController.add(null);
+      }
     });
   }
+
   // show the more actions bottom-sheet
   void onOpenedMoreAction() async {
     // open more actions bottom
@@ -65,59 +98,106 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
     showInterviewBottomSheet();
   }
 
+  void getMessages() async {
+    final response = await MessageService.getMessageUser(
+        context: context,
+        projectID: widget.chatModel.idProject,
+        userID: widget.chatModel.idUser);
+    if (response.statusCode == 200) {
+      var jsonData = jsonDecode(response.body);
+      for (var item in jsonData['result']) {
+        var message = ChatMessage(
+          user: ChatUser(
+            id: item['sender']['id'].toString(),
+            firstName: item['sender']['fullname'],
+          ),
+          text: item['content'],
+          createdAt: DateTime.parse(item['createdAt']),
+        );
+        setState(() {
+          _message.insert(0, message);
+        });
+      }
+    } else {
+      throw Exception('Failed to load chats');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CustomAppbar(
-          title: 'Luis Pham',
+          title: widget.chatModel.name,
           onPressed: onOpenedMoreAction,
           currentContext: context,
           iconButton: Icons.calendar_month,
           isBack: true,
         ),
         body: Container(
-          color: Theme.of(context).colorScheme.background,
-          child: DashChat(
-            typingUsers: _typing,
-            currentUser: _currentUser,
-            onSend: (ChatMessage message) {
-              setState(() {
-                _message.insert(0, message);
-              });
-            },
-            messages: _message,
-            inputOptions: const InputOptions(
-              inputTextStyle: TextStyle(color: Colors.black),
-              cursorStyle: CursorStyle(color: Colors.black),
-            ),
-            messageOptions: MessageOptions(
-              currentUserContainerColor: Theme.of(context).colorScheme.primary,
-              containerColor: Theme.of(context).colorScheme.primary,
-              messageTextBuilder: (message, previousMessage, nextMessage) {
-                // if message is an interview, show box-interview
-                if (message.customProperties != null &&
-                    message.customProperties!.containsKey('interview')) {
-                  InterviewModel invitation =
-                      message.customProperties!['interview'];
+            color: Theme.of(context).colorScheme.background,
+            child: ChatBoard(context)));
+  }
 
-                  return InterviewCard(
-                    interviewInfo: invitation,
-                    onJoined: () {
-                      NavigationUtil.toJoinMeetingScreen(context);
-                    },
-                  );
-                } else {
-                  return Text(
-                    message.text,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
-                  );
-                }
-              },
-            ),
+  Widget ChatBoard(BuildContext context) {
+    return StreamBuilder<void>(
+      stream: _updateStreamController.stream,
+      builder: (context, snapshot) {
+        return DashChat(
+          typingUsers: _typing,
+          currentUser: _currentUser,
+          onSend: (ChatMessage message) {
+            var messageData = {
+              'projectId': widget.chatModel.idProject,
+              'content': message.text,
+              'senderId': _currentUser.id,
+              'receiverId': _anotherUser.id,
+            };
+            // Convert the message to json
+            String messageJson = jsonEncode(messageData);
+            // Send the message to the server
+            widget.socket.emit('SEND_MESSAGE', messageJson);
+            widget.socket.on('RECEIVE_MESSAGE', (data) {
+              // Handle the success response here
+              print('Message sent successfully');
+            });
+            setState(() {
+              _message.insert(0, message);
+            });
+          },
+          messages: _message,
+          inputOptions: const InputOptions(
+            inputTextStyle: TextStyle(color: Colors.black),
+            cursorStyle: CursorStyle(color: Colors.black),
           ),
-        ));
+          messageOptions: MessageOptions(
+            currentUserContainerColor: Theme.of(context).colorScheme.primary,
+            containerColor: Theme.of(context).colorScheme.primary,
+            messageTextBuilder: (message, previousMessage, nextMessage) {
+              // if message is an interview, show box-interview
+              if (message.customProperties != null &&
+                  message.customProperties!.containsKey('interview')) {
+                InterviewModel invitation =
+                    message.customProperties!['interview'];
+
+                return InterviewCard(
+                  interviewInfo: invitation,
+                  onJoined: () {
+                    NavigationUtil.toJoinMeetingScreen(context);
+                  },
+                );
+              } else {
+                return Text(
+                  message.text,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+                );
+              }
+            },
+          ),
+        );
+      },
+    );
   }
 
   // show more actions bottom sheet
@@ -193,7 +273,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
         InterviewUtil.calculateTheDiffTimes(selectedStartTime, selectedEndTime);
     bool isValidTitle = false;
 
-     void saveInterview() async{
+    void saveInterview() async {
       await InterviewService.postInterview(
           title: titleController.text,
           dateStartInterview: selectedDate,

@@ -23,7 +23,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void onGotLanguage(String? selectedLanguage) {
     // change language
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (selectedLanguage == 'English') {
         Provider.of<LanguageProvider>(context, listen: false)
             .changeLanguage('en');

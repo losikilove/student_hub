@@ -1,33 +1,34 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/utils/api_util.dart';
 
 class SocketService {
   static const String _socketUrl = '${ApiUtil.baseUrl}';
-  static IO.Socket connectSocket({required String token}){
+  static IO.Socket builderSocket() {
     return IO.io(
       _socketUrl,
       IO.OptionBuilder()
           .setTransports(['websocket'])
           .disableAutoConnect()
           .build(),
-    )..connect();
+    );
   }
 
-  static void addAuthorizationToSocket({required IO.Socket socket, required String token}){
-    socket.io..options?['extraHeaders'] = {
-      'Authorization': 'Bearer  $token',
-    };
+  static void addAuthorizationToSocket(
+      {required IO.Socket socket, required BuildContext context}) {
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.token!;
+    socket.io
+      .options?['extraHeaders'] = {
+        'Authorization': 'Bearer  $token',
+      };
   }
 
-  static void disconnectSocket({required IO.Socket socket}){
+  static void disconnectSocket({required IO.Socket socket}) {
     socket.disconnect();
-  }
-
-  static void sendMessageSocket({required IO.Socket socket, required String message}){
-    socket.emit('send_message', message);
-  }
-
-  static void receiveMessageSocket({required IO.Socket socket, required Function(dynamic) onMessage}){
-    socket.on('receive_message', (data) => onMessage(data));
   }
 }

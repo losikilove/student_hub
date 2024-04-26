@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:socket_io_client/socket_io_client.dart';
+import 'package:student_hub/models/chat_model.dart';
 import 'package:student_hub/models/project_company_model.dart';
 import 'package:student_hub/models/proposal_model.dart';
 import 'package:student_hub/screens/approve_project_screen.dart';
@@ -250,9 +252,9 @@ class NavigationUtil {
   }
 
   //Chat
-  static void toMessageDetail(BuildContext currentContext) {
+  static void toMessageDetail(BuildContext currentContext, ChatModel chat, Socket socket) {
     Navigator.push(currentContext,
-        MaterialPageRoute(builder: (context) => const MessageDetailScreen()));
+        MaterialPageRoute(builder: (context) => MessageDetailScreen(chatModel: chat, socket: socket)));
   }
 
   // meeting screen
