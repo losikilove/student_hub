@@ -40,17 +40,18 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   StreamController<void> _updateStreamController = StreamController<void>();
   @override
   void dispose() {
-    widget.socket.onDisconnect(
-      (data) => '$data',
-    );
+    widget.socket.disconnect();
     super.dispose();
   }
 
   _connectSocket() {
     widget.socket.io.options?['query'] = {
-      'project_id': widget.chatModel.idProject.toString(),
+      'project_id': widget.chatModel.idProject,
     };
     widget.socket.connect();
+    widget.socket.onConnect((data) => {
+          print('Connected'),
+        });
   }
 
   @override
@@ -70,6 +71,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
 
   _listenForNewMessages() {
     widget.socket.on('RECEIVE_MESSAGE', (data) {
+
       if (data['senderId'] == widget.chatModel.idUser) {
         _message.insert(
             0,
@@ -146,16 +148,14 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
           typingUsers: _typing,
           currentUser: _currentUser,
           onSend: (ChatMessage message) {
-            var messageData = {
-              'projectId': widget.chatModel.idProject,
-              'content': message.text,
-              'senderId': _currentUser.id,
-              'receiverId': _anotherUser.id,
-            };
-            // Convert the message to json
-            String messageJson = jsonEncode(messageData);
             // Send the message to the server
-            widget.socket.emit('SEND_MESSAGE', messageJson);
+            widget.socket.emit("SEND_MESSAGE",{
+              "content": message.text,
+              "projectId": widget.chatModel.idProject,
+              "messageFlag": 0,
+              "senderId": _currentUser.id,
+              'receiverId': _anotherUser.id
+            });
             setState(() {
               _message.insert(0, message);
             });

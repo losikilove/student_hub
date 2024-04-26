@@ -6,7 +6,7 @@ import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/utils/api_util.dart';
 
 class SocketService {
-  static const String _socketUrl = '${ApiUtil.baseUrl}';
+  static const String _socketUrl = 'https://api.studenthub.dev';
   static IO.Socket builderSocket() {
     return IO.io(
       _socketUrl,
