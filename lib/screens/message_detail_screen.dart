@@ -48,7 +48,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
 
   _connectSocket() {
     widget.socket.io.options?['query'] = {
-      'project_id': 436,
+      'project_id': widget.chatModel.idProject.toString(),
     };
     widget.socket.connect();
   }
@@ -156,10 +156,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             String messageJson = jsonEncode(messageData);
             // Send the message to the server
             widget.socket.emit('SEND_MESSAGE', messageJson);
-            widget.socket.on('RECEIVE_MESSAGE', (data) {
-              // Handle the success response here
-              print('Message sent successfully');
-            });
             setState(() {
               _message.insert(0, message);
             });
