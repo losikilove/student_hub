@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:socket_io_client/socket_io_client.dart';
 import 'package:student_hub/models/chat_model.dart';
 import 'package:student_hub/models/project_company_model.dart';
 import 'package:student_hub/models/proposal_model.dart';
@@ -252,9 +251,11 @@ class NavigationUtil {
   }
 
   //Chat
-  static void toMessageDetail(BuildContext currentContext, ChatModel chat, Socket socket) {
-    Navigator.push(currentContext,
-        MaterialPageRoute(builder: (context) => MessageDetailScreen(chatModel: chat, socket: socket)));
+  static void toMessageDetail(BuildContext currentContext, ChatModel chat) {
+    Navigator.push(
+        currentContext,
+        MaterialPageRoute(
+            builder: (context) => MessageDetailScreen(chatModel: chat)));
   }
 
   // meeting screen
@@ -341,12 +342,20 @@ class NavigationUtil {
           builder: (context) => ApproveProjectScreen(proposal: proposal),
         ));
   }
-   static void toViewCandidateProfileAndProposalScreen(
-      BuildContext currentContext, String studentName,String proposalName,String proposalID) {
+
+  static void toViewCandidateProfileAndProposalScreen(
+      BuildContext currentContext,
+      String studentName,
+      String proposalName,
+      String proposalID) {
     Navigator.push(
         currentContext,
         MaterialPageRoute(
-          builder: (context) => CandidateProfileAndProposalScreen(studentName: studentName,proposalId: proposalID,proposalName: proposalName,),
+          builder: (context) => CandidateProfileAndProposalScreen(
+            studentName: studentName,
+            proposalId: proposalID,
+            proposalName: proposalName,
+          ),
         ));
   }
 }

@@ -13,6 +13,7 @@ import 'package:student_hub/models/chat_model.dart';
 import 'package:student_hub/models/interview_model.dart';
 import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/services/message_service.dart';
+import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/interview_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
@@ -21,9 +22,7 @@ import 'package:student_hub/services/interview_service.dart';
 
 class MessageDetailScreen extends StatefulWidget {
   final ChatModel chatModel;
-  final IO.Socket socket;
-  MessageDetailScreen(
-      {super.key, required this.chatModel, required this.socket});
+  MessageDetailScreen({super.key, required this.chatModel});
 
   @override
   State<MessageDetailScreen> createState() => _MessageDetailScreenState();
@@ -32,7 +31,13 @@ class MessageDetailScreen extends StatefulWidget {
 class _MessageDetailScreenState extends State<MessageDetailScreen> {
   final optionOfMinute = 2;
   final optionOfHour = 24;
-
+  final socket = IO.io(
+    ApiUtil.websocketUrl,
+    IO.OptionBuilder()
+        .setTransports(['websocket'])
+        .disableAutoConnect()
+        .build(),
+  );
   List<ChatMessage> _message = <ChatMessage>[];
   final List<ChatUser> _typing = <ChatUser>[];
   late ChatUser _currentUser;
@@ -40,18 +45,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   StreamController<void> _updateStreamController = StreamController<void>();
   @override
   void dispose() {
-    widget.socket.disconnect();
+    socket.disconnect();
     super.dispose();
-  }
-
-  _connectSocket() {
-    widget.socket.io.options?['query'] = {
-      'project_id': widget.chatModel.idProject,
-    };
-    widget.socket.connect();
-    widget.socket.onConnect((data) => {
-          print('Connected'),
-        });
   }
 
   @override
@@ -65,13 +60,27 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
     _anotherUser = ChatUser(
         id: widget.chatModel.idUser.toString(),
         firstName: widget.chatModel.name);
-    _connectSocket();
+
     getMessages();
-  }
+    //Add authorization to header
+    socket.io.options?['extraHeaders'] = {
+      'Authorization': 'Bearer ${userProvider.token}',
+    };
+    //Add query param to url
+    socket.io.options?['query'] = {'project_id': widget.chatModel.idProject};
 
-  _listenForNewMessages() {
-    widget.socket.on('RECEIVE_MESSAGE', (data) {
+    socket.connect();
 
+    socket.onConnect((data) => {
+          print('Connected'),
+        });
+
+    socket.onConnectError(
+        (data) => print('Error connection: ${data.toString()}'));
+    socket.onError((data) => print('Error connection: ${data.toString()}'));
+
+    //Listen to channel receive message
+    socket.on('RECEIVE_MESSAGE', (data) {
       if (data['senderId'] == widget.chatModel.idUser) {
         _message.insert(
             0,
@@ -83,6 +92,14 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
         _updateStreamController.add(null);
       }
     });
+
+    // notify the other user
+    socket.on('NOTI_${_currentUser.id}', (data) {
+      // todo
+    });
+
+    //Listen for error from socket
+    socket.on("ERROR", (data) => print('Error: ${data}'));
   }
 
   // show the more actions bottom-sheet
@@ -100,7 +117,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
     showInterviewBottomSheet();
   }
 
-  void getMessages() async {
+  Future<void> getMessages() async {
     final response = await MessageService.getMessageUser(
         context: context,
         projectID: widget.chatModel.idProject,
@@ -128,16 +145,71 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppbar(
-          title: widget.chatModel.name,
-          onPressed: onOpenedMoreAction,
-          currentContext: context,
-          iconButton: Icons.calendar_month,
-          isBack: true,
+      appBar: CustomAppbar(
+        title: widget.chatModel.name,
+        onPressed: onOpenedMoreAction,
+        currentContext: context,
+        iconButton: Icons.calendar_month,
+        isBack: true,
+      ),
+      body: Container(
+        color: Theme.of(context).colorScheme.background,
+        child: StreamBuilder<void>(
+          stream: _updateStreamController.stream,
+          builder: (context, snapshot) {
+            return DashChat(
+              typingUsers: _typing,
+              currentUser: _currentUser,
+              onSend: (ChatMessage message) {
+                // Send the message to the server
+                socket.emit("SEND_MESSAGE", {
+                  "content": message.text,
+                  "projectId": widget.chatModel.idProject,
+                  "messageFlag": 0,
+                  "senderId": _currentUser.id,
+                  'receiverId': _anotherUser.id,
+                });
+                setState(() {
+                  _message.insert(0, message);
+                });
+              },
+              messages: _message,
+              inputOptions: const InputOptions(
+                inputTextStyle: TextStyle(color: Colors.black),
+                cursorStyle: CursorStyle(color: Colors.black),
+              ),
+              messageOptions: MessageOptions(
+                currentUserContainerColor:
+                    Theme.of(context).colorScheme.primary,
+                containerColor: Theme.of(context).colorScheme.primary,
+                messageTextBuilder: (message, previousMessage, nextMessage) {
+                  // if message is an interview, show box-interview
+                  if (message.customProperties != null &&
+                      message.customProperties!.containsKey('interview')) {
+                    InterviewModel invitation =
+                        message.customProperties!['interview'];
+
+                    return InterviewCard(
+                      interviewInfo: invitation,
+                      onJoined: () {
+                        NavigationUtil.toJoinMeetingScreen(context);
+                      },
+                    );
+                  } else {
+                    return Text(
+                      message.text,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                    );
+                  }
+                },
+              ),
+            );
+          },
         ),
-        body: Container(
-            color: Theme.of(context).colorScheme.background,
-            child: ChatBoard(context)));
+      ),
+    );
   }
 
   Widget ChatBoard(BuildContext context) {
@@ -149,7 +221,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
           currentUser: _currentUser,
           onSend: (ChatMessage message) {
             // Send the message to the server
-            widget.socket.emit("SEND_MESSAGE",{
+            socket.emit("SEND_MESSAGE", {
               "content": message.text,
               "projectId": widget.chatModel.idProject,
               "messageFlag": 0,

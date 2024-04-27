@@ -6,10 +6,8 @@ import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/chat_model.dart';
 import 'package:student_hub/services/message_service.dart';
-import 'package:student_hub/services/socket_service.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class MessageBody extends StatefulWidget {
   const MessageBody({super.key});
@@ -20,18 +18,13 @@ class MessageBody extends StatefulWidget {
 
 class _MessageBody extends State<MessageBody> {
   final _searchController = TextEditingController();
-  final IO.Socket socket = SocketService.builderSocket();
   @override
   void dispose() {
     // dispose the search controller when this widget has cleared on the widget tree
     _searchController.dispose();
     super.dispose();
   }
-    @override
-  void initState() {
-    super.initState();
-    addAuthorization();
-  }
+
   // switch to switch account screen
   void onSwitchedToSwitchAccountScreen() {
     NavigationUtil.toSwitchAccountScreen(context);
@@ -44,11 +37,6 @@ class _MessageBody extends State<MessageBody> {
     } else {
       throw Exception('Failed to load chats');
     }
-  }//
-
-  //connect socket
-  void addAuthorization() {
-    SocketService.addAuthorizationToSocket(socket: socket, context: context);
   }
 
   @override
@@ -106,7 +94,7 @@ class _MessageBody extends State<MessageBody> {
   Widget _buildChatBlock(ChatModel chat) {
     // switch to the chat box
     void onSwitchedToChatBox() {
-      NavigationUtil.toMessageDetail(context, chat, socket);
+      NavigationUtil.toMessageDetail(context, chat);
     }
 
     return Column(

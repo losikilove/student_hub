@@ -26,6 +26,7 @@ class ApiUtil {
   static const ipAndroid = '10.0.2.2';
   static const ipIos = '10.0.2.1';
   static const baseUrl = 'https://api.studenthub.dev/api';
+  static const websocketUrl = 'https://api.studenthub.dev';
 
   // general headers
   static const headers = <String, String>{
