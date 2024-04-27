@@ -9,6 +9,7 @@ import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/models/candidate_model.dart';
+import 'package:student_hub/models/chat_model.dart';
 import 'package:student_hub/models/enums/enum_status_flag.dart';
 import 'package:student_hub/models/project_company_model.dart';
 import 'package:student_hub/services/proposal_service.dart';
@@ -153,7 +154,9 @@ class _ProposalHireOfferScreenState extends State<ProposalHireOfferScreen>
                     ? 'Sent hired offer'
                     : 'Hire';
 
-                void onMessaged() {}
+                void onMessaged() {
+                  NavigationUtil.toMessageDetail(context, ChatModel(candidate.userId, candidate.projectId, candidate.fullname, candidate.techStack, DateTime.now()));
+                }
 
                 void onHired() async {
                   // show and get data of dialog which accepts or denies the hired offer

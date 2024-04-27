@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -45,13 +44,14 @@ class ChatModel {
       http.Response response, BuildContext context) {
     final Map<String, dynamic> data = jsonDecode(response.body);
     final List<dynamic> result = data['result'];
-    Set<ChatModel> chatSet = {};
     final UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
     final myId = userProvider.user!.userId;
+    final myName = userProvider.user!.fullname;
 
     Map<String, ChatModel> latestChats = {};
     var idUser = 0;
+    var Name = '';
     for (var item in result) {
       var projectId = item['project']['id'];
       if(item['sender']['id'] == myId) {
@@ -60,12 +60,17 @@ class ChatModel {
       else{
         idUser = item['sender']['id'];
       }
-      var senderName = item['sender']['fullname'];
+      if(item['sender']['fullname'] == myName){
+        Name = item['receiver']['fullname'];
+      }else{
+        Name = item['sender']['fullname'];
+      }
+      
       var senderProfession = item['sender']['profession'] ?? 'Unknown';
       var messageDateTime = DateTime.parse(item['createdAt']);
 
       var chat = ChatModel(
-          idUser, projectId, senderName, senderProfession, messageDateTime);
+          idUser, projectId, Name, senderProfession, messageDateTime);
 
       var key = '$idUser-$projectId';
 

@@ -2,7 +2,9 @@ import 'package:student_hub/models/enums/enum_status_flag.dart';
 
 class CandidateModel {
   final int proposalId;
+  final int projectId;
   final int studentId;
+  final int userId;
   final String _fullname;
   final String _yearOfStudy = '';
   final String _techStack;
@@ -12,7 +14,9 @@ class CandidateModel {
 
   CandidateModel(
     this.proposalId,
+    this.projectId,
     this.studentId,
+    this.userId,    
     this._fullname,
     this._techStack,
     this._coverLetter,
@@ -34,7 +38,9 @@ class CandidateModel {
     return items
         .map((e) => CandidateModel(
               e['id'] as int,
+              e['projectId'],
               e['student']['id'],
+              e['student']['userId'],
               e['student']['user']['fullname'],
               e['student']['techStack']['name'],
               e['coverLetter'],
