@@ -63,3 +63,36 @@ dependencies {
 ## 9. Cannot use async to get API in initState
 - Reasons: wrong syntax of initState
 - Solutions: use the FutureBuild widget to get API and show it up
+## 10. How to Move bottomsheet along with keyboard which has textfield(autofocused is true)?
+- Reason: Autofocus is set to true so that the keyboard pops up
+- Solution: use padding MediaQuery.of(context).viewInsets.bottom, isScrollControlled = true
+- Example:
+```
+showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    builder: (context) => Padding(
+        padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+                Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Text('Enter somethings this textfield',
+                    style: TextStyles.textBody2),
+                ),
+                SizedBox(
+                height: 8.0,
+                ),
+                TextField(
+                    decoration: InputDecoration(
+                    hintText: 'adddrss'
+                    ),
+                    autofocus: true,
+                ),                 
+            ],
+            ),
+    ));
+```

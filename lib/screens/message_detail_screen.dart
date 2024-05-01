@@ -86,17 +86,41 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             0,
             ChatMessage(
               user: _anotherUser,
-              text: data['content'],
+              text: data['notification']['message']['content'],
               createdAt: DateTime.now(),
+            ));
+        _updateStreamController.add(null);
+      }
+    });
+    //listen to channel receive interview
+    socket.on('RECEIVE_INTERVIEW', (data) {
+      if (data['senderId'] == widget.chatModel.idUser) {
+        _message.insert(
+            0,
+            ChatMessage(
+              user: _anotherUser,
+              text: data['notification']['message']['content'],
+              createdAt: DateTime.now(),
+              customProperties: {
+                'interview': InterviewModel(
+                  null,
+                   [_currentUser, _anotherUser],
+                  data['notification']['message']['title'],
+                  DateTime.parse(
+                      data['notification']['message']['dateInterview']),
+                  TimeOfDay.fromDateTime(
+                      DateTime.parse(data['interview']['startTime'])),
+                  TimeOfDay.fromDateTime(
+                      DateTime.parse(data['interview']['endTime'])),
+                ),
+              },
             ));
         _updateStreamController.add(null);
       }
     });
 
     // notify the other user
-    socket.on('NOTI_${_currentUser.id}', (data) {
-      // todo
-    });
+    socket.on('NOTI_${_currentUser.id}', (data) {});
 
     //Listen for error from socket
     socket.on("ERROR", (data) => print('Error: ${data}'));
@@ -212,62 +236,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
     );
   }
 
-  Widget ChatBoard(BuildContext context) {
-    return StreamBuilder<void>(
-      stream: _updateStreamController.stream,
-      builder: (context, snapshot) {
-        return DashChat(
-          typingUsers: _typing,
-          currentUser: _currentUser,
-          onSend: (ChatMessage message) {
-            // Send the message to the server
-            socket.emit("SEND_MESSAGE", {
-              "content": message.text,
-              "projectId": widget.chatModel.idProject,
-              "messageFlag": 0,
-              "senderId": _currentUser.id,
-              'receiverId': _anotherUser.id
-            });
-            setState(() {
-              _message.insert(0, message);
-            });
-          },
-          messages: _message,
-          inputOptions: const InputOptions(
-            inputTextStyle: TextStyle(color: Colors.black),
-            cursorStyle: CursorStyle(color: Colors.black),
-          ),
-          messageOptions: MessageOptions(
-            currentUserContainerColor: Theme.of(context).colorScheme.primary,
-            containerColor: Theme.of(context).colorScheme.primary,
-            messageTextBuilder: (message, previousMessage, nextMessage) {
-              // if message is an interview, show box-interview
-              if (message.customProperties != null &&
-                  message.customProperties!.containsKey('interview')) {
-                InterviewModel invitation =
-                    message.customProperties!['interview'];
-
-                return InterviewCard(
-                  interviewInfo: invitation,
-                  onJoined: () {
-                    NavigationUtil.toJoinMeetingScreen(context);
-                  },
-                );
-              } else {
-                return Text(
-                  message.text,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
-                );
-              }
-            },
-          ),
-        );
-      },
-    );
-  }
-
   // show more actions bottom sheet
   Future<bool?> showMoreActionsBottomSheet() => showModalBottomSheet<bool>(
         shape: const RoundedRectangleBorder(
@@ -337,6 +305,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
     DateTime selectedDate = DateTime.now();
     TimeOfDay selectedStartTime = const TimeOfDay(hour: 0, minute: 0);
     TimeOfDay selectedEndTime = const TimeOfDay(hour: 0, minute: 0);
+
     double duration =
         InterviewUtil.calculateTheDiffTimes(selectedStartTime, selectedEndTime);
     bool isValidTitle = false;
@@ -357,13 +326,12 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
           text: 'showInvitation',
           customProperties: {
             'interview': InterviewModel(
-              null,
-              [_currentUser, _anotherUser],
-              titleController.text,
-              selectedDate,
-              selectedStartTime,
-              selectedEndTime,
-            ),
+                null,
+                 [_currentUser, _anotherUser],
+                titleController.text,
+                selectedDate,
+                selectedStartTime,
+                selectedEndTime),
           });
 
       // save the interview meeting info into messages
@@ -383,18 +351,25 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
           builder: (BuildContext context, StateSetter setModalState) {
             // return the Interview-picker bottom sheet
             return Container(
-              padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
-              height: 450,
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              height: MediaQuery.of(context).size.height * 0.5,
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // title of Interview-sheet
-                    const CustomText(
-                      text: "Schedule for a video interview",
-                      isBold: true,
-                      size: 20,
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustomText(
+                          text: "Schedule for a video interview",
+                          isBold: true,
+                          size: 20,
+                        ),
+                      ],
                     ),
+
                     const SizedBox(
                       height: SpacingUtil.smallHeight,
                     ),
