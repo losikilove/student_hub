@@ -60,8 +60,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // select a language for this app
-            const CustomText(
-              text: 'Language:',
+            CustomText(
+              text: AppLocalizations.of(context)!.language,
               isBold: true,
             ),
             const SizedBox(
@@ -103,7 +103,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             // change-password button
             CustomButton(
               onPressed: onSwitchedToChangePasswordScreen,
-              text: 'Change password',
+              text: AppLocalizations.of(context)!.changePassword,
             ),
             const SizedBox(
               height: SpacingUtil.mediumHeight,

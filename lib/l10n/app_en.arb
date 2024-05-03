@@ -4,5 +4,19 @@
         "description": "text: settings"
     },
     "profile": "Profile",
-    "logout": "Logout"
+    "logout": "Logout",
+    "somethingWentWrong": "Something went wrong",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "dontHaveAccount": "Don't have an account?",
+    "activeProposals": "Active Proposals",
+    "offeredProposals": "Offered Proposals",
+    "changePassword": "Change Password",
+    "yourCompanyProfile": "Your Company Profile",
+    "company": "Company",
+    "website": "Website",
+    "aboutUs": "About us",
+    "update": "Update",
+    "language": "Language"
+
 }

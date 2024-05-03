@@ -173,14 +173,14 @@ class _SwitchAccountScreen extends State<SwitchAccountScreen> {
                   const CustomDivider(),
                   CustomListTitle(
                     icon: Icons.settings_outlined,
-                    text: 'Settings',
+                    text: AppLocalizations.of(context)!.settings,
                     onTap: onSwitchedToSettingScreen,
                     subtext: null,
                   ),
                   const CustomDivider(),
                   CustomListTitle(
                     icon: Icons.logout_outlined,
-                    text: 'Logout',
+                    text: AppLocalizations.of(context)!.logout,
                     onTap: onLogout,
                     subtext: null,
                   ),

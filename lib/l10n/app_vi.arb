@@ -1,5 +1,19 @@
 {
     "settings":"Cài đặt",
     "profile":"Hồ sơ",
-    "logout":"Đăng xuất"
+    "logout":"Đăng xuất",
+    "somethingWentWrong":"Có lỗi xảy ra",
+    "signIn":"Đăng nhập",
+    "signUp":"Đăng ký",
+    "dontHaveAccount":"Chưa có tài khoản?",
+    "activeProposals":"Đề xuất hoạt động",
+    "offeredProposals":"Đề xuất được đề xuất",
+    "changePassword":"Đổi mật khẩu",
+    "yourCompanyProfile":"Hồ sơ công ty của bạn",
+    "company":"Công ty",
+    "website":"Trang web",
+    "aboutUs":"Giới thiệu",
+    "update":"Cập nhật",
+    "language":"Ngôn ngữ"
+
 }
