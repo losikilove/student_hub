@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
-import 'package:student_hub/components/custom_future_builder.dart';
+// import 'package:student_hub/components/custom_future_builder.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/enums/enum_type_notify_flag.dart';
@@ -26,17 +26,34 @@ class _NotificationBody extends State<NotificationBody> {
     NavigationUtil.toSwitchAccountScreen(context);
   }
 
-  Future<List<NotificationModel>> initializeNotifications() async {
+  // Future<List<NotificationModel>> initializeNotifications() async {
+  //   UserProvider userProvider = Provider.of<UserProvider>(
+  //     context,
+  //     listen: false,
+  //   );
+  //   String? token = userProvider.token;
+  //   String receiverId = userProvider.user!.userId.toString();
+  //   // get all notifications
+  //   final response = await NotificationService.getNotification(
+  //       receiverId: receiverId, token: token!);
+  //   return NotificationModel.fromResponse(response);
+  // }
+  Stream<List<NotificationModel>> streamNotifications() async* {
     UserProvider userProvider = Provider.of<UserProvider>(
       context,
       listen: false,
     );
     String? token = userProvider.token;
     String receiverId = userProvider.user!.userId.toString();
-    // get all notifications
-    final response = await NotificationService.getNotification(
-        receiverId: receiverId, token: token!);
-    return NotificationModel.fromResponse(response);
+
+    // Tạo vòng lặp để liên tục cập nhật dữ liệu
+    while (true) {
+      final response = await NotificationService.getNotification(receiverId: receiverId, token: token!);
+      yield NotificationModel.fromResponse(response);
+    
+      // Đặt thời gian chờ trước khi tạo yêu cầu tiếp theo
+      await Future.delayed(const Duration(seconds: 10));  // Ví dụ: cập nhật dữ liệu mỗi phút
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -46,59 +63,68 @@ class _NotificationBody extends State<NotificationBody> {
         currentContext: context,
       ),
       body: InitialBody(
-          child: CustomFutureBuilder(
-            future: initializeNotifications(), 
-            widgetWithData: (snapshot){
-              List<NotificationModel> list = snapshot.data as List<NotificationModel>;
-              return ListView.builder(
-                  itemCount: list.length,
-                  itemBuilder: (context,index){
-                    NotificationModel notification = list[index];
-                     
+          child: StreamBuilder(
+            stream: streamNotifications(), 
+            builder: (context, AsyncSnapshot<List<NotificationModel>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting){
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }else if (snapshot.hasError){
+                  return CustomText(
+                    text: snapshot.error.toString(),
+                    textColor: Colors.red,
+                  );
+                }
+                else if (snapshot.hasData){
+                  List<NotificationModel> list = snapshot.data!;
+                  return ListView.builder(
+                    itemCount: list.length,
+                    itemBuilder: (context,index){
+                      NotificationModel notification = list[index];
                       if (notification.typeNotifyFlag == EnumTypeNotifyFlag.Interview.value ){
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children:[
+                          children: [
                             Row(
                               children: [
-                              Icon(Icons.local_offer_rounded,size: 17,color: Theme.of(context).colorScheme.onPrimary),
+                                Icon(Icons.local_offer_rounded,size: 17,color: Theme.of(context).colorScheme.onPrimary),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomText(text:"You have invited to interview project: ${notification.title} at ${DateFormat('dd-MM-yyyy').format(DateTime.parse(notification.interview!.startTime),)}",size: 18,),
+                                    const SizedBox(
+                                      height: SpacingUtil.smallHeight,
+                                    ),
+                                    CustomText(text:"Time: ${DateFormat('hh:mm').format(DateTime.parse(notification.interview!.startTime),)} - ${DateFormat('hh:mm').format(DateTime.parse(notification.interview!.endTime),)}",size: 16,),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: SpacingUtil.smallHeight,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              CustomButton(onPressed: (){}, text: "Join"),
                               const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CustomText(text:"You have invited to interview project: ${notification.title} at ${DateFormat('dd-MM-yyyy').format(DateTime.parse(notification.interview!.startTime),)}",size: 18,),
-                                  const SizedBox(
-                                    height: SpacingUtil.smallHeight,
-                                  ),
-                                  CustomText(text:"Time: ${DateFormat('hh:mm').format(DateTime.parse(notification.interview!.startTime),)} - ${DateFormat('hh:mm').format(DateTime.parse(notification.interview!.endTime),)}",size: 16,),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: SpacingUtil.mediumHeight,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            CustomButton(onPressed: (){}, text: "Join"),
-                            const SizedBox(
-                              width: SpacingUtil.largeHeight,
-                            ),
-                           
-                          ],
-                        ),
-                        const CustomDivider(),      
-                      ],
-                    );
-                  }
+                                width: SpacingUtil.largeHeight,
+                              ),                      
+                            ],
+                          ),
+                          const CustomDivider()
+                        ]
+                      );
+                    }
                   else if(notification.typeNotifyFlag == EnumTypeNotifyFlag.Submitted.value ){
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,21 +232,18 @@ class _NotificationBody extends State<NotificationBody> {
                         const CustomDivider(),
                       ],
                     );
-
                   }
+                    }, 
+                  );
                 }
-              );
-            },
-            
-            widgetWithError: (snapshot) {
-                return CustomText(
-                  text: snapshot.error.toString(),
-                  textColor: Colors.red,
-                );
-              },
-          )
-        ),
+                else{
+                  return const CustomText(text: "No notification found!",size: 19,);
+                }
+              
+  
+            }
+          ),
+        )
     );
   }
 }
-
