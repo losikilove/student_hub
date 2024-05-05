@@ -15,8 +15,8 @@ ThemeData lightMode = ThemeData(
 ThemeData darkMode = ThemeData(
   brightness: Brightness.dark,
   colorScheme: ColorScheme.dark(
-    background: Colors.grey.shade800,
-    primary: Colors.grey.shade900,
+    background: Colors.grey.shade800 ,
+    primary: Colors.grey.shade700,
     secondary: Colors.black,
     onBackground: Colors.white, // immutable
     onPrimary: Colors.white, // for text color
