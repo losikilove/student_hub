@@ -20,7 +20,7 @@ import 'package:student_hub/services/tech_stack_service.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ProfileStudentStep1Screen extends StatefulWidget {
   const ProfileStudentStep1Screen({super.key});
 
@@ -138,9 +138,9 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // greeting text
-            const Center(
+            Center(
               child: CustomText(
-                text: 'Welcome to Student Hub',
+                text: AppLocalizations.of(context)!.welcomeToStudentHub,
                 isBold: true,
               ),
             ),
@@ -148,9 +148,9 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
               height: SpacingUtil.mediumHeight,
             ),
             // other text
-            const CustomText(
+            CustomText(
               text:
-                  'Tell us about yourself and you will be on your way connect with real-world project',
+                  AppLocalizations.of(context)!.tellUsAboutYourself,
             ),
             const SizedBox(
               height: SpacingUtil.mediumHeight,
@@ -161,8 +161,8 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // techstack options
-                    const CustomText(
-                      text: 'Techstack',
+                    CustomText(
+                      text: AppLocalizations.of(context)!.techstack,
                       isBold: true,
                     ),
                     CustomFutureBuilder<List<TechStackModel>>(
@@ -173,8 +173,8 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
                         onHelper: onGettingValueOfTechstack,
                       ),
                       widgetWithError: (snapshot) {
-                        return const CustomText(
-                          text: 'Sorry, something went wrong',
+                        return CustomText(
+                          text: AppLocalizations.of(context)!.sorySomethingWentWrong,
                           textColor: Colors.red,
                         );
                       },
@@ -183,8 +183,8 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
                       height: SpacingUtil.mediumHeight,
                     ),
                     // skillset selections
-                    const CustomText(
-                      text: 'Skillset',
+                    CustomText(
+                      text: AppLocalizations.of(context)!.skillset,
                       isBold: true,
                     ),
                     CustomFutureBuilder<List<SkillSetModel>>(
@@ -195,8 +195,8 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
                         onHelper: onGettingValuesOfSkillset,
                       ),
                       widgetWithError: (snapshot) {
-                        return const CustomText(
-                          text: 'Sorry, something went wrong',
+                        return  CustomText(
+                          text: AppLocalizations.of(context)!.sorySomethingWentWrong,
                           textColor: Colors.red,
                         );
                       },
@@ -229,7 +229,7 @@ class _ProfileStudentStep1ScreenState extends State<ProfileStudentStep1Screen> {
         child: CustomButton(
           size: CustomButtonSize.small,
           onPressed: onSubmittedThenContinue,
-          text: 'Next',
+          text: AppLocalizations.of(context)!.next,
         ),
       ),
     );
