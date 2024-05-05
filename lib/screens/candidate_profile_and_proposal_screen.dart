@@ -12,6 +12,8 @@ import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/services/proposal_service.dart';
 import 'package:intl/intl.dart';
 import 'package:student_hub/utils/spacing_util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class CandidateProfileAndProposalScreen extends StatefulWidget {
   final String studentName;
   final String proposalName;
@@ -48,7 +50,7 @@ class _CandidateProfileAndProposalScreenState extends State<CandidateProfileAndP
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        title: 'Student profile and Proposal',
+        title: AppLocalizations.of(context)!.studentProfileAndProposal,
         isBack: true,
         onPressed: () {},
         currentContext: context,
@@ -94,7 +96,7 @@ class _CandidateProfileAndProposalScreenState extends State<CandidateProfileAndP
                     size: 23,
                   ),
                   CustomText(
-                    text: "Status: ${EnumStatusFlag.toStatusFlag(proposalAndCandidate.statusFlag).name}",
+                    text: "${AppLocalizations.of(context)!.status}: ${EnumStatusFlag.toStatusFlag(proposalAndCandidate.statusFlag).name}",
                     size: 18,
                   ),
                   CustomText(
@@ -123,7 +125,7 @@ class _CandidateProfileAndProposalScreenState extends State<CandidateProfileAndP
           ],
         ),
         const CustomDivider(),
-        const CustomText(text: "Candidate Profile", isBold: true, size: 20),
+        CustomText(text: AppLocalizations.of(context)!.candidateProfile, isBold: true, size: 20),
         const SizedBox(
           height: SpacingUtil.smallHeight,
         ),
@@ -161,8 +163,8 @@ class _CandidateProfileAndProposalScreenState extends State<CandidateProfileAndP
         const SizedBox(
           height: 10,
         ),
-        const CustomText(
-          text: "Educations",
+        CustomText(
+          text: AppLocalizations.of(context)!.educations,
           isBold: true,
           size: 19,
         ),
@@ -196,8 +198,8 @@ class _CandidateProfileAndProposalScreenState extends State<CandidateProfileAndP
           height:SpacingUtil.mediumHeight,
         ),
        
-        const CustomText(
-          text: "Resume",
+        CustomText(
+          text: AppLocalizations.of(context)!.resume,
           isBold: true,
           size: 19,
         ),
@@ -220,8 +222,8 @@ class _CandidateProfileAndProposalScreenState extends State<CandidateProfileAndP
         const SizedBox(
           height:SpacingUtil.mediumHeight,
         ),
-         const CustomText(
-          text: "Cover Letter",
+        CustomText(
+          text: AppLocalizations.of(context)!.coverLetter,
           isBold: true,
           size: 19,
         ),
@@ -244,8 +246,8 @@ class _CandidateProfileAndProposalScreenState extends State<CandidateProfileAndP
         const SizedBox(
            height:SpacingUtil.mediumHeight,
         ),
-        const CustomText(
-          text: "Transcript",
+        CustomText(
+          text: AppLocalizations.of(context)!.transcript,
           isBold: true,
           size: 19,
         ),
