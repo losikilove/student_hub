@@ -12,7 +12,7 @@ import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/models/project_model.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class BrowseProjectDetailScreen extends StatefulWidget {
   // TODO: require a project-model attribute
   final int projectId;
@@ -50,7 +50,7 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        title: 'Detail projects',
+        title: AppLocalizations.of(context)!.detailProject,
         isBack: true,
         onPressed: onPressed,
         currentContext: context,
@@ -63,8 +63,8 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
               return projectDetail(snapshot.data!);
             },
             widgetWithError: (snapshot) {
-              return const CustomText(
-                text: 'Sorry, something went wrong',
+              return CustomText(
+                text: AppLocalizations.of(context)!.sorySomethingWentWrong,
                 textColor: Colors.red,
               );
             },
@@ -81,13 +81,13 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
             CustomButton(
               size: CustomButtonSize.small,
               onPressed: onAppliedNow,
-              text: 'Apply Now',
+              text: AppLocalizations.of(context)!.applyNow,
               buttonColor: Theme.of(context).colorScheme.secondary,
             ),
             CustomButton(
               size: CustomButtonSize.small,
               onPressed: onSaved,
-              text: 'Save',
+              text: AppLocalizations.of(context)!.save,
             ),
           ],
         ),
@@ -100,15 +100,15 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomText(
-          text: "Detail: ${project.title}",
+          text: "${AppLocalizations.of(context)!.detail}: ${project.title}",
           isBold: true,
           size: 23,
         ),
         const CustomDivider(),
         // desirements of student text
-        const CustomText(
+        CustomText(
           size: 18,
-          text: 'Student are looking for',
+          text: AppLocalizations.of(context)!.studentAreLookingFor,
         ),
         CustomBulletedList(
           textSize: 18,
@@ -117,13 +117,13 @@ class _BrowseProjectDetailScreenState extends State<BrowseProjectDetailScreen> {
         const CustomDivider(),
         // scope of project
         _projectRequirement(
-            Icons.alarm, 'Project scope', '${project.projectScopeFlag.name}'),
+            Icons.alarm, AppLocalizations.of(context)!.projectScope, project.projectScopeFlag.name),
         const SizedBox(
           height: SpacingUtil.smallHeight,
         ),
         // Required students
-        _projectRequirement(Icons.people_outline, 'Required students',
-            '${project.numberofStudent} students'),
+        _projectRequirement(Icons.people_outline, AppLocalizations.of(context)!.requiredStudents,
+            '${project.numberofStudent} ${AppLocalizations.of(context)!.students}'),
       ],
     );
   }

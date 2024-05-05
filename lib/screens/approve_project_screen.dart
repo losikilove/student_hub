@@ -17,7 +17,7 @@ import 'package:student_hub/services/project_service.dart';
 import 'package:student_hub/services/proposal_service.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ApproveProjectScreen extends StatefulWidget {
   final ProposalStudent proposal;
 
@@ -34,7 +34,7 @@ class _ApproveProjectScreenState extends State<ApproveProjectScreen> {
   Future<void> onApproved() async {
     final confirmApprovedProject = await popupConfirm(
       context: context,
-      content: 'Are you sure to approve this project',
+      content: AppLocalizations.of(context)!.areYouSureToApproveThisProject,
     );
 
     if (confirmApprovedProject == false || confirmApprovedProject == null) {
@@ -92,7 +92,7 @@ class _ApproveProjectScreenState extends State<ApproveProjectScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        title: 'Approve project',
+        title: AppLocalizations.of(context)!.approveProject,
         isBack: true,
         onPressed: () {},
         currentContext: context,
@@ -115,9 +115,9 @@ class _ApproveProjectScreenState extends State<ApproveProjectScreen> {
                   ),
                   const CustomDivider(),
                   // desirements of student text
-                  const CustomText(
+                  CustomText(
                     size: 18,
-                    text: 'Student are looking for',
+                    text: AppLocalizations.of(context)!.studentAreLookingFor,
                   ),
                   CustomBulletedList(
                     textSize: 18,
@@ -127,7 +127,7 @@ class _ApproveProjectScreenState extends State<ApproveProjectScreen> {
                   // scope of project
                   _projectRequirement(
                     Icons.alarm,
-                    'Project scope',
+                    AppLocalizations.of(context)!.projectScope,
                     project.projectScopeFlag.name,
                   ),
                   const SizedBox(
@@ -136,15 +136,15 @@ class _ApproveProjectScreenState extends State<ApproveProjectScreen> {
                   // Required students
                   _projectRequirement(
                     Icons.people_outline,
-                    'Required students',
+                    AppLocalizations.of(context)!.requiredStudents,
                     '${project.numberofStudent} students',
                   ),
                 ],
               );
             },
             widgetWithError: (snapshot) {
-              return const CustomText(
-                text: 'Sorry, something went wrong',
+              return CustomText(
+                text: AppLocalizations.of(context)!.sorySomethingWentWrong,
                 textColor: Colors.red,
               );
             },

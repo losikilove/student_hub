@@ -7,7 +7,7 @@ import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class CompanyViewProfileScreen extends StatefulWidget {
   const CompanyViewProfileScreen({super.key});
 
@@ -40,8 +40,8 @@ class _CompanyViewProfileScreenState extends State<CompanyViewProfileScreen> {
               return Column(
                 children: [
                   // title of screen
-                  const CustomText(
-                    text: 'Your company profile',
+                  CustomText(
+                    text: AppLocalizations.of(context)!.yourCompanyProfile,
                     isBold: true,
                     size: 25,
                   ),
@@ -49,8 +49,8 @@ class _CompanyViewProfileScreenState extends State<CompanyViewProfileScreen> {
                     height: SpacingUtil.mediumHeight,
                   ),
                   // name of company
-                  const CustomText(
-                    text: 'Company',
+                  CustomText(
+                    text: AppLocalizations.of(context)!.company,
                     size: 18,
                   ),
                   CustomText(
@@ -62,8 +62,8 @@ class _CompanyViewProfileScreenState extends State<CompanyViewProfileScreen> {
                     height: SpacingUtil.smallHeight,
                   ),
                   // website of company
-                  const CustomText(
-                    text: 'Website',
+                  CustomText(
+                    text: AppLocalizations.of(context)!.website,
                     size: 18,
                   ),
                   CustomText(
@@ -88,8 +88,8 @@ class _CompanyViewProfileScreenState extends State<CompanyViewProfileScreen> {
                     height: SpacingUtil.smallHeight,
                   ),
                   // description of company
-                  const CustomText(
-                    text: 'About us',
+                  CustomText(
+                    text: AppLocalizations.of(context)!.aboutUs,
                     size: 18,
                   ),
                   CustomText(
@@ -112,7 +112,7 @@ class _CompanyViewProfileScreenState extends State<CompanyViewProfileScreen> {
           child: CustomButton(
             size: CustomButtonSize.small,
             onPressed: onSwitchedToCompanyUpdateProfile,
-            text: 'Update',
+            text: AppLocalizations.of(context)!.update,
           ),
         ),
       ),
