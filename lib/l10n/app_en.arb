@@ -50,6 +50,14 @@
     "companyName": "Company Name",
     "companySize": "Size",
     "description": "Description",
-    "continu": "Continue"
+    "continu": "Continue",
+    "updateYourCompanyProfileSuccessfully": "Update your company profile successfully",
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "warning": "Warning",
+    "areYouSureToUpdateYourCompanyProfile": "Are you sure to update your company profile?",
+    "yes": "Yes",
+    "no": "No"
+
 
 }

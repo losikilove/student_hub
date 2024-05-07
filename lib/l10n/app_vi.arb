@@ -47,6 +47,13 @@
     "howManyPeopleAreInYourCompany": "Có bao nhiêu nhân sự trong công ty của bạn?",
     "companyName": "Tên công ty",
     "description": "Mô tả",
-    "continu": "Tiếp tục"
+    "continu": "Tiếp tục",
+    "updateYourCompanyProfileSuccessfully": "Update your company profile successfully",
+    "edit": "Chỉnh sửa",
+    "cancel": "Hủy",
+    "warning": "Cảnh báo",
+    "areYouSureToUpdateYourCompanyProfile": "Bạn có chắc chắn muốn cập nhật hồ sơ công ty của bạn không?",
+    "yes": "Có",
+    "no": "Không"
 
 }

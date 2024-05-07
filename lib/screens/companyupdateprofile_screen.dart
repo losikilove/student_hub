@@ -14,7 +14,7 @@ import 'package:student_hub/models/enums/enum_numberpeople.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/providers/user_provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class CompanyUpdateProfileScreen extends StatefulWidget {
   const CompanyUpdateProfileScreen({super.key});
 
@@ -93,7 +93,7 @@ class _CompanyUpdateProfileScreenState
       await popupNotification(
         context: context,
         type: NotificationType.success,
-        content: 'Update company profile successfully',
+        content: AppLocalizations.of(context)!.updateYourCompanyProfileSuccessfully,
         textSubmit: 'Ok',
         submit: () {
           NavigationUtil.turnBack(context);
@@ -128,14 +128,14 @@ class _CompanyUpdateProfileScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Center(
+              Center(
                   child:
-                      CustomText(text: "Welcome to Student Hub", isBold: true)),
+                      CustomText(text: AppLocalizations.of(context)!.welcomeToStudentHub, isBold: true)),
               const SizedBox(
                 height: SpacingUtil.mediumHeight,
               ),
-              const CustomText(
-                text: "Company name",
+              CustomText(
+                text: AppLocalizations.of(context)!.company,
                 isBold: true,
               ),
               CustomTextfield(
@@ -145,8 +145,8 @@ class _CompanyUpdateProfileScreenState
               const SizedBox(
                 height: SpacingUtil.smallHeight,
               ),
-              const CustomText(
-                text: "Website",
+              CustomText(
+                text: AppLocalizations.of(context)!.website,
                 isBold: true,
               ),
               CustomTextfield(
@@ -156,8 +156,8 @@ class _CompanyUpdateProfileScreenState
               const SizedBox(
                 height: SpacingUtil.smallHeight,
               ),
-              const CustomText(
-                text: "Description",
+              CustomText(
+                text: AppLocalizations.of(context)!.description,
                 isBold: true,
               ),
               CustomTextfield(
@@ -168,8 +168,8 @@ class _CompanyUpdateProfileScreenState
               const SizedBox(
                 height: SpacingUtil.mediumHeight,
               ),
-              const CustomText(
-                text: "How many people are there in your company ?",
+              CustomText(
+                text: AppLocalizations.of(context)!.howManyPeopleAreInYourCompany,
               ),
               Consumer<UserProvider>(builder: (context, userProvider, child) {
                 EnumNumberPeople? numberPeople =
@@ -184,12 +184,12 @@ class _CompanyUpdateProfileScreenState
                 children: [
                   CustomButton(
                     onPressed: onUpdate,
-                    text: "Edit",
+                    text: AppLocalizations.of(context)!.edit,
                     buttonColor: Theme.of(context).colorScheme.secondary,
                   ),
                   CustomButton(
                     onPressed: onCanceled,
-                    text: "Cancel",
+                    text: AppLocalizations.of(context)!.cancel,
                   ),
                 ],
               )
@@ -218,25 +218,25 @@ class _CompanyUpdateProfileScreenState
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text(
-            'WARNING',
+          title: Text(
+            AppLocalizations.of(context)!.warning,
             style: TextStyle(color: Colors.red),
           ),
-          content: const CustomText(
-            text: 'Are you sure to update your company profile?',
+          content: CustomText(
+            text: AppLocalizations.of(context)!.areYouSureToUpdateYourCompanyProfile,
           ),
           actions: [
             CustomButton(
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
-              text: 'Yes',
+              text: AppLocalizations.of(context)!.yes,
             ),
             CustomButton(
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
-              text: 'No',
+              text: AppLocalizations.of(context)!.no,
             ),
           ],
         );
