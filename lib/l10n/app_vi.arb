@@ -41,6 +41,12 @@
     "size":"Số lượng", 
     "detail": "Chi tiết",
     "requiredStudent": "Số lượng sinh viên cần tìm",
-    "students": "Sinh viên"
+    "students": "Sinh viên",
+    "createYourCompanyProfileSuccessfully": "Tạo hồ sơ công ty thành công",
+    "tellUsAboutYourCompany": "Hãy cho chúng tôi biết về công ty của bạn và bạn sẽ tiếp tục kết nối với các dự án trong thế giới thực",
+    "howManyPeopleAreInYourCompany": "Có bao nhiêu nhân sự trong công ty của bạn?",
+    "companyName": "Tên công ty",
+    "description": "Mô tả",
+    "continu": "Tiếp tục"
 
 }

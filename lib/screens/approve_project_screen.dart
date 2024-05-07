@@ -144,7 +144,8 @@ class _ApproveProjectScreenState extends State<ApproveProjectScreen> {
             },
             widgetWithError: (snapshot) {
               return CustomText(
-                text: AppLocalizations.of(context)!.sorySomethingWentWrong,
+                // text: AppLocalizations.of(context)!.sorySomethingWentWrong,
+                text: '${snapshot.error}',
                 textColor: Colors.red,
               );
             },

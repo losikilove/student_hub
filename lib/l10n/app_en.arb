@@ -43,5 +43,13 @@
     "size":"Size", 
     "detail": "Detail",
     "requiredStudent": "Required Student",
-    "students": "Students"
+    "students": "Students",
+    "createYourCompanyProfileSuccessfully": "Create your company profile successfully",
+    "tellUsAboutYourCompany": "Tell us about your company and you will be on your way connect with high-skilled student",
+    "howManyPeopleAreInYourCompany": "How many people are in your company?",
+    "companyName": "Company Name",
+    "companySize": "Size",
+    "description": "Description",
+    "continu": "Continue"
+
 }

@@ -12,6 +12,7 @@ import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/models/enums/enum_numberpeople.dart';
 import 'package:student_hub/components/custom_appbar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CompanyRegisterScreen extends StatefulWidget {
   const CompanyRegisterScreen({super.key});
@@ -75,7 +76,7 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
       await popupNotification(
         context: context,
         type: NotificationType.success,
-        content: 'Created your company profile successfully',
+        content: AppLocalizations.of(context)!.createYourCompanyProfileSuccessfully,
         textSubmit: 'Ok',
         submit: null,
       );
@@ -103,19 +104,20 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Center(
+              Center(
                   child:
-                      CustomText(text: "Welcome to Student Hub", isBold: true)),
+                      CustomText(text: AppLocalizations.of(context)!.welcomeToStudentHub, isBold: true)),
               const SizedBox(
                 height: SpacingUtil.smallHeight,
               ),
-              const CustomText(
+              CustomText(
                   text:
-                      "Tell us about your company and you will be on your way connect with high-skilled student"),
+                      AppLocalizations.of(context)!.howManyPeopleAreInYourCompany),
               const SizedBox(
                 height: SpacingUtil.smallHeight,
               ),
-              const CustomText(text: "How many people are in your company ?"),
+              CustomText(text: AppLocalizations.of(context)!.companySize,
+                  isBold: true),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 chooseNumber(EnumNumberPeople.one, EnumNumberPeople.one.name),
                 chooseNumber(EnumNumberPeople.two_to_nine,
@@ -130,8 +132,8 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
               const SizedBox(
                 height: SpacingUtil.smallHeight,
               ),
-              const CustomText(
-                text: "Company name",
+              CustomText(
+                text: AppLocalizations.of(context)!.companyName,
                 isBold: true,
               ),
               CustomTextfield(
@@ -141,8 +143,8 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
               const SizedBox(
                 height: SpacingUtil.smallHeight,
               ),
-              const CustomText(
-                text: "Website",
+              CustomText(
+                text: AppLocalizations.of(context)!.website,
                 isBold: true,
               ),
               CustomTextfield(
@@ -152,8 +154,8 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
               const SizedBox(
                 height: SpacingUtil.smallHeight,
               ),
-              const CustomText(
-                text: "Description",
+              CustomText(
+                text: AppLocalizations.of(context)!.description,
                 isBold: true,
               ),
               CustomTextfield(
@@ -168,7 +170,7 @@ class _CompanyRegisterScreenState extends State<CompanyRegisterScreen> {
                 alignment: Alignment.topRight,
                 child: CustomButton(
                   onPressed: onCreatedProfile,
-                  text: "Continue",
+                  text:AppLocalizations.of(context)!.continu,
                 ),
               ),
               const SizedBox(height: SpacingUtil.mediumHeight)
