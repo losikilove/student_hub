@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
-// import 'package:student_hub/components/custom_future_builder.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
+import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/models/enums/enum_type_notify_flag.dart';
 import 'package:student_hub/models/notification_model.dart';
 import 'package:student_hub/providers/user_provider.dart';
@@ -13,6 +14,7 @@ import 'package:student_hub/utils/navigation_util.dart';
 import 'package:provider/provider.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:intl/intl.dart';
+import 'package:student_hub/utils/api_util.dart';
 class NotificationBody extends StatefulWidget {
   const NotificationBody({super.key});
 
@@ -25,19 +27,78 @@ class _NotificationBody extends State<NotificationBody> {
   void onSwitchedToSwitchAccountScreen() {
     NavigationUtil.toSwitchAccountScreen(context);
   }
+   final socket = IO.io(
+    ApiUtil.websocketUrl,
+    IO.OptionBuilder()
+        .setTransports(['websocket'])
+        .disableAutoConnect()
+        .build(),
+  );
+  @override
+  void dispose() {
+    socket.dispose();
+    super.dispose();
+  }
 
-  // Future<List<NotificationModel>> initializeNotifications() async {
-  //   UserProvider userProvider = Provider.of<UserProvider>(
-  //     context,
-  //     listen: false,
-  //   );
-  //   String? token = userProvider.token;
-  //   String receiverId = userProvider.user!.userId.toString();
-  //   // get all notifications
-  //   final response = await NotificationService.getNotification(
-  //       receiverId: receiverId, token: token!);
-  //   return NotificationModel.fromResponse(response);
-  // }
+  @override
+  void initState() {
+    super.initState();
+    UserProvider userProvider = Provider.of<UserProvider>(
+      context,
+      listen: false,
+    );
+ 
+    socket.io.options?['extraHeaders'] = {
+      'Authorization': 'Bearer ${userProvider.token}',
+    };
+     socket.onConnect((data) => {
+          print('Connected'),
+        });
+
+    socket.onConnectError(
+        (data) => print('Error connection: ${data.toString()}'));
+    socket.onError((data) => print('Error connection: ${data.toString()}'));
+    socket.on('NOTI_${userProvider.user!.userId}', (data) {
+      if (data['notification']['typeNotifyFlag'] == EnumTypeNotifyFlag.Chat.value) {
+        popupNotification(
+          context: context,
+          type: NotificationType.success, 
+          content: "You have a new message", 
+          textSubmit: "Ok", 
+          submit: null
+        );
+      } else if (data['notification']['typeNotifyFlag'] == EnumTypeNotifyFlag.Interview.value) {
+        popupNotification(
+          context: context,
+          type: NotificationType.success, 
+          content: "You have a new intervỉew invitation", 
+          textSubmit: "Ok", 
+          submit: null
+        );
+      } else if (data['notification']['typeNotifyFlag'] == EnumTypeNotifyFlag.Offer.value) {
+        popupNotification(
+          context: context,
+          type: NotificationType.success, 
+          content: "You have a new offer to join project", 
+          textSubmit: "Ok", 
+          submit: null
+        );
+      } else if (data['notification']['typeNotifyFlag'] == EnumTypeNotifyFlag.Submitted.value) {
+        popupNotification(
+          context: context,
+          type: NotificationType.success, 
+          content: "You have been submitted to join project", 
+          textSubmit: "Ok", 
+          submit: null
+        );
+      }
+
+    });
+
+    //Listen for error from socket
+    socket.on("ERROR", (data) => print('Error: ${data}'));
+  }
+  
   Stream<List<NotificationModel>> streamNotifications() async* {
     UserProvider userProvider = Provider.of<UserProvider>(
       context,
@@ -46,13 +107,11 @@ class _NotificationBody extends State<NotificationBody> {
     String? token = userProvider.token;
     String receiverId = userProvider.user!.userId.toString();
 
-    // Tạo vòng lặp để liên tục cập nhật dữ liệu
     while (true) {
       final response = await NotificationService.getNotification(receiverId: receiverId, token: token!);
       yield NotificationModel.fromResponse(response);
     
-      // Đặt thời gian chờ trước khi tạo yêu cầu tiếp theo
-      await Future.delayed(const Duration(seconds: 10));  // Ví dụ: cập nhật dữ liệu mỗi phút
+      await Future.delayed(const Duration(seconds: 6)); 
     }
   }
   @override
@@ -219,7 +278,7 @@ class _NotificationBody extends State<NotificationBody> {
                                         height: SpacingUtil.smallHeight,
                                       ),
                               
-                                      CustomText(text: "Content: ${notification.content}",isBold: true,),
+                                      CustomText(text: "Content: ${notification.message.content}",isBold: true,),
                                       const SizedBox(
                                         height: 5,
                                       ),
