@@ -96,11 +96,11 @@ class _NotificationBody extends State<NotificationBody> {
                                   child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    CustomText(text:"You have invited to interview project: ${notification.title} at ${DateFormat('dd-MM-yyyy').format(DateTime.parse(notification.interview!.startTime),)}",size: 18,),
+                                    CustomText(text:"You have invited to interview project: ${notification.title} at ${DateFormat('dd-MM-yyyy').format(DateTime.parse(notification.message.interview!.startTime),)}",size: 18,),
                                     const SizedBox(
                                       height: SpacingUtil.smallHeight,
                                     ),
-                                    CustomText(text:"Time: ${DateFormat('hh:mm').format(DateTime.parse(notification.interview!.startTime),)} - ${DateFormat('hh:mm').format(DateTime.parse(notification.interview!.endTime),)}",size: 16,),
+                                    CustomText(text:"Time: ${DateFormat('hh:mm').format(DateTime.parse(notification.message.interview!.startTime),)} - ${DateFormat('hh:mm').format(DateTime.parse(notification.message.interview!.endTime),)}",size: 16,),
                                     const SizedBox(
                                       height: 5,
                                     ),
