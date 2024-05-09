@@ -101,6 +101,7 @@ class _CustomTextFormState extends State<CustomTextForm> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofocus: widget.isFocus,
       cursorColor: Theme.of(context).colorScheme.onPrimary,
       decoration: InputDecoration(
         hintText: widget.hintText,

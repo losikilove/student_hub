@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_hub/utils/interview_util.dart';
 
 class InterviewModel {
-  final String? id;
+  final int? id;
   final List<dynamic> participants;
   double _duration;
   String _title;
@@ -18,11 +18,11 @@ class InterviewModel {
     this._dateInterview,
     this._startTime,
     this._endTime,
-  )   : _duration = InterviewUtil.calculateTheDiffTimes(_startTime, _endTime),
-        _isCanceled = false;
+    this._isCanceled,
+  ) : _duration = InterviewUtil.calculateTheDiffTimes(_startTime, _endTime);
 
   // getter
-  String get getInterviewId => id!;
+  int get getInterviewId => id!;
   List<dynamic> get getParticipants => participants;
   String get getTitle => _title;
   DateTime get getDateInterview => _dateInterview;

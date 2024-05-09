@@ -1,77 +1,48 @@
-
 import 'package:flutter/material.dart';
-import 'package:agora_uikit/agora_uikit.dart';
 import 'package:student_hub/components/custom_appbar.dart';
-import 'package:student_hub/utils/spacing_util.dart';
-const appId = '';
-const token = '0066e9b192579ef490f92f9ec510d093746IABCEjOJopDj3EGGEWuzXAIOubp5vr/YXL4+9mMQRiEj1npKVfgAAAAAEABt1X4ozpv9ZQEAAQBeWPxl';
-const channel ='';
+import 'package:zego_uikit_prebuilt_video_conference/zego_uikit_prebuilt_video_conference.dart';
 
 class MeetingScreen extends StatefulWidget {
-  const MeetingScreen({super.key});
+  final String anotherUserName;
+  final String currentUserId;
+  final String currentUserName;
+  final String meetingRoom;
+  final String meetingId;
+  const MeetingScreen({
+    super.key,
+    required this.anotherUserName,
+    required this.currentUserId,
+    required this.currentUserName,
+    required this.meetingRoom,
+    required this.meetingId,
+  });
 
   @override
   State<MeetingScreen> createState() => _MeetingScreenState();
 }
 
 class _MeetingScreenState extends State<MeetingScreen> {
-  final AgoraClient client = AgoraClient( 
-    agoraConnectionData: AgoraConnectionData( 
-      appId: "6e9b192579ef490f92f9ec510d093746", 
-      channelName: "vannghi", 
-      tempToken: token,
-      uid: 0,
-      rtmEnabled: true,
-    ), 
-  
-  
-    enabledPermission: [ 
-      Permission.camera, 
-      Permission.microphone, 
-    ],
-
-  );
-
-  @override
-  void initState(){
-    super.initState();
-    initForAgora();
-    
-  }
-
-  void initForAgora() async { 
-    await client.initialize();
-     
-} 
   // Create UI with local view and remote view
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(onPressed: (){},
+      appBar: CustomAppbar(
+        onPressed: () {},
         currentContext: context,
-        title: 'Luis',
+        title: widget.anotherUserName,
+        isBack: true,
       ),
-
-      body: SafeArea( 
-        child: Column( 
-          children: [
-            Center(
-              child: Icon(Icons.people, size: 300,),
-            ),
-            SizedBox(height: SpacingUtil.largeHeight,),
-            Center(
-              child: Icon(Icons.people, size: 300,),
-            ),
-            SizedBox(height: SpacingUtil.largeHeight,),
-            AgoraVideoButtons(client: client,
-            enabledButtons: [
-              BuiltInButtons.callEnd,
-              BuiltInButtons.toggleCamera,
-              BuiltInButtons.toggleMic],), 
-          ], 
+      body: SafeArea(
+        child: ZegoUIKitPrebuiltVideoConference(
+          appID: 1291705273,
+          appSign:
+              'd51929e609d4b72836877cfc070a2c496c6c5d86cbcbf96a7d7c9cefdbb03309',
+          conferenceID: widget.meetingId,
+          userID: widget.currentUserId.toString(),
+          userName: widget.currentUserName,
+          config: ZegoUIKitPrebuiltVideoConferenceConfig(),
         ),
-      ) 
+      ),
     );
   }
-
 }

@@ -1,25 +1,41 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/models/interview_model.dart';
+import 'package:student_hub/services/interview_service.dart';
+import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/interview_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class InterviewCard extends StatefulWidget {
+  final IO.Socket socket;
   final InterviewModel interviewInfo;
+  final int currentUserId;
+  final int otherUserId;
+  final int projectId;
   final void Function() onJoined;
 
-  const InterviewCard(
-      {super.key, required this.interviewInfo, required this.onJoined});
+  const InterviewCard({
+    super.key,
+    required this.interviewInfo,
+    required this.onJoined,
+    required this.socket,
+    required this.currentUserId,
+    required this.otherUserId,
+    required this.projectId,
+  });
 
   @override
   State<InterviewCard> createState() => _InterviewCardState();
 }
 
 class _InterviewCardState extends State<InterviewCard> {
-  void onOpenedMoreActions() async {
+  Future<void> onOpenedMoreActions() async {
     final isRescheduledInterview = await showMoreActionsBottomSheet();
 
     // have no clue
@@ -39,9 +55,27 @@ class _InterviewCardState extends State<InterviewCard> {
       }
 
       // cancel the meeting
-      setState(() {
-        widget.interviewInfo.cancelMeeting();
-      });
+      final response = await InterviewService.disableInterview(
+        context: context,
+        interviewId: widget.interviewInfo.id!,
+      );
+
+      if (response.statusCode == StatusCode.ok.code) {
+        setState(() {
+          widget.interviewInfo.cancelMeeting();
+        });
+        return;
+      }
+
+      // expired token
+      if (response.statusCode == StatusCode.unauthorized.code) {
+        ApiUtil.handleExpiredToken(context: context);
+        return;
+      }
+
+      // other issues
+      log('${response.statusCode}:');
+      ApiUtil.handleOtherStatusCode(context: context);
       return;
     }
 
@@ -221,17 +255,46 @@ class _InterviewCardState extends State<InterviewCard> {
     bool isValidTitle = true;
 
     // update meeting
-    void onUpdatedMeeting() {
-      // edit the values of meeting
-      setState(() {
-        widget.interviewInfo.setTitle = titleController.text;
-        widget.interviewInfo.setDateInterview = selectedDate;
-        widget.interviewInfo.setStartTime = selectedStartTime;
-        widget.interviewInfo.setEndTime = selectedEndTime;
-      });
+    Future<void> onUpdatedMeeting() async {
+      // updated meeting
+      final response = await InterviewService.updateInterview(
+        context: context,
+        title: titleController.text,
+        startTime: InterviewUtil.formatDateTimeInterview(
+          selectedDate,
+          selectedStartTime,
+        ),
+        endTime: InterviewUtil.formatDateTimeInterview(
+          selectedDate,
+          selectedEndTime,
+        ),
+        interviewId: widget.interviewInfo.id!,
+      );
+
+      if (response.statusCode == StatusCode.ok.code) {
+        // edit the values of meeting
+        setState(() {
+          widget.interviewInfo.setTitle = titleController.text;
+          widget.interviewInfo.setDateInterview = selectedDate;
+          widget.interviewInfo.setStartTime = selectedStartTime;
+          widget.interviewInfo.setEndTime = selectedEndTime;
+        });
+        // out of this updating
+        Navigator.of(context).pop();
+        return;
+      }
 
       // out of this updating
       Navigator.of(context).pop();
+
+      // expired token
+      if (response.statusCode == StatusCode.unauthorized.code) {
+        ApiUtil.handleExpiredToken(context: context);
+        return;
+      }
+
+      // other issues
+      ApiUtil.handleOtherStatusCode(context: context);
     }
 
     return showModalBottomSheet(

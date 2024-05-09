@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,16 +10,18 @@ import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/components/interview_card.dart';
+import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/models/chat_model.dart';
+import 'package:student_hub/models/enums/enum_disable_flag.dart';
 import 'package:student_hub/models/interview_model.dart';
 import 'package:student_hub/providers/user_provider.dart';
+import 'package:student_hub/services/interview_service.dart';
 import 'package:student_hub/services/message_service.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/interview_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:student_hub/services/interview_service.dart';
 
 class MessageDetailScreen extends StatefulWidget {
   final ChatModel chatModel;
@@ -29,6 +32,7 @@ class MessageDetailScreen extends StatefulWidget {
 }
 
 class _MessageDetailScreenState extends State<MessageDetailScreen> {
+  final List<int> _existedInterview = [];
   final optionOfMinute = 2;
   final optionOfHour = 24;
   final socket = IO.io(
@@ -81,46 +85,119 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
 
     //Listen to channel receive message
     socket.on('RECEIVE_MESSAGE', (data) {
-      if (data['senderId'] == widget.chatModel.idUser) {
+      if (data['notification']['interview'] == null &&
+          data['notification']['senderId'] == widget.chatModel.idUser) {
         _message.insert(
-            0,
-            ChatMessage(
-              user: _anotherUser,
-              text: data['notification']['message']['content'],
-              createdAt: DateTime.now(),
-            ));
+          0,
+          ChatMessage(
+            user: _anotherUser,
+            text: data['notification']['message']['content'],
+            createdAt: DateTime.parse(data['notification']['createdAt']),
+          ),
+        );
         _updateStreamController.add(null);
       }
     });
     //listen to channel receive interview
     socket.on('RECEIVE_INTERVIEW', (data) {
-      if (data['senderId'] == widget.chatModel.idUser) {
+      // receive the interview
+      if (data['notification']['message']['interview'] != null &&
+          !_existedInterview
+              .contains(data['notification']['message']['interviewId']) &&
+          data['notification']['senderId'] == widget.chatModel.idUser) {
+        String meeting = data['notification']['message']['interview']
+            ['meetingRoom']['meeting_room_id'];
+
+        log('$meeting why?');
         _message.insert(
-            0,
-            ChatMessage(
-              user: _anotherUser,
-              text: data['notification']['message']['content'],
-              createdAt: DateTime.now(),
-              customProperties: {
-                'interview': InterviewModel(
-                  null,
-                   [_currentUser, _anotherUser],
-                  data['notification']['message']['title'],
-                  DateTime.parse(
-                      data['notification']['message']['dateInterview']),
-                  TimeOfDay.fromDateTime(
-                      DateTime.parse(data['interview']['startTime'])),
-                  TimeOfDay.fromDateTime(
-                      DateTime.parse(data['interview']['endTime'])),
+          0,
+          ChatMessage(
+            user: _anotherUser,
+            createdAt: DateTime.parse(data['notification']['createdAt']),
+            text: 'showInvitation',
+            customProperties: {
+              'interview': {
+                'model': InterviewModel(
+                  data['notification']['message']['interviewId'],
+                  [_currentUser, _anotherUser],
+                  data['notification']['message']['interview']['title'],
+                  DateTime.parse(data['notification']['message']['interview']
+                      ['startTime']),
+                  TimeOfDay.fromDateTime(DateTime.parse(data['notification']
+                      ['message']['interview']['startTime'])),
+                  TimeOfDay.fromDateTime(DateTime.parse(
+                      data['notification']['message']['interview']['endTime'])),
+                  (data['notification']['message']['interview']
+                              ['disableFlag'] ==
+                          EnumDisableFlag.disable.value ||
+                      InterviewUtil.isExpiredMeeting(
+                        DateTime.parse(
+                          data['notification']['message']['interview']
+                              ['meetingRoom']['expired_at'],
+                        ),
+                      )),
                 ),
-              },
-            ));
+                'meeting': meeting,
+              }
+            },
+          ),
+        );
+
+        _existedInterview.add(data['notification']['message']['interviewId']);
+
         _updateStreamController.add(null);
+        return;
+      }
+
+      // post the interview
+      else if (data['notification']['message']['interview'] != null &&
+          !_existedInterview
+              .contains(data['notification']['message']['interviewId']) &&
+          data['notification']['receiverId'] == widget.chatModel.idUser &&
+          data['notification']['senderId'].toString() == _currentUser.id) {
+        String meeting = data['notification']['message']['interview']
+            ['meetingRoom']['meeting_room_id'];
+
+        _message.insert(
+          0,
+          ChatMessage(
+            user: _currentUser,
+            createdAt: DateTime.parse(data['notification']['createdAt']),
+            text: 'showInvitation',
+            customProperties: {
+              'interview': {
+                'model': InterviewModel(
+                  data['notification']['message']['interviewId'],
+                  [_currentUser, _anotherUser],
+                  data['notification']['message']['interview']['title'],
+                  DateTime.parse(data['notification']['message']['interview']
+                      ['startTime']),
+                  TimeOfDay.fromDateTime(DateTime.parse(data['notification']
+                      ['message']['interview']['startTime'])),
+                  TimeOfDay.fromDateTime(DateTime.parse(
+                      data['notification']['message']['interview']['endTime'])),
+                  (data['notification']['message']['interview']
+                              ['disableFlag'] ==
+                          EnumDisableFlag.disable.value ||
+                      InterviewUtil.isExpiredMeeting(
+                        DateTime.parse(
+                          data['notification']['message']['interview']
+                              ['meetingRoom']['expired_at'],
+                        ),
+                      )),
+                ),
+                'meeting': meeting,
+              }
+            },
+          ),
+        );
+
+        _existedInterview.add(data['notification']['message']['interviewId']);
+
+        _updateStreamController.add(null);
+        return;
       }
     });
-
-    // notify the other user
-    socket.on('NOTI_${_currentUser.id}', (data) {});
 
     //Listen for error from socket
     socket.on("ERROR", (data) => print('Error: ${data}'));
@@ -149,21 +226,111 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
       for (var item in jsonData['result']) {
-        var message = ChatMessage(
-          user: ChatUser(
-            id: item['sender']['id'].toString(),
-            firstName: item['sender']['fullname'],
-          ),
-          text: item['content'],
-          createdAt: DateTime.parse(item['createdAt']),
-        );
-        setState(() {
-          _message.insert(0, message);
-        });
+        try {
+          if (item['interview'] == null) {
+            var message = ChatMessage(
+              user: ChatUser(
+                id: item['sender']['id'].toString(),
+                firstName: item['sender']['fullname'],
+              ),
+              text: item['content'],
+              createdAt: DateTime.parse(item['createdAt']),
+            );
+
+            setState(() {
+              _message.insert(0, message);
+            });
+          } else {
+            ChatUser sender = ChatUser(
+              id: item['sender']['id'].toString(),
+              firstName: item['sender']['fullname'],
+            );
+
+            ChatUser receiver = ChatUser(
+              id: item['receiver']['id'].toString(),
+              firstName: item['receiver']['fullname'],
+            );
+
+            var interview = ChatMessage(
+              user: sender,
+              createdAt: DateTime.parse(item['createdAt']),
+              text: 'showInvitation',
+              customProperties: {
+                'interview': {
+                  'model': InterviewModel(
+                    item['interview']['id'],
+                    [sender, receiver],
+                    item['interview']['title'],
+                    DateTime.parse(item['interview']['startTime']),
+                    TimeOfDay.fromDateTime(
+                        DateTime.parse(item['interview']['startTime'])),
+                    TimeOfDay.fromDateTime(
+                        DateTime.parse(item['interview']['endTime'])),
+                    (item['interview']['disableFlag'] ==
+                            EnumDisableFlag.disable.value ||
+                        InterviewUtil.isExpiredMeeting(
+                          DateTime.parse(
+                              item['interview']['meetingRoom']['expired_at']),
+                        )),
+                  ),
+                  'meeting': item['interview']['meetingRoom']
+                      ['meeting_room_id'],
+                }
+              },
+            );
+
+            setState(() {
+              _message.insert(0, interview);
+            });
+            _existedInterview.add(item['interview']['id']);
+          }
+        } catch (e) {
+          log('meeting null error');
+        }
       }
     } else {
       throw Exception('Failed to load chats');
     }
+  }
+
+  // Send the message to the server
+  Future<void> onSentMessage(ChatMessage message) async {
+    if (message.text.isEmpty) {
+      popupNotification(
+        context: context,
+        type: NotificationType.error,
+        content: 'Empty message is not permitted!',
+        textSubmit: 'Ok',
+        submit: null,
+      );
+
+      return;
+    }
+
+    final response = await MessageService.sendMessage(
+      context: context,
+      projectId: widget.chatModel.idProject,
+      receiverId: int.parse(_anotherUser.id),
+      senderId: int.parse(_currentUser.id),
+      content: message.text,
+    );
+
+    // send message successfully
+    if (response.statusCode == StatusCode.created.code) {
+      setState(() {
+        _message.insert(0, message);
+      });
+      return;
+    }
+
+    // expired token
+    if (response.statusCode == StatusCode.unauthorized.code) {
+      ApiUtil.handleExpiredToken(context: context);
+      return;
+    }
+
+    // other issues
+    ApiUtil.handleOtherStatusCode(context: context);
   }
 
   @override
@@ -184,19 +351,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             return DashChat(
               typingUsers: _typing,
               currentUser: _currentUser,
-              onSend: (ChatMessage message) {
-                // Send the message to the server
-                socket.emit("SEND_MESSAGE", {
-                  "content": message.text,
-                  "projectId": widget.chatModel.idProject,
-                  "messageFlag": 0,
-                  "senderId": _currentUser.id,
-                  'receiverId': _anotherUser.id,
-                });
-                setState(() {
-                  _message.insert(0, message);
-                });
-              },
+              onSend: onSentMessage,
               messages: _message,
               inputOptions: const InputOptions(
                 inputTextStyle: TextStyle(color: Colors.black),
@@ -211,12 +366,25 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                   if (message.customProperties != null &&
                       message.customProperties!.containsKey('interview')) {
                     InterviewModel invitation =
-                        message.customProperties!['interview'];
+                        message.customProperties!['interview']['model'];
+                    String meetingId =
+                        message.customProperties!['interview']['meeting'];
 
                     return InterviewCard(
+                      socket: socket,
                       interviewInfo: invitation,
+                      currentUserId: int.parse(_currentUser.id),
+                      otherUserId: widget.chatModel.idUser,
+                      projectId: widget.chatModel.idProject,
                       onJoined: () {
-                        NavigationUtil.toJoinMeetingScreen(context);
+                        NavigationUtil.toJoinMeetingScreen(
+                          context,
+                          '${_anotherUser.firstName}',
+                          _currentUser.id,
+                          '${_currentUser.firstName}',
+                          meetingId,
+                          meetingId,
+                        );
                       },
                     );
                   } else {
@@ -310,37 +478,37 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
         InterviewUtil.calculateTheDiffTimes(selectedStartTime, selectedEndTime);
     bool isValidTitle = false;
 
-    void saveInterview() async {
-      await InterviewService.postInterview(
-          title: titleController.text,
-          dateStartInterview: selectedDate,
-          timeStartInterview: selectedStartTime,
-          timeEndInterview: selectedEndTime);
-    }
-
     // send invite interview to student
-    void onSentInvititation() {
-      ChatMessage invitation = ChatMessage(
-          user: _currentUser,
-          createdAt: DateTime.now(),
-          text: 'showInvitation',
-          customProperties: {
-            'interview': InterviewModel(
-                null,
-                 [_currentUser, _anotherUser],
-                titleController.text,
-                selectedDate,
-                selectedStartTime,
-                selectedEndTime),
-          });
+    Future<void> onSentInvititation() async {
+      String meetingId = DateTime.now().toString();
+      // Send the meeting to the server
+      final response = await InterviewService.postInterview(
+        context: context,
+        title: titleController.text,
+        startTime: InterviewUtil.formatDateTimeInterview(
+          selectedDate,
+          selectedStartTime,
+        ),
+        endTime: InterviewUtil.formatDateTimeInterview(
+          selectedDate,
+          selectedEndTime,
+        ),
+        projectId: widget.chatModel.idProject,
+        receiverId: int.parse(_anotherUser.id),
+        senderId: int.parse(_currentUser.id),
+        meetingRoomId: meetingId,
+      );
 
-      // save the interview meeting info into messages
-      setState(() {
-        _message.insert(0, invitation);
-      });
-      saveInterview();
-      // out of this Interview bottom sheet
       Navigator.of(context).pop();
+
+      if (response.statusCode == StatusCode.created.code) return;
+
+      // send fail invite interview
+      if (response.statusCode == StatusCode.unauthorized.code) {
+        ApiUtil.handleExpiredToken(context: context);
+      } else {
+        ApiUtil.handleOtherStatusCode(context: context);
+      }
     }
 
     return showModalBottomSheet(
@@ -379,6 +547,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                       isBold: true,
                     ),
                     CustomTextForm(
+                      isFocus: true,
                       controller: titleController,
                       listErros: const <InvalidationType>[
                         InvalidationType.isBlank

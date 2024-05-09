@@ -2,31 +2,77 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/utils/api_util.dart';
 
 class InterviewService {
   static const String _baseUrl = '${ApiUtil.baseUrl}/interview';
 
-  static Future<http.Response> postInterview(
-      {
-      required String title,
-      required DateTime dateStartInterview,
-      required TimeOfDay timeStartInterview,
-      required TimeOfDay timeEndInterview}) async {
-      String timeMonth = dateStartInterview.month < 10 ? '0${dateStartInterview.month}' : '${dateStartInterview.month}';
-      String timeDay = dateStartInterview.day < 10 ? '0${dateStartInterview.day}' : '${dateStartInterview.day}';
-      String timeStartHour = timeStartInterview.hour < 10 ? '0${timeStartInterview.hour}' : '${timeStartInterview.hour}';
-      String timeStartMinute = timeStartInterview.minute < 10 ? '0${timeStartInterview.minute}' : '${timeStartInterview.minute}';
-      String timeEndHour = timeEndInterview.hour < 10 ? '0${timeEndInterview.hour}' : '${timeEndInterview.hour}';
-      String timeEndMinute = timeEndInterview.minute < 10 ? '0${timeEndInterview.minute}' : '${timeEndInterview.minute}';      
-    return http.post(Uri.parse(_baseUrl),headers: ApiUtil.headers,
+  static Future<http.Response> postInterview({
+    required BuildContext context,
+    required String title,
+    required String startTime,
+    required String endTime,
+    required int projectId,
+    required int receiverId,
+    required int senderId,
+    required String meetingRoomId,
+    String content = 'showInterview',
+  }) async {
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.token!;
+
+    return http.post(Uri.parse(_baseUrl),
+        headers: ApiUtil.getHeadersWithToken(token),
         body: jsonEncode(<String, dynamic>{
           'title': title,
-          'startTime': '${dateStartInterview.year}-$timeMonth-${timeDay}T$timeStartHour:$timeStartMinute:00Z',
-          'endTime': '${dateStartInterview.year}-$timeMonth-${timeDay}T$timeEndHour:$timeEndMinute:00Z',
-          "projectId": {},
-          "senderId": {},
-          "receiverId": {}
+          'content': content,
+          'startTime': startTime,
+          'endTime': endTime,
+          'projectId': projectId,
+          'senderId': senderId,
+          'receiverId': receiverId,
+          'meeting_room_code': meetingRoomId,
+          'meeting_room_id': meetingRoomId,
+          'expired_at': endTime,
         }));
+  }
+
+  static Future<http.Response> updateInterview({
+    required BuildContext context,
+    required String title,
+    required String startTime,
+    required String endTime,
+    required int interviewId,
+  }) async {
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.token!;
+    String url = '$_baseUrl/$interviewId';
+
+    return http.patch(Uri.parse(url),
+        headers: ApiUtil.getHeadersWithToken(token),
+        body: jsonEncode(<String, dynamic>{
+          'title': title,
+          'startTime': startTime,
+          'endTime': endTime,
+        }));
+  }
+
+  static Future<http.Response> disableInterview({
+    required BuildContext context,
+    required int interviewId,
+  }) async {
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    final token = userProvider.token!;
+    String url = '$_baseUrl/$interviewId/disable';
+
+    return http.patch(
+      Uri.parse(url),
+      headers: ApiUtil.getHeadersWithToken(token),
+    );
   }
 }

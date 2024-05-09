@@ -108,4 +108,14 @@ class InterviewUtil {
   static Color chooseColorByDuration(double duration) {
     return duration <= 0 ? Colors.red : Colors.black;
   }
+
+  // format timedate to push interview
+  static String formatDateTimeInterview(DateTime date, TimeOfDay time) {
+    return '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}T${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}:00Z';
+  }
+
+  // is expired meeting
+  static bool isExpiredMeeting(DateTime expiredDate) {
+    return expiredDate.isBefore(DateTime.now());
+  }
 }

@@ -78,7 +78,7 @@ class _MessageBody extends State<MessageBody> {
         }
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           default:
             return ListView.builder(
               itemCount: snapshot.data!.length,

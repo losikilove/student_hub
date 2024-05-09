@@ -259,11 +259,24 @@ class NavigationUtil {
   }
 
   // meeting screen
-  static void toJoinMeetingScreen(BuildContext currentContext) {
+  static void toJoinMeetingScreen(
+    BuildContext currentContext,
+    String anotherUserName,
+    String currentUserId,
+    String currentUserName,
+    String meetingRoom,
+    String meetingId,
+  ) {
     Navigator.push(
         currentContext,
         MaterialPageRoute(
-          builder: (context) => const MeetingScreen(),
+          builder: (context) => MeetingScreen(
+            anotherUserName: anotherUserName,
+            currentUserId: currentUserId,
+            currentUserName: currentUserName,
+            meetingRoom: meetingRoom,
+            meetingId: meetingId,
+          ),
         ));
   }
 
