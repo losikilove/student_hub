@@ -66,7 +66,14 @@
     "exampleTitles": "Example titles",
     "buildResponsiveWorlPress": "Build responsive WordPress site with booking/payment functionality",
     "facebookAdSpecialist": "Facebook ad specialist need for product launch",
-    "nextScope":"Next Scope"
+    "nextScope":"Next Scope",
+    "nextEstimateTheScopeOfYourJob":"Next, estimate the scope of your job",
+    "considerTheSizeOfYourProject":"Consider the size of your project and the timeline",
+    "howLongWillYourProjectTake":"How long will your project take?",
+    "howManyStudentsDoYouWant":"How many students do you for this project?",
+    "numberOfStudents":"Number of students",
+    "nextDesciption":"Next: Description"
+
 
 
 

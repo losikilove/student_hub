@@ -63,6 +63,12 @@
     "exampleTitles": "Ví dụ tiêu đề",
     "buildResponsiveWorlPress": "Xây dựng trang web WordPress đáp ứng với chức năng đặt chỗ/thanh toán ",
     "facebookAdSpecialist": "Cần chuyên viên quảng cáo Facebook để ra mắt sản phẩm",
-    "nextScope":"Tiếp theo"
+    "nextScope":"Tiếp theo",
+    "nextEstimateTheScopeOfYourJob":"Tiếp theo: Ước lượng phạm vi công việc của bạn",
+    "considerTheSizeOfYourProject":"Xem xét quy mô dự án của bạn và dòng thời gian",
+    "howLongWillYourProjectTake":"Dự án của bạn sẽ mất bao lâu?",
+    "howManyStudentsDoYouWant":"Bạn có bao nhiêu sinh viên cho dự án này?",
+    "numberOfStudents":"Số luợng sinh viên",
+    "nextDesciption":"Tiếp theo: Mô tả"
 
 }

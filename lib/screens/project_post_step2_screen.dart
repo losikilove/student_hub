@@ -9,6 +9,7 @@ import 'package:student_hub/models/enums/enum_projectlenght.dart';
 import 'package:student_hub/models/project_company_model.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProjectPostStep2Screen extends StatefulWidget {
   final ProjectCompanyModel projectCompanyModel;
@@ -57,22 +58,22 @@ class _ProjectPostStep2ScreenState extends State<ProjectPostStep2Screen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // title text
-            const CustomText(
-              text: '2/4 - Next, estimate the scope of your job',
+            CustomText(
+              text: '2/4 - ${AppLocalizations.of(context)!.nextEstimateTheScopeOfYourJob}',
               isBold: true,
             ),
             const SizedBox(
               height: SpacingUtil.smallHeight,
             ),
             // considering text
-            const CustomText(
-                text: 'Consider the size of your project and the time line'),
+            CustomText(
+                text: AppLocalizations.of(context)!.considerTheSizeOfYourProject),
             const SizedBox(
               height: SpacingUtil.mediumHeight,
             ),
             // duration text
-            const CustomText(
-              text: 'How long will your project take?',
+            CustomText(
+              text: AppLocalizations.of(context)!.howLongWillYourProjectTake,
               isBold: true,
             ),
             // select duration radio
@@ -128,8 +129,8 @@ class _ProjectPostStep2ScreenState extends State<ProjectPostStep2Screen> {
               height: SpacingUtil.mediumHeight,
             ),
             // quantity of students text
-            const CustomText(
-              text: 'How many students do you want for this project?',
+            CustomText(
+              text: AppLocalizations.of(context)!.howManyStudentsDoYouWant,
               isBold: true,
             ),
             const SizedBox(
@@ -139,7 +140,7 @@ class _ProjectPostStep2ScreenState extends State<ProjectPostStep2Screen> {
             CustomTextForm(
               controller: _numberStudentsController,
               listErros: const [InvalidationType.isBlank],
-              hintText: 'number of students',
+              hintText: AppLocalizations.of(context)!.numberOfStudents,
               onHelper: onHandledButtonWithTextfield,
               keyboardType: TextInputType.number,
               inputFormaters: <TextInputFormatter>[
@@ -154,7 +155,7 @@ class _ProjectPostStep2ScreenState extends State<ProjectPostStep2Screen> {
               alignment: Alignment.topRight,
               child: CustomButton(
                 onPressed: onPressedNext,
-                text: 'Next: Description',
+                text: AppLocalizations.of(context)!.nextDesciption,
                 isDisabled: _isDisabledNextButton,
               ),
             ),
