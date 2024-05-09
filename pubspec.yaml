@@ -44,7 +44,6 @@ dependencies:
   http: ^1.2.1
   provider: ^6.1.2
   intl: ^0.18.1
-  socket_io_client: ^2.0.3+1
   zego_uikit_prebuilt_video_conference: ^2.7.4
   flutter_localizations:
     sdk: flutter
