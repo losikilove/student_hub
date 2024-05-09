@@ -10,7 +10,7 @@ import 'package:student_hub/models/enums/enum_type_flag.dart';
 import 'package:student_hub/models/project_company_model.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ProjectPostStep1Screen extends StatefulWidget {
   const ProjectPostStep1Screen({Key? key}) : super(key: key);
 
@@ -40,22 +40,22 @@ class _ProjectPostStep1ScreenState extends State<ProjectPostStep1Screen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CustomText(
-              text: "1/4-Let's start with a strong title",
+            CustomText(
+              text: "1/4-${AppLocalizations.of(context)!.letsStartWithAStrongTitle}",
               isBold: true,
             ),
             const SizedBox(
               height: SpacingUtil.mediumHeight,
             ),
-            const CustomText(
+            CustomText(
                 text:
-                    "This helps your post stand out to the right students. It's the first thing they will see, so make it impressive"),
+                    AppLocalizations.of(context)!.thisHelpsYourPostStandOutTotheRightStudents,),
             CustomTextForm(
               controller: titleController,
               listErros: const <InvalidationType>[
                 InvalidationType.isBlank,
               ],
-              hintText: "write a title for your post",
+              hintText: AppLocalizations.of(context)!.writeATitleForYourPost,
               onHelper: (messageError) {
                 setState(() {
                   _titlePost = messageError == null ? true : false;
@@ -65,17 +65,17 @@ class _ProjectPostStep1ScreenState extends State<ProjectPostStep1Screen> {
             const SizedBox(
               height: SpacingUtil.largeHeight,
             ),
-            const CustomText(text: "Example titles"),
+            CustomText(text: AppLocalizations.of(context)!.exampleTitles),
             const SizedBox(
               height: SpacingUtil.smallHeight,
             ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(children: [
-                    const CustomBulletedList(
+                    CustomBulletedList(
                       listItems: [
-                        "Build responsive WorldPress site with booking/paying functionality",
-                        "Facebook ad specialist need for product launch"
+                        AppLocalizations.of(context)!.buildResponsiveWorlPress,
+                        AppLocalizations.of(context)!.facebookAdSpecialist
                       ]
                     ),
                     const SizedBox(

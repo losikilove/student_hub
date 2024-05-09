@@ -54,6 +54,15 @@
     "warning": "Cảnh báo",
     "areYouSureToUpdateYourCompanyProfile": "Bạn có chắc chắn muốn cập nhật hồ sơ công ty của bạn không?",
     "yes": "Có",
-    "no": "Không"
+    "no": "Không",
+    "experience": "Kinh nghiệm",
+    "chooseFileToUpload": "Chọn file để tải lên",
+    "letsStartWithAStrongTitle": "Hãy bắt đầu với một tiêu đề mạnh mẽ",
+    "thisHelpsYourPostStandOutTotheRightStudents": "Điều này giúp bài viết của bạn nổi bật với sinh viên phù hợp",
+    "writeATitleForYourPost": "Viết tiêu đề cho bài viết của bạn",
+    "exampleTitles": "Ví dụ tiêu đề",
+    "buildResponsiveWorlPress": "Xây dựng trang web WordPress đáp ứng với chức năng đặt chỗ/thanh toán ",
+    "facebookAdSpecialist": "Cần chuyên viên quảng cáo Facebook để ra mắt sản phẩm",
+    "nextScope":"Tiếp theo"
 
 }

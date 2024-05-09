@@ -57,7 +57,17 @@
     "warning": "Warning",
     "areYouSureToUpdateYourCompanyProfile": "Are you sure to update your company profile?",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "experience": "Experience",
+    "chooseFileToUpload": "Choose file to upload",
+    "letsStartWithAStrongTitle": "Let's start with a strong title",
+    "thisHelpsYourPostStandOutTotheRightStudents": "This helps your post stand out to the right students. It's the first thing they will see, so make it impressive",
+    "writeATitleForYourPost": "Write a title for your post",
+    "exampleTitles": "Example titles",
+    "buildResponsiveWorlPress": "Build responsive WordPress site with booking/payment functionality",
+    "facebookAdSpecialist": "Facebook ad specialist need for product launch",
+    "nextScope":"Next Scope"
+
 
 
 }
