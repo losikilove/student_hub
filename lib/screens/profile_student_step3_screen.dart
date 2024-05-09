@@ -13,6 +13,7 @@ import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/profile_student_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileStudentStep3Screen extends StatefulWidget {
   const ProfileStudentStep3Screen({Key? key}) : super(key: key);
@@ -115,9 +116,9 @@ class _ProfileStudentStep3ScreenState extends State<ProfileStudentStep3Screen> {
                 isBold: true,
               ),
             ),
-            const CustomText(
+            CustomText(
               text:
-                  "Tell us about yourself and you will be on your way to connect with real projects.",
+                  AppLocalizations.of(context)!.tellUsAboutYourself,
             ),
             const SizedBox(
               height: SpacingUtil.mediumHeight,
@@ -138,7 +139,7 @@ class _ProfileStudentStep3ScreenState extends State<ProfileStudentStep3Screen> {
                     ),
                     CustomButton(
                       onPressed: onPickedResume,
-                      text: "choose file to up",
+                      text: AppLocalizations.of(context)!.chooseFileToUpload,
                       buttonColor: Theme.of(context).colorScheme.secondary,
                     )
                   ],
@@ -165,7 +166,7 @@ class _ProfileStudentStep3ScreenState extends State<ProfileStudentStep3Screen> {
                     // CustomText(text: "Drag on",isBold: true,),
                     CustomButton(
                       onPressed: onPickedTranscript,
-                      text: "choose file to up",
+                      text: AppLocalizations.of(context)!.chooseFileToUpload,
                       buttonColor: Theme.of(context).colorScheme.secondary,
                     )
                   ],
@@ -179,7 +180,7 @@ class _ProfileStudentStep3ScreenState extends State<ProfileStudentStep3Screen> {
               alignment: Alignment.topRight,
               child: CustomButton(
                 onPressed: onGoneToTheNextScreen,
-                text: "Continue",
+                text: AppLocalizations.of(context)!.continu,
               ),
             ),
           ],
