@@ -16,7 +16,7 @@ import 'package:student_hub/services/skill_set_service.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ProfileStudentStep2Screen extends StatefulWidget {
   const ProfileStudentStep2Screen({super.key});
 
@@ -118,9 +118,9 @@ class _ProfileStudentStep2Screen extends State<ProfileStudentStep2Screen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Center(
+            Center(
               child: CustomText(
-                text: 'Experience',
+                text: AppLocalizations.of(context)!.experience,
                 isBold: true,
               ),
             ),
@@ -128,9 +128,9 @@ class _ProfileStudentStep2Screen extends State<ProfileStudentStep2Screen> {
               height: SpacingUtil.mediumHeight,
             ),
             // other text
-            const CustomText(
+            CustomText(
               text:
-                  'Tell us about yourself and you will be on your way connect with real-world project',
+                  AppLocalizations.of(context)!.tellUsAboutYourself,
             ),
             const SizedBox(
               height: SpacingUtil.mediumHeight,
@@ -144,8 +144,8 @@ class _ProfileStudentStep2Screen extends State<ProfileStudentStep2Screen> {
                 ),
               ),
               widgetWithError: (snapshot) {
-                return const CustomText(
-                  text: 'Sorry, something went wrong',
+                return CustomText(
+                  text: AppLocalizations.of(context)!.sorySomethingWentWrong,
                   textColor: Colors.red,
                 );
               },
@@ -160,7 +160,7 @@ class _ProfileStudentStep2Screen extends State<ProfileStudentStep2Screen> {
         child: CustomButton(
           size: CustomButtonSize.small,
           onPressed: onGoneToNextScreen,
-          text: 'Next',
+          text: AppLocalizations.of(context)!.next,
         ),
       ),
     );
