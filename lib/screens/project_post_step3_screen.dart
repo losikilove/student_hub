@@ -8,6 +8,7 @@ import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/models/project_company_model.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProjectPostStep3Screen extends StatefulWidget {
   final ProjectCompanyModel projectCompanyModel;
@@ -38,33 +39,33 @@ class _ProjectPostStep3ScreenState extends State<ProjectPostStep3Screen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CustomText(
-              text: '3/4 - Next, provide project description',
+            CustomText(
+              text: '3/4 - ${AppLocalizations.of(context)!.nextProvideProjectDescription}',
               isBold: true,
             ),
             const SizedBox(
               height: SpacingUtil.smallHeight,
             ),
-            const CustomText(
-              text: 'Student are looking for',
+            CustomText(
+              text: AppLocalizations.of(context)!.studentAreLookingFor,
             ),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CustomBulletedList(listItems: [
-                  'Clear expectation about your project or deliverables',
-                  'The skills required for your project',
-                  'Detail about your project',
+                  AppLocalizations.of(context)!.clearExpectionAboutYourProject,
+                  AppLocalizations.of(context)!.theSkillsRequiredForYourProject,
+                  AppLocalizations.of(context)!.detailAboutYourProject,
                 ])
               ],
             ),
             const SizedBox(
               height: SpacingUtil.smallHeight,
             ),
-            const CustomText(text: 'Describe your project:'),
+            CustomText(text: AppLocalizations.of(context)!.describeYourProject, isBold: true,),
             CustomTextfield(
               controller: _descriptionController,
-              hintText: 'describe',
+              hintText: AppLocalizations.of(context)!.describe,
               isBox: true,
               maxLines: 5,
             ),
@@ -72,7 +73,7 @@ class _ProjectPostStep3ScreenState extends State<ProjectPostStep3Screen> {
               alignment: Alignment.topRight,
               child: CustomButton(
                 onPressed: onPressed,
-                text: 'Preview your post',
+                text: AppLocalizations.of(context)!.previewYourPost,
               ),
             ),
           ],

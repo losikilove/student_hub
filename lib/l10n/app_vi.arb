@@ -69,6 +69,14 @@
     "howLongWillYourProjectTake":"Dự án của bạn sẽ mất bao lâu?",
     "howManyStudentsDoYouWant":"Bạn có bao nhiêu sinh viên cho dự án này?",
     "numberOfStudents":"Số luợng sinh viên",
-    "nextDesciption":"Tiếp theo: Mô tả"
+    "nextDesciption":"Tiếp theo: Mô tả",
+    "nextProvideProjectDescription":"Tiếp theo, Cung cấp mô tả dự án của bạn",
+    "clearExpectionAboutYourProject":"Mô tả rõ ràng về dự án của bạn",
+    "theSkillsRequiredForYourProject":"Các kỹ năng cần thiết cho dự án của bạn",
+    "detailAboutYourProject":"Chi tiết về dự án của bạn",
+    "describeYourProject":"Mô tả dự án của bạn",
+    "describe":"Mô tả",
+    "previewYourPost":"Xem trước bài viết của bạn"
+    
 
 }

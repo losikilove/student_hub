@@ -25,7 +25,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreen extends State<MainScreen> {
-  final name = 'Hai';
   late int _selectedIndex = widget.contentBody.number;
   static const List<Widget> _widgetOptions = <Widget>[
     ProjectBody(),

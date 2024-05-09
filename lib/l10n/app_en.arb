@@ -72,9 +72,13 @@
     "howLongWillYourProjectTake":"How long will your project take?",
     "howManyStudentsDoYouWant":"How many students do you for this project?",
     "numberOfStudents":"Number of students",
-    "nextDesciption":"Next: Description"
-
-
-
-
+    "nextDesciption":"Next: Description",
+    "nextProvideProjectDescription":"Next, provide a project description",
+    "clearExpectionAboutYourProject":"Clear expectation about your project or deliverables",
+    "theSkillsRequiredForYourProject":"The skills required for your project",
+    "detailAboutYourProject":"Detail about your project",
+    "describeYourProject":"Describe your project",
+    "describe":"Describe",
+    "previewYourPost":"Preview your post"
+    
 }
