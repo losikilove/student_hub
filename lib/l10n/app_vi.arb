@@ -76,7 +76,17 @@
     "detailAboutYourProject":"Chi tiết về dự án của bạn",
     "describeYourProject":"Mô tả dự án của bạn",
     "describe":"Mô tả",
-    "previewYourPost":"Xem trước bài viết của bạn"
-    
+    "previewYourPost":"Xem trước bài viết của bạn",
+    "comfirmPasswordDoesNotMatch":"Mật khẩu xác nhận không khớp",
+    "signUpAsCompany":"Đăng ký làm công ty",
+    "signUpAsStudent":"Đăng ký làm sinh viên",
+    "fullName":"Họ và tên",
+    "comfirmPassword":"Xác nhận mật khẩu",
+    "yesIUnderstandAndAgree":"Có, tôi hiểu và đồng ý với Student Hub",
+    "createMyAccount":"Tạo tài khoản của tôi",
+    "lookingForProject":"Tìm kiếm dự án",
+    "applyAsAStudent":"Đăng ký với tư cách sinh viên",
+    "applyAsACompany":"Đăng ký với tư cách công ty",
+    "initialzeAProject":"Khởi tạo dự án"   
 
 }

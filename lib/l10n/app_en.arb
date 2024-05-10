@@ -79,6 +79,17 @@
     "detailAboutYourProject":"Detail about your project",
     "describeYourProject":"Describe your project",
     "describe":"Describe",
-    "previewYourPost":"Preview your post"
+    "previewYourPost":"Preview your post",
+    "comfirmPasswordDoesNotMatch":"Confirm password does not match to Password",
+    "signUpAsCompany":"Sign up as company",
+    "signUpAsStudent":"Sign up as student",
+    "fullName":"Full name",
+    "comfirmPassword":"Confirm password",
+    "yesIUnderstandAndAgree":"Yes, I understand and agree to the StudentHub",
+    "createMyAccount":"Create my account",
+    "lookingForProject":"Looking for project",
+    "applyAsAStudent":"Apply as a student",
+    "applyAsACompany":"Apply as a company",
+    "initialzeAProject":"Initialize a project"
     
 }

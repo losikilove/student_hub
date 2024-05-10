@@ -13,6 +13,7 @@ import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProjectPostStep4Screen extends StatefulWidget {
   final ProjectCompanyModel projectCompanyModel;
@@ -55,8 +56,8 @@ class _ProjectPostStep4ScreenState extends State<ProjectPostStep4Screen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CustomText(
-              text: "4/4-Project details",
+            CustomText(
+              text: "4/4-${AppLocalizations.of(context)!.nextProvideProjectDescription}",
               isBold: true,
             ),
             const SizedBox(
@@ -66,23 +67,23 @@ class _ProjectPostStep4ScreenState extends State<ProjectPostStep4Screen> {
             const CustomDivider(
               isFullWidth: true,
             ),
-            const CustomText(text: "Student are looking for"),
+            CustomText(text: AppLocalizations.of(context)!.studentAreLookingFor),
             CustomBulletedList(
               listItems: [widget.projectCompanyModel.description],
             ),
             const CustomDivider(
               isFullWidth: true,
             ),
-            _projectRequirement(Icons.alarm, 'Project scope',
+            _projectRequirement(Icons.alarm, 
+            AppLocalizations.of(context)!.projectScope  ,
                 widget.projectCompanyModel.projectScopeFlag.name),
             const SizedBox(
               height: SpacingUtil.smallHeight,
             ),
             _projectRequirement(
                 Icons.people_outline,
-                'Required students',
-                widget.projectCompanyModel.numberofStudent.toString() +
-                    ' students'),
+                AppLocalizations.of(context)!.requiredStudent,
+                '${widget.projectCompanyModel.numberofStudent.toString()} students'),
           ],
         ),
       ),
@@ -95,7 +96,7 @@ class _ProjectPostStep4ScreenState extends State<ProjectPostStep4Screen> {
           child: CustomButton(
             size: CustomButtonSize.small,
             onPressed: createProjectCompany,
-            text: 'Save',
+            text: AppLocalizations.of(context)!.save,
           ),
         ),
       ),
