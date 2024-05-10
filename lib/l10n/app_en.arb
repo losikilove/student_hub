@@ -98,6 +98,14 @@
     "iAmAStudentFindProject":"I am a Student, find a project",
     "createAccount":"Create Account",
     "alreadyHaveAnAccount":"Already have an account?",
-    "login":"Login"
+    "login":"Login",
+    "areYouSureToSubmitThis":"Are you sure to submit this?",
+    "yourProposalHasSubmitted":"Your proposal has submitted",
+    "describeWhyDoYouFitToThisProject":"Describe why do you fit to this project",
+    "submitProposal":"Submit Proposal",
+    "updateExperienceSuccessfully":"Update Experience Successfully",
+    "updateExperience":"Update Experience",
+    "areYouSureAboutThat":"Are you sure about that?"
+    
     
 }

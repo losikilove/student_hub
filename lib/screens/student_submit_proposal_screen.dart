@@ -12,6 +12,7 @@ import 'package:student_hub/services/proposal_service.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StudentSubmitProposalScreen extends StatefulWidget {
   final int projectId;
@@ -56,7 +57,7 @@ class _StudentSubmitProposalScreenState
     // popup confirm that user want to submit this proposal
     final confirmedSubmitProposal = await popupConfirm(
       context: context,
-      content: 'Are you sure to submit this',
+      content: AppLocalizations.of(context)!.areYouSureToSubmitThis,
     );
 
     // do not want to submit
@@ -85,7 +86,7 @@ class _StudentSubmitProposalScreenState
       await popupNotification(
         context: context,
         type: NotificationType.success,
-        content: 'Your proposal has submitted',
+        content: AppLocalizations.of(context)!.yourProposalHasSubmitted,
         textSubmit: 'Ok',
         submit: null,
       );
@@ -118,14 +119,14 @@ class _StudentSubmitProposalScreenState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // title of this screen
-            const CustomText(
-              text: 'Cover letter',
+            CustomText(
+              text: AppLocalizations.of(context)!.coverLetter  ,
               isBold: true,
             ),
             const SizedBox(height: SpacingUtil.smallHeight),
             // describe info text
-            const CustomText(
-              text: 'Describe why do you fit to this project?',
+            CustomText(
+              text: AppLocalizations.of(context)!.describeWhyDoYouFitToThisProject,
             ),
             const SizedBox(height: SpacingUtil.smallHeight),
             // describe textfield
@@ -148,12 +149,12 @@ class _StudentSubmitProposalScreenState
                 // cancel button
                 CustomButton(
                   onPressed: onCanceledProposal,
-                  text: 'Cancel',
+                  text: AppLocalizations.of(context)!.cancel,
                 ),
                 // submit button
                 CustomButton(
                   onPressed: onSubmittedProposal,
-                  text: 'Submit proposal',
+                  text: AppLocalizations.of(context)!.submitProposal,
                   // when have no describe, disable the submit button
                   isDisabled: _isDisabledSubmission,
                   buttonColor: Theme.of(context).colorScheme.secondary,

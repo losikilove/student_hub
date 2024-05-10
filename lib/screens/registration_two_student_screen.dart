@@ -13,6 +13,7 @@ import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class RegistrationTwoStudentScreen extends StatefulWidget {
   const RegistrationTwoStudentScreen({super.key});
 
