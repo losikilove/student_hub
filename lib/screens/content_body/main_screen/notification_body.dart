@@ -27,6 +27,8 @@ class _NotificationBody extends State<NotificationBody> {
   void onSwitchedToSwitchAccountScreen() {
     NavigationUtil.toSwitchAccountScreen(context);
   }
+  String currentUserId = "";
+  String currentUserName = "";
    final socket = IO.io(
     ApiUtil.websocketUrl,
     IO.OptionBuilder()
@@ -106,7 +108,8 @@ class _NotificationBody extends State<NotificationBody> {
     );
     String? token = userProvider.token;
     String receiverId = userProvider.user!.userId.toString();
-
+    currentUserId = userProvider.user!.userId.toString();
+    currentUserName = userProvider.user!.fullname;
     while (true) {
       final response = await NotificationService.getNotification(receiverId: receiverId, token: token!);
       yield NotificationModel.fromResponse(response);
@@ -174,7 +177,14 @@ class _NotificationBody extends State<NotificationBody> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              CustomButton(onPressed: (){}, text: "Join"),
+                              CustomButton(onPressed: (){
+                                NavigationUtil.toJoinMeetingScreen(context, 
+                                notification.sender.fullname, 
+                                currentUserId, 
+                                currentUserName, 
+                                notification.message.interview!.meetingInterview!.meetingRoomId, 
+                                notification.message.interview!.meetingInterview!.meetingRoomId);
+                              }, text: "Join"),
                               const SizedBox(
                                 width: SpacingUtil.largeHeight,
                               ),                      

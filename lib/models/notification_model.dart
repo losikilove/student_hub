@@ -42,26 +42,55 @@ class UserNotification{
     );
   } 
 }
+class MeetingInterviewModel{
+  final int id;
+  final String meetingRoomCode;
+  final String meetingRoomId;
+  final String expiredAt;
+  MeetingInterviewModel({
+    required this.id,
+    required this.meetingRoomCode,
+    required this.meetingRoomId,
+    required this.expiredAt,
+  });
+  factory MeetingInterviewModel.fromJson(Map<String, dynamic> json) {
+    return MeetingInterviewModel(
+      id: json['id'],
+      meetingRoomCode: json['meeting_room_code'],
+      meetingRoomId: json['meeting_room_id'],
+      expiredAt: json['expired_at'],
+    );
+  }
 
+}
 
 class InterviewNotificationModel{
   final String title;
   final String startTime;
   final String endTime;
   final int disableFlag;
+  final MeetingInterviewModel? meetingInterview;
   InterviewNotificationModel({
     required this.title,
     required this.startTime,
     required this.endTime,
     required this.disableFlag,
+    required this.meetingInterview,
   });
 
   factory InterviewNotificationModel.fromJson(Map<String, dynamic> json) {
+    MeetingInterviewModel meetingInterviewModel1 = MeetingInterviewModel(
+      id: 52,
+      meetingRoomCode: "hellosdp",
+      meetingRoomId: "5555",
+      expiredAt:"2024-04-30T02:13:56.718Z",
+    );
     return InterviewNotificationModel(
       title: json['title'],
       startTime: json['startTime'],
       endTime: json['endTime'],
       disableFlag: json['disableFlag'],
+      meetingInterview: json['meetingRoom'] != null ? MeetingInterviewModel.fromJson(json['meetingRoom']) :meetingInterviewModel1,
     );
   }
 }
