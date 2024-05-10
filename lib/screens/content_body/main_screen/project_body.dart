@@ -106,14 +106,14 @@ class ProjectBodyMainPart extends StatefulWidget {
 
 class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
   String searchItem = "Search for project";
-
+  int page = 1;
   // switch to switch account screen
   void onSwitchedToSwitchAccountScreen() {
     NavigationUtil.toSwitchAccountScreen(widget.parentContext);
   }
 
   final List<ProjectModel> _projects = [];
-
+  bool isFound = true;
   Future<List<ProjectModel>> initializeProject() async {
     UserProvider userProvider = Provider.of<UserProvider>(
       context,
@@ -121,7 +121,11 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
     );
 
     String? token = userProvider.token;
-    final response = await ProjectService.viewProject(token: token!);
+    final response = await ProjectService.viewProject(token: token!,page: page);
+    if (response.statusCode == 404){
+      isFound = false;
+      return [];
+    }
     return ProjectModel.fromResponse(response);
   }
 
@@ -191,6 +195,17 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
               height: SpacingUtil.smallHeight,
             ),
             const CustomDivider(),
+            const SizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CustomText(text: "Page: $page",size: 17,),
+                const SizedBox(width: 10,),
+                page == 1 ? const SizedBox() : backwardPage(context),
+                isFound ? forwardPage(context):const SizedBox(),
+            ],),
             CustomFutureBuilder<List<ProjectModel>>(
               future: initializeProject(),
               widgetWithData: (snapshot) =>
@@ -206,6 +221,37 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
         ),
       ),
     );
+  }
+
+  IconButton forwardPage(BuildContext context) {
+    return IconButton(
+                iconSize: 22,
+                disabledColor: Theme.of(context).colorScheme.background,
+                onPressed:!isFound ? null:  (){
+                  setState(() {
+                    page++;
+                  });
+                }, 
+                icon: Icon(
+                  Icons.arrow_forward_ios_rounded,size:17,
+                  color: Theme.of(context).colorScheme.onPrimary,
+              ));
+  }
+
+  IconButton backwardPage(BuildContext context) {
+    return IconButton(
+                iconSize: 22,
+                disabledColor: Theme.of(context).colorScheme.background,
+                onPressed: page == 1 ? null : (){
+                  setState(() {
+                    page--;
+                  });
+                }, 
+                icon: Icon(
+                  Icons.arrow_back_ios_rounded,
+                  size: 17,
+                  color: Theme.of(context).colorScheme.onPrimary,
+              ));
   }
 
   void _showBottomSheet(BuildContext context) {

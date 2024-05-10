@@ -12,8 +12,8 @@ class ProjectService {
   static const String _baseUrl = '${ApiUtil.baseUrl}/project';
 
   //View the all project
-  static Future<http.Response> viewProject({required String token}) {
-    const String url = _baseUrl;
+  static Future<http.Response> viewProject({required String token,required int? page}) {
+    String url = '$_baseUrl?page=$page&perPage=5';
     return http.get(Uri.parse(url),
         headers: ApiUtil.getHeadersWithToken(token));
   }
