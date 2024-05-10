@@ -15,6 +15,7 @@ import 'package:student_hub/services/skill_set_service.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import '../models/experience_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StudentUpdateExperienceScreen extends StatefulWidget {
   const StudentUpdateExperienceScreen({super.key});
@@ -83,7 +84,7 @@ class _StudentUpdateExperienceScreenState
       await popupNotification(
           context: context,
           type: NotificationType.success,
-          content: 'Update experiences successfully',
+          content: AppLocalizations.of(context)!.updateExperienceSuccessfully,
           textSubmit: 'Ok',
           submit: null);
       NavigationUtil.turnBack(context);
@@ -127,7 +128,7 @@ class _StudentUpdateExperienceScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        title: 'Update Experiences',
+        title: AppLocalizations.of(context)!.updateExperience,
         isBack: true,
         onPressed: () {},
         currentContext: context,
@@ -151,8 +152,8 @@ class _StudentUpdateExperienceScreenState
                 ),
               ),
               widgetWithError: (snapshot) {
-                return const CustomText(
-                  text: 'Sorry, something went wrong',
+                return CustomText(
+                  text: AppLocalizations.of(context)!.sorySomethingWentWrong,
                   textColor: Colors.red,
                 );
               },
@@ -170,12 +171,12 @@ class _StudentUpdateExperienceScreenState
             CustomButton(
               size: CustomButtonSize.small,
               onPressed: onUpdatedExperience,
-              text: 'Edit',
+              text: AppLocalizations.of(context)!.edit,
             ),
             CustomButton(
               size: CustomButtonSize.small,
               onPressed: onCanceled,
-              text: 'Cancel',
+              text: AppLocalizations.of(context)!.cancel,
             ),
           ],
         ),
@@ -196,20 +197,20 @@ class _StudentUpdateExperienceScreenState
             ),
           ),
           // content of popup
-          content: const CustomText(
-            text: 'Are you sure about that?',
+          content: CustomText(
+            text: AppLocalizations.of(context)!.areYouSureAboutThat,
           ),
           // buttons
           actions: <Widget>[
             // cancel button
             TextButton(
-              child: const Text('No'),
+              child: Text(AppLocalizations.of(context)!.no),
               onPressed: () => Navigator.of(context).pop(false),
             ),
             // submit button
             CustomButton(
               onPressed: () => Navigator.of(context).pop(true),
-              text: 'Yes',
+              text: AppLocalizations.of(context)!.yes,
             ),
           ],
         );
