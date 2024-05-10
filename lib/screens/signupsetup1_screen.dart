@@ -8,6 +8,7 @@ import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_appbar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUpSetup1Screen extends StatefulWidget {
   const SignUpSetup1Screen({super.key});
@@ -31,8 +32,8 @@ class _SignUpSetup1ScreenState extends State<SignUpSetup1Screen> {
     popupNotification(
       context: context,
       type: NotificationType.warning,
-      content: 'You really want to register as ${_user?.name.toUpperCase()}',
-      textSubmit: 'Yes',
+      content: '${AppLocalizations.of(context)!.youreallyWantToRegisterAs} ${_user?.name.toUpperCase()}',
+      textSubmit: AppLocalizations.of(context)!.yes,
       submit: () {
         if (_user == EnumUser.company) {
           NavigationUtil.toSignUpStepTwoAsCompanyScreen(context);
@@ -59,9 +60,9 @@ class _SignUpSetup1ScreenState extends State<SignUpSetup1Screen> {
         child: Column(
           children: [
             // Title text
-            const Center(
+            Center(
               child: CustomText(
-                text: "Join as Company or Student",
+                text: AppLocalizations.of(context)!.joinAsCompanyOrStudent,
                 isBold: true,
               ),
             ),
@@ -70,13 +71,13 @@ class _SignUpSetup1ScreenState extends State<SignUpSetup1Screen> {
             ),
             // Card of company introducing
             _cardChoice(Icons.account_box, EnumUser.company,
-                'I am a Company, find engineer for project'),
+                AppLocalizations.of(context)!.iAmACompanyFindEngieerForProject,),
             const SizedBox(
               height: SpacingUtil.smallHeight,
             ),
             // Card of student introducing
             _cardChoice(Icons.accessibility, EnumUser.student,
-                'I am a Student, find a project'),
+                AppLocalizations.of(context)!.iAmAStudentFindProject,),
             const SizedBox(
               height: SpacingUtil.mediumHeight,
             ),

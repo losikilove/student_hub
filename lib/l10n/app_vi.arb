@@ -87,6 +87,13 @@
     "lookingForProject":"Tìm kiếm dự án",
     "applyAsAStudent":"Đăng ký với tư cách sinh viên",
     "applyAsACompany":"Đăng ký với tư cách công ty",
-    "initialzeAProject":"Khởi tạo dự án"   
+    "initialzeAProject":"Khởi tạo dự án",
+    "youreallyWantToRegisterAs":"Bạn thực sự muốn đăng ký với tư cách",
+    "joinAsCompanyOrStudent":"Tham gia với tư cách công ty hoặc sinh viên",
+    "iAmACompanyFindEngieerForProject":"Tôi là công ty, tìm kỹ sư cho dự án",
+    "iAmAStudentFindProject":"Tôi là sinh viên, tìm dự án",
+    "createAccount":"Tạo tài khoản",
+    "alreadyHaveAnAccount":"Đã có tài khoản?",
+    "login":"Đăng nhập"   
 
 }
