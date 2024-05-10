@@ -12,7 +12,7 @@ import 'package:student_hub/services/auth_service.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class RegistrationTwoStudentScreen extends StatefulWidget {
   const RegistrationTwoStudentScreen({super.key});
 
@@ -50,7 +50,7 @@ class _RegistrationTwoStudentScreenState
       popupNotification(
         context: context,
         type: NotificationType.error,
-        content: 'Confirm password does not match to Password',
+        content: AppLocalizations.of(context)!.comfirmPasswordDoesNotMatch,
         textSubmit: 'OK',
         submit: null,
       );
@@ -105,7 +105,7 @@ class _RegistrationTwoStudentScreenState
       popupNotification(
         context: context,
         type: NotificationType.error,
-        content: 'Something went wrong',
+        content: AppLocalizations.of(context)!.somethingWentWrong,
         textSubmit: 'OK',
         submit: null,
       );
@@ -139,9 +139,9 @@ class _RegistrationTwoStudentScreenState
         child: Column(
           children: [
             // Title text
-            const Center(
+            Center(
               child: CustomText(
-                text: 'Sign up as Student',
+                text: AppLocalizations.of(context)!.signUpAsStudent,
                 isBold: true,
               ),
             ),
@@ -162,7 +162,7 @@ class _RegistrationTwoStudentScreenState
                         listErros: const <InvalidationType>[
                           InvalidationType.isBlank
                         ],
-                        hintText: 'Fullname',
+                        hintText: AppLocalizations.of(context)!.fullName,
                         onHelper: (messageError) {
                           setState(() {
                             _isValidFullname =
@@ -197,7 +197,7 @@ class _RegistrationTwoStudentScreenState
                           InvalidationType.isBlank,
                           InvalidationType.isInvalidPassword
                         ],
-                        hintText: 'Password',
+                        hintText: AppLocalizations.of(context)!.password,
                         obscureText: true,
                         onHelper: (messageError) {
                           setState(() {
@@ -216,7 +216,7 @@ class _RegistrationTwoStudentScreenState
                           InvalidationType.isBlank,
                           InvalidationType.isInvalidPassword
                         ],
-                        hintText: 'Confirm password',
+                        hintText: AppLocalizations.of(context)!.comfirmPassword,
                         obscureText: true,
                         onHelper: (messageError) {
                           setState(() {
@@ -240,8 +240,8 @@ class _RegistrationTwoStudentScreenState
                             onChanged: tickCheckBox,
                           ),
                           Flexible(
-                            child: const CustomText(
-                              text: 'Yes, I understand and agree to StudentHub',
+                            child: CustomText(
+                              text: AppLocalizations.of(context)!.yesIUnderstandAndAgree,
                               size: 15,
                             ),
                           ),
@@ -253,7 +253,7 @@ class _RegistrationTwoStudentScreenState
                       // submit button
                       CustomButton(
                         onPressed: submit,
-                        text: 'Create my account',
+                        text: AppLocalizations.of(context)!.createMyAccount,
                         size: CustomButtonSize.large,
                         // enable this button when all fields are filled and rules are accepted
                         isDisabled: !_isAcceptedRules ||
@@ -269,9 +269,9 @@ class _RegistrationTwoStudentScreenState
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const CustomText(text: 'Initialize a project? '),
+                          CustomText(text: AppLocalizations.of(context)!.initialzeAProject),
                           CustomAnchor(
-                            text: 'Apply as a Company',
+                            text: AppLocalizations.of(context)!.applyAsACompany,
                             onTap: onSwitchedToLogin,
                           ),
                         ],
