@@ -14,6 +14,7 @@ import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/utils/user_util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -124,7 +125,7 @@ class _SignInScreenState extends State<SignInScreen> {
       popupNotification(
         context: context,
         type: NotificationType.error,
-        content: 'Something went wrong',
+        content: AppLocalizations.of(context)!.somethingWentWrong,
         textSubmit: 'Ok',
         submit: null,
       );
@@ -139,9 +140,9 @@ class _SignInScreenState extends State<SignInScreen> {
       appBar: CustomAppbar(onPressed: onPressed, currentContext: context),
       body: InitialBody(
         child: Column(children: [
-          const Center(
+          Center(
               child: CustomText(
-            text: 'Log in with StudentHub',
+            text: AppLocalizations.of(context)!.loginWithStudentHub,
             isBold: true,
           )),
           const SizedBox(
@@ -162,7 +163,7 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
           CustomTextfield(
             controller: passwordController,
-            hintText: 'password',
+            hintText: AppLocalizations.of(context)!.password,
             obscureText: true,
             onChanged: (String text) {
               // disable/enable the sign-in button
@@ -176,7 +177,7 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
           CustomButton(
             onPressed: onSignIn,
-            text: 'Sign in',
+            text: AppLocalizations.of(context)!.signIn,
             size: CustomButtonSize.large,
             isDisabled: !_isFilledEmail || !_isFilledPassword,
           ),
@@ -184,13 +185,13 @@ class _SignInScreenState extends State<SignInScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const Center(
+                Center(
                   child: CustomText(
-                    text: '__Don\'t have an Student Hub account?__',
+                    text: '__${AppLocalizations.of(context)!.dontHaveAccount}__',
                     isCenter: true,
                   ),
                 ),
-                CustomButton(onPressed: onSignUp, text: 'Sign up'),
+                CustomButton(onPressed: onSignUp, text: AppLocalizations.of(context)!.signUp, size: CustomButtonSize.small),
               ],
             ),
           )

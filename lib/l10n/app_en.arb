@@ -90,6 +90,7 @@
     "lookingForProject":"Looking for project",
     "applyAsAStudent":"Apply as a student",
     "applyAsACompany":"Apply as a company",
-    "initialzeAProject":"Initialize a project"
+    "initialzeAProject":"Initialize a project",
+    "loginWithStudentHub":"Login with StudentHub"
     
 }
