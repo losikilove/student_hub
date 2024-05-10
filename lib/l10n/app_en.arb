@@ -105,7 +105,9 @@
     "submitProposal":"Submit Proposal",
     "updateExperienceSuccessfully":"Update Experience Successfully",
     "updateExperience":"Update Experience",
-    "areYouSureAboutThat":"Are you sure about that?"
+    "areYouSureAboutThat":"Are you sure about that?",
+    "viewProfile":"View Profile",
+    "academicStranscript":"Academic Stranscript"
     
     
 }

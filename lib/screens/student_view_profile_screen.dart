@@ -10,6 +10,7 @@ import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/profile_student_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StudentViewProfileScreen extends StatefulWidget {
   const StudentViewProfileScreen({super.key});
@@ -46,9 +47,9 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
               height: SpacingUtil.mediumHeight,
             ),
             // title of screen
-            const Center(
+            Center(
               child: CustomText(
-                text: 'Your student profile',
+                text: AppLocalizations.of(context)!.viewProfile,
                 isBold: true,
                 size: 25,
               ),
@@ -69,7 +70,7 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                           onUpdated: () =>
                               ProfileStudentUtil.onUpdatedTechStack(
                                   context: context),
-                          title: 'Techstack',
+                          title: AppLocalizations.of(context)!.techstack,
                           expandedChild: CustomText(
                             text: student?.techStack.name ?? '',
                             textColor:
@@ -86,7 +87,7 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                               ProfileStudentUtil.onUpdatedSkillSets(
                             context: context,
                           ),
-                          title: 'Skill-set',
+                          title: AppLocalizations.of(context)!.skillset,
                           expandedChild: ConstrainedBox(
                             constraints: BoxConstraints(
                               maxHeight:
@@ -118,7 +119,7 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                               context: context,
                             );
                           },
-                          title: 'Languages',
+                          title: AppLocalizations.of(context)!.language,
                           expandedChild: ConstrainedBox(
                             constraints: BoxConstraints(
                               maxHeight:
@@ -150,7 +151,7 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                               context: context,
                             );
                           },
-                          title: 'Educations',
+                          title: AppLocalizations.of(context)!.educations,
                           expandedChild: ConstrainedBox(
                             constraints: BoxConstraints(
                               maxHeight:
@@ -204,7 +205,7 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                         // experiences info
                         _expansionTile(
                           onUpdated: onUpdatedExperiences,
-                          title: 'Experiences',
+                          title: AppLocalizations.of(context)!.experience,
                           expandedChild: ConstrainedBox(
                             constraints: BoxConstraints(
                               maxHeight:
@@ -295,7 +296,7 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                               context: context,
                             );
                           },
-                          title: 'Resume',
+                          title: AppLocalizations.of(context)!.resume,
                           expandedChild: CustomText(
                             text: student?.resume == null
                                 ? 'none'
@@ -315,7 +316,7 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
                               context: context,
                             );
                           },
-                          title: 'Academic transcript',
+                          title: AppLocalizations.of(context)!.academicStranscript,
                           expandedChild: CustomText(
                             text: student?.transcript == null
                                 ? 'none'
@@ -360,7 +361,7 @@ class _StudentViewProfileScreenState extends State<StudentViewProfileScreen> {
           alignment: Alignment.topRight,
           child: Padding(
             padding: const EdgeInsets.only(right: 20.0),
-            child: CustomAnchor(text: 'edit', onTap: onUpdated),
+            child: CustomAnchor(text: AppLocalizations.of(context)!.edit, onTap: onUpdated),
           ),
         ),
         Padding(
