@@ -125,8 +125,10 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
     if (response.statusCode == 404){
       isFound = false;
       return [];
+    }else{
+      isFound = true;
+      return ProjectModel.fromResponse(response);
     }
-    return ProjectModel.fromResponse(response);
   }
 
   @override
@@ -203,7 +205,7 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
               children: [
                 CustomText(text: "Page: $page",size: 17,),
                 const SizedBox(width: 10,),
-                page == 1 ? const SizedBox() : backwardPage(context),
+                backwardPage(context),
                 isFound ? forwardPage(context):const SizedBox(),
             ],),
             CustomFutureBuilder<List<ProjectModel>>(
@@ -225,33 +227,33 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
 
   IconButton forwardPage(BuildContext context) {
     return IconButton(
-                iconSize: 22,
-                disabledColor: Theme.of(context).colorScheme.background,
-                onPressed:!isFound ? null:  (){
-                  setState(() {
-                    page++;
-                  });
-                }, 
-                icon: Icon(
-                  Icons.arrow_forward_ios_rounded,size:17,
-                  color: Theme.of(context).colorScheme.onPrimary,
-              ));
+      iconSize: 22,
+      onPressed:!isFound ? null:  (){
+        setState(() {
+          page++;
+       });
+      }, 
+      icon: Icon(
+        Icons.arrow_forward_ios_rounded,size:17,
+        color: Theme.of(context).colorScheme.onPrimary,
+      )
+    );
   }
 
   IconButton backwardPage(BuildContext context) {
     return IconButton(
-                iconSize: 22,
-                disabledColor: Theme.of(context).colorScheme.background,
-                onPressed: page == 1 ? null : (){
-                  setState(() {
-                    page--;
-                  });
-                }, 
-                icon: Icon(
-                  Icons.arrow_back_ios_rounded,
-                  size: 17,
-                  color: Theme.of(context).colorScheme.onPrimary,
-              ));
+      iconSize: 22,
+      onPressed: page == 1 ? null : (){
+        setState(() {
+          page--;
+        });
+      }, 
+      icon: Icon(
+        Icons.arrow_back_ios_rounded,
+          size: 17,
+          color: Theme.of(context).colorScheme.onPrimary,
+      )
+    );
   }
 
   void _showBottomSheet(BuildContext context) {

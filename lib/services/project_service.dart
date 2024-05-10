@@ -44,8 +44,8 @@ class ProjectService {
   }
 
   static Future<http.Response> searchProject(
-      {required String search, required String token}) {
-    String url = '$_baseUrl?title=$search';
+      {required String search, required String token,required int page}) {
+    String url = '$_baseUrl?title=$search&page=$page&perPage=5';
     return http.get(
       Uri.parse(url),
       headers: ApiUtil.getHeadersWithToken(token),

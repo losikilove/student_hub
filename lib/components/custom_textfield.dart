@@ -15,7 +15,7 @@ class CustomTextfield extends StatelessWidget {
   final List<TextInputFormatter>? inputFormaters;
   final IconData? prefixIcon;
   final void Function(String text)? onChanged;
-
+  final bool readOnly;
   const CustomTextfield(
       {super.key,
       required this.controller,
@@ -29,6 +29,7 @@ class CustomTextfield extends StatelessWidget {
       this.keyboardType,
       this.inputFormaters,
       this.prefixIcon,
+      this.readOnly = false,
       this.onChanged});
 
   @override
@@ -37,6 +38,7 @@ class CustomTextfield extends StatelessWidget {
       controller: controller,
       cursorColor: Theme.of(context).colorScheme.onPrimary,
       obscureText: obscureText,
+      readOnly: readOnly,
       // remove underline
       decoration: isBox
           ? InputDecoration(

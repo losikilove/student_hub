@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
+import 'package:student_hub/components/custom_divider.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textfield.dart';
 import 'package:student_hub/components/initial_body.dart';
@@ -42,7 +43,8 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
     // initialize the search controller
     _searchController = TextEditingController(text: widget.search);
   }
-
+  bool isFound = true;
+  int page = 1;
   Future<List<ProjectModel>> initializeProject() async {
     UserProvider userProvider = Provider.of<UserProvider>(
       context,
@@ -51,8 +53,14 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
     String? token = userProvider.token;
     if (!widget.isFilter) {
       final response = await ProjectService.searchProject(
-          search: widget.search, token: token!);
-      return ProjectModel.fromResponse(response);
+          search: widget.search, token: token!,page:  page);
+      if(response.statusCode == 404){
+        isFound = false;
+        return [];
+      }else{
+        isFound = true;
+        return ProjectModel.fromResponse(response);
+      }
     } else {
       final response = await ProjectService.filterProject(
           search: widget.search,
@@ -251,14 +259,41 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                   ],
                 ),
                 ),
-
-                
-                
               ),
             );
           },
         );
       },
+    );
+  }
+  IconButton forwardPage(BuildContext context) {
+    return IconButton(
+      iconSize: 22,
+      onPressed:!isFound ? null:  (){
+        setState(() {
+          page++;
+       });
+      }, 
+      icon: Icon(
+        Icons.arrow_forward_ios_rounded,size:17,
+        color: Theme.of(context).colorScheme.onPrimary,
+      )
+    );
+  }
+
+  IconButton backwardPage(BuildContext context) {
+    return IconButton(
+      iconSize: 22,
+      onPressed: page == 1 ? null : (){
+        setState(() {
+          page--;
+        });
+      }, 
+      icon: Icon(
+        Icons.arrow_back_ios_rounded,
+          size: 17,
+          color: Theme.of(context).colorScheme.onPrimary,
+      )
     );
   }
 
@@ -283,6 +318,7 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.75,
                   child: CustomTextfield(
+                    readOnly: true,
                     prefixIcon: Icons.search,
                     controller: _searchController,
                     hintText: 'Search for projects',
@@ -301,6 +337,15 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
               ],
             ),
             const SizedBox(height: SpacingUtil.smallHeight),
+            const CustomDivider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CustomText(text: "Page: $page",size: 17,),
+                const SizedBox(width: 10,),
+                backwardPage(context),
+                isFound ? forwardPage(context):const SizedBox(),
+            ],),
             // filter list of projects
             CustomFutureBuilder<List<ProjectModel>>(
               future: initializeProject(),

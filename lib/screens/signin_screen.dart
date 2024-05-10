@@ -143,6 +143,7 @@ class _SignInScreenState extends State<SignInScreen> {
           Center(
               child: CustomText(
             text: AppLocalizations.of(context)!.loginWithStudentHub,
+            size: 20,
             isBold: true,
           )),
           const SizedBox(
