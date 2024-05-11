@@ -140,8 +140,9 @@
     "viewJobPosting":"View Job Posting",
     "editPosting":"Edit Posting",
     "remove":"Remove",
-    "proposal":"Proposal"
-    
-    
-    
+    "proposal":"Proposal",
+    "closedProjectPopupTitle": "Closed project",
+    "closedProjectPopupContent": "Do you pleasure to your project?",
+    "closedSuccessProject": "Success",
+    "closedFailureProject": "Failure"
 }

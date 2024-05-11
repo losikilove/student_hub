@@ -136,6 +136,9 @@
     "viewJobPosting":"Xem bài đăng công việc",
     "editPosting":"Chỉnh sửa bài đăng",
     "remove":"Xóa",
-    "proposal":"Đề xuất"
-
+    "proposal":"Đề xuất",
+    "closedProjectPopupTitle": "Đóng dự án",
+    "closedProjectPopupContent": "Bạn muốn đóng dự án với tâm thế gì?",
+    "closedSuccessProject": "Tuyệt",
+    "closedFailureProject": "Tệ"
 }

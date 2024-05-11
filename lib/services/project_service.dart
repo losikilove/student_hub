@@ -3,6 +3,7 @@ import 'package:student_hub/models/enums/enum_like_project.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:student_hub/models/enums/enum_project_status_flag.dart';
 import 'package:student_hub/models/enums/enum_type_flag.dart';
 import 'package:student_hub/models/project_company_model.dart';
 import 'package:student_hub/providers/user_provider.dart';
@@ -12,7 +13,8 @@ class ProjectService {
   static const String _baseUrl = '${ApiUtil.baseUrl}/project';
 
   //View the all project
-  static Future<http.Response> viewProject({required String token,required int? page}) {
+  static Future<http.Response> viewProject(
+      {required String token, required int? page}) {
     String url = '$_baseUrl?page=$page&perPage=5';
     return http.get(Uri.parse(url),
         headers: ApiUtil.getHeadersWithToken(token));
@@ -44,7 +46,7 @@ class ProjectService {
   }
 
   static Future<http.Response> searchProject(
-      {required String search, required String token,required int page}) {
+      {required String search, required String token, required int page}) {
     String url = '$_baseUrl?title=$search&page=$page&perPage=5';
     return http.get(
       Uri.parse(url),
@@ -176,9 +178,11 @@ class ProjectService {
           "typeFlag": EnumTypeFlag.working.value,
         }));
   }
+
   //finish project
   static Future<http.Response> closeProject({
     required ProjectMyCompanyModel project,
+    required EnumProjectStatusFlag status,
     required BuildContext context,
   }) async {
     String url = '$_baseUrl/${project.projectId}';
@@ -193,6 +197,7 @@ class ProjectService {
           "numberOfStudents": project.numberofStudent,
           "description": project.description,
           "typeFlag": EnumTypeFlag.archive.value,
+          "status": status.value,
         }));
   }
 }
