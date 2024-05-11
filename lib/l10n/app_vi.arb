@@ -94,6 +94,23 @@
     "iAmAStudentFindProject":"Tôi là sinh viên, tìm dự án",
     "createAccount":"Tạo tài khoản",
     "alreadyHaveAnAccount":"Đã có tài khoản?",
-    "login":"Đăng nhập"   
+    "login":"Đăng nhập",
+    "areYouSureToSubmitThis":"Bạn có chắc chắn muốn gửi không?",
+    "yourProposalHasSubmitted":"Đề xuất của bạn đã được gửi",
+    "describeWhyDoYouFitToThisProject":"Mô tả lý do bạn phù hợp với dự án này",
+    "submitProposal":"Gửi đề xuất",
+    "updateExperienceSuccessfully":"Cập nhật kinh nghiệm thành công",
+    "updateExperience":"Cập nhật kinh nghiệm",
+    "areYouSureAboutThat":"Bạn có chắc chắn về điều đó?",
+    "viewProfile":"Xem hồ sơ",
+    "academicStranscript":"Bảng điểm học vụ",
+    "closeProjectSuccessfully":"Đóng dự án thành công",
+    "areYouSureToCloseThisProject":"Bạn có chắc chắn muốn đóng dự án này không?",
+    "updateProjectSuccessfully":"Cập nhật dự án thành công",
+    "updateProject":"Cập nhật dự án",
+    "closeProject":"Đóng dự án",
+    "projectName":"Tên dự án",
+    "numberOfStudent":"Số lượng sinh viên",
+    "areYouSureTo?UpdateThisProject":"Bạn có chắc chắn muốn cập nhật dự án này không?"   
 
 }

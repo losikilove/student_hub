@@ -13,6 +13,7 @@ import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/utils/text_util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UpdateProjectScreen extends StatefulWidget {
   final ProjectMyCompanyModel projectCModel;
@@ -49,7 +50,7 @@ class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
       await popupNotification(
         context: context,
         type: NotificationType.success,
-        content: 'Close project success',
+        content: AppLocalizations.of(context)!.close,
         textSubmit: 'Ok',
         submit: null,
       );
@@ -76,8 +77,8 @@ class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
             'WARNING',
             style: TextStyle(color: Colors.red),
           ),
-          content: const CustomText(
-            text: 'Are you sure to close your project?',
+          content: CustomText(
+            text: AppLocalizations.of(context)!.areYouSureToCloseThisProject,
           ),
           actions: [
             CustomButton(
@@ -154,7 +155,8 @@ class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
         appBar: CustomAppbar(
           onPressed: () {},
           currentContext: context,
-          title: "Update Project",
+          title: 
+          AppLocalizations.of(context)!.updateProject,
         ),
         body: InitialBody(
           left: 0,
@@ -167,7 +169,7 @@ class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
                   alignment: Alignment.topLeft,
                   child: CustomButton(
                     onPressed: closeProject,
-                    text: 'Close Project',
+                    text: AppLocalizations.of(context)!.closeProject,
                   ),
                 ),
                 Padding(
@@ -177,16 +179,16 @@ class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
                        const SizedBox(
                   height: SpacingUtil.mediumHeight,
                 ),
-                const CustomText(text: 'Update Project', isBold: true, size: TextUtil.textSize,),
+                CustomText(text: AppLocalizations.of(context)!.updateProject , isBold: true, size: TextUtil.textSize,),
                 const SizedBox(
                   height: SpacingUtil.mediumHeight,
                 ),
                 TextField(
                   controller: controllerTile,
-                  decoration: const InputDecoration(
-                    labelText: 'Project name',
-                    hintText: "Project name",
-                    border: OutlineInputBorder(
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.projectName,
+                    hintText: AppLocalizations.of(context)!.projectName,
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       borderSide: BorderSide(color: Colors.black),
                     ),
@@ -201,10 +203,10 @@ class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
 
                 TextField(
                   controller: controllerNumberOfStudent,
-                  decoration: const InputDecoration(
-                    labelText: 'Number of student',
-                    hintText: "Number of student",
-                    border: OutlineInputBorder(
+                  decoration:  InputDecoration(
+                    labelText: AppLocalizations.of(context)!.numberOfStudent,
+                    hintText: AppLocalizations.of(context)!.numberOfStudent,
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       borderSide: BorderSide(color: Colors.black),
                     ),
@@ -215,8 +217,8 @@ class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
-                const CustomText(
-                  text: 'How long will your project take?',
+                CustomText(
+                  text: AppLocalizations.of(context)!.howLongWillYourProjectTake,
                   isBold: true,
                 ),
                 // select duration radio
@@ -273,9 +275,9 @@ class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
                 ),
                 TextField(
                   controller: controllerDescription,
-                  decoration: const InputDecoration(
-                    labelText: 'Description',
-                    border: OutlineInputBorder(
+                  decoration:  InputDecoration(
+                    labelText: AppLocalizations.of(context)!.description,
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       borderSide: BorderSide(color: Colors.black),
                     ),
@@ -304,13 +306,13 @@ class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                text: 'Cancel',
+                text: AppLocalizations.of(context)!.cancel,
               ),
             ),
             Expanded(
               child: CustomButton(
                 onPressed: updateProject,
-                text: 'Update',
+                text: AppLocalizations.of(context)!.update,
               ),
             ),
           ],
@@ -325,21 +327,21 @@ class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
             'WARNING',
             style: TextStyle(color: Colors.red),
           ),
-          content: const CustomText(
-            text: 'Are you sure to update your project?',
+          content: CustomText(
+            text: AppLocalizations.of(context)!.areYouSureToUpdateThisProject,
           ),
           actions: [
             CustomButton(
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
-              text: 'Yes',
+              text: AppLocalizations.of(context)!.yes,
             ),
             CustomButton(
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
-              text: 'No',
+              text: AppLocalizations.of(context)!.no,
             ),
           ],
         );
