@@ -16,7 +16,7 @@ import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/utils/text_util.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class DashboardCompany extends StatefulWidget {
   const DashboardCompany({super.key});
 
@@ -28,11 +28,11 @@ class _DashboardCompanyState extends State<DashboardCompany>
     with SingleTickerProviderStateMixin {
   late final List<TabView> _tabViews = [
     TabView(
-        tab: const Tab(text: 'All projects'),
+        tab:  Tab(text: AppLocalizations.of(context)!.allProjects),
         widget: _companyAllProjectContent()),
-    TabView(tab: const Tab(text: 'Working'), widget: _companyWorkingContent()),
+    TabView(tab:  Tab(text: AppLocalizations.of(context)!.working), widget: _companyWorkingContent()),
     TabView(
-        tab: const Tab(text: 'Archived'), widget: _companyArchievedContent())
+        tab:  Tab(text: AppLocalizations.of(context)!.archived), widget: _companyArchievedContent())
   ];
   late final TabController _tabController =
       TabController(vsync: this, length: _tabViews.length);
@@ -70,21 +70,21 @@ class _DashboardCompanyState extends State<DashboardCompany>
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('Remove posting'),
-            content: const Text(
-                'Are you sure you want to remove this posting? This action cannot be undone.'),
+            title: Text(AppLocalizations.of(context)!.removePosting),
+            content:  Text(
+                AppLocalizations.of(context)!.areYouSureToRemoveThisPosting),
             actions: [
               CustomButton(
                 onPressed: () => {
                   Navigator.of(context).pop(false),
                 },
-                text: 'Cancel',
+                text: AppLocalizations.of(context)!.cancel,
               ),
               CustomButton(
                 onPressed: () => {
                   Navigator.of(context).pop(true),
                 },
-                text: 'Remove',
+                text: AppLocalizations.of(context)!.remove,
               ),
             ],
           );
@@ -169,7 +169,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
                     height: SpacingUtil.smallHeight,
                   ),
                   // wishes of this project
-                  const CustomText(text: 'Student are looking for'),
+                  CustomText(text: AppLocalizations.of(context)!.studentAreLookingFor),
                   CustomBulletedList(
                     listItems: project.description.split('\n') as List<String>,
                   ),
@@ -184,8 +184,8 @@ class _DashboardCompanyState extends State<DashboardCompany>
                             text: project.countProposals.toString(),
                             size: TextUtil.smallTextSize,
                           ),
-                          const CustomText(
-                            text: 'Proposals',
+                          CustomText(
+                            text: AppLocalizations.of(context)!.proposal,
                             size: TextUtil.smallTextSize,
                           ),
                         ],
@@ -328,7 +328,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: CustomText(text: 'Welcome, !'),
+                  child: CustomText(text: 'Welcome!'),
                 ),
                 SizedBox(
                   height: SpacingUtil.smallHeight,
@@ -369,7 +369,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: CustomText(text: 'Welcome,'),
+                  child: CustomText(text: 'Welcome!'),
                 ),
                 SizedBox(
                   height: SpacingUtil.smallHeight,

@@ -121,7 +121,26 @@
     "submitedAt":"Submited at",
     "welcome":"Welcome",
     "letsStartWithYourFirstProjectPost":"Let's start with your first project post",
-    "getStarted":"Get Started!"
+    "getStarted":"Get Started!",
+    "allProjects":"All Projects",
+    "working":"Working",
+    "archived":"Archived",
+    "failedToLoadProjects":"Failed to load projects",
+    "removePosting":"Remove Posting",
+    "areYouSureToRemoveThisPosting":"Are you sure you want to remove this posting? This action cannot be undone.",
+    "failedToStartWorkingProject":"Failed to start working project",
+    "message":"Message",
+    "hired":"Hired",
+    "yourJob":"Your Job",
+    "postAJob":"Post a Job",
+    "youHaveNoJobs":"You have no jobs",
+    "viewProposal":"View Proposal",
+    "viewMessage":"View Message",
+    "viewHired":"View Hired",
+    "viewJobPosting":"View Job Posting",
+    "editPosting":"Edit Posting",
+    "remove":"Remove",
+    "proposal":"Proposal"
     
     
     
