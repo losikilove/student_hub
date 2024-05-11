@@ -17,6 +17,7 @@ import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/utils/text_util.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class DashboardCompany extends StatefulWidget {
   const DashboardCompany({super.key});
 
@@ -28,11 +29,14 @@ class _DashboardCompanyState extends State<DashboardCompany>
     with SingleTickerProviderStateMixin {
   late final List<TabView> _tabViews = [
     TabView(
-        tab:  Tab(text: AppLocalizations.of(context)!.allProjects),
+        tab: Tab(text: AppLocalizations.of(context)!.allProjects),
         widget: _companyAllProjectContent()),
-    TabView(tab:  Tab(text: AppLocalizations.of(context)!.working), widget: _companyWorkingContent()),
     TabView(
-        tab:  Tab(text: AppLocalizations.of(context)!.archived), widget: _companyArchievedContent())
+        tab: Tab(text: AppLocalizations.of(context)!.working),
+        widget: _companyWorkingContent()),
+    TabView(
+        tab: Tab(text: AppLocalizations.of(context)!.archived),
+        widget: _companyArchievedContent())
   ];
   late final TabController _tabController =
       TabController(vsync: this, length: _tabViews.length);
@@ -71,7 +75,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
         builder: (context) {
           return AlertDialog(
             title: Text(AppLocalizations.of(context)!.removePosting),
-            content:  Text(
+            content: Text(
                 AppLocalizations.of(context)!.areYouSureToRemoveThisPosting),
             actions: [
               CustomButton(
@@ -169,7 +173,8 @@ class _DashboardCompanyState extends State<DashboardCompany>
                     height: SpacingUtil.smallHeight,
                   ),
                   // wishes of this project
-                  CustomText(text: AppLocalizations.of(context)!.studentAreLookingFor),
+                  CustomText(
+                      text: AppLocalizations.of(context)!.studentAreLookingFor),
                   CustomBulletedList(
                     listItems: project.description.split('\n') as List<String>,
                   ),
@@ -362,7 +367,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
           _projects = snapshot.data!
               .where((projectModel) =>
                   projectModel.typeFlag != null &&
-                  projectModel.typeFlag!.value.isEven)
+                  projectModel.typeFlag! == EnumTypeFlag.working)
               .toList();
           if (_projects.isEmpty) {
             return const Column(
@@ -403,7 +408,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
           _projects = snapshot.data!
               .where((projectModel) =>
                   projectModel.typeFlag != null &&
-                  projectModel.typeFlag!.value.isOdd)
+                  projectModel.typeFlag! == EnumTypeFlag.archive)
               .toList();
           if (_projects.isEmpty) {
             return const Column(
