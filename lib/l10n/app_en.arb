@@ -144,5 +144,25 @@
     "closedProjectPopupTitle": "Closed project",
     "closedProjectPopupContent": "Do you pleasure to your project?",
     "closedSuccessProject": "Success",
-    "closedFailureProject": "Failure"
+    "closedFailureProject": "Failure",
+    "timeCreated": "Time Created",
+    "youHaveNoJobWorking": "You have no job working!",
+    "youHaveNoJobArchived": "You have no job archived!",
+    "startWorkingProject": "Start Working Project",
+    "unSavedProject": "Unsaved Project",
+    "savedProject": "Saved Project",
+    "studentNeeded": "Student Needed",
+    "filterBy": "Filter By",
+    "projectLength": "Project Length",
+    "lessThanOneMonth": "Less than one month",
+    "oneToThreeMonths": "One to three months",
+    "threeToSixMonths": "Three to six months",
+    "moreThanSixMonths": "More than six months",
+    "proposalLessThan": "Proposal less than ",
+    "clearFilter": "Clear Filter",
+    "apply": "Apply",
+    "searchForProject": "Search for project",
+    "page": "Page",
+    "welcomeToStudentHubAMartketplace": "Welcome to StudentHub, a marketplace to connect Student to Real-world projects"
+
 }

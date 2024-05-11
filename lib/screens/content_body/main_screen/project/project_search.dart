@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:student_hub/services/project_service.dart';
 import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/components/custom_future_builder.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ProjectBodySearchPart extends StatefulWidget {
   final BuildContext parentContext;
   final String search;
@@ -143,8 +143,8 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const CustomText(
-                          text: "Filter by",
+                        CustomText(
+                          text: AppLocalizations.of(context)!.filterBy,
                           size: 20,
                           isBold: true,
                         ),
@@ -156,27 +156,27 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                         ),
                       ],
                     ),
-                    const CustomText(
-                      text: 'Project length',
+                    CustomText(
+                      text: AppLocalizations.of(context)!.projectLength,
                       size: 18,
                     ),
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           chooseLenght(EnumProjectLenght.less_than_one_month,
-                              "Less than one month"),
+                              AppLocalizations.of(context)!.lessThanOneMonth),
                           chooseLenght(EnumProjectLenght.one_to_three_month,
-                              "1 to 3 months"),
+                              AppLocalizations.of(context)!.oneToThreeMonths),
                           chooseLenght(EnumProjectLenght.three_to_six_month,
-                              "3 to 6 months"),
+                              AppLocalizations.of(context)!.threeToSixMonths),
                           chooseLenght(EnumProjectLenght.more_than_six_month,
-                              "more than 6 months"),
+                              AppLocalizations.of(context)!.moreThanSixMonths),
                         ]),
                     const SizedBox(
                       height: SpacingUtil.mediumHeight,
                     ),
-                    const CustomText(
-                      text: 'Student needed',
+                    CustomText(
+                      text: AppLocalizations.of(context)!.studentNeeded,
                       size: 18,
                     ),
                     const SizedBox(
@@ -203,8 +203,8 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                     const SizedBox(
                       height: SpacingUtil.mediumHeight,
                     ),
-                    const CustomText(
-                      text: 'Proposals less than',
+                    CustomText(
+                      text: AppLocalizations.of(context)!.proposalLessThan,
                       size: 18,
                     ),
                     const SizedBox(
@@ -242,7 +242,7 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                               changeProjectLength(
                                   EnumProjectLenght.less_than_one_month);
                             },
-                            text: 'Clear filter'),
+                            text: AppLocalizations.of(context)!.clearFilter),
                         const SizedBox(
                           width: SpacingUtil.smallHeight,
                         ),
@@ -250,7 +250,7 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                             onPressed: () {
                               submitFilter();
                             },
-                            text: 'Apply')
+                            text: AppLocalizations.of(context)!.apply)
                       ],
                     ),
                     const SizedBox(
@@ -321,7 +321,7 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
                     readOnly: true,
                     prefixIcon: Icons.search,
                     controller: _searchController,
-                    hintText: 'Search for projects',
+                    hintText: AppLocalizations.of(context)!.searchForProject,
                   ),
                 ),
                 // filter list

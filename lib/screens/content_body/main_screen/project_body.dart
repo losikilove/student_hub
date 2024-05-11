@@ -15,7 +15,7 @@ import 'package:student_hub/components/custom_future_builder.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/screens/content_body/main_screen/project/project_search.dart';
 import 'package:student_hub/screens/content_body/main_screen/project/project_save.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 enum ProjectBodyType {
   main(nameRoute: ''),
   search(nameRoute: 'search'),
@@ -79,9 +79,9 @@ class _ProjectBody extends State<ProjectBody> {
               ),
             ),
           ),
-          content: const CustomText(
+          content: CustomText(
             text:
-                'Welcome to StudentHub, a marketplace to connect Student to Real-world projects',
+                AppLocalizations.of(context)!.welcomeToStudentHubAMartketplace,
             isCenter: true,
           ),
           actions: [
@@ -205,7 +205,7 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
               children: [
                 backwardPage(context),
                 const SizedBox(width: 6,),
-                CustomText(text: "Page: $page",size: 17,),
+                CustomText(text: "${AppLocalizations.of(context)!.page}: $page",size: 17,),
                 const SizedBox(width: 6,),
                 forwardPage(context),
             ],),
@@ -286,9 +286,9 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
                     ],
                   ),
                   TextField(
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       prefixIcon: Icon(Icons.search),
-                      hintText: 'Search for project',
+                      hintText: AppLocalizations.of(context)!.searchForProject,
                     ),
                     onSubmitted: (s) async {
                       // switch to content search

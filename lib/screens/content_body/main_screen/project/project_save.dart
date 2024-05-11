@@ -16,7 +16,7 @@ import 'package:student_hub/components/custom_bulleted_list.dart';
 import 'package:student_hub/utils/api_util.dart';
 import 'package:intl/intl.dart';
 import 'package:student_hub/models/enums/enum_like_project.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ProjectBodySavedPart extends StatefulWidget {
   final BuildContext parentContext;
 
@@ -66,7 +66,7 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
       await popupNotification(
         context: context,
         type: NotificationType.success,
-        content: 'Unsaved project',
+        content: AppLocalizations.of(context)!.unSavedProject,
         textSubmit: 'Ok',
         submit: null,
       );
@@ -86,7 +86,7 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        title: 'Saved projects',
+        title: AppLocalizations.of(context)!.savedProject,
         isBack: true,
         onPressed: onSwitchedToSwitchAccountScreen,
         currentContext: context,
@@ -143,19 +143,19 @@ class _ProjectBodySavedPart extends State<ProjectBodySavedPart> {
                   height: SpacingUtil.smallHeight,
                 ),
                 CustomText(
-                    text: "Time created: ${DateFormat('dd-MM-yyyy').format(DateTime.parse(project.timeCreated))}"
+                    text: "${AppLocalizations.of(context)!.timeCreated}: ${DateFormat('dd-MM-yyyy').format(DateTime.parse(project.timeCreated))}"
                             ),
                 const SizedBox(
                   height: SpacingUtil.smallHeight,
                 ),
                 CustomText(
-                    text: "Time:  $month, ${project.numberofStudent} students needed"),
+                    text: "Time:  $month, ${project.numberofStudent} ${AppLocalizations.of(context)!.studentNeeded}"),
                 const SizedBox(
                   height: SpacingUtil.mediumHeight,
                 ),
-                const CustomText(text: "Student are looking for"),
+                CustomText(text: AppLocalizations.of(context)!.studentAreLookingFor),
                 CustomBulletedList(listItems: project.description.split(',')),
-                CustomText(text: "Proposals: ${project.proposal}"),
+                CustomText(text: "${AppLocalizations.of(context)!.proposal}: ${project.proposal}"),
                 const SizedBox(
                   height: SpacingUtil.smallHeight,
                 ),

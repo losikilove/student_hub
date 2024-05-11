@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_bulleted_list.dart';
@@ -13,6 +12,7 @@ import 'package:student_hub/models/proposal_model.dart';
 import 'package:student_hub/services/proposal_service.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DashboardStudent extends StatefulWidget {
   const DashboardStudent({super.key});
@@ -25,11 +25,11 @@ class _DashboardStudentState extends State<DashboardStudent>
     with SingleTickerProviderStateMixin {
   late final List<TabView> _tabViews = [
     TabView(
-        tab: const Tab(text: 'All projects'),
+        tab:  Tab(text: AppLocalizations.of(context)!.allProjects),
         widget: _studentAllProjectContent()),
-    TabView(tab: const Tab(text: 'Working'), widget: _studentWorkingContent()),
+    TabView(tab:  Tab(text: AppLocalizations.of(context)!.working), widget: _studentWorkingContent()),
     TabView(
-        tab: const Tab(text: 'Archived'), widget: _studentArchievedContent()),
+        tab:  Tab(text: AppLocalizations.of(context)!.archived), widget: _studentArchievedContent()),
   ];
   late final TabController _tabController =
       TabController(vsync: this, length: _tabViews.length);
@@ -83,14 +83,14 @@ class _DashboardStudentState extends State<DashboardStudent>
                           ),
                           CustomText(
                             text:
-                                "Submitted at: ${DateFormat('dd-MM-yyyy').format(
+                                "${AppLocalizations.of(context)!.submitedAt}: ${DateFormat('dd-MM-yyyy').format(
                               DateTime.parse(project.createdAt.toString()),
                             )}",
                           ),
                           const SizedBox(
                             height: SpacingUtil.smallHeight,
                           ),
-                          const CustomText(text: "Student are looking for"),
+                          CustomText(text: AppLocalizations.of(context)!.studentAreLookingFor),
                           CustomBulletedList(
                             listItems: project.project.description.split("\n"),
                           ),
@@ -138,7 +138,7 @@ class _DashboardStudentState extends State<DashboardStudent>
                       padding: EdgeInsets.all(10),
                       child: CustomText(
                         text:
-                            "Active/Offered proposal(${activeProjects.length})",
+                            "${AppLocalizations.of(context)!.activeOfferedProposals}(${activeProjects.length})",
                         isBold: true,
                       )))),
         ),
@@ -160,7 +160,7 @@ class _DashboardStudentState extends State<DashboardStudent>
                         children: [
                           CustomText(
                             text:
-                                "Submitted proposal(${waitingProjects.length})",
+                                "${AppLocalizations.of(context)!.submitProposal}(${waitingProjects.length})",
                             isBold: true,
                           ),
                           const SizedBox(
@@ -186,7 +186,7 @@ class _DashboardStudentState extends State<DashboardStudent>
                                       ),
                                       CustomText(
                                         text:
-                                            "Submitted at: ${DateFormat('dd-MM-yyyy').format(
+                                            "${AppLocalizations.of(context)!.submitedAt}: ${DateFormat('dd-MM-yyyy').format(
                                           DateTime.parse(
                                               project.createdAt.toString()),
                                         )}",
@@ -194,8 +194,8 @@ class _DashboardStudentState extends State<DashboardStudent>
                                       const SizedBox(
                                         height: SpacingUtil.smallHeight,
                                       ),
-                                      const CustomText(
-                                          text: "Student are looking for"),
+                                      CustomText(
+                                          text: AppLocalizations.of(context)!.studentAreLookingFor),
                                       CustomBulletedList(
                                         listItems: project.project.description
                                             .split("\n"),
@@ -249,8 +249,8 @@ class _DashboardStudentState extends State<DashboardStudent>
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          return const Center(
-            child: Text('Error loading projects'),
+          return  Center(
+            child: Text(AppLocalizations.of(context)!.somethingWentWrong),
           );
         } else {
           _projects = snapshot.data!;
@@ -269,8 +269,8 @@ class _DashboardStudentState extends State<DashboardStudent>
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          return const Center(
-            child: Text('Error loading projects'),
+          return Center(
+            child: Text(AppLocalizations.of(context)!.somethingWentWrong),
           );
         } else {
           _projects = snapshot.data!
@@ -293,8 +293,8 @@ class _DashboardStudentState extends State<DashboardStudent>
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          return const Center(
-            child: Text('Error loading projects'),
+          return Center(
+            child: Text(AppLocalizations.of(context)!.somethingWentWrong),
           );
         } else {
           _projects = snapshot.data!
