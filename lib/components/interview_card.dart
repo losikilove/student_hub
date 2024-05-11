@@ -18,6 +18,7 @@ class InterviewCard extends StatefulWidget {
   final int currentUserId;
   final int otherUserId;
   final int projectId;
+  final bool isYourMeeting;
   final void Function() onJoined;
 
   const InterviewCard({
@@ -28,6 +29,7 @@ class InterviewCard extends StatefulWidget {
     required this.currentUserId,
     required this.otherUserId,
     required this.projectId,
+    this.isYourMeeting = true,
   });
 
   @override
@@ -143,12 +145,14 @@ class _InterviewCardState extends State<InterviewCard> {
                         text: 'Join',
                       ),
                       // more actions button
-                      IconButton(
-                        onPressed: onOpenedMoreActions,
-                        icon: const Icon(
-                          Icons.keyboard_control,
-                        ),
-                      ),
+                      widget.isYourMeeting
+                          ? IconButton(
+                              onPressed: onOpenedMoreActions,
+                              icon: const Icon(
+                                Icons.keyboard_control,
+                              ),
+                            )
+                          : const Center(),
                     ],
                   ),
           ],

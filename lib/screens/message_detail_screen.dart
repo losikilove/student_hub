@@ -108,7 +108,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
         String meeting = data['notification']['message']['interview']
             ['meetingRoom']['meeting_room_id'];
 
-        log('$meeting why?');
         _message.insert(
           0,
           ChatMessage(
@@ -138,6 +137,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                       )),
                 ),
                 'meeting': meeting,
+                'isMyMeeting': false,
               }
             },
           ),
@@ -187,6 +187,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                       )),
                 ),
                 'meeting': meeting,
+                'isMyMeeting': true,
               }
             },
           ),
@@ -275,6 +276,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                   ),
                   'meeting': item['interview']['meetingRoom']
                       ['meeting_room_id'],
+                  'isMyMeeting': sender.id == _currentUser.id,
                 }
               },
             );
@@ -369,6 +371,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                         message.customProperties!['interview']['model'];
                     String meetingId =
                         message.customProperties!['interview']['meeting'];
+                    bool isMyMeeting =
+                        message.customProperties!['interview']['isMyMeeting'];
 
                     return InterviewCard(
                       socket: socket,
@@ -386,6 +390,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                           meetingId,
                         );
                       },
+                      isYourMeeting: isMyMeeting,
                     );
                   } else {
                     return Text(
