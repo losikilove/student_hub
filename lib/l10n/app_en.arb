@@ -116,7 +116,10 @@
     "projectName":"Project Name",
     "numberOfStudent":"Number of Student",
     "areYouSureToUpdateThisProject":"Are you sure to update this project?",
-    "close":"Close"
+    "close":"Close",
+    "activeOfferedProposals":"Active/Offered Proposals",
+    "submitedAt":"Submited at"
+    
     
     
 }

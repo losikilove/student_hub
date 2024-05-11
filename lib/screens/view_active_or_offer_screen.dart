@@ -10,6 +10,7 @@ import 'package:student_hub/models/enums/enum_status_flag.dart';
 import 'package:student_hub/models/proposal_model.dart';
 import 'package:student_hub/screens/approve_project_screen.dart';
 import 'package:student_hub/utils/spacing_util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ViewActiveOrOfferScreen extends StatefulWidget {
   final List<ProposalStudent> proposals;
@@ -25,10 +26,10 @@ class _ViewActiveOrOfferScreenState extends State<ViewActiveOrOfferScreen>
     with SingleTickerProviderStateMixin {
   late final List<TabView> _tabViews = [
     TabView(
-        tab: const Tab(text: 'Active proposals'),
+        tab: Tab(text: AppLocalizations.of(context)!.activeProposals),
         widget: _activeProposalsPart()),
     TabView(
-      tab: const Tab(text: 'Offered proposals'),
+      tab:  Tab(text: AppLocalizations.of(context)!.offeredProposals),
       widget: _offeredProposalsPart(),
     ),
   ];
@@ -56,7 +57,7 @@ class _ViewActiveOrOfferScreenState extends State<ViewActiveOrOfferScreen>
       appBar: CustomAppbar(
         onPressed: () {},
         isBack: true,
-        title: 'Active/Offered proposals',
+        title: AppLocalizations.of(context)!.activeOfferedProposals,
         currentContext: context,
         iconButton: null,
       ),
@@ -100,14 +101,14 @@ class _ViewActiveOrOfferScreenState extends State<ViewActiveOrOfferScreen>
                   color: Color.fromARGB(255, 6, 194, 13), fontSize: 16),
             ),
             CustomText(
-              text: "Submitted at: ${DateFormat('dd-MM-yyyy').format(
+              text: "${AppLocalizations.of(context)!.submitedAt}: ${DateFormat('dd-MM-yyyy').format(
                 DateTime.parse(proposal.createdAt.toString()),
               )}",
             ),
             const SizedBox(
               height: SpacingUtil.smallHeight,
             ),
-            const CustomText(text: "Student are looking for"),
+            CustomText(text: AppLocalizations.of(context)!.studentAreLookingFor),
             CustomBulletedList(
               listItems: proposal.project.description.split("\n"),
             ),
@@ -150,14 +151,14 @@ class _ViewActiveOrOfferScreenState extends State<ViewActiveOrOfferScreen>
                         color: Color.fromARGB(255, 6, 194, 13), fontSize: 16),
                   ),
                   CustomText(
-                    text: "Submitted at: ${DateFormat('dd-MM-yyyy').format(
+                    text: "${AppLocalizations.of(context)!.submitedAt}: ${DateFormat('dd-MM-yyyy').format(
                       DateTime.parse(proposal.createdAt.toString()),
                     )}",
                   ),
                   const SizedBox(
                     height: SpacingUtil.smallHeight,
                   ),
-                  const CustomText(text: "Student are looking for"),
+                  CustomText(text: AppLocalizations.of(context)!.studentAreLookingFor),
                   CustomBulletedList(
                     listItems: proposal.project.description.split("\n"),
                   ),
