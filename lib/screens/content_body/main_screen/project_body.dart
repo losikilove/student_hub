@@ -203,10 +203,11 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                CustomText(text: "Page: $page",size: 17,),
-                const SizedBox(width: 10,),
                 backwardPage(context),
-                isFound ? forwardPage(context):const SizedBox(),
+                const SizedBox(width: 6,),
+                CustomText(text: "Page: $page",size: 17,),
+                const SizedBox(width: 6,),
+                forwardPage(context),
             ],),
             CustomFutureBuilder<List<ProjectModel>>(
               future: initializeProject(),
@@ -225,7 +226,7 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
     );
   }
 
-  IconButton forwardPage(BuildContext context) {
+   IconButton forwardPage(BuildContext context) {
     return IconButton(
       iconSize: 22,
       onPressed:!isFound ? null:  (){
@@ -234,14 +235,14 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
        });
       }, 
       icon: Icon(
-        Icons.arrow_forward_ios_rounded,size:17,
-        color: Theme.of(context).colorScheme.onPrimary,
+        Icons.double_arrow_outlined,size:17,
+        color: !isFound ? Colors.grey : Theme.of(context).colorScheme.onPrimary,
       )
     );
   }
 
   IconButton backwardPage(BuildContext context) {
-    return IconButton(
+    return IconButton(   
       iconSize: 22,
       onPressed: page == 1 ? null : (){
         setState(() {
@@ -249,9 +250,9 @@ class _ProjectBodyMainPartState extends State<ProjectBodyMainPart> {
         });
       }, 
       icon: Icon(
-        Icons.arrow_back_ios_rounded,
+        Icons.arrow_back_ios_new_rounded,
           size: 17,
-          color: Theme.of(context).colorScheme.onPrimary,
+          color:page == 1 ?Colors.grey : Theme.of(context).colorScheme.onPrimary,
       )
     );
   }

@@ -275,8 +275,8 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
        });
       }, 
       icon: Icon(
-        Icons.arrow_forward_ios_rounded,size:17,
-        color: Theme.of(context).colorScheme.onPrimary,
+        Icons.double_arrow_outlined,size:17,
+        color: !isFound ? Colors.grey : Theme.of(context).colorScheme.onPrimary,
       )
     );
   }
@@ -290,9 +290,9 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
         });
       }, 
       icon: Icon(
-        Icons.arrow_back_ios_rounded,
+        Icons.arrow_back_ios_new_rounded,
           size: 17,
-          color: Theme.of(context).colorScheme.onPrimary,
+          color:page == 1 ?Colors.grey : Theme.of(context).colorScheme.onPrimary,
       )
     );
   }
@@ -341,10 +341,11 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                CustomText(text: "Page: $page",size: 17,),
-                const SizedBox(width: 10,),
                 backwardPage(context),
-                isFound ? forwardPage(context):const SizedBox(),
+                const SizedBox(width: 5,),
+                CustomText(text: "Page: $page",size: 17,),
+                const SizedBox(width: 5,),
+                forwardPage(context),
             ],),
             // filter list of projects
             CustomFutureBuilder<List<ProjectModel>>(
