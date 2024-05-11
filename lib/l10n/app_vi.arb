@@ -111,6 +111,12 @@
     "closeProject":"Đóng dự án",
     "projectName":"Tên dự án",
     "numberOfStudent":"Số lượng sinh viên",
-    "areYouSureTo?UpdateThisProject":"Bạn có chắc chắn muốn cập nhật dự án này không?"   
+    "areYouSureToUpdateThisProject":"Bạn có chắc chắn muốn cập nhật dự án này không?",
+    "close":"Đóng",
+    "activeOfferedProposals":"Đề xuất hoạt động",
+    "submitedAt":"Đã gửi lúc",
+    "welcome":"Chào mừng",
+    "letsStartWithYourFirstProjectPost":"Hãy bắt đầu với bài viết dự án đầu tiên của bạn",
+    "getStarted":"Bắt đầu"  
 
 }

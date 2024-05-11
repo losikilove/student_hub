@@ -8,6 +8,7 @@ import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/screens/main_screen.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -41,16 +42,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             Consumer<UserProvider>(
               builder: (context, userProvider, child) => Center(
                 child: CustomText(
-                    text: 'Welcome, ${userProvider.user?.fullname ?? 'you'}!'),
+                    text: '${AppLocalizations.of(context)!.welcome}, ${userProvider.user?.fullname ?? 'you'}!'),
               ),
             ),
             const SizedBox(
               height: SpacingUtil.smallHeight,
             ),
             // greeting text
-            const Center(
+            Center(
               child: CustomText(
-                text: 'Let\'s start with your first project post',
+                text: AppLocalizations.of(context)!.letsStartWithYourFirstProjectPost,
               ),
             ),
             const SizedBox(
@@ -61,7 +62,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               onPressed: () {
                 NavigationUtil.toMainScreen(context, MainScreenIndex.dashboard);
               },
-              text: 'Get started!',
+              text: AppLocalizations.of(context)!.getStarted,
             ),
           ],
         ),

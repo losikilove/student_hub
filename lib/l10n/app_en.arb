@@ -118,7 +118,10 @@
     "areYouSureToUpdateThisProject":"Are you sure to update this project?",
     "close":"Close",
     "activeOfferedProposals":"Active/Offered Proposals",
-    "submitedAt":"Submited at"
+    "submitedAt":"Submited at",
+    "welcome":"Welcome",
+    "letsStartWithYourFirstProjectPost":"Let's start with your first project post",
+    "getStarted":"Get Started!"
     
     
     
