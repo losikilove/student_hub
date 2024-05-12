@@ -9,6 +9,7 @@ import 'package:student_hub/screens/change_password_screen.dart';
 import 'package:student_hub/screens/company_view_profile_screen.dart';
 import 'package:student_hub/screens/companyupdateprofile_screen.dart';
 import 'package:student_hub/screens/companyregister_screen.dart';
+import 'package:student_hub/screens/forgotten_password_screen.dart';
 import 'package:student_hub/screens/home_screen.dart';
 import 'package:student_hub/screens/main_screen.dart';
 import 'package:student_hub/screens/meeting_screen.dart';
@@ -369,6 +370,14 @@ class NavigationUtil {
             proposalId: proposalID,
             proposalName: proposalName,
           ),
+        ));
+  }
+
+  static void toForgottenPassword(BuildContext currentContext) {
+    Navigator.push(
+        currentContext,
+        MaterialPageRoute(
+          builder: (context) => const ForgottenPasswordScreen(),
         ));
   }
 }

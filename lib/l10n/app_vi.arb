@@ -159,5 +159,13 @@
     "apply": "Áp dụng",
     "searchForProject": "Tìm kiếm dự án",
     "page": "Trang",
-    "welcomeToStudentHubAMartketplace": "Chào mừng bạn đến với Student Hub, một thị trường để kết nối Sinh viên với các dự án trong thế giới thực"
+    "welcomeToStudentHubAMartketplace": "Chào mừng bạn đến với Student Hub, một thị trường để kết nối Sinh viên với các dự án trong thế giới thực",
+    "titleForgottenPassword": "Quên mật khẩu",
+    "submit": "Nộp",
+    "newPassword": "Mật khẩu mới",
+    "enterNewPassword": "Nhập mật khẩu mới",
+    "enterOldPassword": "Nhập mật khẩu cũ",
+    "oldPassword": "Mật khẩu cũ",
+    "enterConfirmPassword": "Nhập xác nhận mật khẩu",
+    "forgottenYourPassword": "Quên mật khẩu của bạn?"
 }

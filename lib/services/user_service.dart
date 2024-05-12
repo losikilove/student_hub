@@ -23,4 +23,19 @@ class UserService {
       }),
     );
   }
+
+  // forgotten password
+  static Future<http.Response> forgotPassword({
+    required String email,
+  }) {
+    String url = '$_baseUrl/forgotPassword';
+
+    return http.post(
+      Uri.parse(url),
+      headers: ApiUtil.headers,
+      body: jsonEncode(<String, dynamic>{
+        'email': email,
+      }),
+    );
+  }
 }

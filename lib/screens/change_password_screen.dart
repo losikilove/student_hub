@@ -12,6 +12,7 @@ import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/text_util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -122,9 +123,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Center(
+              Center(
                 child: CustomText(
-                  text: 'Change password',
+                  text: AppLocalizations.of(context)!.changePassword,
                   isBold: true,
                   size: 30,
                 ),
@@ -133,8 +134,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 height: SpacingUtil.mediumHeight,
               ),
               // old password area
-              const CustomText(
-                text: 'Old password',
+              CustomText(
+                text: AppLocalizations.of(context)!.oldPassword,
                 size: TextUtil.smallTextSize,
                 isBold: true,
               ),
@@ -142,9 +143,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 controller: oldPasswordController,
                 listErros: const [
                   InvalidationType.isBlank,
-                  InvalidationType.isInvalidPassword,
                 ],
-                hintText: 'Enter old password',
+                hintText: AppLocalizations.of(context)!.enterOldPassword,
                 onHelper: (String? errorMessage) {
                   setState(() {
                     _isFilledOldPassword = errorMessage == null ? true : false;
@@ -156,8 +156,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 height: SpacingUtil.smallHeight,
               ),
               // new password area
-              const CustomText(
-                text: 'New password',
+              CustomText(
+                text: AppLocalizations.of(context)!.newPassword,
                 size: TextUtil.smallTextSize,
                 isBold: true,
               ),
@@ -167,7 +167,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   InvalidationType.isBlank,
                   InvalidationType.isInvalidPassword,
                 ],
-                hintText: 'Enter new password',
+                hintText: AppLocalizations.of(context)!.enterNewPassword,
                 onHelper: (String? errorMessage) {
                   setState(() {
                     _isFilledNewPassword = errorMessage == null ? true : false;
@@ -179,8 +179,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 height: SpacingUtil.smallHeight,
               ),
               // confirm password area
-              const CustomText(
-                text: 'Confirm password',
+              CustomText(
+                text: AppLocalizations.of(context)!.comfirmPassword,
                 size: TextUtil.smallTextSize,
                 isBold: true,
               ),
@@ -190,7 +190,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   InvalidationType.isBlank,
                   InvalidationType.isInvalidPassword,
                 ],
-                hintText: 'Enter confirm password',
+                hintText: AppLocalizations.of(context)!.enterConfirmPassword,
                 onHelper: (String? errorMessage) {
                   setState(() {
                     _isFilledConfirmPassword =
@@ -209,7 +209,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     !_isFilledConfirmPassword ||
                     !_isFilledNewPassword,
                 size: CustomButtonSize.large,
-                text: "Submit",
+                text: AppLocalizations.of(context)!.submit,
               ),
             ],
           ),

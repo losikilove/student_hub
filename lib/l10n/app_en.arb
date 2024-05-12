@@ -163,6 +163,13 @@
     "apply": "Apply",
     "searchForProject": "Search for project",
     "page": "Page",
-    "welcomeToStudentHubAMartketplace": "Welcome to StudentHub, a marketplace to connect Student to Real-world projects"
-
+    "welcomeToStudentHubAMartketplace": "Welcome to StudentHub, a marketplace to connect Student to Real-world projects",
+    "titleForgottenPassword": "Forgotten password",
+    "submit": "Submit",
+    "newPassword": "New password",
+    "enterNewPassword": "Enter new password",
+    "enterOldPassword": "Enter old password",
+    "oldPassword": "Old password",
+    "enterConfirmPassword": "Enter confirm password",
+    "forgottenYourPassword": "Forgotten your password?"
 }

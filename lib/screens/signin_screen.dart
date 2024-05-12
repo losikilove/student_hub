@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_hub/components/circle_progress.dart';
+import 'package:student_hub/components/custom_anchor.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_textfield.dart';
@@ -49,9 +50,13 @@ class _SignInScreenState extends State<SignInScreen> {
 
     // go to main screen
     // NavigationUtil.toMainScreen(context, MainScreenIndex.dashboard);
-     Navigator.pushReplacement(context, MaterialPageRoute(
-        builder: (BuildContext context)=> const MainScreen(contentBody: MainScreenIndex.dashboard,)));
-      ;
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => const MainScreen(
+                  contentBody: MainScreenIndex.dashboard,
+                )));
+    ;
   }
 
   // sign up
@@ -134,6 +139,10 @@ class _SignInScreenState extends State<SignInScreen> {
 
   void onPressed() {}
 
+  void onForgottenPassword() {
+    NavigationUtil.toForgottenPassword(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -182,17 +191,28 @@ class _SignInScreenState extends State<SignInScreen> {
             size: CustomButtonSize.large,
             isDisabled: !_isFilledEmail || !_isFilledPassword,
           ),
+          const SizedBox(
+            height: SpacingUtil.mediumHeight,
+          ),
+          CustomAnchor(
+            text: AppLocalizations.of(context)!.forgottenYourPassword,
+            onTap: onForgottenPassword,
+          ),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Center(
                   child: CustomText(
-                    text: '__${AppLocalizations.of(context)!.dontHaveAccount}__',
+                    text:
+                        '__${AppLocalizations.of(context)!.dontHaveAccount}__',
                     isCenter: true,
                   ),
                 ),
-                CustomButton(onPressed: onSignUp, text: AppLocalizations.of(context)!.signUp, size: CustomButtonSize.small),
+                CustomButton(
+                    onPressed: onSignUp,
+                    text: AppLocalizations.of(context)!.signUp,
+                    size: CustomButtonSize.small),
               ],
             ),
           )

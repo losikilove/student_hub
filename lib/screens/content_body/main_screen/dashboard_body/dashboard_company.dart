@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:student_hub/components/custom_appbar.dart';
@@ -335,13 +333,15 @@ class _DashboardCompanyState extends State<DashboardCompany>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: CustomText(text: AppLocalizations.of(context)!.welcome),
+                  child:
+                      CustomText(text: AppLocalizations.of(context)!.welcome),
                 ),
                 const SizedBox(
                   height: SpacingUtil.smallHeight,
                 ),
                 Center(
-                  child: CustomText(text: AppLocalizations.of(context)!.youHaveNoJobs),
+                  child: CustomText(
+                      text: AppLocalizations.of(context)!.youHaveNoJobs),
                 ),
               ],
             );
@@ -362,8 +362,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          return 
-          Center(
+          return Center(
             child: Text(AppLocalizations.of(context)!.somethingWentWrong),
           );
         } else {
@@ -373,17 +372,19 @@ class _DashboardCompanyState extends State<DashboardCompany>
                   projectModel.typeFlag! == EnumTypeFlag.working)
               .toList();
           if (_projects.isEmpty) {
-            return  Column(
+            return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: CustomText(text: AppLocalizations.of(context)!.welcome),
+                  child:
+                      CustomText(text: AppLocalizations.of(context)!.welcome),
                 ),
                 const SizedBox(
                   height: SpacingUtil.smallHeight,
                 ),
                 Center(
-                  child: CustomText(text: AppLocalizations.of(context)!.youHaveNoJobWorking),
+                  child: CustomText(
+                      text: AppLocalizations.of(context)!.youHaveNoJobWorking),
                 ),
               ],
             );
@@ -414,17 +415,19 @@ class _DashboardCompanyState extends State<DashboardCompany>
                   projectModel.typeFlag! == EnumTypeFlag.archive)
               .toList();
           if (_projects.isEmpty) {
-            return  Column(
+            return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: CustomText(text:AppLocalizations.of(context)!.welcome),
+                  child:
+                      CustomText(text: AppLocalizations.of(context)!.welcome),
                 ),
                 const SizedBox(
                   height: SpacingUtil.smallHeight,
                 ),
                 Center(
-                  child: CustomText(text: AppLocalizations.of(context)!.youHaveNoJobArchived),
+                  child: CustomText(
+                      text: AppLocalizations.of(context)!.youHaveNoJobArchived),
                 ),
               ],
             );
@@ -483,7 +486,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         minimumSize: const Size(0, 15),
                       ),
-                      child:  CustomText(
+                      child: CustomText(
                         text: AppLocalizations.of(context)!.viewMessage,
                         size: TextUtil.smallTextSize,
                       ),
@@ -503,7 +506,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
                           padding: const EdgeInsets.fromLTRB(30, 0, 200, 0),
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           minimumSize: const Size(0, 15)),
-                      child:  CustomText(
+                      child: CustomText(
                         text: AppLocalizations.of(context)!.viewHired,
                         size: TextUtil.smallTextSize,
                       ),
@@ -518,7 +521,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
                           padding: const EdgeInsets.fromLTRB(30, 0, 200, 0),
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           minimumSize: const Size(0, 15)),
-                      child:  CustomText(
+                      child: CustomText(
                         text: AppLocalizations.of(context)!.viewJobPosting,
                         size: TextUtil.smallTextSize,
                       ),
@@ -536,7 +539,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
                             15,
                           ) //size
                           ),
-                      child:  CustomText(
+                      child: CustomText(
                         text: AppLocalizations.of(context)!.editPosting,
                         size: TextUtil.smallTextSize,
                       ),
@@ -564,7 +567,7 @@ class _DashboardCompanyState extends State<DashboardCompany>
               ),
               Builder(builder: (context) {
                 if (project.typeFlag == null)
-                  return  Container(
+                  return Container(
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
