@@ -34,7 +34,6 @@ class StudentHubApp extends StatelessWidget {
       ],
       supportedLocales: L10n.all,
       locale: Locale(Provider.of<LanguageProvider>(context).languageCode),
-      debugShowCheckedModeBanner: false,
       home: const SignInScreen(),
       theme: Provider.of<ThemeProvider>(context).themeData,
     );
