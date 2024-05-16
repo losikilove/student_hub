@@ -158,11 +158,11 @@ class _NotificationBody extends State<NotificationBody> {
                                   child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    CustomText(text:"You have invited to interview project: ${notification.title} at ${DateFormat('dd-MM-yyyy').format(DateTime.parse(notification.message.interview!.startTime),)}",size: 18,),
+                                    CustomText(text:"You have invited to interview project: ${notification.title} at ${DateFormat('dd-MM-yyyy').format(DateTime.parse(notification.message!.interview!.startTime),)}",size: 18,),
                                     const SizedBox(
                                       height: SpacingUtil.smallHeight,
                                     ),
-                                    CustomText(text:"Time: ${DateFormat('hh:mm').format(DateTime.parse(notification.message.interview!.startTime),)} - ${DateFormat('hh:mm').format(DateTime.parse(notification.message.interview!.endTime),)}",size: 16,),
+                                    CustomText(text:"Time: ${DateFormat('hh:mm').format(DateTime.parse(notification.message!.interview!.startTime),)} - ${DateFormat('hh:mm').format(DateTime.parse(notification.message!.interview!.endTime),)}",size: 16,),
                                     const SizedBox(
                                       height: 5,
                                     ),
@@ -182,8 +182,8 @@ class _NotificationBody extends State<NotificationBody> {
                                 notification.sender.fullname, 
                                 currentUserId, 
                                 currentUserName, 
-                                notification.message.interview!.meetingInterview!.meetingRoomId, 
-                                notification.message.interview!.meetingInterview!.meetingRoomId);
+                                notification.message!.interview!.meetingInterview!.meetingRoomId, 
+                                notification.message!.interview!.meetingInterview!.meetingRoomId);
                               }, text: "Join"),
                               const SizedBox(
                                 width: SpacingUtil.largeHeight,
@@ -288,7 +288,7 @@ class _NotificationBody extends State<NotificationBody> {
                                         height: SpacingUtil.smallHeight,
                                       ),
                               
-                                      CustomText(text: "Content: ${notification.message.content}",isBold: true,),
+                                      CustomText(text: "Content: ${notification.message!.content}",isBold: true,),
                                       const SizedBox(
                                         height: 5,
                                       ),

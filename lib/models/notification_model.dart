@@ -1,27 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class MessageModel{
-  final int id;
-  final String createdAt;
-  final String content;
-  final InterviewNotificationModel? interview;
-  MessageModel({
-    required this.id,
-    required this.createdAt,
-    required this.content,
-    required this.interview,
-  });
-  factory MessageModel.fromJson(Map<String, dynamic> json) {
-    return MessageModel(
-      id: json['id'],
-      createdAt: json['createdAt'],
-      content: json['content'],
-      interview: json['interview'] != null ? InterviewNotificationModel.fromJson(json['interview']) : null,
 
-    );
-  }
-}
 
 class UserNotification{
   final int id;
@@ -95,6 +75,30 @@ class InterviewNotificationModel{
   }
 }
 
+class MessageModel{
+  final int id;
+  final String createdAt;
+  final String content;
+  final InterviewNotificationModel? interview;
+  MessageModel({
+    required this.id,
+    required this.createdAt,
+    required this.content,
+    required this.interview,
+  });
+  factory MessageModel.fromJson(Map<String, dynamic> json) {
+    return MessageModel(
+      id: json['id'],
+      createdAt: json['createdAt'],
+      content: json['content'],
+      interview: json['interview'] != null ? InterviewNotificationModel.fromJson(json['interview']) : null,
+
+    );
+  }
+}
+
+
+
 class NotificationModel{
   final int id;
   final String createdAt;
@@ -103,10 +107,8 @@ class NotificationModel{
   final String title;
   final String typeNotifyFlag;
   final String content;
-  final MessageModel message;
   final UserNotification sender;
-
-
+  final MessageModel? message;
   NotificationModel({
     required this.id,
     required this.createdAt,
@@ -115,12 +117,13 @@ class NotificationModel{
     required this.title,
     required this.typeNotifyFlag,
     required this.content,
-    required this.message,
     required this.sender,
+    required this.message,    
 
   });
   
   static List<NotificationModel> fromResponse(http.Response response) {
+    //MessageModel nullMessage = MessageModel(id: 0, createdAt: "2024-04-13T14:01:57.230Z", content: "No content", interview: null);
     return (json.decode(response.body)['result'] as List<dynamic>)
         .map((e) => NotificationModel(
               id: e['id'],
@@ -130,8 +133,9 @@ class NotificationModel{
               title: e['title'],
               typeNotifyFlag: e['typeNotifyFlag'],
               content: e['content'],
-              message: MessageModel.fromJson(e['message']),
               sender: UserNotification.fromJson(e['sender']),
+              message: e['message'] != null ? MessageModel.fromJson(e['message']) : null,
+             
             ))
         .toList();
   }

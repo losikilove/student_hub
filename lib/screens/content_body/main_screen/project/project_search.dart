@@ -89,6 +89,8 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
     return showModalBottomSheet<dynamic>(
       context: context,
       isScrollControlled: true,
+      
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (context, setModalState) {
