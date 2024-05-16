@@ -131,7 +131,7 @@ class _ProjectBodySearchPartState extends State<ProjectBodySearchPart> {
             return SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.all(8.0),
-                color: Theme.of(context).colorScheme.onBackground,
+                color: Theme.of(context).colorScheme.onSecondary,
                 child: ConstrainedBox(constraints: BoxConstraints(
                   minHeight: MediaQuery.of(context).size.height * 0.6,
                   maxHeight: MediaQuery.of(context).size.height * 0.8,),
