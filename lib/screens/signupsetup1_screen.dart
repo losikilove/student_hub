@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_hub/components/custom_anchor.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
-import 'package:student_hub/components/popup_notification.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:student_hub/models/enums/enum_user.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
@@ -29,12 +29,12 @@ class _SignUpSetup1ScreenState extends State<SignUpSetup1Screen> {
   // create account in next screen
   void onGoneToNextScreen() {
     // show notification
-    popupNotification(
+    QuickAlert.show(
       context: context,
-      type: NotificationType.warning,
-      content: '${AppLocalizations.of(context)!.youreallyWantToRegisterAs} ${_user?.name.toUpperCase()}',
-      textSubmit: AppLocalizations.of(context)!.yes,
-      submit: () {
+      type: QuickAlertType.warning,
+      text: '${AppLocalizations.of(context)!.youreallyWantToRegisterAs} ${_user?.name.toUpperCase()}',
+      confirmBtnText: AppLocalizations.of(context)!.yes,
+      onConfirmBtnTap: () {
         if (_user == EnumUser.company) {
           NavigationUtil.toSignUpStepTwoAsCompanyScreen(context);
         } else if (_user == EnumUser.student) {
@@ -64,22 +64,23 @@ class _SignUpSetup1ScreenState extends State<SignUpSetup1Screen> {
               child: CustomText(
                 text: AppLocalizations.of(context)!.joinAsCompanyOrStudent,
                 isBold: true,
+                size: 20,
               ),
             ),
             const SizedBox(
               height: SpacingUtil.mediumHeight,
             ),
             // Card of company introducing
-            _cardChoice(Icons.account_box, EnumUser.company,
-                AppLocalizations.of(context)!.iAmACompanyFindEngieerForProject,),
+            _cardChoice("assets/icons/company.png", EnumUser.company,
+                AppLocalizations.of(context)!.iAmACompanyFindEngieerForProject),
             const SizedBox(
-              height: SpacingUtil.smallHeight,
+              height: SpacingUtil.largeHeight,
             ),
             // Card of student introducing
-            _cardChoice(Icons.accessibility, EnumUser.student,
-                AppLocalizations.of(context)!.iAmAStudentFindProject,),
+            _cardChoice("assets/icons/student.png", EnumUser.student,
+                AppLocalizations.of(context)!.iAmAStudentFindProject),
             const SizedBox(
-              height: SpacingUtil.mediumHeight,
+              height: SpacingUtil.largeHeight,
             ),
             CustomButton(
               onPressed: onGoneToNextScreen,
@@ -92,7 +93,7 @@ class _SignUpSetup1ScreenState extends State<SignUpSetup1Screen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const CustomText(text: 'Already have an account? '),
+                const CustomText(text: 'Already have an account? ',size: 18,),
                 CustomAnchor(text: "Log in", onTap: backToSigin)
               ],
             ),
@@ -103,32 +104,68 @@ class _SignUpSetup1ScreenState extends State<SignUpSetup1Screen> {
   }
 
   // create card widget which is unique of this screen
-  Widget _cardChoice(IconData icon, EnumUser user, String intro) {
-    return Card(
-      shape: Border.all(),
+  Widget _cardChoice(String name, EnumUser user, String intro) {
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 2,
+            offset: const Offset(1, 2), // changes position of shadow
+          ),
+        ],
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(6.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(icon),
-                Radio<EnumUser>(
-                  activeColor: Theme.of(context).colorScheme.onPrimary,
-                  value: user,
-                  groupValue: _user,
-                  onChanged: chooseUserType,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Image.asset(name, width: 50, height: 50,),
+                    SizedBox(width: 10,),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          intro.split('\n').length > 1 ? intro.split('\n')[0] : '',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 19,
+                          ),
+                        ),
+                        const SizedBox(height: 5,),
+                        Text(
+                          intro.split('\n').length > 1 ? intro.split('\n')[1] : '',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                          ),
+                        ),
+
+                      ],
+                    ),
+                    Spacer(),
+                    Radio<EnumUser>(
+                      activeColor: Theme.of(context).colorScheme.onPrimary,
+                      value: user,
+                      groupValue: _user,
+                      onChanged: chooseUserType,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            CustomText(
-              text: intro,
-            ),
           ],
         ),
+            
+  
       ),
     );
+    
+   
   }
 }

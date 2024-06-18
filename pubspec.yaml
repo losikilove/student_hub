@@ -44,11 +44,14 @@ dependencies:
   http: ^1.2.1
   provider: ^6.1.2
   intl: ^0.18.1
+  salomon_bottom_bar: ^3.3.2
   zego_uikit_prebuilt_video_conference: ^2.7.4
   flutter_localizations:
     sdk: flutter
   socket_io_client: ^2.0.3+1
   shared_preferences: ^2.2.3
+  quickalert: ^1.1.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:student_hub/components/custom_button.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/initial_body.dart';
 import 'package:student_hub/components/listview_project_items.dart';
@@ -67,35 +67,18 @@ class _ProjectBody extends State<ProjectBody> {
     );
   }
 
-  Future showDialogWelcome() => showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Center(
-            child: Text(
-              'Welcome',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-            ),
-          ),
-          content: CustomText(
-            text:
-                AppLocalizations.of(context)!.welcomeToStudentHubAMartketplace,
-            isCenter: true,
-          ),
-          actions: [
-            CustomButton(
-              onPressed: () => NavigationUtil.turnBack(context),
-              text: 'Next',
-              size: CustomButtonSize.large,
-            ),
-          ],
-        );
-      });
-}
+  Future<void> showDialogWelcome() {
+    return QuickAlert.show(
+      context: context, 
+      type: QuickAlertType.info,
+      title: 'Welcome',
+      confirmBtnText: "Next",
+      confirmBtnColor: Theme.of(context).colorScheme.primary,
+      text: AppLocalizations.of(context)!.welcomeToStudentHubAMartketplace,
+    );
+  }
+  }
 
-// Main part of this body
 class ProjectBodyMainPart extends StatefulWidget {
   final BuildContext parentContext;
   const ProjectBodyMainPart({super.key, required this.parentContext});

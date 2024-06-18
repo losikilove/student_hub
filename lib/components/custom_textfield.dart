@@ -44,13 +44,26 @@ class CustomTextfield extends StatelessWidget {
           ? InputDecoration(
               prefixIcon: prefixIcon == null ? null : Icon(prefixIcon),
               filled: true,
+              labelText: hintText ,
+              labelStyle: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+                fontSize: 16
+              ),
               fillColor: Theme.of(context).colorScheme.onSecondary,
-              enabledBorder: const OutlineInputBorder(),
-              focusedBorder: const OutlineInputBorder(borderSide: BorderSide()),
+              enabledBorder:  OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              focusedBorder:  OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0)
+              ),
             )
           : InputDecoration(
               prefixIcon: prefixIcon == null ? null : Icon(prefixIcon),
-              hintText: hintText,
+              labelText: hintText,
+              labelStyle: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+                fontSize: 16
+              ),
               filled: true,
               fillColor: Theme.of(context).colorScheme.onSecondary,
             ),
@@ -58,6 +71,7 @@ class CustomTextfield extends StatelessWidget {
       style: TextStyle(
         fontSize: fontSize,
         fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+        
       ),
       autofocus: isFocus,
       keyboardType: keyboardType,

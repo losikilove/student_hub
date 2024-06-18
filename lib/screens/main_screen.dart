@@ -3,7 +3,7 @@ import 'package:student_hub/screens/content_body/main_screen/dashboard_body.dart
 import 'package:student_hub/screens/content_body/main_screen/message_body.dart';
 import 'package:student_hub/screens/content_body/main_screen/notification_body.dart';
 import 'package:student_hub/screens/content_body/main_screen/project_body.dart';
-
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 enum MainScreenIndex {
   project(number: 0),
   dashboard(number: 1),
@@ -43,34 +43,37 @@ class _MainScreen extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            backgroundColor: Theme.of(context).colorScheme.secondary,
-            icon: const Icon(Icons.list_outlined),
-            label: 'Project',
+      bottomNavigationBar: SalomonBottomBar(
+        margin: const EdgeInsets.all(15),
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: [
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.list_outlined,size: 24,),
+            title: const Text('Project',style: TextStyle(fontSize: 24),),
+            selectedColor: Theme.of(context).colorScheme.secondary,
+            unselectedColor: Theme.of(context).colorScheme.onPrimary,
           ),
-          BottomNavigationBarItem(
-            backgroundColor: Theme.of(context).colorScheme.secondary,
-            icon: const Icon(Icons.dashboard_outlined),
-            label: 'Dashboard',
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.dashboard_outlined,size: 24,),
+            title: const Text('Dashboard',style: TextStyle(fontSize: 24)),
+            selectedColor: Theme.of(context).colorScheme.secondary,
+            unselectedColor: Theme.of(context).colorScheme.onPrimary,
           ),
-          BottomNavigationBarItem(
-            backgroundColor: Theme.of(context).colorScheme.secondary,
-            icon: const Icon(Icons.message_outlined),
-            label: 'Message',
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.message_outlined,size: 24,),
+            title: const Text('Message',style: TextStyle(fontSize: 24)),
+            selectedColor: Theme.of(context).colorScheme.secondary,
+            unselectedColor: Theme.of(context).colorScheme.onPrimary,
           ),
-          BottomNavigationBarItem(
-            backgroundColor: Theme.of(context).colorScheme.secondary,
-            icon: const Icon(Icons.notifications),
-            label: 'Arlets',
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.notifications,size:24),
+            title: const Text('Alerts',style: TextStyle(fontSize: 26)),
+            selectedColor: Theme.of(context).colorScheme.secondary,
+            unselectedColor: Theme.of(context).colorScheme.onPrimary,
           ),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Theme.of(context).colorScheme.onBackground,
-        onTap: _onItemTapped,
-        unselectedItemColor: Theme.of(context).colorScheme.background,
-      ),
+      )
     );
   }
 }

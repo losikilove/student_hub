@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:student_hub/components/circle_progress.dart';
 import 'package:student_hub/components/custom_anchor.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_textfield.dart';
-import 'package:student_hub/components/initial_body.dart';
-import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/providers/user_provider.dart';
 import 'package:student_hub/screens/main_screen.dart';
 import 'package:student_hub/services/auth_service.dart';
@@ -67,7 +66,11 @@ class _SignInScreenState extends State<SignInScreen> {
   // sign in
   void onSignIn() async {
     // loading in progress
-    showCircleProgress(context: context);
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.loading,
+      text: "Signing in..."
+    );
 
     // get response from the server
     final response = await AuthService.signin(
@@ -99,13 +102,12 @@ class _SignInScreenState extends State<SignInScreen> {
       final errorDetails = body['errorDetails'];
 
       // show popup error message
-      popupNotification(
-        context: context,
-        type: NotificationType.error,
-        content: errorDetails.toString(),
-        textSubmit: 'Ok',
-        submit: null,
+      QuickAlert.show(
+        context: context, 
+        type: QuickAlertType.error,
+        text: errorDetails.toString(),
       );
+  
     } else if (response.statusCode == StatusCode.unprocessableEntity.code) {
       // pop the loading progress
       Navigator.of(context).pop();
@@ -114,26 +116,24 @@ class _SignInScreenState extends State<SignInScreen> {
       final errorDetails = body['errorDetails'];
 
       // show popup error message
-      popupNotification(
-        context: context,
-        type: NotificationType.error,
-        content: errorDetails.toString(),
-        textSubmit: 'Ok',
-        submit: null,
+      QuickAlert.show(
+        context: context, 
+        type: QuickAlertType.error,
+        text: errorDetails.toString(),
       );
+;
     } else {
       // pop the loading progress
       Navigator.of(context).pop();
 
       // others
       // show popup error message
-      popupNotification(
-        context: context,
-        type: NotificationType.error,
-        content: AppLocalizations.of(context)!.somethingWentWrong,
-        textSubmit: 'Ok',
-        submit: null,
+      QuickAlert.show(
+        context: context, 
+        type: QuickAlertType.error,
+        text: AppLocalizations.of(context)!.somethingWentWrong,
       );
+  
     }
   }
 
@@ -147,77 +147,94 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(onPressed: onPressed, currentContext: context),
-      body: InitialBody(
-        child: Column(children: [
-          Center(
-              child: CustomText(
-            text: AppLocalizations.of(context)!.loginWithStudentHub,
-            size: 20,
-            isBold: true,
-          )),
-          const SizedBox(
-            height: SpacingUtil.mediumHeight,
-          ),
-          CustomTextfield(
-            controller: emailController,
-            hintText: 'email',
-            onChanged: (String text) {
-              // disable/enable the sign-in button
-              setState(() {
-                _isFilledEmail = text.trim().isNotEmpty;
-              });
-            },
-          ),
-          const SizedBox(
-            height: SpacingUtil.mediumHeight,
-          ),
-          CustomTextfield(
-            controller: passwordController,
-            hintText: AppLocalizations.of(context)!.password,
-            obscureText: true,
-            onChanged: (String text) {
-              // disable/enable the sign-in button
-              setState(() {
-                _isFilledPassword = text.trim().isNotEmpty;
-              });
-            },
-          ),
-          const SizedBox(
-            height: SpacingUtil.mediumHeight,
-          ),
-          CustomButton(
-            onPressed: onSignIn,
-            text: AppLocalizations.of(context)!.signIn,
-            size: CustomButtonSize.large,
-            isDisabled: !_isFilledEmail || !_isFilledPassword,
-          ),
-          const SizedBox(
-            height: SpacingUtil.mediumHeight,
-          ),
-          CustomAnchor(
-            text: AppLocalizations.of(context)!.forgottenYourPassword,
-            onTap: onForgottenPassword,
-          ),
-          Expanded(
-            child: Column(
+      
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          height: MediaQuery.of(context).size.height ,
+          child: Column(children: [
+              Image.asset("assets/images/login1_img1.png", 
+              width: MediaQuery.sizeOf(context).width, 
+              height: 220
+            ),
+            Center(
+                child: CustomText(
+              text: AppLocalizations.of(context)!.loginWithStudentHub,
+              size: 30,
+              isBold: true,
+            )),
+            const SizedBox(
+              height: SpacingUtil.mediumHeight,
+            ),
+            CustomTextfield(
+              controller: emailController,
+              hintText: 'email',
+              prefixIcon: Icons.email_outlined,
+              isBox: true,
+              onChanged: (String text) {
+                // disable/enable the sign-in button
+                setState(() {
+                  _isFilledEmail = text.trim().isNotEmpty;
+                });
+              },
+            ),
+            const SizedBox(
+              height: SpacingUtil.mediumHeight,
+            ),
+            CustomTextfield(
+              controller: passwordController,
+              hintText: AppLocalizations.of(context)!.password,
+              obscureText: true,
+              isBox: true,
+              prefixIcon: Icons.lock_outline,
+              onChanged: (String text) {
+                // disable/enable the sign-in button
+                setState(() {
+                  _isFilledPassword = text.trim().isNotEmpty;
+                });
+              },
+            ),
+            const SizedBox(
+              height: SpacingUtil.mediumHeight,
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Center(
-                  child: CustomText(
-                    text:
-                        '__${AppLocalizations.of(context)!.dontHaveAccount}__',
-                    isCenter: true,
-                  ),
+                CustomAnchor(
+                  text: AppLocalizations.of(context)!.forgottenYourPassword,
+                  onTap: onForgottenPassword,
                 ),
-                CustomButton(
-                    onPressed: onSignUp,
-                    text: AppLocalizations.of(context)!.signUp,
-                    size: CustomButtonSize.small),
               ],
             ),
-          )
-        ]),
+            const SizedBox(
+              height: SpacingUtil.mediumHeight,
+            ),
+            CustomButton(
+              onPressed: onSignIn,
+              text: AppLocalizations.of(context)!.signIn,
+              size: CustomButtonSize.large,
+              isDisabled: !_isFilledEmail || !_isFilledPassword,
+            ),
+        
+            
+            const SizedBox(
+              height:20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomText(text: '${AppLocalizations.of(context)!.dontHaveAccount} '),
+                const SizedBox(width:6),
+                CustomAnchor(text: "Log in", onTap: onSignUp)
+              ],
+            ),
+           
+            
+          ]),
+        ),
       ),
+      // ),
     );
   }
 }
+

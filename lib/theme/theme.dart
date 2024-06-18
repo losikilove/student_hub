@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
+
 ThemeData lightMode = ThemeData(
   brightness: Brightness.light,
   colorScheme: const ColorScheme.light(
-    background: Color.fromRGBO(162, 216, 255, 1),
-    primary: Color.fromARGB(255, 100, 181, 246),
-    secondary: Color.fromARGB(255, 21, 101, 192),
+    background: Colors.white,
+    primary: Color.fromRGBO(2, 153, 164, 1),
+    secondary: Color.fromRGBO(5, 185, 161, 1),
     onBackground: Colors.white, // immutable
     onPrimary: Colors.black, // for text color
     onSecondary: Colors.white, // for background of option

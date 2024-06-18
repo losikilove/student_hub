@@ -27,6 +27,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
       child: AppBar(
         // turn off the automatic imply leading
         automaticallyImplyLeading: false,
+        centerTitle: true,
         title: Text(
           title,
           style: const TextStyle(

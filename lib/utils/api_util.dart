@@ -25,8 +25,8 @@ class ApiUtil {
   static const port = 4400;
   static const ipAndroid = '10.0.2.2';
   static const ipIos = '10.0.2.1';
-  static const baseUrl = 'https://api.studenthub.dev/api';
-  static const websocketUrl = 'https://api.studenthub.dev';
+  static const baseUrl = 'https://3609-118-69-13-234.ngrok-free.app/api';
+  static const websocketUrl = 'https://3609-118-69-13-234.ngrok-free.app/';
 
   // general headers
   static const headers = <String, String>{
