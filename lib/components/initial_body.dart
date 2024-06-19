@@ -11,7 +11,7 @@ class InitialBody extends StatelessWidget {
       required this.child,
       this.left = 18.0,
       this.right = 18.0,
-      this.top = 36.0,
+      this.top = 16.0,
       this.bottom = 0.0});
 
   @override

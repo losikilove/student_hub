@@ -251,6 +251,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.17"
+  flutter_tabbar_page:
+    dependency: "direct main"
+    description:
+      name: flutter_tabbar_page
+      sha256: "910a3b166f13ca0aea739e3016447f5a7e368c398d9245a2e93136d211efb635"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   flutter_test:
     dependency: "direct dev"
     description: flutter
