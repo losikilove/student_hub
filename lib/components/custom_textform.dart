@@ -28,7 +28,7 @@ class CustomTextForm extends StatefulWidget {
   // this function helps you handle error in a parent widget
   // for sample: handle enabling/disabling a submit button
   final void Function(String? messageError) onHelper;
-
+   final IconData? prefixIcon;
   const CustomTextForm(
       {super.key,
       required this.controller,
@@ -39,6 +39,7 @@ class CustomTextForm extends StatefulWidget {
       this.isFocus = false,
       this.isBold = false,
       this.keyboardType,
+      this.prefixIcon,
       this.inputFormaters});
 
   @override
@@ -105,9 +106,17 @@ class _CustomTextFormState extends State<CustomTextForm> {
       cursorColor: Theme.of(context).colorScheme.onPrimary,
       decoration: InputDecoration(
         hintText: widget.hintText,
+        hintStyle: TextStyle(
+            fontSize: TextUtil.textSize,
+            fontWeight: widget.isBold ? FontWeight.bold : FontWeight.normal),
         filled: true,
+        prefixIcon: widget.prefixIcon != null ? Icon(widget.prefixIcon,size:26) : null,
         fillColor: Theme.of(context).colorScheme.onSecondary,
         errorText: _messageError,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          // borderSide: BorderSide.none,
+        ),
       ),
       controller: widget.controller,
       validator: (String? value) {

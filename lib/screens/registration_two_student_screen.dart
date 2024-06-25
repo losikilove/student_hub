@@ -13,7 +13,7 @@ import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import 'package:quickalert/quickalert.dart';
 class RegistrationTwoStudentScreen extends StatefulWidget {
   const RegistrationTwoStudentScreen({super.key});
 
@@ -59,7 +59,13 @@ class _RegistrationTwoStudentScreenState
     }
 
     // loading in progress
-    showCircleProgress(context: context);
+    // showCircleProgress(context: context);
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.loading,
+      text: "Registering..",
+    );
+    
 
     // get response from the server
     final response = await AuthService.signup(
@@ -70,7 +76,7 @@ class _RegistrationTwoStudentScreenState
     );
 
     // stop loading
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
 
     // decode the response to get the body of response
     final body = ApiUtil.getBody(response);
@@ -97,19 +103,19 @@ class _RegistrationTwoStudentScreenState
       popupNotification(
         context: context,
         type: NotificationType.error,
-        content: body['errorDetails'][0].toString(),
-        textSubmit: 'OK',
-        submit: null,
-      );
-    } else {
-      // the reponse got an error
-      popupNotification(
-        context: context,
-        type: NotificationType.error,
         content: AppLocalizations.of(context)!.somethingWentWrong,
         textSubmit: 'OK',
         submit: null,
       );
+   
+    } else {
+      // the reponse got an error
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        text: AppLocalizations.of(context)!.somethingWentWrong,
+      );
+ 
     }
   }
 
@@ -160,6 +166,7 @@ class _RegistrationTwoStudentScreenState
                       // Fullname text form
                       CustomTextForm(
                         controller: fullnameController,
+                        prefixIcon: Icons.person,
                         listErros: const <InvalidationType>[
                           InvalidationType.isBlank
                         ],
@@ -176,6 +183,7 @@ class _RegistrationTwoStudentScreenState
                       ),
                       // Email text form
                       CustomTextForm(
+                        prefixIcon: Icons.email,
                         controller: emailController,
                         listErros: const <InvalidationType>[
                           InvalidationType.isBlank,
@@ -193,6 +201,7 @@ class _RegistrationTwoStudentScreenState
                       ),
                       // Password text form
                       CustomTextForm(
+                        prefixIcon: Icons.lock,
                         controller: passwordController,
                         listErros: const <InvalidationType>[
                           InvalidationType.isBlank,
@@ -212,6 +221,7 @@ class _RegistrationTwoStudentScreenState
                       ),
                       // Confirm password text form
                       CustomTextForm(
+                        prefixIcon: Icons.lock,
                         controller: confirmPasswordController,
                         listErros: const <InvalidationType>[
                           InvalidationType.isBlank,
@@ -270,8 +280,12 @@ class _RegistrationTwoStudentScreenState
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CustomText(text: AppLocalizations.of(context)!.initialzeAProject),
+                          CustomText(text: AppLocalizations.of(context)!.initialzeAProject, size: 16,),
+                          const SizedBox(
+                            width: SpacingUtil.smallHeight,
+                          ),
                           CustomAnchor(
+  
                             text: AppLocalizations.of(context)!.applyAsACompany,
                             onTap: onSwitchedToLogin,
                           ),
