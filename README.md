@@ -1,9 +1,9 @@
 # Student Hub
 - An application permits managing students, teachers, projects, ...
 - Version: sdk: '>=3.3.0 <4.0.0'
-# api - 25/6
-docs: https://9e2e-42-118-186-120.ngrok-free.app/api-docs
-api: https://9e2e-42-118-186-120.ngrok-free.app
+# api - 26/6
+docs: https://49ae-42-118-186-120.ngrok-free.app/api-docs
+api: https://49ae-42-118-186-120.ngrok-free.app
 
 # Demo videos
 ## Phasing 1
