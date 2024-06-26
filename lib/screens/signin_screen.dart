@@ -226,7 +226,7 @@ class _SignInScreenState extends State<SignInScreen> {
               children: [
                 CustomText(text: '${AppLocalizations.of(context)!.dontHaveAccount} '),
                 const SizedBox(width:6),
-                CustomAnchor(text: "Log in", onTap: onSignUp)
+                CustomAnchor(text: "Register", onTap: onSignUp)
               ],
             ),
            

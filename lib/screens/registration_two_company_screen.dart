@@ -59,12 +59,12 @@ class _RegistrationTwoCompanyScreenState
     }
 
     // loading in progress
-    showCircleProgress(context: context);
-    // QuickAlert.show(
-    //   context: context,
-    //   type: QuickAlertType.loading,
-    //   text: AppLocalizations.of(context)!.loading,
-    // );
+    // showCircleProgress(context: context);
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.loading,
+      text: AppLocalizations.of(context)!.loading,
+    );
 
     // get response from the server
     final response = await AuthService.signup(
@@ -75,7 +75,7 @@ class _RegistrationTwoCompanyScreenState
     );
 
     // stop loading
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
 
     // decode the response to get the body of response
     final body = ApiUtil.getBody(response);
