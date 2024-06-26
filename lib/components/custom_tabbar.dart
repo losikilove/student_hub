@@ -21,19 +21,11 @@ class CustomTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
-        border: Border.all(
-          color: Colors.grey,
-        ),
-      ),
       child: TabBar(
         indicatorSize: TabBarIndicatorSize.tab,
-        indicator:
-            BoxDecoration(color: Theme.of(context).colorScheme.secondary),
         controller: tabController,
         tabs: tabs,
-        labelColor: Colors.white,
+        labelColor: Theme.of(context).colorScheme.secondary,
         indicatorColor: Theme.of(context).colorScheme.secondary,
       ),
     );

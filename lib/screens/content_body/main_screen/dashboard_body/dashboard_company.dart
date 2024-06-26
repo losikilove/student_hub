@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:student_hub/components/custom_appbar.dart';
@@ -60,8 +61,10 @@ class _DashboardCompanyState extends State<DashboardCompany>
     }
     if (isConfirmed == true) {
       await ProjectService.deleteProject(
+          // ignore: use_build_context_synchronously
           id: project.projectId, context: context);
       Navigator.push(
+          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(
               builder: (context) => const MainScreen(
@@ -131,9 +134,17 @@ class _DashboardCompanyState extends State<DashboardCompany>
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GestureDetector(
-              onTap: onSeenDetail,
-              child: Column(
+            Card(
+              clipBehavior: Clip.hardEdge,
+              child: InkWell(
+                splashColor: Colors.blue.withAlpha(30),
+                onTap: () {
+                  onSeenDetail();
+                },
+                child:  SizedBox(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
@@ -232,15 +243,8 @@ class _DashboardCompanyState extends State<DashboardCompany>
                   ),
                 ],
               ),
-            ),
-            const SizedBox(
-              height: SpacingUtil.smallHeight,
-            ),
-            const CustomDivider(
-              isFullWidth: true,
-            ),
-            const SizedBox(
-              height: SpacingUtil.mediumHeight,
+                ),
+              ),
             ),
           ],
         );

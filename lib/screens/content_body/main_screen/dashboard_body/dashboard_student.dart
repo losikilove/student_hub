@@ -13,7 +13,6 @@ import 'package:student_hub/services/proposal_service.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_tabbar_page/flutter_tabbar_page.dart';
 class DashboardStudent extends StatefulWidget {
   const DashboardStudent({super.key});
 
@@ -23,19 +22,26 @@ class DashboardStudent extends StatefulWidget {
 
 class _DashboardStudentState extends State<DashboardStudent>
     with SingleTickerProviderStateMixin {
-
-  List<PageTabItemModel> lstPages = <PageTabItemModel>[];
-  final TabPageController _controller = TabPageController();
+  late final List<TabView> _tabViews = [
+    TabView(
+      tab: Tab(text: AppLocalizations.of(context)!.allProjects),
+      widget: _studentAllProjectContent(),
+    ),
+    TabView(
+      tab: Tab(text: AppLocalizations.of(context)!.working),
+      widget: _studentWorkingContent(),
+    ),
+    TabView(
+      tab: Tab(text: AppLocalizations.of(context)!.archived),
+      widget: _studentArchievedContent(),
+    ),
+  ];
+  late final TabController _tabController =
+      TabController(vsync: this, length: _tabViews.length);
 
   @override
   void initState() {
     super.initState();
-    // lstPages.add(PageTabItemModel(title: AppLocalizations.of(context)!.allProjects, page: _studentAllProjectContent() ));
-    // lstPages.add(PageTabItemModel(title: AppLocalizations.of(context)!.working, page: _studentWorkingContent() ));
-    // lstPages.add(PageTabItemModel(title: AppLocalizations.of(context)!.archived, page:  _studentArchievedContent()));
-    lstPages.add(PageTabItemModel(title:  "Project", page: _studentAllProjectContent() ));
-    lstPages.add(PageTabItemModel(title:"working", page: _studentWorkingContent() ));
-    lstPages.add(PageTabItemModel(title: "archieved", page:  _studentArchievedContent()));
   }
 
   List<ProposalStudent> _projects = [];
@@ -49,7 +55,7 @@ class _DashboardStudentState extends State<DashboardStudent>
   @override
   void dispose() {
     // dispose the tab controller
-    _controller.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -228,38 +234,15 @@ class _DashboardStudentState extends State<DashboardStudent>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TabBarPage(
-              controller: _controller,
-              pages: lstPages,
-              tabitemBuilder: (context, index){
-                return InkWell(
-                  onTap: () {
-                    _controller.onTabTap(index);
-                  },
-                  child: SizedBox(
-                  width: MediaQuery.of(context).size.width / lstPages.length,
-                  child: Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      Center(
-                        child: Text(
-                          lstPages[index].title ?? "",
-                          style: TextStyle(
-                              fontWeight: _controller.currentIndex == index ? FontWeight.w700 : FontWeight.w400,
-                              color: _controller.currentIndex == index ? Theme.of(context).colorScheme.secondary : Colors.black26,
-                              fontSize: 15),
-                        ),
-                      ),
-                      Container(
-                          height: 3,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: _controller.currentIndex == index ? Theme.of(context).colorScheme.secondary : Colors.transparent)),
-                    ],
-                  ),
-                ),
-                );
-              }           
+            CustomTabBar(
+              tabController: _tabController,
+              tabs: _tabViews.map((e) => e.tab).toList(),
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: _tabViews.map((e) => e.widget).toList(),
+              ),
             ),
           ],
         ),

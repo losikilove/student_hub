@@ -44,31 +44,31 @@ class _MainScreen extends State<MainScreen> {
     return Scaffold(
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: SalomonBottomBar(
-        margin: const EdgeInsets.all(15),
+        margin: const EdgeInsets.all(0),
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         items: [
           SalomonBottomBarItem(
-            icon: const Icon(Icons.list_outlined,size: 24,),
-            title: const Text('Project',style: TextStyle(fontSize: 24),),
+            icon: const Icon(Icons.list_outlined),
+            title: const Text('Project'),
             selectedColor: Theme.of(context).colorScheme.secondary,
             unselectedColor: Theme.of(context).colorScheme.onPrimary,
           ),
           SalomonBottomBarItem(
-            icon: const Icon(Icons.dashboard_outlined,size: 24,),
-            title: const Text('Dashboard',style: TextStyle(fontSize: 24)),
+            icon: const Icon(Icons.dashboard_outlined),
+            title: const Text('Dashboard'),
             selectedColor: Theme.of(context).colorScheme.secondary,
             unselectedColor: Theme.of(context).colorScheme.onPrimary,
           ),
           SalomonBottomBarItem(
-            icon: const Icon(Icons.message_outlined,size: 24,),
-            title: const Text('Message',style: TextStyle(fontSize: 24)),
+            icon: const Icon(Icons.message_outlined),
+            title: const Text('Message'),
             selectedColor: Theme.of(context).colorScheme.secondary,
             unselectedColor: Theme.of(context).colorScheme.onPrimary,
           ),
           SalomonBottomBarItem(
-            icon: const Icon(Icons.notifications,size:24),
-            title: const Text('Alerts',style: TextStyle(fontSize: 26)),
+            icon: const Icon(Icons.notifications),
+            title: const Text('Alerts'),
             selectedColor: Theme.of(context).colorScheme.secondary,
             unselectedColor: Theme.of(context).colorScheme.onPrimary,
           ),
