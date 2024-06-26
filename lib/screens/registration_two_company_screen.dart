@@ -13,6 +13,7 @@ import 'package:student_hub/utils/api_util.dart';
 import 'package:student_hub/utils/navigation_util.dart';
 import 'package:student_hub/utils/spacing_util.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:quickalert/quickalert.dart';
 class RegistrationTwoCompanyScreen extends StatefulWidget {
   const RegistrationTwoCompanyScreen({super.key});
 
@@ -45,18 +46,25 @@ class _RegistrationTwoCompanyScreenState
   Future<void> submit() async {
     // confimed password and password do not match
     if (confirmPasswordController.text != passwordController.text) {
-      popupNotification(
+      QuickAlert.show(
         context: context,
-        type: NotificationType.error,
-        content: AppLocalizations.of(context)!.comfirmPasswordDoesNotMatch,
-        textSubmit: 'OK',
-        submit: null,
+        type: QuickAlertType.warning,
+        text: AppLocalizations.of(context)!.comfirmPasswordDoesNotMatch,
+        cancelBtnText: "OK"
+        // text: AppLocalizations.of(context)!.passwordsDoNotMatch,
+        // textSubmit: 'OK',
+        // submit: null,
       );
       return;
     }
 
     // loading in progress
     showCircleProgress(context: context);
+    // QuickAlert.show(
+    //   context: context,
+    //   type: QuickAlertType.loading,
+    //   text: AppLocalizations.of(context)!.loading,
+    // );
 
     // get response from the server
     final response = await AuthService.signup(
@@ -78,34 +86,41 @@ class _RegistrationTwoCompanyScreenState
       final result = body['result'];
 
       // the response is ok
-      await popupNotification(
+      QuickAlert.show(
         context: context,
-        type: NotificationType.success,
-        // show a content about verified email
-        content: result['message'].toString(),
-        textSubmit: 'OK',
-        submit: null,
+        type: QuickAlertType.success,
+        text: result['message'].toString(),
+        cancelBtnText: 'OK',
+
       );
+      // await popupNotification(
+      //   context: context,
+      //   type: NotificationType.success,
+      //   // show a content about verified email
+      //   content: result['message'].toString(),
+      //   textSubmit: 'OK',
+      //   submit: null,
+      // );
 
       NavigationUtil.toSignInScreen(context);
       return;
     } else if (response.statusCode == StatusCode.error.code) {
       // the reponse got an error
-      popupNotification(
+      QuickAlert.show(
         context: context,
-        type: NotificationType.error,
-        content: body['errorDetails'][0].toString(),
-        textSubmit: 'OK',
-        submit: null,
+        type: QuickAlertType.error,
+        text: AppLocalizations.of(context)!.somethingWentWrong,
+        confirmBtnText: 'OK',
+  
       );
     } else {
       // the reponse got an error
-      popupNotification(
+      QuickAlert.show(
         context: context,
-        type: NotificationType.error,
-        content: AppLocalizations.of(context)!.somethingWentWrong,
-        textSubmit: 'OK',
-        submit: null,
+        type: QuickAlertType.error,
+        text: body['message'].toString(),
+        confirmBtnText: 'OK',
+
       );
     }
   }
@@ -140,6 +155,7 @@ class _RegistrationTwoCompanyScreenState
             Center(
               child: CustomText(
                 text: AppLocalizations.of(context)!.signUpAsCompany,
+                size: 20,
                 isBold: true,
               ),
             ),
@@ -156,6 +172,7 @@ class _RegistrationTwoCompanyScreenState
                     children: [
                       // Fullname text form
                       CustomTextForm(
+                        prefixIcon: Icons.person,
                         controller: fullnameController,
                         listErros: const <InvalidationType>[
                           InvalidationType.isBlank
@@ -173,6 +190,7 @@ class _RegistrationTwoCompanyScreenState
                       ),
                       // Email text form
                       CustomTextForm(
+                        prefixIcon: Icons.email,
                         controller: emailController,
                         listErros: const <InvalidationType>[
                           InvalidationType.isBlank,
@@ -190,6 +208,7 @@ class _RegistrationTwoCompanyScreenState
                       ),
                       // Password text form
                       CustomTextForm(
+                        prefixIcon: Icons.lock,
                         controller: passwordController,
                         listErros: const <InvalidationType>[
                           InvalidationType.isBlank,
@@ -209,6 +228,7 @@ class _RegistrationTwoCompanyScreenState
                       ),
                       // Confirm password text form
                       CustomTextForm(
+                        prefixIcon:  Icons.lock,
                         controller: confirmPasswordController,
                         listErros: const <InvalidationType>[
                           InvalidationType.isBlank,

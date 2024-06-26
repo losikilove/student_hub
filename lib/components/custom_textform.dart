@@ -115,8 +115,11 @@ class _CustomTextFormState extends State<CustomTextForm> {
         errorText: _messageError,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          // borderSide: BorderSide.none,
         ),
+        labelText: widget.hintText,
+        labelStyle: TextStyle(
+          color: Theme.of(context).colorScheme.onPrimary,
+          fontSize: TextUtil.textSize,)
       ),
       controller: widget.controller,
       validator: (String? value) {

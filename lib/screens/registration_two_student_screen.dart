@@ -59,12 +59,12 @@ class _RegistrationTwoStudentScreenState
     }
 
     // loading in progress
-    // showCircleProgress(context: context);
-    QuickAlert.show(
-      context: context,
-      type: QuickAlertType.loading,
-      text: "Registering..",
-    );
+    showCircleProgress(context: context);
+    // QuickAlert.show(
+    //   context: context,
+    //   type: QuickAlertType.loading,
+    //   text:AppLocalizations.of(context)!.loading,
+    // );
     
 
     // get response from the server
@@ -76,7 +76,7 @@ class _RegistrationTwoStudentScreenState
     );
 
     // stop loading
-    // Navigator.of(context).pop();
+    Navigator.of(context).pop();
 
     // decode the response to get the body of response
     final body = ApiUtil.getBody(response);
@@ -149,6 +149,7 @@ class _RegistrationTwoStudentScreenState
             Center(
               child: CustomText(
                 text: AppLocalizations.of(context)!.signUpAsStudent,
+                size: 20,
                 isBold: true,
               ),
             ),

@@ -66,11 +66,12 @@ class _SignInScreenState extends State<SignInScreen> {
   // sign in
   void onSignIn() async {
     // loading in progress
-    QuickAlert.show(
-      context: context,
-      type: QuickAlertType.loading,
-      text: "Signing in..."
-    );
+    showCircleProgress(context: context);
+    // QuickAlert.show(
+    //   context: context,
+    //   type: QuickAlertType.loading,
+    //   text: "Signing in..."
+    // );
 
     // get response from the server
     final response = await AuthService.signin(
@@ -78,7 +79,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
     // decode the response to get the body
     final body = ApiUtil.getBody(response);
-
+    print(response.statusCode);
     // validate the response
     if (response.statusCode == StatusCode.created.code) {
       // decode the response to get the result of response-body
@@ -90,7 +91,7 @@ class _SignInScreenState extends State<SignInScreen> {
       await Provider.of<UserProvider>(context, listen: false).signin(token);
 
       // pop the loading progress
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
 
       // switch to create profile or main screeen
       switchToCreateProfileOrMain();
@@ -121,7 +122,7 @@ class _SignInScreenState extends State<SignInScreen> {
         type: QuickAlertType.error,
         text: errorDetails.toString(),
       );
-;
+
     } else {
       // pop the loading progress
       Navigator.of(context).pop();
