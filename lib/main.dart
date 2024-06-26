@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:student_hub/l10n/l10n.dart';
 import 'package:student_hub/providers/langue_provider.dart';
 import 'package:student_hub/providers/user_provider.dart';
-import 'package:student_hub/screens/signin_screen.dart';
+import 'package:student_hub/screens/login/signin_screen.dart';
 import 'package:student_hub/providers/theme_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

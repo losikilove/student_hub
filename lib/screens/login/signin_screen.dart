@@ -66,12 +66,12 @@ class _SignInScreenState extends State<SignInScreen> {
   // sign in
   void onSignIn() async {
     // loading in progress
-    showCircleProgress(context: context);
-    // QuickAlert.show(
-    //   context: context,
-    //   type: QuickAlertType.loading,
-    //   text: "Signing in..."
-    // );
+    // showCircleProgress(context: context);
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.loading,
+      text: "Signing in..."
+    );
 
     // get response from the server
     final response = await AuthService.signin(
@@ -90,14 +90,10 @@ class _SignInScreenState extends State<SignInScreen> {
       // save the token
       await Provider.of<UserProvider>(context, listen: false).signin(token);
 
-      // pop the loading progress
-      // Navigator.of(context).pop();
-
-      // switch to create profile or main screeen
       switchToCreateProfileOrMain();
     } else if (response.statusCode == StatusCode.notFound.code) {
       // pop the loading progress
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
 
       // the user is not found
       final errorDetails = body['errorDetails'];
@@ -111,7 +107,7 @@ class _SignInScreenState extends State<SignInScreen> {
   
     } else if (response.statusCode == StatusCode.unprocessableEntity.code) {
       // pop the loading progress
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
 
       // incorrect password
       final errorDetails = body['errorDetails'];
@@ -125,7 +121,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
     } else {
       // pop the loading progress
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
 
       // others
       // show popup error message
