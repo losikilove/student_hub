@@ -93,14 +93,7 @@ class _RegistrationTwoCompanyScreenState
         cancelBtnText: 'OK',
 
       );
-      // await popupNotification(
-      //   context: context,
-      //   type: NotificationType.success,
-      //   // show a content about verified email
-      //   content: result['message'].toString(),
-      //   textSubmit: 'OK',
-      //   submit: null,
-      // );
+
 
       NavigationUtil.toSignInScreen(context);
       return;

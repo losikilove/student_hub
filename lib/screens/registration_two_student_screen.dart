@@ -59,7 +59,6 @@ class _RegistrationTwoStudentScreenState
     }
 
     // loading in progress
-    // showCircleProgress(context: context);
     QuickAlert.show(
       context: context,
       type: QuickAlertType.loading,
@@ -75,9 +74,6 @@ class _RegistrationTwoStudentScreenState
       role: EnumUser.student.value,
     );
 
-    // stop loading
-    // Navigator.of(context).pop();
-
     // decode the response to get the body of response
     final body = ApiUtil.getBody(response);
 
@@ -87,13 +83,11 @@ class _RegistrationTwoStudentScreenState
       final result = body['result'];
 
       // the response is ok
-      await popupNotification(
+      QuickAlert.show(
         context: context,
-        type: NotificationType.success,
-        // show a content about verified email
-        content: result['message'].toString(),
-        textSubmit: 'OK',
-        submit: null,
+        type: QuickAlertType.success,
+        text: result['message'].toString(),
+        confirmBtnText: 'OK',
       );
 
       NavigationUtil.toSignInScreen(context);
