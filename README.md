@@ -2,8 +2,8 @@
 - An application permits managing students, teachers, projects, ...
 - Version: sdk: '>=3.3.0 <4.0.0'
 # api - 26/6
-docs: https://49ae-42-118-186-120.ngrok-free.app/api-docs
-api: https://49ae-42-118-186-120.ngrok-free.app
+docs: https://2b9b-1-53-55-172.ngrok-free.app/api-docs
+api: https://2b9b-1-53-55-172.ngrok-free.app
 
 # Demo videos
 ## Phasing 1
