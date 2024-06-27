@@ -79,7 +79,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
     // decode the response to get the body
     final body = ApiUtil.getBody(response);
-    print(response.statusCode);
     // validate the response
     if (response.statusCode == StatusCode.created.code) {
       // decode the response to get the result of response-body
@@ -150,7 +149,7 @@ class _SignInScreenState extends State<SignInScreen> {
           padding: const EdgeInsets.all(12),
           height: MediaQuery.of(context).size.height ,
           child: Column(children: [
-              Image.asset("assets/images/login1_img1.png", 
+            Image.asset("assets/images/login1_img1.png", 
               width: MediaQuery.sizeOf(context).width, 
               height: 220
             ),
@@ -212,8 +211,6 @@ class _SignInScreenState extends State<SignInScreen> {
               size: CustomButtonSize.large,
               isDisabled: !_isFilledEmail || !_isFilledPassword,
             ),
-        
-            
             const SizedBox(
               height:20,
             ),

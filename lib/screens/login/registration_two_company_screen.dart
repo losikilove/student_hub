@@ -50,10 +50,7 @@ class _RegistrationTwoCompanyScreenState
         context: context,
         type: QuickAlertType.warning,
         text: AppLocalizations.of(context)!.comfirmPasswordDoesNotMatch,
-        cancelBtnText: "OK"
-        // text: AppLocalizations.of(context)!.passwordsDoNotMatch,
-        // textSubmit: 'OK',
-        // submit: null,
+        confirmBtnText: "OK"
       );
       return;
     }
@@ -104,7 +101,6 @@ class _RegistrationTwoCompanyScreenState
         type: QuickAlertType.error,
         text: AppLocalizations.of(context)!.somethingWentWrong,
         confirmBtnText: 'OK',
-  
       );
     } else {
       // the reponse got an error

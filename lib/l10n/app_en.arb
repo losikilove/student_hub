@@ -8,6 +8,7 @@
     "somethingWentWrong": "Something went wrong",
     "signIn": "Sign In",
     "signUp": "Sign Up",
+    "insertemailtochangepassword":"Insert your email to reset your password",
     "loginWithStudentHub":"Login with StudentHub",
     "dontHaveAccount": "Don't have an account?",
     "activeProposals": "Active Proposals",

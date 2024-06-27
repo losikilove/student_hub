@@ -49,25 +49,25 @@ class _MainScreen extends State<MainScreen> {
         onTap: _onItemTapped,
         items: [
           SalomonBottomBarItem(
-            icon: const Icon(Icons.list_outlined),
+            icon: const Icon(Icons.list_outlined,size:38),
             title: const Text('Project'),
             selectedColor: Theme.of(context).colorScheme.secondary,
             unselectedColor: Theme.of(context).colorScheme.onPrimary,
           ),
           SalomonBottomBarItem(
-            icon: const Icon(Icons.dashboard_outlined),
+            icon: const Icon(Icons.dashboard_outlined,size:38),
             title: const Text('Dashboard'),
             selectedColor: Theme.of(context).colorScheme.secondary,
             unselectedColor: Theme.of(context).colorScheme.onPrimary,
           ),
           SalomonBottomBarItem(
-            icon: const Icon(Icons.message_outlined),
+            icon: const Icon(Icons.message_outlined,size:38),
             title: const Text('Message'),
             selectedColor: Theme.of(context).colorScheme.secondary,
             unselectedColor: Theme.of(context).colorScheme.onPrimary,
           ),
           SalomonBottomBarItem(
-            icon: const Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications,size:38),
             title: const Text('Alerts'),
             selectedColor: Theme.of(context).colorScheme.secondary,
             unselectedColor: Theme.of(context).colorScheme.onPrimary,
@@ -77,3 +77,4 @@ class _MainScreen extends State<MainScreen> {
     );
   }
 }
+

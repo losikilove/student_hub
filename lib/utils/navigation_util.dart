@@ -9,7 +9,7 @@ import 'package:student_hub/screens/change_password_screen.dart';
 import 'package:student_hub/screens/company_view_profile_screen.dart';
 import 'package:student_hub/screens/companyupdateprofile_screen.dart';
 import 'package:student_hub/screens/login/companyregister_screen.dart';
-import 'package:student_hub/screens/forgotten_password_screen.dart';
+import 'package:student_hub/screens/login/forgotten_password_screen.dart';
 import 'package:student_hub/screens/home_screen.dart';
 import 'package:student_hub/screens/main_screen.dart';
 import 'package:student_hub/screens/meeting_screen.dart';

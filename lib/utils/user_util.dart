@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_hub/models/enums/enum_user.dart';
 import 'package:student_hub/providers/user_provider.dart';
-import 'package:student_hub/screens/companyregister_screen.dart';
+import 'package:student_hub/screens/login/companyregister_screen.dart';
 import 'package:student_hub/screens/profile_student_step1_screen.dart';
 
 

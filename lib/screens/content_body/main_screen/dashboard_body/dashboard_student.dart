@@ -143,7 +143,7 @@ class _DashboardStudentState extends State<DashboardStudent>
           child: Card(
               shape: Border.all(),
               child: Container(
-                  width: 400,
+                  width: MediaQuery.of(context).size.width*0.9,
                   height: 50,
                   decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.onSecondary),
@@ -161,7 +161,7 @@ class _DashboardStudentState extends State<DashboardStudent>
         Card(
             shape: Border.all(),
             child: Container(
-                width: 400,
+                width:  MediaQuery.of(context).size.width*0.9,
                 height: MediaQuery.of(context).size.height*0.57,
                 decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.onSecondary),

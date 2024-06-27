@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:student_hub/components/circle_progress.dart';
 import 'package:student_hub/components/custom_anchor.dart';
 import 'package:student_hub/components/custom_appbar.dart';
 import 'package:student_hub/components/custom_button.dart';
 import 'package:student_hub/components/custom_text.dart';
 import 'package:student_hub/components/custom_textform.dart';
 import 'package:student_hub/components/initial_body.dart';
-import 'package:student_hub/components/popup_notification.dart';
 import 'package:student_hub/models/enums/enum_user.dart';
 import 'package:student_hub/services/auth_service.dart';
 import 'package:student_hub/utils/api_util.dart';
@@ -48,12 +46,11 @@ class _RegistrationTwoStudentScreenState
   void submit() async {
     // confimed password and password do not match
     if (confirmPasswordController.text != passwordController.text) {
-      popupNotification(
+      QuickAlert.show(
         context: context,
-        type: NotificationType.error,
-        content: AppLocalizations.of(context)!.comfirmPasswordDoesNotMatch,
-        textSubmit: 'OK',
-        submit: null,
+        type: QuickAlertType.warning,
+        text: AppLocalizations.of(context)!.comfirmPasswordDoesNotMatch,
+        confirmBtnText: "OK"
       );
       return;
     }
@@ -94,12 +91,11 @@ class _RegistrationTwoStudentScreenState
       return;
     } else if (response.statusCode == StatusCode.error.code) {
       // the reponse got an error
-      popupNotification(
+      QuickAlert.show(
         context: context,
-        type: NotificationType.error,
-        content: AppLocalizations.of(context)!.somethingWentWrong,
-        textSubmit: 'OK',
-        submit: null,
+        type: QuickAlertType.error,
+        text: AppLocalizations.of(context)!.somethingWentWrong,
+        confirmBtnText: 'OK',
       );
    
     } else {

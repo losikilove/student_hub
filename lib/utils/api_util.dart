@@ -25,8 +25,8 @@ class ApiUtil {
   static const port = 4400;
   static const ipAndroid = '10.0.2.2';
   static const ipIos = '10.0.2.1';
-  static const baseUrl = 'https://49ae-42-118-186-120.ngrok-free.app/api';
-  static const websocketUrl = 'https://49ae-42-118-186-120.ngrok-free.app/';
+  static const baseUrl = 'https://2b9b-1-53-55-172.ngrok-free.app/api';
+  static const websocketUrl = 'https://2b9b-1-53-55-172.ngrok-free.app/';
   
 
   // general headers
